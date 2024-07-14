@@ -9,5 +9,10 @@ export class PortfolioService {
   public getAllPortfolios(): Portfolio[] {
     return this.portfolios;
   }
+
+  public createPortfolio(portfolio: Portfolio): Portfolio {
+    this.portfolios.push(portfolio);
+    return portfolio;
+  }
 }
 
