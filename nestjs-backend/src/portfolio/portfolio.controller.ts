@@ -10,17 +10,21 @@ export class PortfolioController {
   ) {}
 
   @Get()
-  getAllPortfolios(){
-    return this.portfolioService.getAllPortfolios();
+  async getAllPortfolios(): Promise<Portfolio[]> {
+    return await this.portfolioService.getAllPortfolios();
   }
 
   @Get('/:id')
-  getPortfolioById(@Param('id') id: string){
-    return this.portfolioService.getPortfolioById(id);
+  async getPortfolioById(@Param('id') id: string): Promise<{id: string}> {
+    try {
+      return await this.portfolioService.getPortfolioById(id);
+    } catch (error) {
+      return { id: 'Portfolio not found' };
+    }
   }
 
   @Post()
-  createPortfolio(@Body() CreatePortfolioDto: CreatePortfolioDto): Portfolio {
-    return this.portfolioService.createPortfolio(CreatePortfolioDto);
+  async createPortfolio(@Body() CreatePortfolioDto: CreatePortfolioDto): Promise<void> {
+    await this.portfolioService.createPortfolio(CreatePortfolioDto);
   }
 }
