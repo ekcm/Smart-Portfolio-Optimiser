@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { PortfolioService } from "./portfolio.service";
 import { Portfolio } from "./portfolio.model";
 
@@ -9,8 +9,13 @@ export class PortfolioController {
   ) {}
 
   @Get()
-  getPortfolios(){
+  getAllPortfolios(){
     return this.portfolioService.getAllPortfolios();
+  }
+
+  @Get('/:id')
+  getPortfolioById(@Param('id') id: string){
+    return this.portfolioService.getPortfolioById(id);
   }
 
   @Post()
