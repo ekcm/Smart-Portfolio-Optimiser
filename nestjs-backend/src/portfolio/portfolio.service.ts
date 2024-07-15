@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Portfolio } from "./portfolio.model";
+import { Portfolio } from "./interfaces/portfolio.model";
 import { CreatePortfolioDto } from "./dto/create-portfolio.dto";
 
 @Injectable()

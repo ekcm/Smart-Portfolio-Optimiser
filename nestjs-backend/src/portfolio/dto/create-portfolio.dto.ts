@@ -1,4 +1,4 @@
-import { RiskAppetite } from "../portfolio.model";
+import { RiskAppetite } from "../interfaces/portfolio.model";
 
 export class CreatePortfolioDto{
   portfolioId: string;
