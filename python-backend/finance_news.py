@@ -57,20 +57,20 @@ async def researcher_response(query):
 def read_root():
     return {"Hello": "World"}
 
-# @app.post("/")
-# async def retrieve_finance_news(query: Query):
-#     prompt = query.query
-#     response = await researcher_response(prompt)
-#     return response
-
 @app.post("/")
-async def retrieve_json(query: Query):
-    prompt = query.query 
-    with open ("research_report.json", "r") as file:
-        response = file.read()
-        print(type(response))
-        json_obj = json.loads(response)
-        return json_obj
+async def retrieve_finance_news(query: Query):
+    prompt = query.query
+    response = await researcher_response(prompt)
+    return response
+
+# @app.post("/")
+# async def retrieve_json(query: Query):
+#     prompt = query.query 
+#     with open ("research_report.json", "r") as file:
+#         response = file.read()
+#         print(type(response))
+#         json_obj = json.loads(response)
+#         return json_obj
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host='127.0.0.1', port=5000, reload=True)
+    uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
