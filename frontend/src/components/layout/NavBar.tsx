@@ -1,54 +1,59 @@
 import { Link } from "next-view-transitions";
 import Image from "next/image";
-// import { DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuContent, DropdownMenu } from "@/components/ui/dropdown-menu";
-import { CircleUserRound, Info, Keyboard, Settings, Swords } from "lucide-react";
-
+import { useState } from "react";
+import { usePathname } from 'next/navigation';
+import ubsLogo from "../../../public/ubs-logo.png";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 export default function NavBar() {
+    const [username, setUsername] = useState<string>("Chester");
+    const pathname = usePathname();
+
+    const isLinkActive = (href: string) => pathname === href;
+
     return (
-        <header className="flex h-16 w-full items-center justify-between py-12 md:px-6">
-            <Link className="flex items-center gap-2" href="/">
-                {/* <Image src={fatlogo} alt="logo" priority className="h-12 w-12"/> */}
-                <span className="font-semibold">UBS</span>
-            </Link>
-            <div className="flex items-center gap-4 md:gap-6">
-                <Link className="inline-flex h-10 w-10 items-center justify-center rounded-full" href="/">
-                    <Keyboard className="h-5 w-5" />
-                    <span className="sr-only">Keyboard</span>
-                </Link>
-                <Link className="inline-flex h-10 w-10 items-center justify-center rounded-full" href="/info">
-                    <Info className="h-5 w-5" />
-                    <span className="sr-only">Information</span>
-                </Link>
-                <Link className="inline-flex h-10 w-10 items-center justify-center rounded-full" href="/multiplayer">
-                    <Swords className="h-5 w-5" />
-                    <span className="sr-only">Multiplayer</span>
-                </Link>
-                <Link className="inline-flex h-10 w-10 items-center justify-center rounded-full" href="/settings">
-                    <Settings className="h-5 w-5" />
-                    <span className="sr-only">Settings</span>
-                </Link>
-                {/* <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button className="rounded-full" size="icon" variant="ghost">
-                            <CircleUserRound className="h-5 w-5" />
-                            <span className="sr-only">Toggle user menu</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Link href="#">Profile</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link href="#">Settings</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href="#">Logout</Link>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu> */}
+        <nav className="flex items-center justify-between h-16 bg-black-navbar text-white px-24">
+            <div className="flex items-center">
+                <Image src={ubsLogo} alt="logo" priority className="h-16 w-16"/>
+                <div className="ml-4">
+                    <Link 
+                        href="/dashboard" 
+                        className={`text-lg relative ${isLinkActive('/dashboard') ? 'text-white' : 'text-gray-300'}`}
+                    >
+                        Dashboard
+                        {isLinkActive('/dashboard') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>}
+                    </Link>
+                </div>
+                <div className="ml-4">
+                    <Link 
+                        href="/financenews" 
+                        className={`text-lg relative ${isLinkActive('/financenews') ? 'text-white' : 'text-gray-300'}`}
+                    >
+                        Finance News
+                        {isLinkActive('/financenews') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>}
+                    </Link>
+                </div>
             </div>
-        </header>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost">
+                        <div className="text-lg">Welcome, {username}</div>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuItem>
+                        <Link href="#">Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Link href="#">Settings</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                        <Link href="#">Logout</Link>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </nav>
     )
 }
