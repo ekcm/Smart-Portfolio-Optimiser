@@ -5,6 +5,7 @@ import { useDashBoardNavBarStore } from "../../../../store/DashBoardNavBarState"
 import Filter from "@/components/dashboard/Filter";
 import { Button } from "@/components/ui/button";
 import { useFilterStore } from "../../../../store/FilterState";
+import Portfolios from "@/components/dashboard/Portfolios";
 
 export default function DashBoard() {
   const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
@@ -29,6 +30,7 @@ export default function DashBoard() {
         <Button variant="ghost" onClick={handleReset}>Reset Filters</Button>
       </div>
       <Filter />
+      <Portfolios />
     </main>
 );
 }

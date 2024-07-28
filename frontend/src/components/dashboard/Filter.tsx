@@ -16,18 +16,18 @@ export default function Filter() {
     const riskAppetiteLevels = ["No Filter", "Low", "Medium", "High"];
 
     return (
-        <div className="grid grid-cols-6 gap-6">
-            <div className="col-span-3 flex items-center space-x-2">
-                <Label htmlFor="portfolioName" className="whitespace-nowrap text-md">Portfolio Name:</Label>
+        <div className="grid grid-cols-6 gap-4">
+            <Label className="col-span-3 flex items-center space-x-2 whitespace-nowrap text-md gap-2">
+                Portfolio Name:
                 <Input
                     type="text"
                     value={portfolioName}
                     onChange={(e) => setPortfolioName(e.target.value)}
                     className="flex-grow"
                 />
-            </div>
-            <div className="col-span-2 flex items-center space-x-2">
-                <Label htmlFor="portfolioName" className="whitespace-nowrap text-md">Risk Appetite:</Label>
+            </Label>
+            <Label className="col-span-2 flex items-center space-x-2 whitespace-nowrap text-md gap-2">
+                Risk Appetite:
                 <Select value={riskAppetite} onValueChange={setRiskAppetite}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select risk appetite level" />
@@ -40,16 +40,15 @@ export default function Filter() {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-            </div>
-            <div className="col-span-1 flex items-center space-x-2">
-                <Label htmlFor="portfolioName" className="whitespace-nowrap text-md">Triggered Alerts:</Label>
+            </Label>
+            <Label className="col-span-1 flex items-center space-x-2 whitespace-nowrap text-md gap-2">
+                Triggered Alerts:
                 <Checkbox 
-                    id="triggeredAlerts"
                     checked={triggeredAlerts}
                     onCheckedChange={(checked) => setTriggeredAlerts(checked as boolean)}
                     className="w-6 h-6"
                 />
-            </div>
+            </Label>
         </div>
     )
 }
