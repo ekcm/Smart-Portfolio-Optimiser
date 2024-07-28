@@ -9,6 +9,7 @@ import { useFilterStore } from "../../../../store/FilterState";
 export default function DashBoard() {
   const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
   const resetFilters = useFilterStore((state) => state.resetFilters);
+  const setPortfolioName = useFilterStore((state) => state.setPortfolioName);
 
   const handleReset = () => {
     resetFilters();
@@ -16,6 +17,7 @@ export default function DashBoard() {
 
   useEffect(() => {
     setDashBoardNavBarState("Main");
+    setPortfolioName("");
   }, []);
 
   return (

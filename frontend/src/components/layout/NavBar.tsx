@@ -24,9 +24,8 @@ export default function NavBar() {
                 {menuItems.map((menuItem, index) => {
                     const formattedItem = formatMenuItem(menuItem);
                     return (
-                        <div className="ml-4">
+                        <div className="ml-4" key={index}>
                             <Link
-                                key={index}
                                 href={`/${formattedItem}`}
                                 className={`text-lg relative ${isLinkActive(`/${formattedItem}`) ? 'text-white' : 'text-gray-300'}`}
                             >
