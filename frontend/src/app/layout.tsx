@@ -4,8 +4,7 @@ import "./globals.css";
 
 import { ViewTransitions } from "next-view-transitions";
 import Providers from "@/utils/providers";
-import "react-toastify/ReactToastify.min.css";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,19 +26,7 @@ export default function RootLayout({
             <Providers>
               {children}
             </Providers>
-            <ToastContainer
-              position="bottom-right"
-              autoClose={3000}
-              limit={5}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              stacked
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              theme="colored"
-              />
+            <Toaster />
           </main>
         </body>
       </html>
