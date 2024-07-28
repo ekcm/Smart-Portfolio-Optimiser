@@ -4,9 +4,8 @@ import "./globals.css";
 
 import { ViewTransitions } from "next-view-transitions";
 import Providers from "@/utils/providers";
+import "react-toastify/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import NavBar from "@/components/layout/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +34,7 @@ export default function RootLayout({
               hideProgressBar={false}
               newestOnTop={false}
               closeOnClick
+              stacked
               rtl={false}
               pauseOnFocusLoss
               draggable
