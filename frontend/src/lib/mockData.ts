@@ -1,5 +1,6 @@
 export const PortfolioData = [
     {
+        portfolioId: 1,
         portfolioName: "Dummy portfolio",
         totalAssets: "10000",
         riskAppetite: "High",
@@ -9,6 +10,7 @@ export const PortfolioData = [
         alert: true
     },
     {
+        portfolioId: 4,
         portfolioName: "Dummy portfolio 2",
         totalAssets: "14020",
         riskAppetite: "Medium",

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
+import CreatePortfolioForm from "@/components/dashboard/create-client-portfolio/CreatePortfolioForm";
 
 export default function CreateClientPortfolio() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
@@ -11,8 +12,8 @@ export default function CreateClientPortfolio() {
     }, []); 
 
     return (
-        <>
-            Create Client Portfolio page
-        </>
+        <div>
+            <CreatePortfolioForm />
+        </div>
     )
 }
