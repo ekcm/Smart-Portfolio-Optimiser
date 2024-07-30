@@ -29,7 +29,7 @@ export default function DashBoardNavBar() {
             case "Main":
                 return (
                     <Link href="/dashboard/createclientportfolio">
-                        <Button variant="destructive" className="mr-2">
+                        <Button variant="destructive">
                             Create Client Portfolio
                         </Button>
                     </Link>

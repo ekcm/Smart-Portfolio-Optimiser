@@ -11,21 +11,21 @@ export default function CustomBadge({ amount }: CustomBadgeProps) {
 
     if (amount > 0) {
         return (
-        <Badge className={`${badgeClasses} bg-green-600`}>
-            +{formattedAmount.toString()}%
-        </Badge>
+            <Badge className={`${badgeClasses} bg-green-600`}>
+                +{formattedAmount.toString()}%
+            </Badge>
         );
     } else if (amount < 0) {
         return (
-        <Badge className={`${badgeClasses} bg-red-600`}>
-            {formattedAmount.toString()}%
-        </Badge>
+            <Badge className={`${badgeClasses} bg-red-600`}>
+                {formattedAmount.toString()}%
+            </Badge>
         );
     } else {
         return (
-        <Badge className={`${badgeClasses} bg-gray-500`}>
-            {formattedAmount.toString()}%
-        </Badge>
+            <Badge className={`${badgeClasses} bg-gray-500`}>
+                {formattedAmount.toString()}%
+            </Badge>
         );
     }
 }

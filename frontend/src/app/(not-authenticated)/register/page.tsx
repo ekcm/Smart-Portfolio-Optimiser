@@ -11,8 +11,8 @@ import Image from "next/image";
 import ubsLogo from "../../../../public/ubs-logo.png";
 
 export default function Register() {
-  const [isRegister, setIsRegister] = useState(true);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isRegister, setIsRegister] = useState<boolean>(true);
+  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
 
   const toggleFormType = () => {
     setIsTransitioning(true);

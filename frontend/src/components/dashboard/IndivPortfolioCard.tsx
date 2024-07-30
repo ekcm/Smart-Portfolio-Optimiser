@@ -3,7 +3,6 @@ import CustomBadge from "../global/CustomBadge";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 
-// Define the type for each portfolio item
 export type PortfolioItem = {
     portfolioId: number;
     portfolioName: string;
@@ -15,7 +14,6 @@ export type PortfolioItem = {
     alert: boolean
 };
 
-// Define the props type for the IndivPortfolioCard component
 export type IndivPortfolioCardProps = {
     data: PortfolioItem;
 };
