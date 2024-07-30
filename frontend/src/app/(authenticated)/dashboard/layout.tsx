@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 function DashBoardLayout({ children }: { children: ReactNode }) {
   return (
     <>
-        <DashBoardNavBar />
+        {/* <DashBoardNavBar /> */}
         <div className="flex-grow">{children}</div>
     </>
   );
