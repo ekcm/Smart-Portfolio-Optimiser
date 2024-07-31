@@ -18,6 +18,16 @@ export const PortfolioData = [
         totalPL: 14.25,
         rateOfReturn: -30.40,
         alert: false
+    },
+    {
+        portfolioId: 7,
+        portfolioName: "Dummy portfolio 3",
+        totalAssets: "950",
+        riskAppetite: "Low",
+        dailyPL: 1.20,
+        totalPL: 14.25,
+        rateOfReturn: -30.40,
+        alert: false
     }
 ];
 

@@ -1,14 +1,6 @@
 import { Link } from "next-view-transitions";
 import { Card } from "../ui/card";
-
-export type FinanceNewsItem = {
-    newsId: number;
-    newsName: string;
-    newsSource: string;
-    newsDescription: string;
-    newsDate: string;
-    newsSourceLink: string;
-};
+import { FinanceNewsItem } from "@/lib/types";
 
 export type IndivNewsCardProps = {
     data: FinanceNewsItem;

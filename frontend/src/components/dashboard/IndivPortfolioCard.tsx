@@ -2,17 +2,7 @@ import { Link } from "next-view-transitions";
 import CustomBadge from "../global/CustomBadge";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
-
-export type PortfolioItem = {
-    portfolioId: number;
-    portfolioName: string;
-    totalAssets: string;
-    riskAppetite: string;
-    dailyPL: number;
-    totalPL: number;
-    rateOfReturn: number;
-    alert: boolean
-};
+import { PortfolioItem } from "@/lib/types";
 
 export type IndivPortfolioCardProps = {
     data: PortfolioItem;
