@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import { useDashBoardNavBarStore } from "../../../../store/DashBoardNavBarState";
 import Filter from "@/components/dashboard/Filter";
 import { Button } from "@/components/ui/button";
-import { useFilterStore } from "../../../../store/FilterState";
+import { useDashboardFilterStore } from "../../../../store/DashBoardFilterState";
 import Portfolios from "@/components/dashboard/Portfolios";
 
 export default function DashBoard() {
   const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
-  const resetFilters = useFilterStore((state) => state.resetFilters);
-  const setPortfolioName = useFilterStore((state) => state.setPortfolioName);
+  const resetFilters = useDashboardFilterStore((state) => state.resetFilters);
+  const setPortfolioName = useDashboardFilterStore((state) => state.setPortfolioName);
 
   const handleReset = () => {
     resetFilters();

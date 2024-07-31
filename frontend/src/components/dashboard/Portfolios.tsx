@@ -1,14 +1,14 @@
 import { PortfolioData } from "@/lib/mockData";
 import IndivPortfolioCard from "./IndivPortfolioCard";
-import { useFilterStore } from "../../../store/FilterState";
+import { useDashboardFilterStore } from "../../../store/DashBoardFilterState";
 import { useEffect, useState } from "react";
 import { PortfolioItem } from "@/lib/types";
 
 export default function Portfolios() {
     // all states from filter
-    const portfolioName = useFilterStore((state) => state.portfolioName);
-    const riskAppetite = useFilterStore((state) => state.riskAppetite);
-    const triggeredAlerts = useFilterStore((state) => state.triggeredAlerts);
+    const portfolioName = useDashboardFilterStore((state) => state.portfolioName);
+    const riskAppetite = useDashboardFilterStore((state) => state.riskAppetite);
+    const triggeredAlerts = useDashboardFilterStore((state) => state.triggeredAlerts);
 
     const [filteredPortfolios, setFilteredPortfolios] = useState<PortfolioItem[]>(PortfolioData);
 

@@ -1,17 +1,16 @@
-import { useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { Checkbox } from "../ui/checkbox";
-import { useFilterStore } from "../../../store/FilterState";
+import { useDashboardFilterStore } from "../../../store/DashBoardFilterState";
 
 export default function Filter() {
-    const portfolioName = useFilterStore((state) => state.portfolioName);
-    const riskAppetite = useFilterStore((state) => state.riskAppetite);
-    const triggeredAlerts = useFilterStore((state) => state.triggeredAlerts);
-    const setPortfolioName = useFilterStore((state) => state.setPortfolioName);
-    const setRiskAppetite = useFilterStore((state) => state.setRiskAppetite);
-    const setTriggeredAlerts = useFilterStore((state) => state.setTriggeredAlerts);
+    const portfolioName = useDashboardFilterStore((state) => state.portfolioName);
+    const riskAppetite = useDashboardFilterStore((state) => state.riskAppetite);
+    const triggeredAlerts = useDashboardFilterStore((state) => state.triggeredAlerts);
+    const setPortfolioName = useDashboardFilterStore((state) => state.setPortfolioName);
+    const setRiskAppetite = useDashboardFilterStore((state) => state.setRiskAppetite);
+    const setTriggeredAlerts = useDashboardFilterStore((state) => state.setTriggeredAlerts);
 
     const riskAppetiteLevels = ["No Filter", "Low", "Medium", "High"];
 

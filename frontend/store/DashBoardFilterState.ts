@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type FilterState = {
+type DashBoardFilterState = {
     portfolioName: string;
     riskAppetite: "No Filter" | "Low" | "Medium" | "High";
     triggeredAlerts: boolean;
@@ -10,7 +10,7 @@ type FilterState = {
     resetFilters: () => void;
 }
 
-export const useFilterStore = create<FilterState>((set) => ({
+export const useDashboardFilterStore = create<DashBoardFilterState>((set) => ({
     portfolioName: '',
     riskAppetite: "No Filter",
     triggeredAlerts: false,
