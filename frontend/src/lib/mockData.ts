@@ -161,3 +161,114 @@ export const FinanceNewsData = [
         newsSourceLink: "https://www.google.com"
     }
 ];
+
+export const indivPortfolioData = {
+    portfolioId: 1,
+    portfolioAnalysis: {
+        totalAssets: 10000,
+        dailyPL: -10.00,
+        dailyPLPercentage: -0.50,
+        totalPL: 1000.00,
+        totalPLPercentage: 10.00,
+        annualizedRoR: 20.00,
+    },
+    triggeredAlerts: [
+        "threshold of aggressive financial securities",
+    ],
+    portfolioBreakdown: {
+        industry: [
+            {"Information Technology": 35.00},
+            {"Financials": 25.00},
+            {"Healthcare": 40.00},
+        ],
+        geography: [
+            {"Taiwan": 30.00},
+            {"USA": 20.00},
+            {"China": 50.00 }
+        ],
+        securities: [
+            {"Equity": 70.00},
+            {"Bonds": 20.00},
+            {"Cash": 10.00},
+        ]
+    },
+    portfolioHoldings: [
+        {
+            name: "Apple",
+            ticker: "AAPL",
+            type: "Stock",
+            geography: "USA",
+            position: 50,
+            market: 8779.00,
+            last: 178.58,
+            cost: 130.23,
+            PL: 2417.50,
+            dailyPL: -1.50,
+            positionsRatio: 35.11
+        },
+        {
+            name: "Apple",
+            ticker: "AAPL",
+            type: "Stock",
+            geography: "USA",
+            position: 50,
+            market: 8779.00,
+            last: 178.58,
+            cost: 130.23,
+            PL: 2417.50,
+            dailyPL: -1.50,
+            positionsRatio: 35.11
+        },
+        {
+            name: "Apple",
+            ticker: "AAPL",
+            type: "Stock",
+            geography: "USA",
+            position: 50,
+            market: 8779.00,
+            last: 178.58,
+            cost: 130.23,
+            PL: 2417.50,
+            dailyPL: -1.50,
+            positionsRatio: 35.11
+        }
+    ],
+    orderExecutionProgress: [
+        {
+            name: "Apple",
+            ticker: "AAPL",
+            type: "Stock",
+            geography: "USA",
+            position: 50,
+            market: 8779.00,
+            last: 178.58,
+            cost: 130.23,
+            orderType: "Buy",
+            progress: "Filled"
+        },
+        {
+            name: "NVIDIA",
+            ticker: "NVDA",
+            type: "Stock",
+            geography: "USA",
+            position: 50,
+            market: 8779.00,
+            last: 178.58,
+            cost: 130.23,
+            orderType: "Sell",
+            progress: "Partial"
+        },
+        {
+            name: "Meta Platforms",
+            ticker: "META",
+            type: "Stock",
+            geography: "USA",
+            position: 50,
+            market: 8779.00,
+            last: 178.58,
+            cost: 130.23,
+            orderType: "Buy",
+            progress: "Not Filled"
+        }
+    ]
+}

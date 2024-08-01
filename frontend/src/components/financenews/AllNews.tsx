@@ -4,7 +4,7 @@ import { useFinanceNewsFilterStore } from "../../../store/FinanceNewsFilterState
 import { useEffect, useState } from "react";
 import { FinanceNewsItem } from "@/lib/types";
 
-// TODO: Maybe add filter for news?
+// TODO: Need to add pagination when retrieving news from backend
 export default function AllNews() {
     const newsName = useFinanceNewsFilterStore((state) => state.newsName);
     const newsSource = useFinanceNewsFilterStore((state) => state.newsSource);
