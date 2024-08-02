@@ -25,6 +25,9 @@ export default function DashBoardNavBar() {
 
     // TODO: Add button actions
     const getButtonSet = (state: string) => {
+        const id = pathname.split('/')[2];
+        console.log(id);
+
         switch (state) {
             case "Main":
                 return (
@@ -38,9 +41,15 @@ export default function DashBoardNavBar() {
             case "Portfolio":
                 return (
                     <>
-                        <Button className="mr-4 bg-blue-400">Portfolio Optimization</Button>
-                        <Button className="mr-4 bg-red-500">Create New Order</Button>
-                        <Button className="mr-4 bg-red-700">Edit Portfolio</Button>
+                        <Link href={`/dashboard/${id}/optimization`}>
+                            <Button className="mr-4 bg-blue-400">Portfolio Optimization</Button>
+                        </Link>
+                        <Link href={`/dashboard/${id}/neworder`}>
+                            <Button className="mr-4 bg-red-500">Create New Order</Button>
+                        </Link>
+                        <Link href={`/dashboard/${id}/editportfolio`}>
+                            <Button className="mr-4 bg-red-700">Edit Portfolio</Button>
+                        </Link>
                     </>
                 );
             case "Empty":
