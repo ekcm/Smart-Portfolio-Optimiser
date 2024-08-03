@@ -12,6 +12,7 @@ export default function DashBoardNavBar() {
     
     const pathname = usePathname();
 
+    // TODO: Fix breadcrumbs labelling
     const generateBreadcrumbs = (pathname: string) => {
       const pathParts = pathname.split('/').filter(Boolean);
       return pathParts.map((part, index) => {
@@ -23,10 +24,8 @@ export default function DashBoardNavBar() {
 
     const breadcrumbs = generateBreadcrumbs(pathname);
 
-    // TODO: Add button actions
     const getButtonSet = (state: string) => {
         const id = pathname.split('/')[2];
-        console.log(id);
 
         switch (state) {
             case "Main":
@@ -37,7 +36,6 @@ export default function DashBoardNavBar() {
                         </Button>
                     </Link>
                 );
-
             case "Portfolio":
                 return (
                     <>

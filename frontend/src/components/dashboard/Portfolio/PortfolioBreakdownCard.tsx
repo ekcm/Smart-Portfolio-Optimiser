@@ -1,8 +1,8 @@
-import { Card } from "@/components/ui/card"
-import { PortfolioBreakdown } from "@/lib/types"
-import IndustryChart from "./charts/IndustryChart"
-import SecuritiesChart from "./charts/SecuritiesChart"
-import GeographyChart from "./charts/GeographyChart"
+import { Card } from "@/components/ui/card";
+import { PortfolioBreakdown } from "@/lib/types";
+import IndustryChart from "./charts/IndustryChart";
+import SecuritiesChart from "./charts/SecuritiesChart";
+import GeographyChart from "./charts/GeographyChart";
 
 interface PortfolioBreakdownCardProps {
     data: PortfolioBreakdown

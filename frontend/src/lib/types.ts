@@ -69,6 +69,27 @@ interface PortfolioData {
   orderExecutionProgress: OrderExecutionProgress[];
 };
 
+// Orders Checkout component
+interface OrderStockItem {
+  name: string;
+  ticker: string;
+  type: string;
+  geography: string;
+  position: number;
+  market: number;
+  last: number;
+  cost: number;
+  orderType: string;
+};
+
+interface AddTransactionDataType {
+    securityType: string;
+    securityName: string;
+    targetPrice: number;
+    quantity: number;
+    transactionType: string;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -76,5 +97,7 @@ export type {
     PortfolioBreakdown,
     PortfolioHoldings,
     OrderExecutionProgress,
-    PortfolioData
+    PortfolioData,
+    OrderStockItem,
+    AddTransactionDataType
 }

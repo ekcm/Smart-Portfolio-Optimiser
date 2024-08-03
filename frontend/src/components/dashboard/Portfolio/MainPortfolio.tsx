@@ -13,7 +13,7 @@ interface MainPortfolioProps {
 export default function MainPortfolio({ data }: MainPortfolioProps) {
     return (
         <div className="flex flex-col justify-center gap-4 pb-8">
-            <TriggeredAlert data={data.triggeredAlerts} />
+            <TriggeredAlert type="dashboard" data={data.triggeredAlerts} />
             <PortfolioAnalysisCard data={data.portfolioAnalysis} />
             <PortfolioBreakdownCard data={data.portfolioBreakdown} />
             <PortfolioHoldingsCard data={data.portfolioHoldings} />

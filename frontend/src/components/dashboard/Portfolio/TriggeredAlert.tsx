@@ -1,14 +1,25 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { memo } from "react";
+import { Card } from "@/components/ui/card";
 
 interface TriggeredAlertProps {
-    data: string[]
+    type: "dashboard" | "orderForm";
+    data: string[];
 }
 
-export default function TriggeredAlert({ data } : TriggeredAlertProps) {
+const TriggeredAlert = memo(function TriggeredAlert({ type, data }: TriggeredAlertProps) {
     if (data.length === 0) {
-        return <></>
-    };
-    
+        if (type === "dashboard") {
+            return <></>;
+        } else if (type === "orderForm") {
+            return (
+                <Card className="flex flex-col flex-grow w-full py-4 px-4 bg-red-100 gap-2">
+                    <h2 className="text-xl font-medium">Triggered Alerts:</h2>
+                    <h3 className="text-md text-gray-600">No alerts triggered</h3>
+                </Card>
+            );
+        }
+    }
+
     return (
         <Card className="flex flex-col w-full py-4 px-4 bg-red-100 gap-2">
             <h2 className="text-xl font-medium">Triggered Alerts:</h2>
@@ -19,5 +30,7 @@ export default function TriggeredAlert({ data } : TriggeredAlertProps) {
                 ))}
             </ul>
         </Card>
-    )
-}
+    );
+});
+
+export default TriggeredAlert;
