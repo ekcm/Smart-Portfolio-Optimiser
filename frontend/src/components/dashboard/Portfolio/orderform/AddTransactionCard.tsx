@@ -23,7 +23,7 @@ export default function AddTransactionCard({ portfolioId, addTransaction} : AddT
 
     const handleFormSubmit = (data: typeof formData) => {
         // Send API request with form data
-        // ! Need to figure out how to add particular stock to data above in some form of state, can do an add stock function up based on props
+        // ! Maybe call api for all info for chosen stock and then the returned info send up thru addTransaction()
         console.log("Form Data:", data);
         addTransaction(data);
     };
