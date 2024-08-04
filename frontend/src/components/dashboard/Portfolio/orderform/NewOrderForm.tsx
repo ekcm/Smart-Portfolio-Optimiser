@@ -1,11 +1,11 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { AddTransactionDataType, OrderStockItem, PortfolioData } from "@/lib/types";
 import PortfolioBreakdownCard from "../PortfolioBreakdownCard";
 import AddTransactionCard from "./AddTransactionCard";
 import OrdersCheckoutCard from "./OrdersCheckoutCard";
 import { Button } from "@/components/ui/button";
-import { Link } from "next-view-transitions";
+import { Link as TransitionLink } from "next-view-transitions";
+import Link from 'next/link';
 
 interface NewOrderFormProps {
     data: PortfolioData;
@@ -63,10 +63,17 @@ export default function NewOrderForm({ data }: NewOrderFormProps) {
             <OrdersCheckoutCard data={mockOrders}/>
             <AddTransactionCard portfolioId={data.portfolioId} addTransaction={addTransaction}/>
             <div className="flex gap-4">
-                <Button className="bg-red-500" onClick={generateOrders}>Generate Orders List</Button>
-                <Link href={`/dashboard/${data.portfolioId}`}>
-                    <Button className="bg-gray-400">Cancel</Button>
+                <Link 
+                    href={{
+                        pathname: `/dashboard/${data.portfolioId}/neworder/generateorderlist`,
+                        query: { orders: JSON.stringify(mockOrders) },
+                    }}
+                >
+                    <Button className="bg-red-500">Generate Orders List</Button>
                 </Link>
+                <TransitionLink href={`/dashboard/${data.portfolioId}`}>
+                    <Button className="bg-gray-400">Cancel</Button>
+                </TransitionLink>
             </div>
         </div>
     )
