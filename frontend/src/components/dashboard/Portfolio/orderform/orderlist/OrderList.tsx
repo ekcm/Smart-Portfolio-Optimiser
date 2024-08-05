@@ -1,10 +1,10 @@
-import { OrderStockItem, PortfolioData } from "@/lib/types";
+import { AssetsItem, PortfolioData } from "@/lib/types";
 import PortfolioBreakdownCard from "../../PortfolioBreakdownCard";
 import ChangeList from "./ChangeList";
 
 interface OrderListProps {
     data: PortfolioData;
-    newOrders: OrderStockItem[];
+    newOrders: AssetsItem[];
 }
 
 export default function OrderList({ data, newOrders } : OrderListProps) {

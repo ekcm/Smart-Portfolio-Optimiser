@@ -1,5 +1,5 @@
-import React from "react";
-import { AddTransactionDataType, OrderStockItem, PortfolioData } from "@/lib/types";
+import React, { useState } from "react";
+import { AddTransactionDataType, AssetsItem, PortfolioData } from "@/lib/types";
 import PortfolioBreakdownCard from "../PortfolioBreakdownCard";
 import AddTransactionCard from "./AddTransactionCard";
 import OrdersCheckoutCard from "./OrdersCheckoutCard";
@@ -11,7 +11,7 @@ interface NewOrderFormProps {
     data: PortfolioData;
 }
 
-const mockOrders: OrderStockItem[] = [
+const initialMockOrders: AssetsItem[] = [
         {
             name: "Apple",
             ticker: "AAPL",
@@ -48,25 +48,40 @@ const mockOrders: OrderStockItem[] = [
     ]
 
 export default function NewOrderForm({ data }: NewOrderFormProps) {
+    const [orders, setOrders] = useState<AssetsItem[]>(initialMockOrders);
 
     const addTransaction = (formData: AddTransactionDataType) => {
         console.log("Received form data in parent:", formData);
+        // ! Need to call api for this to get necessary asset info
+        const newOrder: AssetsItem = {
+            ...formData,
+            ticker: "APPL", // ! asset ticker need to be called from backend
+            geography: "USA", // ! geography need to be called from backend
+            market: formData.cost * formData.position,
+            last: 178.58, // ! Cost of asset need to be called from backend
+        };
+        setOrders([...orders, newOrder]);
     }
 
     const generateOrders = () => {
         // take orders and push it into backend
     }
 
+    const deleteOrder = (ticker: string) => {
+        setOrders((prevOrders) => prevOrders.filter(order => order.ticker !== ticker));
+    }
+
+
     return (
         <div className="flex flex-col justify-center gap-4 pb-8">
             <PortfolioBreakdownCard data={data.portfolioBreakdown} />
-            <OrdersCheckoutCard data={mockOrders}/>
+            <OrdersCheckoutCard data={orders} onDelete={deleteOrder}/>
             <AddTransactionCard portfolioId={data.portfolioId} addTransaction={addTransaction}/>
             <div className="flex gap-4">
                 <Link 
                     href={{
                         pathname: `/dashboard/${data.portfolioId}/neworder/generateorderlist`,
-                        query: { orders: JSON.stringify(mockOrders) },
+                        query: { orders: JSON.stringify(orders) },
                     }}
                 >
                     <Button className="bg-red-500">Generate Orders List</Button>
