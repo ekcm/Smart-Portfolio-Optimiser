@@ -8,7 +8,7 @@ export const PortfolioData = [
         totalPL: 11.07,
         rateOfReturn: 22.14,
         alert: [
-                "threshold of aggressive financial securities",
+                "Threshold of aggressive financial securities",
             ],
     },
     {
@@ -175,7 +175,7 @@ export const indivPortfolioData = {
         annualizedRoR: 20.00,
     },
     triggeredAlerts: [
-        "threshold of aggressive financial securities",
+        "Threshold of aggressive financial securities",
     ],
     portfolioBreakdown: {
         industry: [
