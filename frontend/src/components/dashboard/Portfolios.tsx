@@ -12,7 +12,6 @@ export default function Portfolios() {
 
     const [filteredPortfolios, setFilteredPortfolios] = useState<PortfolioItem[]>(PortfolioData);
 
-
     useEffect(() => {
         // Filter the portfolio data based on the filter variables
         const filtered = PortfolioData.filter((portfolio) => {
@@ -23,7 +22,7 @@ export default function Portfolios() {
                 ? portfolio.riskAppetite === riskAppetite
                 : true;
             const matchesAlerts = triggeredAlerts
-                ? portfolio.alert === triggeredAlerts
+                ? portfolio.alert.length > 0
                 : true;
 
             return matchesName && matchesRiskAppetite && matchesAlerts;

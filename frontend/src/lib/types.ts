@@ -6,7 +6,7 @@ interface PortfolioItem {
     dailyPL: number;
     totalPL: number;
     rateOfReturn: number;
-    alert: boolean;
+    alert: string[];
 }
 
 interface FinanceNewsItem {
