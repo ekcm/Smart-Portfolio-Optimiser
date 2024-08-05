@@ -12,11 +12,11 @@ interface AddTransactionCardProps {
 // TODO: Check on how formdata is gna be tracked/sent to backend OR just update on orders checkout since there is missing information (eg quantity)
 export default function AddTransactionCard({ portfolioId, addTransaction} : AddTransactionCardProps) {
     const initialFormData = {
-        securityType: "",
-        securityName: "",
-        targetPrice: 0,
-        quantity: 0,
-        transactionType: "Buy",
+        type: "",
+        name: "",
+        cost: 0,
+        position: 0,
+        orderType: "Buy",
     };
 
     const [formData, setFormData] = useState(initialFormData);
@@ -26,6 +26,7 @@ export default function AddTransactionCard({ portfolioId, addTransaction} : AddT
         // ! Maybe call api for all info for chosen stock and then the returned info send up thru addTransaction()
         console.log("Form Data:", data);
         addTransaction(data);
+        handleFormReset();
     };
 
     const handleFormReset = () => {

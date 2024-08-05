@@ -6,25 +6,25 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectI
 
 interface AddTransactionFormProps {
     formData: {
-        securityType: string;
-        securityName: string;
-        targetPrice: number;
-        quantity: number;
-        transactionType: string;
+        type: string;
+        name: string;
+        cost: number;
+        position: number;
+        orderType: string;
     };
     setFormData: React.Dispatch<React.SetStateAction<{
-        securityType: string;
-        securityName: string;
-        targetPrice: number;
-        quantity: number;
-        transactionType: string;
+        type: string;
+        name: string;
+        cost: number;
+        position: number;
+        orderType: string;
     }>>;
     onSubmit: (data: {
-        securityType: string;
-        securityName: string;
-        targetPrice: number;
-        quantity: number;
-        transactionType: string;
+        type: string;
+        name: string;
+        cost: number;
+        position: number;
+        orderType: string;
     }) => void;
     onReset: () => void;
 }
@@ -38,10 +38,10 @@ export default function AddTransactionForm({ formData, setFormData, onSubmit, on
         }));
     };
 
-    const handleSelectChange = (value: string) => {
+    const handleSelectChange = (name: string, value: string) => {
         setFormData((prev) => ({
             ...prev,
-            transactionType: value,
+            [name]: value,
         }));
     };
 
@@ -55,7 +55,7 @@ export default function AddTransactionForm({ formData, setFormData, onSubmit, on
                 <Label className="w-40 text-md font-light">
                     Order Type:
                 </Label>
-                <Select value={formData.transactionType} onValueChange={handleSelectChange}>
+                <Select value={formData.orderType} onValueChange={(value) => handleSelectChange("orderType", value)}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select transaction type" />
                     </SelectTrigger>
@@ -72,12 +72,18 @@ export default function AddTransactionForm({ formData, setFormData, onSubmit, on
                 <Label className="w-40 text-md font-light">
                     Security Type:
                 </Label>
-                <Input 
-                    type="text"
-                    name="securityType"
-                    value={formData.securityType}
-                    onChange={handleChange}
-                />
+                <Select value={formData.type} onValueChange={(value) => handleSelectChange("type", value)}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select security type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {["Stock", "Asset"].map((type, index) => (
+                                <SelectItem key={index} value={type}>{type}</SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
             <div className="flex gap-4 items-center">
                 <Label className="w-40 text-md font-light">
@@ -85,8 +91,8 @@ export default function AddTransactionForm({ formData, setFormData, onSubmit, on
                 </Label>
                 <Input 
                     type="text"
-                    name="securityName"
-                    value={formData.securityName}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                 />
             </div>
@@ -96,8 +102,8 @@ export default function AddTransactionForm({ formData, setFormData, onSubmit, on
                 </Label>
                 <Input 
                     type="number"
-                    name="targetPrice"
-                    value={formData.targetPrice}
+                    name="cost"
+                    value={formData.cost}
                     onChange={handleChange}
                 />
             </div>
@@ -107,8 +113,8 @@ export default function AddTransactionForm({ formData, setFormData, onSubmit, on
                 </Label>
                 <Input 
                     type="number"
-                    name="quantity"
-                    value={formData.quantity}
+                    name="position"
+                    value={formData.position}
                     onChange={handleChange}
                 />
             </div>

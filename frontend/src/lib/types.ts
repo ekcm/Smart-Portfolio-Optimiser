@@ -70,7 +70,7 @@ interface PortfolioData {
 };
 
 // Orders Checkout component
-interface OrderStockItem {
+interface AssetsItem {
   name: string;
   ticker: string;
   type: string;
@@ -83,11 +83,11 @@ interface OrderStockItem {
 };
 
 interface AddTransactionDataType {
-    securityType: string;
-    securityName: string;
-    targetPrice: number;
-    quantity: number;
-    transactionType: string;
+    type: string;
+    name: string;
+    cost: number;
+    position: number;
+    orderType: string;
 }
 
 export type {
@@ -98,6 +98,6 @@ export type {
     PortfolioHoldings,
     OrderExecutionProgress,
     PortfolioData,
-    OrderStockItem,
+    AssetsItem,
     AddTransactionDataType
 }
