@@ -201,38 +201,38 @@ export const indivPortfolioData = {
             type: "Stock",
             geography: "USA",
             position: 50,
-            market: 8779.00,
+            market: 6511.50,
             last: 178.58,
             cost: 130.23,
             PL: 2417.50,
             dailyPL: -1.50,
-            positionsRatio: 35.11
+            positionsRatio: 35.20
         },
         {
-            name: "Apple",
-            ticker: "AAPL",
+            name: "NVIDIA",
+            ticker: "NVDA",
             type: "Stock",
             geography: "USA",
             position: 50,
-            market: 8779.00,
-            last: 178.58,
-            cost: 130.23,
+            market: 6021.00,
+            last: 124.74,
+            cost: 120.42,
             PL: 2417.50,
-            dailyPL: -1.50,
-            positionsRatio: 35.11
+            dailyPL: 1.50,
+            positionsRatio: 35.80
         },
         {
-            name: "Apple",
-            ticker: "AAPL",
+            name: "Meta Platforms",
+            ticker: "META",
             type: "Stock",
             geography: "USA",
             position: 50,
-            market: 8779.00,
-            last: 178.58,
-            cost: 130.23,
+            market: 16211.50,
+            last: 447.86,
+            cost: 324.23,
             PL: 2417.50,
             dailyPL: -1.50,
-            positionsRatio: 35.11
+            positionsRatio: 30.00
         }
     ],
     orderExecutionProgress: [
@@ -254,9 +254,9 @@ export const indivPortfolioData = {
             type: "Stock",
             geography: "USA",
             position: 50,
-            market: 8779.00,
-            last: 178.58,
-            cost: 130.23,
+            market: 3245.00,
+            last: 124.74,
+            cost: 120.42,
             orderType: "Sell",
             progress: "Partial"
         },
@@ -266,9 +266,9 @@ export const indivPortfolioData = {
             type: "Stock",
             geography: "USA",
             position: 50,
-            market: 8779.00,
-            last: 178.58,
-            cost: 130.23,
+            market: 12472.00,
+            last: 447.86,
+            cost: 324.23,
             orderType: "Buy",
             progress: "Not Filled"
         }

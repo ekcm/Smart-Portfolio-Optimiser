@@ -1,42 +1,33 @@
-import OrderTypeBadge from "@/components/global/OrderTypeBadge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { AssetsItem } from "@/lib/types";
-import { X } from 'lucide-react';
+import { PortfolioHoldings } from "@/lib/types";
 
-interface OrdersCheckoutCardProps {
-    data: AssetsItem[];
-    onDelete: (ticker: string) => void;
+interface OldOrdersCardProps {
+    data: PortfolioHoldings[]
 }
 
-export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCardProps) {
+export default function OldOrdersCard({ data } : OldOrdersCardProps) {
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
-            <h2 className="text-xl font-medium">Order Execution Progress</h2>
+            <h2 className="text-xl font-medium">Portfolio Holdings</h2>
             <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Symbol | Name</TableHead>
-                        <TableHead>Security Type</TableHead>
-                        <TableHead>Geography</TableHead>
                         <TableHead>Position | Mkt</TableHead>
                         <TableHead>Last | Cost</TableHead>
-                        <TableHead>Order Type</TableHead>
-                        <TableHead>Action</TableHead>
+                        <TableHead>Positions Ratio</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data.map((item) => (
-                        <TableRow key={item.ticker}>
+                    {data.map((item, index) => (
+                        <TableRow key={index}>
                             <TableCell className="font-medium">
                                 <div className="flex flex-col">
                                     <span>{item.name}</span>
                                     <span className="text-xs text-gray-500">{item.ticker}</span>
                                 </div>
                             </TableCell>
-                            <TableCell>{item.type}</TableCell>
-                            <TableCell>{item.geography}</TableCell>
                             <TableCell>
                                 <div className="flex flex-col">
                                     <span>{item.position}</span>
@@ -49,16 +40,11 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
                                     <span className="text-xs text-gray-500">{item.cost}</span>
                                 </div>
                             </TableCell>
-                            <TableCell>
-                                <OrderTypeBadge orderType={item.orderType} />
-                            </TableCell>
-                            <TableCell>
-                                <Button variant="ghost" className="hover:bg-red-500 hover:text-white" onClick={() => onDelete(item.ticker)}><X /></Button>
-                            </TableCell>
+                            <TableCell>{item.positionsRatio.toFixed(2)}%</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
-            </Table>
+            </Table>          
         </Card>
-    );
+    )
 }

@@ -47,6 +47,10 @@ interface PortfolioHoldings {
   positionsRatio: number;
 };
 
+interface PortfolioHoldingsDifference extends PortfolioHoldings {
+  difference: number;
+};
+
 interface OrderExecutionProgress {
   name: string;
   ticker: string;
@@ -96,6 +100,7 @@ export type {
     PortfolioAnalysis,
     PortfolioBreakdown,
     PortfolioHoldings,
+    PortfolioHoldingsDifference,
     OrderExecutionProgress,
     PortfolioData,
     AssetsItem,
