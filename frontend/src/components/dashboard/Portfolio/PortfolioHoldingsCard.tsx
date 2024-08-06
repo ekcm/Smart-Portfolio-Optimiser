@@ -8,7 +8,7 @@ interface PortfolioHoldingsCardProps {
 
 export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardProps) {
     const getCellClass = (value: number) => value > 0 ? 'text-green-700' : value < 0 ? 'text-red-700' : '';
-
+    // TODO: ADD "+" to P&L when positive
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
             <h2 className="text-xl font-medium">Portfolio Holdings</h2>
@@ -39,7 +39,7 @@ export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardPr
                             <TableCell>
                                 <div className="flex flex-col">
                                     <span>{item.position}</span>
-                                    <span className="text-xs text-gray-500">{item.market}</span>
+                                    <span className="text-xs text-gray-500">{item.market.toFixed(2)}</span>
                                 </div>
                             </TableCell>
                             <TableCell>
