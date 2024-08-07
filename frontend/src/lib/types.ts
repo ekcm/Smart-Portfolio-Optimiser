@@ -1,3 +1,4 @@
+// TODO: Add client email
 interface PortfolioItem {
     portfolioId: number;
     portfolioName: string;

@@ -12,8 +12,11 @@ export default function CreateClientPortfolio() {
     }, []); 
 
     return (
-        <div>
+        <main 
+            className="flex flex-col justify-between pt-6 px-24 gap-6"
+        >
+            <h1 className="text-3xl font-semibold">Create Client Portfolio</h1>
             <CreatePortfolioForm />
-        </div>
+        </main>
     )
 }

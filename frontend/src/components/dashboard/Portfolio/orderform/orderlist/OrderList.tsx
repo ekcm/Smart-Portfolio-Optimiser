@@ -4,7 +4,6 @@ import ChangeList from "./ChangeList";
 import { Button } from "@/components/ui/button";
 // import { Link } from "next-view-transitions";
 import Link from "next/link";
-import {useTransitionRouter} from 'next-view-transitions'
 
 interface OrderListProps {
     data: PortfolioData;
@@ -12,7 +11,6 @@ interface OrderListProps {
 }
 
 export default function OrderList({ data, newOrders } : OrderListProps) {
-    const router = useTransitionRouter();
 
     // Helper function to calculate the final portfolio holdings
     const calculateFinalOrders = (oldOrders: PortfolioHoldings[], newOrders: AssetsItem[]): PortfolioHoldingsDifference[] => {
@@ -94,13 +92,6 @@ export default function OrderList({ data, newOrders } : OrderListProps) {
                 >
                     <Button className="bg-gray-400">Cancel</Button>
                 </Link>
-                {/* <Button className="bg-gray-400 text-white" onClick={(e) => {
-                    e.preventDefault()
-                    router.back()
-                    }}
-                >
-                    Cancel
-                </Button> */}
             </div>
         </div>
     )
