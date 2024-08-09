@@ -1,6 +1,7 @@
 export const PortfolioData = [
     {
         portfolioId: 1,
+        clientEmail: "Nvidia",
         portfolioName: "Dummy portfolio",
         totalAssets: "10000",
         riskAppetite: "High",
@@ -13,6 +14,7 @@ export const PortfolioData = [
     },
     {
         portfolioId: 4,
+        clientEmail: "Chester",
         portfolioName: "Dummy portfolio 2",
         totalAssets: "14020",
         riskAppetite: "Medium",
@@ -23,6 +25,7 @@ export const PortfolioData = [
     },
     {
         portfolioId: 7,
+        clientEmail: "Meta",
         portfolioName: "Dummy portfolio 3",
         totalAssets: "950",
         riskAppetite: "Low",

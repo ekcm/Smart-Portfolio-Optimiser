@@ -10,18 +10,18 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectI
 import { useTransitionRouter } from 'next-view-transitions';
 import { useState } from "react";
 
+const formSchema = z.object({
+  clientEmail: z.string().email({ message: "Invalid email address" }),
+  portfolioName: z.string().min(2, { message: "Portfolio name must be at least 2 characters." }),
+  riskAppetite: z.enum(["", "Low", "Medium", "High"], { message: "Select a valid risk appetite" }),
+  cash: z.number().min(0, { message: "Cash amount must be at least 0" }),
+  exclusions: z.array(z.string().min(1, { message: "Exclusion cannot be empty" })),
+});
 // Define the type for the form data
 type FormData = z.infer<typeof formSchema>;
 
 export default function CreatePortfolioForm() {
     const router = useTransitionRouter();
-    const formSchema = z.object({
-      clientEmail: z.string().email({ message: "Invalid email address" }),
-      portfolioName: z.string().min(2, { message: "Portfolio name must be at least 2 characters." }),
-      riskAppetite: z.enum(["Low", "Medium", "High"], { message: "Select a valid risk appetite" }),
-      cash: z.number().min(0, { message: "Cash amount must be at least 0" }),
-      exclusions: z.array(z.string().min(1, { message: "Exclusion cannot be empty" })),
-    });
 
     const { handleSubmit, control, setValue, watch } = useForm<FormData>({
         resolver: zodResolver(formSchema),

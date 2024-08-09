@@ -1,6 +1,7 @@
 // TODO: Add client email
 interface PortfolioItem {
     portfolioId: number;
+    clientEmail: string;
     portfolioName: string;
     totalAssets: string;
     riskAppetite: string;
