@@ -277,3 +277,10 @@ export const indivPortfolioData = {
         }
     ]
 }
+
+export const editPortfolioData = {
+    exlusionsList: [
+        "Beta",
+        "Doge",
+    ]
+}
