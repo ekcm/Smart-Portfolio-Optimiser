@@ -1,0 +1,111 @@
+from yahoo_fin.stock_info import get_data
+from datetime import date
+from datetime import timedelta, datetime
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import yahoo_fin.stock_info as si
+import json
+import uvicorn
+
+app = FastAPI()
+
+# Allow all origins
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+dow_list_info = {
+    "AAPL":["Apple", "Information Technology"],
+    "AMGN":["Amgen", "Biopharmaceutical"],
+    "AXP": ["American Express", "Financial Services"],
+    "BA": ["Boeing", "Aerospace and defense"],
+    "CAT": ["Caterpillar", "Construction and mining"],
+    "CRM": ["Salesforce", "Information Technology"],
+    "CSCO": ["Cisco", "Information Technology"],
+    "CVX": ["Chevron", "Petroleum Industry"],
+    "DIS": ["Disney", "Broadcasting and Entertainment"],
+    "DOW": ["Dow", "Chemical Industry"],
+    "GS": ["Goldman Sachs", "Financial Services"],
+    "HD": ["Home Depot", "Home Improvement"],
+    "HON": ["Honeywell", "Conglomerate"],
+    "IBM": ["IBM", "Information Technology"],
+    "INTC": ["Intel", "Semiconductor Industry"],
+    "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
+    "JPM": ["JPMorgan Chase", "Financial Services"],
+    "KO": ["Coca-Cola", "Drink Industry"],
+    "MCD": ["Mcdonalds", "Food Industry"],
+    "MMM": ["3M", "Conglomerate"],
+    "MRK": ["Merck", "Pharmaceutical Industry"],
+    "MSFT": ["Microsoft", "Information Technology"],
+    "NKE": ["Nike", "Clothing Industry"],
+    "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
+    "TRV": ["Travelers", "Insurance"],
+    "UNH": ["UnitedHealth Group", "Managed health care"],
+    "V": ["Visa", "Financial Services"],
+    "VZ": ["Verizon", "Telecommunications Industry"],
+    "WBA": ["Walgreens Boots Alliance", "Retailing"],
+    "WMT": ["Walmart", "Retailing"]
+}
+
+def get_trading_days():
+    today = datetime.now()
+    yesterday = today - timedelta(days=1)
+    previousday = today - timedelta(days=2)
+
+    # if today is Sunday
+    if today.weekday() == 6:
+        today = today - timedelta(days=1)
+        yesterday = today - timedelta(days=2)
+        previousday = today - timedelta(days=3)
+        
+    # if today is Saturday
+    elif today.weekday() == 5:
+        today = today - timedelta(days=0)
+        yesterday = today - timedelta(days=1)
+        previousday = today - timedelta(days=2)
+        
+    return today, yesterday, previousday
+
+@app.get("/stock")
+def get_all_stock_info():
+    today, yesterday, previousday = get_trading_days()
+    dow_list = list(dow_list_info.keys())
+    stock_info = {}
+    for stock in dow_list:
+        stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
+        stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
+        stock_info[stock] = {
+            "ticker": stock,
+            "company": dow_list_info[stock][0],
+            "sector": dow_list_info[stock][1],
+            "today_close": stock_info_today["close"].iloc[-1],
+            "yesterday_close": stock_info_yesterday["close"].iloc[-1]
+        }
+
+    return stock_info
+
+@app.get("/stock/{stock}")
+def get_stock_info(stock):
+    today, yesterday, previousday = get_trading_days()
+    stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
+    stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
+    stock_info = {
+        "ticker": stock,
+        "company": dow_list_info[stock][0],
+        "sector": dow_list_info[stock][1],
+        "today_close": stock_info_today["close"].iloc[-1],
+        "yesterday_close": stock_info_yesterday["close"].iloc[-1]
+    }
+
+    return stock_info
+
+if __name__ == "__main__":
+    uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
