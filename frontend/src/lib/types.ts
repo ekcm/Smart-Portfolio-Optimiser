@@ -1,3 +1,4 @@
+// TODO: Change alert to boolean
 interface PortfolioItem {
     portfolioId: number;
     clientEmail: string;
