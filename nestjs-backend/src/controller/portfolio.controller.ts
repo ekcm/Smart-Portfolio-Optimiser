@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { PortfolioService } from "../service/portfolio.service";
 import { Portfolio } from "../model/portfolio.model";
-import { CreatePortfolioDto } from "../dto/create-portfolio.dto";
+import { CreatePortfolioDto } from "../dto/portfolio.dto";
 
 @Controller("portfolio")
 export class PortfolioController {
