@@ -1,17 +1,17 @@
 import { AssetsItem, PortfolioData, PortfolioHoldings, PortfolioHoldingsDifference } from "@/lib/types";
-import PortfolioBreakdownCard from "../../PortfolioBreakdownCard";
 import ChangeList from "./ChangeList";
 import { Button } from "@/components/ui/button";
-// import { Link } from "next-view-transitions";
 import Link from "next/link";
+import SecuritiesChart from "../../charts/SecuritiesChart";
+import TriggeredAlert from "../../TriggeredAlert";
 
 interface OrderListProps {
     data: PortfolioData;
     newOrders: AssetsItem[];
+    triggeredAlerts: string[];
 }
 
-export default function OrderList({ data, newOrders } : OrderListProps) {
-
+export default function OrderList({ data, newOrders, triggeredAlerts } : OrderListProps) {
     // Helper function to calculate the final portfolio holdings
     const calculateFinalOrders = (oldOrders: PortfolioHoldings[], newOrders: AssetsItem[]): PortfolioHoldingsDifference[] => {
         // Create a map to hold the final orders
@@ -61,25 +61,28 @@ export default function OrderList({ data, newOrders } : OrderListProps) {
         const finalOrders = Array.from(finalOrdersMap.values());
 
         // Calculate the total market value of the portfolio
-        const totalMarketValue = finalOrders.reduce((total, order) => total + order.market, 0);
+        // const totalMarketValue = finalOrders.reduce((total, order) => total + order.market, 0);
 
-        // Update positionsRatio for each asset
-        finalOrders.forEach(order => {
-            order.positionsRatio = (order.market / totalMarketValue) * 100;
-        });
+        // // Update positionsRatio for each asset
+        // finalOrders.forEach(order => {
+        //     order.positionsRatio = (order.market / totalMarketValue) * 100;
+        // });
 
         return finalOrders;
     }
 
     const handleSubmit = () => {
-        // Submit to backend to update portfolio
+        // Submit to backend to update orders db with newOrders
     }
 
     const finalOrders = calculateFinalOrders(data.portfolioHoldings, newOrders);
 
     return (
         <div className="flex flex-col justify-center gap-4 pb-8">
-            <PortfolioBreakdownCard data={data.portfolioBreakdown} />
+            <div className="grid grid-cols-2">
+                <SecuritiesChart data={data.portfolioBreakdown.securities} />
+                <TriggeredAlert type="orderForm" data={triggeredAlerts} />
+            </div>
             <h1 className="text-3xl font-semibold">Changes</h1>
             <ChangeList oldOrders={data.portfolioHoldings} newOrders={finalOrders} />
             <div className="flex gap-2 mt-4">
@@ -90,7 +93,7 @@ export default function OrderList({ data, newOrders } : OrderListProps) {
                         query: { orders: JSON.stringify(newOrders) },
                     }}
                 >
-                    <Button className="bg-gray-400">Cancel</Button>
+                    <Button className="bg-gray-400">Back to Order List</Button>
                 </Link>
             </div>
         </div>

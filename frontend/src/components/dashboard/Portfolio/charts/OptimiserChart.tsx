@@ -5,11 +5,12 @@ import { Pie, PieChart } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
 } from "@/components/ui/chart";
 import CustomTooltip from "./CustomTooltip";
 import CustomLabel from "./CustomLabel";
-import OptimiserCustomLabel from "./OptimiserCustomLabel";
 
 const chartConfig = {
     securities: {
@@ -47,7 +48,7 @@ export default function OptimiserChart({ data } : OptimiserChartProps) {
     <div>
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square max-h-[400px]"
+        className="mx-auto aspect-square max-h-[350px]"
       >
         <PieChart>
           <ChartTooltip content={<CustomTooltip />} />
@@ -55,10 +56,14 @@ export default function OptimiserChart({ data } : OptimiserChartProps) {
             data={chartData}
             dataKey="securities"
             labelLine={false}
-            label={OptimiserCustomLabel}
+            label={CustomLabel}
             nameKey="securityType"
             innerRadius={80}
           />
+          <ChartLegend
+                content={<ChartLegendContent nameKey="securityType" />}
+                className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+            />
         </PieChart>
       </ChartContainer>
     </div>
