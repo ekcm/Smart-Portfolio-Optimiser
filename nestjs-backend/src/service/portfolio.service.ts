@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Portfolio } from "./interfaces/portfolio.model";
-import { CreatePortfolioDto } from "../dto/create-portfolio.dto";
+import { Portfolio } from "../model/portfolio.model";
+import { CreatePortfolioDto } from "../dto/portfolio.dto";
 
 @Injectable()
 export class PortfolioService {
