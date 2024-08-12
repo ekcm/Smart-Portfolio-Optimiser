@@ -16,7 +16,7 @@ export default function OldOrdersCard({ data } : OldOrdersCardProps) {
                         <TableHead>Symbol | Name</TableHead>
                         <TableHead>Position | Mkt</TableHead>
                         <TableHead>Last | Cost</TableHead>
-                        <TableHead>Positions Ratio</TableHead>
+                        {/* <TableHead>Positions Ratio</TableHead> */}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -40,7 +40,7 @@ export default function OldOrdersCard({ data } : OldOrdersCardProps) {
                                     <span className="text-xs text-gray-500">{item.cost}</span>
                                 </div>
                             </TableCell>
-                            <TableCell>{item.positionsRatio.toFixed(2)}%</TableCell>
+                            {/* <TableCell>{item.positionsRatio.toFixed(2)}%</TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>
