@@ -22,7 +22,7 @@ export default function Portfolios() {
                 ? portfolio.riskAppetite === riskAppetite
                 : true;
             const matchesAlerts = triggeredAlerts
-                ? portfolio.alert.length > 0
+                ? portfolio.alert
                 : true;
 
             return matchesName && matchesRiskAppetite && matchesAlerts;

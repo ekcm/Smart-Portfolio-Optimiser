@@ -8,9 +8,7 @@ export const PortfolioData = [
         dailyPL: -0.50,
         totalPL: 11.07,
         rateOfReturn: 22.14,
-        alert: [
-                "Threshold of aggressive financial securities",
-            ],
+        alert: true
     },
     {
         portfolioId: 4,
@@ -21,7 +19,7 @@ export const PortfolioData = [
         dailyPL: 1.20,
         totalPL: 14.25,
         rateOfReturn: -30.40,
-        alert: []
+        alert: false
     },
     {
         portfolioId: 7,
@@ -32,7 +30,7 @@ export const PortfolioData = [
         dailyPL: 1.20,
         totalPL: 14.25,
         rateOfReturn: -30.40,
-        alert: []
+        alert: false
     }
 ];
 

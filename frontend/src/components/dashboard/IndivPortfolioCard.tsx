@@ -19,7 +19,7 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
             <Card 
                 className="relative flex flex-row items-center justify-between w-full p-8 transform transition-transform duration-300 hover:scale-105 cursor-pointer"
             >
-                {data.alert.length > 0 && (
+                {data.alert && (
                     <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-red-600" />
                 )}
                 <div className="flex flex-col">
