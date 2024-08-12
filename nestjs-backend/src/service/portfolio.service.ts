@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Portfolio } from "../model/portfolio.model";
-import { CreatePortfolioDto } from "../dto/portfolio.dto";
+import { PortfolioDto } from "../dto/portfolio.dto";
 
 @Injectable()
 export class PortfolioService {
@@ -28,8 +28,8 @@ export class PortfolioService {
     });
   }
 
-  async createPortfolio(CreatePortfolioDto: CreatePortfolioDto ): Promise<void> {
-    const { portfolioId, portfolioClient, portfolioName, clientRiskAppetite, portfolioCashAmount } = CreatePortfolioDto;
+  async createPortfolio(PortfolioDto: PortfolioDto ): Promise<void> {
+    const { portfolioId, portfolioClient, portfolioName, clientRiskAppetite, portfolioCashAmount } = PortfolioDto;
 
     const portfolio: Portfolio = {
       portfolioId,
