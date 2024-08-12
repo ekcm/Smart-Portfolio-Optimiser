@@ -1,4 +1,4 @@
-import { RiskAppetite } from "../interfaces/portfolio.model";
+import { RiskAppetite } from "../portfolio/interfaces/portfolio.model";
 import { IsEnum, IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class CreatePortfolioDto{
