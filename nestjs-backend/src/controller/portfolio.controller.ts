@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { PortfolioService } from "./portfolio.service";
-import { Portfolio } from "./interfaces/portfolio.model";
-import { CreatePortfolioDto } from "./dto/create-portfolio.dto";
+import { PortfolioService } from "../service/portfolio.service";
+import { Portfolio } from "../model/portfolio.model";
+import { PortfolioDto } from "../dto/portfolio.dto";
 
 @Controller("portfolio")
 export class PortfolioController {
@@ -24,7 +24,7 @@ export class PortfolioController {
   }
 
   @Post()
-  async createPortfolio(@Body() CreatePortfolioDto: CreatePortfolioDto): Promise<void> {
-    await this.portfolioService.createPortfolio(CreatePortfolioDto);
+  async createPortfolio(@Body() PortfolioDto: PortfolioDto): Promise<void> {
+    await this.portfolioService.createPortfolio(PortfolioDto);
   }
 }

@@ -1,7 +1,7 @@
-import { RiskAppetite } from "../interfaces/portfolio.model";
+import { RiskAppetite } from "../model/portfolio.model";
 import { IsEnum, IsInt, IsNotEmpty, IsString } from "class-validator";
 
-export class CreatePortfolioDto{
+export class PortfolioDto{
   @IsNotEmpty()
   @IsString()
   portfolioId: string;
