@@ -49,6 +49,7 @@ const initialMockOrders: AssetsItem[] = [
     ]
 
 export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
+    // ! Change initialMockOrders to [] to simulate blank state
     const [orders, setOrders] = useState<AssetsItem[]>(initialMockOrders);
     useEffect(() => {
         if (prevOrders) setOrders(prevOrders);

@@ -6,17 +6,19 @@ import OptimiserAlert from "./OptimiserAlert";
 interface BigChartCardProps {
     data: PortfolioData;
     alerts: string[];
+    optimisedFlag: boolean;
+    onOptimisePortfolio: () => void;
 }
 
-export default function BigChartCard({ data, alerts} : BigChartCardProps) {
+export default function BigChartCard({ data, alerts, optimisedFlag, onOptimisePortfolio } : BigChartCardProps) {
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
-            <div className="grid grid-cols-6 gap-4">
-                <div className="col-span-3">
+            <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-1">
                     <OptimiserChart data={data.portfolioBreakdown.securities} />
                 </div>
-                <div className="col-span-3 flex items-center justify-center">
-                    <OptimiserAlert data={alerts} optimized={false} />
+                <div className="col-span-1 flex items-center justify-center">
+                    <OptimiserAlert data={alerts} optimized={optimisedFlag} onOptimise={onOptimisePortfolio} />
                 </div>
             </div>
         </Card>

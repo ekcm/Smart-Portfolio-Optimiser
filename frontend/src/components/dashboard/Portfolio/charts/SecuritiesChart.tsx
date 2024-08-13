@@ -1,7 +1,6 @@
 "use client";
 
-import { Pie, PieChart, TooltipProps, PieLabelRenderProps } from "recharts";
-import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
+import { Pie, PieChart } from "recharts";
 import {
     ChartConfig,
     ChartContainer,

@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 interface TriggeredAlertProps {
     data: string[];
     optimized: boolean;
+    onOptimise: () => void;
 }
 
-const OptimiserAlert = memo(function OptimiserAlert({ data, optimized }: TriggeredAlertProps) {
+const OptimiserAlert = memo(function OptimiserAlert({ data, optimized , onOptimise }: TriggeredAlertProps) {
     if (optimized) {
         return (
             <Card className="flex flex-col flex-grow items-center justify-center w-full py-4 px-4 bg-red-100 gap-2">
@@ -27,7 +28,7 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, optimized }: Trigger
     }
 
     return (
-        <Card className="flex flex-col w-3/4 h-3/4 items-center justify-center bg-red-100 gap-4">
+        <Card className="flex flex-col w-5/6 h-5/6 items-center justify-center bg-red-100 gap-4">
                 <h2 className="text-xl font-medium">Triggered Alerts:</h2>
                 <h3 className="text-md text-gray-600">Portfolio has breached the following categories:</h3>
                 <ul className="list-disc px-8">
@@ -35,7 +36,7 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, optimized }: Trigger
                         <li className="text-gray-600" key={index}>{item}</li>
                     ))}
                 </ul>
-            <Button className="bg-red-500 w-1/2 font-medium">Optimise Portfolio</Button>
+            <Button className="bg-red-500 w-1/2 font-medium" onClick={onOptimise}>Optimise Portfolio</Button>
         </Card>
     );
 });

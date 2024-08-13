@@ -282,3 +282,55 @@ export const editPortfolioData = {
         "Doge",
     ]
 }
+
+export const mockOptimizer = {
+    portfolioHoldings: [
+        {
+            name: "Apple",
+            ticker: "AAPL",
+            type: "Stock",
+            geography: "USA",
+            position: 60,
+            market: 6511.50,
+            last: 178.58,
+            cost: 130.23,
+            PL: 2417.50,
+            dailyPL: -1.50,
+            positionsRatio: 35.20,
+            difference: 1
+        },
+        {
+            name: "NVIDIA",
+            ticker: "NVDA",
+            type: "Stock",
+            geography: "USA",
+            position: 60,
+            market: 6021.00,
+            last: 124.74,
+            cost: 120.42,
+            PL: 2417.50,
+            dailyPL: 1.50,
+            positionsRatio: 35.80,
+            difference: 1
+        },
+        {
+            name: "Meta Platforms",
+            ticker: "META",
+            type: "Stock",
+            geography: "USA",
+            position: 40,
+            market: 16211.50,
+            last: 447.86,
+            cost: 324.23,
+            PL: 2417.50,
+            dailyPL: -1.50,
+            positionsRatio: 30.00,
+            difference: -1
+        }
+    ],
+    portfolioBreakdown: [
+        {"Equity": 70.00},
+        {"Bonds": 25.00},
+        {"Cash": 5.00},
+    ]
+}
