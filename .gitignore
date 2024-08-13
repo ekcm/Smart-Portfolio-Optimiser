@@ -1,4 +1,6 @@
-
+/Lib/site-packages
 /python-backend/venv
 .env
 /python-backend/__pycache__
+/Scripts
+pyvenv.cfg
