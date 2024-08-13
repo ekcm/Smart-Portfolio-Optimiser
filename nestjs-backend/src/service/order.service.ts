@@ -8,7 +8,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 export class OrderService {
     constructor (@InjectModel(Order.name) private orderModel: Model<Order>) {}
 
-    async getAllOrders(): Promise<Order[]> {
+    async getAll(): Promise<Order[]> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(this.orderModel.find().exec());
@@ -16,7 +16,7 @@ export class OrderService {
         });
     }
 
-    async getOrdersByPortfolioId(portfolioId: string): Promise<Order[]> {
+    async getByPortfolioId(portfolioId: string): Promise<Order[]> {
         return new Promise((resolve) => {
             setTimeout(async () => {
                 const ordersByPortfolioId = await this.orderModel.find({ portfolioId }).exec();
@@ -25,7 +25,7 @@ export class OrderService {
         });
     }
 
-    async createOrder( orderDto: OrderDto ): Promise<Order> {
+    async create( orderDto: OrderDto ): Promise<Order> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const createdOrder = new this.orderModel(orderDto);
