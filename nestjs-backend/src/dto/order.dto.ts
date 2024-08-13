@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { OrderType } from "../model/order.model";
 import { IsEnum, IsNotEmpty, IsString, IsNumber, IsDate } from "class-validator";
 
@@ -8,6 +9,7 @@ export class OrderDto{
 
     @IsNotEmpty()
     @IsDate()
+    @Type(() => Date)
     orderDate: Date;
 
     @IsNotEmpty()
@@ -16,9 +18,15 @@ export class OrderDto{
 
     @IsNotEmpty()
     @IsNumber()
+    @Type(() => Number)
     quantity: number;
 
     @IsNotEmpty()
     @IsNumber()
+    @Type(() => Number)
     price: number;
+
+    @IsNotEmpty()
+    @IsString()
+    portfolioId: string;
   }
