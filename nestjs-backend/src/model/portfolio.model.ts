@@ -12,7 +12,7 @@ export enum RiskAppetite {
 @Schema()
 export class Portfolio extends Document{
 
-  @Prop()
+  @Prop({ unique: true })
   portfolioId: string;
 
   @Prop()

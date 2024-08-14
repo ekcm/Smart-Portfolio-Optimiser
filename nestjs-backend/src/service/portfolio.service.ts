@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, ConflictException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { PortfolioDto } from "../dto/portfolio.dto";
@@ -30,12 +30,15 @@ export class PortfolioService {
   }
 
   async create(portfolioDto: PortfolioDto): Promise<Portfolio> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const createdPortfolio = new this.portfolioModel(portfolioDto);
-        resolve(createdPortfolio.save());
-      }, 1000);
+    return new Promise((resolve, reject) => {
+      const createdPortfolio = new this.portfolioModel(portfolioDto);
+      setTimeout(async () => {
+        try {
+          resolve(await createdPortfolio.save());
+        } catch (error) {
+          reject(new ConflictException("A portfolio with this portfolioId already exists"))
+        }
+      }, 1000)
     })
   }
 }
-
