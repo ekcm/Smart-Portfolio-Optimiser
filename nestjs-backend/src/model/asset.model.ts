@@ -1,12 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from "mongoose";
+import { todo } from 'node:test';
 
 export enum AssetType {
     STOCK = 'STOCK',
     BOND = 'BOND',
 }
 
-
+// TODO
+// rename properties to reflect property name
 @Schema()
 export class Asset extends Document{
 

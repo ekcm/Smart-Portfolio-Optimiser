@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsString, IsNumber, IsEnum } from "class-validator";
 import { AssetType } from "../model/asset.model";
 
+// TODO
+// do same as model
 export class AssetDto {
     @IsNotEmpty()
     @IsString()

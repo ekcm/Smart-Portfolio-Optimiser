@@ -4,6 +4,10 @@ import { Model } from 'mongoose';
 import { Asset } from '../model/asset.model';
 import { AssetDto } from '../dto/asset.dto';
 
+// TODO
+// implement timeout
+// throw js exceptions instead of generic errors
+// convert find to mongoose methods
 @Injectable()
 export class AssetService {
     constructor(@InjectModel(Asset.name) private assetModel: Model<Asset>) {}
