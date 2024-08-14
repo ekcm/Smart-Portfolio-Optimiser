@@ -5,26 +5,20 @@ import { PortfolioDto } from "../dto/portfolio.dto";
 
 @Controller("portfolio")
 export class PortfolioController {
-  constructor(
-    private portfolioService: PortfolioService
-  ) {}
+  constructor(private portfolioService: PortfolioService) {}
 
   @Get()
-  async getAllPortfolios(): Promise<Portfolio[]> {
-    return await this.portfolioService.getAllPortfolios();
+  async getAll(): Promise<Portfolio[]> {
+    return await this.portfolioService.getAll();
   }
 
-  @Get('/:id')
-  async getPortfolioById(@Param('id') id: string): Promise<{id: string}> {
-    try {
-      return await this.portfolioService.getPortfolioById(id);
-    } catch (error) {
-      return { id: 'Portfolio not found' };
-    }
+  @Get(':portfolioId')
+  async getByPortfolioId(@Param('portfolioId') id: string): Promise<Portfolio> {
+    return await this.portfolioService.getByPortfolioId(id);
   }
 
   @Post()
-  async createPortfolio(@Body() PortfolioDto: PortfolioDto): Promise<void> {
-    await this.portfolioService.createPortfolio(PortfolioDto);
+  async create(@Body() PortfolioDto: PortfolioDto): Promise<Portfolio> {
+    return await this.portfolioService.create(PortfolioDto);
   }
 }
