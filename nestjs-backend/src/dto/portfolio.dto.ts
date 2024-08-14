@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { RiskAppetite } from "../model/portfolio.model";
 import { IsEnum, IsInt, IsNotEmpty, IsString } from "class-validator";
 
@@ -20,5 +21,6 @@ export class PortfolioDto{
 
   @IsNotEmpty()
   @IsInt()
+  @Type(() => Number)
   portfolioCashAmount: number;
 }
