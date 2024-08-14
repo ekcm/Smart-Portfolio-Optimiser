@@ -6,7 +6,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class OrderService {
-    constructor (@InjectModel(Order.name) private orderModel: Model<Order>) {}
+    constructor(@InjectModel(Order.name) private orderModel: Model<Order>) { }
 
     async getAll(): Promise<Order[]> {
         return new Promise((resolve) => {
@@ -25,7 +25,7 @@ export class OrderService {
         });
     }
 
-    async create( orderDto: OrderDto ): Promise<Order> {
+    async create(orderDto: OrderDto): Promise<Order> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const createdOrder = new this.orderModel(orderDto);
@@ -40,7 +40,7 @@ export class OrderService {
                 const existingOrder = await this.orderModel.findByIdAndUpdate(
                     id,
                     orderDto,
-                    { new: true}
+                    { new: true }
                 );
                 if (!existingOrder) {
                     reject(new NotFoundException('Order #${id} not found'));

@@ -1,40 +1,33 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from "mongoose";
-import { todo } from 'node:test';
+import { Document } from 'mongoose';
 
 export enum AssetType {
     STOCK = 'STOCK',
     BOND = 'BOND',
 }
 
-// TODO
-// rename properties to reflect property name
 @Schema()
-export class Asset extends Document{
+export class Asset extends Document {
+    @Prop()
+    ticker: string;
 
     @Prop()
-    assetTicker: string;
-
-    @Prop()
-    assetName: string;
+    name: string;
 
     @Prop({ enum: AssetType })
-    assetType: string;
+    type: string;
 
     @Prop()
-    assetRisk: string;
-
-    @Prop()
-    assetGeography: string;
+    geography: string;
 
     @Prop({ type: Number })
-    assetPosition: number;
+    position: number;
 
     @Prop({ type: Number })
-    assetLast: number;
+    last: number;
 
     @Prop({ type: Number })
-    assetCost: number;
+    cost: number;
 }
 
 export const AssetSchema = SchemaFactory.createForClass(Asset);

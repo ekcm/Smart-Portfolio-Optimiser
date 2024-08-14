@@ -1,38 +1,37 @@
-import { IsNotEmpty, IsString, IsNumber, IsEnum } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { AssetType } from "../model/asset.model";
 
-// TODO
-// do same as model
+
 export class AssetDto {
     @IsNotEmpty()
     @IsString()
-    assetTicker: string;
+    ticker: string;
 
     @IsNotEmpty()
     @IsString()
-    assetName: string;
+    name: string;
 
     @IsNotEmpty()
     @IsEnum(AssetType)
-    assetType: AssetType;
+    type: AssetType;
 
     @IsNotEmpty()
     @IsString()
-    assetRisk: string;
+    risk: string;
 
     @IsNotEmpty()
     @IsString()
-    assetGeography: string;
+    geography: string;
 
     @IsNotEmpty()
     @IsNumber()
-    assetPosition: number;
+    position: number;
 
     @IsNotEmpty()
     @IsNumber()
-    assetLast: number;
+    last: number;
 
     @IsNotEmpty()
     @IsNumber()
-    assetCost: number;
+    cost: number;
 }

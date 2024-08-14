@@ -5,20 +5,17 @@ import { Asset } from "../model/asset.model";
 
 @Controller("asset")
 export class AssetController {
-    constructor(private readonly assetService: AssetService) {}
+    constructor(private readonly assetService: AssetService) { }
 
     @Get()
     async getAllAssets(): Promise<Asset[]> {
         return await this.assetService.getAllAssets();
     }
 
-    @Get('/:id')
-    async getAssetById(@Param('id') id: string): Promise<Asset> {
-        try {
-            return await this.assetService.getAssetById(id);
-        } catch (error) {
-            throw new Error('Asset not found');
-        }
+    @Get('/:ticker')
+    async getAssetById(@Param('ticker') ticker: string): Promise<Asset> {
+        return await this.assetService.getAssetByTicker(ticker);
+
     }
 
     @Post()
@@ -26,21 +23,16 @@ export class AssetController {
         return await this.assetService.createAsset(assetDto);
     }
 
-    @Put('/:id')
-    async updateAsset(@Param('id') id: string, @Body() assetDto: AssetDto): Promise<Asset> {
-        try {
-            return await this.assetService.updateAsset(id, assetDto);
-        } catch (error) {
-            throw new Error('Asset not found');
-        }
+    @Put('/:ticker')
+    async updateAsset(@Param('ticker') ticker: string, @Body() assetDto: AssetDto): Promise<Asset> {
+        return await this.assetService.updateAsset(ticker, assetDto);
+
+
     }
 
-    @Delete('/:id')
-    async deleteAsset(@Param('id') id: string): Promise<void> {
-        try {
-            await this.assetService.deleteAsset(id);
-        } catch (error) {
-            throw new Error('Asset not found');
-        }
+    @Delete('/:ticker')
+    async deleteAsset(@Param('ticker') ticker: string): Promise<void> {
+        await this.assetService.deleteAsset(ticker);
+
     }
 }

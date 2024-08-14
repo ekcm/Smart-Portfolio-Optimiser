@@ -11,4 +11,4 @@ import { Asset, AssetSchema } from '../model/asset.model';
     controllers: [AssetController],
     providers: [AssetService],
 })
-export class AssetModule {}
+export class AssetModule { }

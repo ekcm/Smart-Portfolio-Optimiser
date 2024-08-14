@@ -1,46 +1,67 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Asset } from '../model/asset.model';
+import { Model, set } from 'mongoose';
 import { AssetDto } from '../dto/asset.dto';
+import { Asset } from '../model/asset.model';
 
-// TODO
-// implement timeout
-// throw js exceptions instead of generic errors
-// convert find to mongoose methods
+
 @Injectable()
 export class AssetService {
-    constructor(@InjectModel(Asset.name) private assetModel: Model<Asset>) {}
+    constructor(@InjectModel(Asset.name) private assetModel: Model<Asset>) { }
 
     async getAllAssets(): Promise<Asset[]> {
-        return this.assetModel.find().exec();
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(this.assetModel.find().exec());
+            }, 1000);
+        });
     }
 
-    async getAssetById(id: string): Promise<Asset> {
-        const asset = await this.assetModel.findById(id).exec();
-        if (!asset) {
-            throw new Error('Asset not found');
-        }
-        return asset;
+    async getAssetByTicker(ticker: string): Promise<Asset> {
+        return new Promise((resolve) => {
+            setTimeout(async () => {
+                const asset = await this.assetModel.findOne({ ticker: ticker }).exec();
+                resolve(asset);
+            }, 1000)
+        })
     }
 
     async createAsset(assetDto: AssetDto): Promise<Asset> {
-        const createdAsset = new this.assetModel(assetDto);
-        return createdAsset.save();
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const createdOrder = new this.assetModel(assetDto);
+                resolve(createdOrder.save());
+            }, 1000);
+        })
     }
 
-    async updateAsset(id: string, assetDto: AssetDto): Promise<Asset> {
-        const updatedAsset = await this.assetModel.findByIdAndUpdate(id, assetDto, { new: true }).exec();
-        if (!updatedAsset) {
-            throw new Error('Asset not found');
-        }
-        return updatedAsset;
+    async updateAsset(ticker: string, assetDto: AssetDto): Promise<Asset> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                const existingAsset = await this.assetModel.findOneAndUpdate(
+                    { ticker: ticker },
+                    assetDto,
+                    { new: true }
+                );
+                if (!existingAsset) {
+                    reject(new NotFoundException('${ticker} does not exist'));
+                } else {
+                    resolve(existingAsset)
+                }
+            }, 1000)
+        })
     }
 
-    async deleteAsset(id: string): Promise<void> {
-        const deletedAsset = await this.assetModel.findByIdAndDelete(id).exec();
-        if (!deletedAsset) {
-            throw new Error('Asset not found');
-        }
+    async deleteAsset(ticker: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                const asset = await this.assetModel.findOneAndDelete({ ticker: ticker });
+                if (!asset) {
+                    reject(new NotFoundException('{ticker} does not exist'));
+                } else {
+                    resolve();
+                }
+            }, 1000)
+        })
     }
 }
