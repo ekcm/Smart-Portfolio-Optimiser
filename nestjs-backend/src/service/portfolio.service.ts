@@ -1,24 +1,25 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { Portfolio } from "../model/portfolio.model";
+import { Injectable, NotFoundException, ConflictException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 import { PortfolioDto } from "../dto/portfolio.dto";
+import { Portfolio } from "../model/portfolio.model";
 
 @Injectable()
 export class PortfolioService {
-  constructor() {}
-  private portfolios = [];
+  constructor(@InjectModel(Portfolio.name) private portfolioModel: Model<Portfolio>) { }
 
-  async getAllPortfolios(): Promise<Portfolio[]> {
+  async getAll(): Promise<Portfolio[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(this.portfolios);
+        resolve(this.portfolioModel.find().exec());
       }, 1000);
     });
   }
 
-  async getPortfolioById(portfolioId: string): Promise<{id: string}> {
+  async getByPortfolioId(portfolioId: string): Promise<Portfolio> {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const portfolio = this.portfolios.find(portfolio => portfolio.portfolioId === portfolioId);
+      setTimeout(async () => {
+        const portfolio = await this.portfolioModel.findOne({ portfolioId }).exec();
         if (portfolio) {
           resolve(portfolio);
         } else {
@@ -28,23 +29,16 @@ export class PortfolioService {
     });
   }
 
-  async createPortfolio(PortfolioDto: PortfolioDto ): Promise<void> {
-    const { portfolioId, portfolioClient, portfolioName, clientRiskAppetite, portfolioCashAmount } = PortfolioDto;
-
-    const portfolio: Portfolio = {
-      portfolioId,
-      portfolioClient,
-      portfolioName,
-      clientRiskAppetite,
-      portfolioCashAmount,
-    };
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.portfolios.push(portfolio);
-        resolve();
-      }, 1000);
+  async create(portfolioDto: PortfolioDto): Promise<Portfolio> {
+    return new Promise((resolve, reject) => {
+      const createdPortfolio = new this.portfolioModel(portfolioDto);
+      setTimeout(async () => {
+        try {
+          resolve(await createdPortfolio.save());
+        } catch (error) {
+          reject(new ConflictException("A portfolio with this portfolioId already exists"))
+        }
+      }, 1000)
     })
   }
 }
-
