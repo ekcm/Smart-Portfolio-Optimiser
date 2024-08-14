@@ -19,6 +19,6 @@ export class PortfolioController {
 
   @Post()
   async create(@Body() PortfolioDto: PortfolioDto): Promise<Portfolio> {
-    return this.portfolioService.create(PortfolioDto);
+    return await this.portfolioService.create(PortfolioDto);
   }
 }
