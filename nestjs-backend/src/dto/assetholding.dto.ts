@@ -12,4 +12,8 @@ export class AssetHoldingDto {
     @IsNotEmpty()
     @IsNumber()
     quantity: number;
+
+    @IsNotEmpty()
+    @IsString()
+    assetType: string;
 }
