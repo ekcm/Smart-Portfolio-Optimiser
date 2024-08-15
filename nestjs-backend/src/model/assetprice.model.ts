@@ -1,10 +1,9 @@
-import { Prop, Schema, SchemaFactory, Index } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 @Schema()
-@Index({ ticker: 1, date: 1 }, { unique: true })  // Composite unique index on ticker and date
 export class AssetPrice extends Document {
-  
+
   @Prop({ required: true })
   ticker: string;
 
@@ -25,3 +24,4 @@ export class AssetPrice extends Document {
 }
 
 export const AssetPriceSchema = SchemaFactory.createForClass(AssetPrice);
+AssetPriceSchema.index({ ticker: 1, date: 1 }, { unique: true })
