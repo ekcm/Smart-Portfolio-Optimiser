@@ -1,15 +1,12 @@
 import { Type } from "class-transformer";
+import { IsArray, IsEnum, IsInt, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 import { RiskAppetite } from "../model/portfolio.model";
-import { IsEnum, IsInt, IsNotEmpty, IsString } from "class-validator";
+import { AssetHoldingDto } from "./assetholding.dto";
 
-export class PortfolioDto{
+export class PortfolioDto {
   @IsNotEmpty()
   @IsString()
-  portfolioId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  portfolioClient: string;
+  client: string;
 
   @IsNotEmpty()
   @IsString()
@@ -17,10 +14,15 @@ export class PortfolioDto{
 
   @IsNotEmpty()
   @IsEnum(RiskAppetite)
-  clientRiskAppetite: RiskAppetite;
+  riskAppetite: RiskAppetite;
 
   @IsNotEmpty()
   @IsInt()
   @Type(() => Number)
-  portfolioCashAmount: number;
+  cashAmount: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AssetHoldingDto)
+  assetHoldings: AssetHoldingDto[]
 }
