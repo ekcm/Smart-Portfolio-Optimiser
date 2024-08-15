@@ -13,4 +13,4 @@ import { PortfolioService } from "../service/portfolio.service";
   exports: [PortfolioService],
 })
 
-export class portfolioModule {}
+export class PortfolioModule {}
