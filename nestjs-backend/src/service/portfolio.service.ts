@@ -16,10 +16,10 @@ export class PortfolioService {
     });
   }
 
-  async getByPortfolioId(portfolioId: string): Promise<Portfolio> {
+  async getById(portfolioId: string): Promise<Portfolio> {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
-        const portfolio = await this.portfolioModel.findOne({ portfolioId }).exec();
+        const portfolio = await this.portfolioModel.findById({ portfolioId }).exec();
         if (portfolio) {
           resolve(portfolio);
         } else {

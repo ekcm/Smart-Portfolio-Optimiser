@@ -12,9 +12,9 @@ export class PortfolioController {
     return await this.portfolioService.getAll();
   }
 
-  @Get(':portfolioId')
-  async getByPortfolioId(@Param('portfolioId') id: string): Promise<Portfolio> {
-    return await this.portfolioService.getByPortfolioId(id);
+  @Get(':id')
+  async getByPortfolioId(@Param('id') id: string): Promise<Portfolio> {
+    return await this.portfolioService.getById(id);
   }
 
   @Post()
