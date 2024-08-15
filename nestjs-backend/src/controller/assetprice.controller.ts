@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AssetPriceDto } from '../dto/assetprice.dto';
 import { AssetPrice } from '../model/assetprice.model';
 import { AssetPriceService } from '../service/assetprice.service';
 
+@ApiTags('AssetPrice Service')
 @Controller('assetprice')
 export class AssetPriceController {
   constructor(private readonly assetPriceService: AssetPriceService) { }
