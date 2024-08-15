@@ -19,7 +19,7 @@ export class PortfolioService {
   async getById(portfolioId: string): Promise<Portfolio> {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
-        const portfolio = await this.portfolioModel.findById({ portfolioId }).exec();
+        const portfolio = await this.portfolioModel.findById(portfolioId).exec();
         if (portfolio) {
           resolve(portfolio);
         } else {
