@@ -1,38 +1,38 @@
-import { Body, Controller, Get, Param, Post, Put, Delete } from "@nestjs/common";
-import { AssetService } from "../service/asset.service";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { AssetDto } from "../dto/asset.dto";
 import { Asset } from "../model/asset.model";
+import { AssetService } from "../service/asset.service";
 
 @Controller("asset")
 export class AssetController {
-    constructor(private readonly assetService: AssetService) { }
+  constructor(private readonly assetService: AssetService) { }
 
-    @Get()
-    async getAllAssets(): Promise<Asset[]> {
-        return await this.assetService.getAllAssets();
-    }
+  @Get()
+  async getAll(): Promise<Asset[]> {
+    return await this.assetService.getAll();
+  }
 
-    @Get('/:ticker')
-    async getAssetById(@Param('ticker') ticker: string): Promise<Asset> {
-        return await this.assetService.getAssetByTicker(ticker);
+  @Get('/:ticker')
+  async getById(@Param('ticker') ticker: string): Promise<Asset> {
+    return await this.assetService.getByTicker(ticker);
 
-    }
+  }
 
-    @Post()
-    async createAsset(@Body() assetDto: AssetDto): Promise<Asset> {
-        return await this.assetService.createAsset(assetDto);
-    }
+  @Post()
+  async create(@Body() assetDto: AssetDto): Promise<Asset> {
+    return await this.assetService.create(assetDto);
+  }
 
-    @Put('/:ticker')
-    async updateAsset(@Param('ticker') ticker: string, @Body() assetDto: AssetDto): Promise<Asset> {
-        return await this.assetService.updateAsset(ticker, assetDto);
+  @Put('/:ticker')
+  async update(@Param('ticker') ticker: string, @Body() assetDto: AssetDto): Promise<Asset> {
+    return await this.assetService.update(ticker, assetDto);
 
 
-    }
+  }
 
-    @Delete('/:ticker')
-    async deleteAsset(@Param('ticker') ticker: string): Promise<void> {
-        await this.assetService.deleteAsset(ticker);
+  @Delete('/:ticker')
+  async delete(@Param('ticker') ticker: string): Promise<void> {
+    await this.assetService.delete(ticker);
 
-    }
+  }
 }

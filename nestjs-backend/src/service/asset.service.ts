@@ -9,15 +9,16 @@ import { Asset } from '../model/asset.model';
 export class AssetService {
     constructor(@InjectModel(Asset.name) private assetModel: Model<Asset>) { }
 
-    async getAllAssets(): Promise<Asset[]> {
+    async getAll(): Promise<Asset[]> {
         return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(this.assetModel.find().exec());
+            setTimeout(async () => {
+                const assets = await this.assetModel.find().exec();
+                resolve(assets);
             }, 1000);
         });
     }
 
-    async getAssetByTicker(ticker: string): Promise<Asset> {
+    async getByTicker(ticker: string): Promise<Asset> {
         return new Promise((resolve) => {
             setTimeout(async () => {
                 const asset = await this.assetModel.findOne({ ticker: ticker }).exec();
@@ -26,16 +27,16 @@ export class AssetService {
         })
     }
 
-    async createAsset(assetDto: AssetDto): Promise<Asset> {
+    async create(assetDto: AssetDto): Promise<Asset> {
         return new Promise((resolve) => {
-            setTimeout(() => {
+            setTimeout(async () => {
                 const createdOrder = new this.assetModel(assetDto);
-                resolve(createdOrder.save());
+                resolve(await createdOrder.save());
             }, 1000);
         })
     }
 
-    async updateAsset(ticker: string, assetDto: AssetDto): Promise<Asset> {
+    async update(ticker: string, assetDto: AssetDto): Promise<Asset> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 const existingAsset = await this.assetModel.findOneAndUpdate(
@@ -52,7 +53,7 @@ export class AssetService {
         })
     }
 
-    async deleteAsset(ticker: string): Promise<void> {
+    async delete(ticker: string): Promise<void> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 const asset = await this.assetModel.findOneAndDelete({ ticker: ticker });
