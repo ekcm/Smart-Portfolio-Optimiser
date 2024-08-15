@@ -6,11 +6,7 @@ import { AssetHoldingDto } from "./assetholding.dto";
 export class PortfolioDto {
   @IsNotEmpty()
   @IsString()
-  portfolioId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  portfolioClient: string;
+  client: string;
 
   @IsNotEmpty()
   @IsString()
@@ -18,12 +14,12 @@ export class PortfolioDto {
 
   @IsNotEmpty()
   @IsEnum(RiskAppetite)
-  clientRiskAppetite: RiskAppetite;
+  riskAppetite: RiskAppetite;
 
   @IsNotEmpty()
   @IsInt()
   @Type(() => Number)
-  portfolioCashAmount: number;
+  cashAmount: number;
 
   @IsArray()
   @ValidateNested({ each: true })

@@ -10,26 +10,22 @@ export enum RiskAppetite {
 
 @Schema()
 export class Portfolio extends Document {
-
-  @Prop({ unique: true })
-  portfolioId: string;
-
   @Prop()
-  portfolioClient: string;
+  client: string;
 
   @Prop()
   portfolioName: string;
 
   @Prop({ enum: RiskAppetite })
-  clientRiskAppetite: RiskAppetite;
+  riskAppetite: RiskAppetite;
 
   @Prop({ type: Number })
-  portfolioCashAmount: number;
+  cashAmount: number;
 
   @Prop({ type: [{ type: AssetHolding }], default: [] })
   assetHoldings: AssetHolding[]
 }
 
-// missing securitiesList and transactionsList
+// missing and transactionsList
 
 export const PortfolioSchema = SchemaFactory.createForClass(Portfolio)
