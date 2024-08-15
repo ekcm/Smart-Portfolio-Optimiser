@@ -1,5 +1,5 @@
 import { Link } from "next-view-transitions";
-import { useDashBoardNavBarStore } from "../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "../../store/DashBoardNavBarState";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator } from "../ui/breadcrumb";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "../../../../store/DashBoardNavBarState";
 import MainPortfolio from "@/components/dashboard/Portfolio/MainPortfolio";
 import { indivPortfolioData } from "@/lib/mockData";
 
@@ -10,7 +10,7 @@ export default function Portfolio() {
   
     useEffect(() => {
         setDashBoardNavBarState("Portfolio");
-    }, []); 
+    }); 
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">

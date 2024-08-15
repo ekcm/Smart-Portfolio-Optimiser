@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useDashBoardNavBarStore } from "../../../../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
 import { indivPortfolioData } from "@/lib/mockData";
 import NewOrderForm from "@/components/dashboard/Portfolio/orderform/NewOrderForm";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -23,7 +23,7 @@ export default function NewOrder() {
 
     useEffect(() => {
         setDashBoardNavBarState("Empty");
-    }, []); 
+    }); 
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">

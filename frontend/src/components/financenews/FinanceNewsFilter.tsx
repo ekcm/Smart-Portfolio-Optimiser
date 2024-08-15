@@ -1,6 +1,6 @@
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useFinanceNewsFilterStore } from "../../../store/FinanceNewsFilterState"
+import { useFinanceNewsFilterStore } from "../../store/FinanceNewsFilterState"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { CalendarIcon } from "@radix-ui/react-icons";

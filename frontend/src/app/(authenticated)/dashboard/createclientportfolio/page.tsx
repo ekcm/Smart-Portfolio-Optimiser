@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "../../../../store/DashBoardNavBarState";
 import CreatePortfolioForm from "@/components/dashboard/create-client-portfolio/CreatePortfolioForm";
 
 export default function CreateClientPortfolio() {
@@ -9,7 +9,7 @@ export default function CreateClientPortfolio() {
   
     useEffect(() => {
         setDashBoardNavBarState("Empty");
-    }, []); 
+    }); 
 
     return (
         <main 
