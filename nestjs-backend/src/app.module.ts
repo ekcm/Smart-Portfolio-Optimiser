@@ -5,6 +5,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { AssetModule } from './module/asset.module';
 import { OrderModule } from './module/order.module';
 import { PortfolioModule } from './module/portfolio.module';
+import { AssetPriceModule } from './module/assetprice.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { PortfolioModule } from './module/portfolio.module';
     }),
     OrderModule,
     PortfolioModule,
-    AssetModule
+    AssetModule,
+    AssetPriceModule
   ],
 })
 export class AppModule { }
