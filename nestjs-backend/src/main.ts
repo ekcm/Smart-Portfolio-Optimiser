@@ -10,14 +10,15 @@ async function bootstrap() {
     .setTitle('Portfolio Optimizer Application API')
     .setDescription('core application in nestjs')
     .setVersion('1.0')
-    .addTag('portfolios')
-    .addTag('prders')
+    .addTag('Portfolio Service')
+    .addTag('Order Service')
+    .addTag('Asset Service')
     .build()
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document)
 
   app.useGlobalPipes(new ValidationPipe());
   
-  await app.listen(3000);
+  await app.listen(8000);
 }
 bootstrap();
