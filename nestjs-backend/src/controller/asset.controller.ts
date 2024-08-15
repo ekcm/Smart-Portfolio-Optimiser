@@ -13,7 +13,7 @@ export class AssetController {
 	}
 
 	@Get('/:ticker')
-	async getById(@Param('ticker') ticker: string): Promise<Asset> {
+	async getByTicker(@Param('ticker') ticker: string): Promise<Asset> {
 		return await this.assetService.getByTicker(ticker);
 
 	}
