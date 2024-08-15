@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { RiskAppetite } from "../model/portfolio.model";
-import { IsEnum, IsInt, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsEnum, IsInt, IsNotEmpty, IsString, ValidateNested } from "class-validator";
+import { AssetHoldingDto } from "./assetholding.dto";
 
 export class PortfolioDto{
   @IsNotEmpty()
@@ -23,4 +24,9 @@ export class PortfolioDto{
   @IsInt()
   @Type(() => Number)
   portfolioCashAmount: number;
+
+  @IsArray()
+  @ValidateNested({ each:true })
+  @Type(() => AssetHoldingDto)
+  assetHoldings: AssetHoldingDto[]
 }

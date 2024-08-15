@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
-import { OrderSchema } from './order.model';
-import { PortfolioService } from '../service/portfolio.service';
+import { AssetHolding } from "./assetholding.model";
 
 export enum RiskAppetite {
   LOW = 'LOW',
@@ -10,7 +9,7 @@ export enum RiskAppetite {
 }
 
 @Schema()
-export class Portfolio extends Document{
+export class Portfolio extends Document {
 
   @Prop({ unique: true })
   portfolioId: string;
@@ -26,6 +25,9 @@ export class Portfolio extends Document{
 
   @Prop({ type: Number })
   portfolioCashAmount: number;
+
+  @Prop({ type: [{ type: AssetHolding }], default: [] })
+  assetHoldings: AssetHolding[]
 }
 
 // missing securitiesList and transactionsList
