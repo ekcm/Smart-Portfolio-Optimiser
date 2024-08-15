@@ -20,14 +20,8 @@ export class Asset extends Document {
     @Prop()
     geography: string;
 
-    @Prop({ type: Number })
-    position: number;
-
-    @Prop({ type: Number })
-    last: number;
-
-    @Prop({ type: Number })
-    cost: number;
+    @Prop()
+    industry: string;
 }
 
 export const AssetSchema = SchemaFactory.createForClass(Asset);
