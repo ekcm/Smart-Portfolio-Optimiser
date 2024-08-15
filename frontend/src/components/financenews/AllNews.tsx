@@ -1,6 +1,6 @@
 import { FinanceNewsData } from "@/lib/mockData";
 import IndivNewsCard from "./IndivNewsCard";
-import { useFinanceNewsFilterStore } from "../../../store/FinanceNewsFilterState";
+import { useFinanceNewsFilterStore } from "../../store/FinanceNewsFilterState";
 import { useEffect, useState } from "react";
 import { FinanceNewsItem } from "@/lib/types";
 

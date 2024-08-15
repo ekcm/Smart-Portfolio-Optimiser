@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useDashBoardNavBarStore } from "../../../../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
 import BigChartCard from "@/components/dashboard/Portfolio/optimiser/BigChartCard";
 import { indivPortfolioData } from "@/lib/mockData";
 import OptimiserChangeList from "@/components/dashboard/Portfolio/optimiser/OptimiserChangeList";
@@ -30,7 +30,7 @@ export default function Optimization() {
     
     useEffect(() => {
         setDashBoardNavBarState("Empty");
-    }, []); 
+    }); 
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">

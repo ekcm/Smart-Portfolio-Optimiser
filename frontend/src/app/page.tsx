@@ -45,7 +45,7 @@ export default function Home() {
           <div className="flex w-full flex-row justify-between">
             <Link href="register">
               <CardDescription className="hover:underline cursor-pointer">
-                Don't have an account? Register
+                Don&apos;t have an account? Register
               </CardDescription>
             </Link>
             <Link href="forget-password">

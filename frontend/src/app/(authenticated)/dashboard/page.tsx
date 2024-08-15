@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { useDashBoardNavBarStore } from "../../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "../../../store/DashBoardNavBarState";
 import Filter from "@/components/dashboard/Filter";
 import { Button } from "@/components/ui/button";
-import { useDashboardFilterStore } from "../../../../store/DashBoardFilterState";
+import { useDashboardFilterStore } from "../../../store/DashBoardFilterState";
 import Portfolios from "@/components/dashboard/Portfolios";
 
 export default function DashBoard() {
@@ -19,7 +19,7 @@ export default function DashBoard() {
   useEffect(() => {
     setDashBoardNavBarState("Main");
     setPortfolioName("");
-  }, []);
+  });
 
   return (
     <main 

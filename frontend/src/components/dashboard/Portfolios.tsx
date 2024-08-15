@@ -1,6 +1,6 @@
 import { PortfolioData } from "@/lib/mockData";
 import IndivPortfolioCard from "./IndivPortfolioCard";
-import { useDashboardFilterStore } from "../../../store/DashBoardFilterState";
+import { useDashboardFilterStore } from "../../store/DashBoardFilterState";
 import { useEffect, useState } from "react";
 import { PortfolioItem } from "@/lib/types";
 
