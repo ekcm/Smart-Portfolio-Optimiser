@@ -24,6 +24,9 @@ export class Portfolio extends Document {
 
   @Prop({ type: [{ type: AssetHolding }], default: [] })
   assetHoldings: AssetHolding[]
+
+  @Prop()
+  manager: string;
 }
 
 // missing and transactionsList
