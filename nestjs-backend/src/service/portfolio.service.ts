@@ -41,4 +41,13 @@ export class PortfolioService {
       }, 1000)
     })
   }
+
+  async getByManager(manager: string): Promise<Portfolio[]> {
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        const portfolios = await this.portfolioModel.find({ manager }).exec();
+        resolve(portfolios);
+      }, 1000)
+    })
+  }
 }

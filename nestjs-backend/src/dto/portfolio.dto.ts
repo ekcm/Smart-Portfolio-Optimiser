@@ -25,4 +25,8 @@ export class PortfolioDto {
   @ValidateNested({ each: true })
   @Type(() => AssetHoldingDto)
   assetHoldings: AssetHoldingDto[]
+
+  @IsNotEmpty()
+  @IsString()
+  manager: string;
 }
