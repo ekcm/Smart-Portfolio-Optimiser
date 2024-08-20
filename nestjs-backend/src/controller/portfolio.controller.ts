@@ -26,4 +26,10 @@ export class PortfolioController {
   async create(@Body() PortfolioDto: PortfolioDto): Promise<Portfolio> {
     return await this.portfolioService.create(PortfolioDto);
   }
+
+  @Get('/manager/:manager')
+  @ApiOperation({ summary: "Get all Portfolios under the management of a specific manager" })
+  async getByManager(@Param('manager') manager: string): Promise<Portfolio[]> {
+    return this.portfolioService.getByManager(manager);
+  }
 }
