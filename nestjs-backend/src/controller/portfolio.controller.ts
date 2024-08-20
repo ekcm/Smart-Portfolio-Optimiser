@@ -30,6 +30,6 @@ export class PortfolioController {
   @Get('/manager/:manager')
   @ApiOperation({ summary: "Get all Portfolios under the management of a specific manager" })
   async getByManager(@Param('manager') manager: string): Promise<Portfolio[]> {
-    return this.portfolioService.getByManager(manager);
+    return await this.portfolioService.getByManager(manager);
   }
 }
