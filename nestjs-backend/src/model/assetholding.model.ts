@@ -12,7 +12,7 @@ export class AssetHolding {
 
     @Prop({ required: true })
     @Type(() => Number)
-    quantity: string;
+    quantity: number;
 
     @Prop({ required: true })
     assetType: string;
