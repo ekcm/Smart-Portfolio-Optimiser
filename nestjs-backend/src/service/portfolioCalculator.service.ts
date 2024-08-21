@@ -2,14 +2,22 @@ import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
 import { AssetPriceService } from "./assetprice.service";
 import { CalculatorUtility } from "src/utilities/calculatorUtility";
-import { CalculatedPortfolioDto } from "src/dto/calculatedPortfolioDto.dto";
+
+type CalculatedPortfolio = {
+    portfolio: Portfolio,
+    absoluteDailyPnl: number,
+    absolutePnl: number,
+    percentageDailyPnl: number,
+    percentagePnl: number,
+    totalValue: number
+}
 
 @Injectable()
 export class PortfolioCalculatorService {
     
     constructor(private assetPriceService: AssetPriceService) { }
 
-    async calculatePortfolioValue(portfolio: Portfolio): Promise<CalculatedPortfolioDto<Portfolio>> {
+    async calculatePortfolioValue(portfolio: Portfolio): Promise<CalculatedPortfolio> {
         
         var absolutePnl: number;
         var absoluteDailyPnl: number;
