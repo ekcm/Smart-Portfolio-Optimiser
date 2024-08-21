@@ -15,10 +15,7 @@ export class CoreService {
         for (const portfolio of portfolios) {
             
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
-            portfolioCalculations.then((result) => {
-                var absolutePnl = result.absolutePnl
-
-            })
+        
             var clientName: string = portfolio.client
             var portfolioName: string = portfolio.portfolioName
             var riskAppetite: string = portfolio.riskAppetite
@@ -26,7 +23,7 @@ export class CoreService {
             var absolutePnl: number = portfolioCalculations.absolutePnl
             
             const portfolioValue = this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
-        });
+        };
         
 
         return [{ }]
