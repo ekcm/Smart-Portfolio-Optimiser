@@ -4,15 +4,15 @@ import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { Portfolio } from "src/model/portfolio.model";
 
 
-type DashboardCard = {
+export type DashboardCard = {
     clientName: string,
     portfolioName: string,
     riskAppetite: string,
     totalValue: number,
-    // absolutePnl: number,
-    // absoluteDailyPnl: number,
-    // percentagePnl: number,
-    // percentageDailyPnl: number,
+    absolutePnl: number,
+    absoluteDailyPnl: number,
+    percentagePnl: number,
+    percentageDailyPnl: number,
     // alertsPresent: boolean
 }
 
@@ -21,8 +21,9 @@ export class CoreService {
     constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService) { }
 
 
-    async loadHomepage(managerId: string): Promise<DashboardCard[]> {
-        const portfolios: Portfolio[] = await this.portfolioService.getByManager(managerId)
+    async loadHomepage(): Promise<DashboardCard[]> {
+        // const portfolios: Portfolio[] = await this.portfolioService.getByManager(managerId)
+        const portfolios: Portfolio[] = await this.portfolioService.getAll()
         const portfolioCards: DashboardCard[] = []
 
 
@@ -33,11 +34,11 @@ export class CoreService {
             var clientName: string = portfolio.client
             var portfolioName: string = portfolio.portfolioName
             var riskAppetite: string = portfolio.riskAppetite
-            var totalValue: number = portfolio.cashAmount //+ portfolioCalculations.valueToday 
-            //var absolutePnl: number = portfolioCalculations.absolutePnl
-            //var absoluteDailyPnl: number = portfolioCalculations.absoluteDailyPnl
-            // var percentagePnl: number = portfolioCalculations.percentagePnl
-            // var percentageDailyPnl: number = portfolioCalculations.percentageDailyPnl
+            var totalValue: number = portfolioCalculations.totalValue
+            var absolutePnl: number = portfolioCalculations.absolutePnl
+            var absoluteDailyPnl: number = portfolioCalculations.absoluteDailyPnl
+            var percentagePnl: number = portfolioCalculations.percentagePnl
+            var percentageDailyPnl: number = portfolioCalculations.percentageDailyPnl
             // var alertsPresent: boolean = portfolio.alerts
 
             portfolioCards.push({
@@ -45,10 +46,10 @@ export class CoreService {
                 portfolioName: portfolioName,
                 riskAppetite: riskAppetite,
                 totalValue: totalValue,
-                // absolutePnl,
-                // absoluteDailyPnl,
-                // percentagePnl,
-                // percentageDailyPnl,
+                absolutePnl,
+                absoluteDailyPnl,
+                percentagePnl,
+                percentageDailyPnl,
                 // alertsPresent
             });
         }
