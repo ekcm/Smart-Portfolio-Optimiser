@@ -2,102 +2,69 @@
   "FinancialNewsReport": {
     "weekOf": "",
     "sections": {
-      "Introduction": {
-        "summary": "Today's financial news is marked by significant developments across various sectors, including stock market movements, economic indicators, corporate earnings, and geopolitical events. This report aims to provide a comprehensive overview of the current financial landscape, drawing on data and insights from multiple reputable sources.",
+      "Overview": {
+        "summary": "This week in financial markets has been marked by significant movements across various sectors, driven by a mix of corporate earnings reports, economic data releases, and geopolitical developments. The major U.S. stock indexes experienced fluctuations, with notable performances in technology and consumer discretionary sectors. Additionally, the Federal Reserve's upcoming policy decisions and speeches have kept investors on edge. This report provides a comprehensive analysis of the key financial events and trends observed this week.",
         "details": [
           ""
         ]
       },
-      "Stock Market Overview": {
+      "Stock Market Performance": {
         "summary": "",
-        "U.S. Stock Market": {
-          "summary": "The U.S. stock market has experienced a mixed performance today. The Dow Jones Industrial Average hit an all-time high, driven by a surge in stocks related to Donald Trump's political activities. Trump's selection of JD Vance as his running mate has bolstered market confidence, particularly in sectors such as oil production, gun manufacturing, and private prisons ([Bloomberg](https://www.bloomberg.com/news/articles/2024-07-14/us-futures-waver-as-traders-juggle-trump-win-bets-markets-wrap)).",
+        "Major Indexes": {
+          "summary": "The U.S. stock market saw a mix of gains and losses throughout the week. On Wednesday, August 21, 2024, the S&P 500 rose by 0.4%, closing at 5,620.85 points. The Dow Jones Industrial Average (DJIA) added 0.1%, reaching 40,890.49 points, while the Nasdaq Composite increased by 0.6% to 17,918.99 points ([AP News](https://apnews.com/article/dow-jones-stock-market-fed-powell-78f6be126e37d88fcd8d8bf6efeb55b8)).",
           "details": [
             "",
-            "Conversely, the Nasdaq Composite has faced a significant downturn, primarily due to a selloff in technology stocks. Concerns over tighter U.S. restrictions on chip sales to China have led to a substantial decline in semiconductor stocks, with major players like Nvidia, Advanced Micro Devices, and Broadcom experiencing sharp drops ([Bloomberg](https://www.bloomberg.com/news/articles/2024-07-16/stock-market-today-dow-s-p-live-updates)).",
+            "However, the market experienced a downturn on Thursday, August 22, 2024, with the S&P 500 falling by 0.9% to 5,570.64 points, the DJIA dropping 0.4% to 40,712.78 points, and the Nasdaq Composite declining by 1.7% to 17,619.35 points ([AP News](https://apnews.com/article/stock-markets-fed-inflation-earnings-japan-a829ed05df2841063ed5da6fb3767a98)).",
             ""
           ],
           "references": []
         },
-        "Asian Markets": {
-          "summary": "Asian equities have also been affected by the global selloff in technology stocks. The Nikkei 225 Stock Average saw a notable decline, led by a plunge in Tokyo Electron Ltd. This trend reflects broader concerns about the impact of U.S. export restrictions on the semiconductor industry ([Bloomberg](https://www.bloomberg.com/news/articles/2024-07-16/stock-market-today-dow-s-p-live-updates)).",
-          "details": [
-            ""
-          ],
-          "references": []
-        },
-        "European Markets": {
-          "summary": "European markets have mirrored the trends seen in the U.S. and Asia, with technology stocks under pressure. ASML Holding NV, a key player in the semiconductor industry, reported strong orders but still faced a significant drop in its stock price ([Bloomberg](https://www.bloomberg.com/news/articles/2024-07-16/stock-market-today-dow-s-p-live-updates)).",
-          "details": [
-            ""
-          ],
-          "references": []
-        }
-      },
-      "Economic Indicators": {
-        "summary": "",
-        "U.S. Economic Data": {
-          "summary": "Several key economic indicators have been released this month, providing insights into the state of the U.S. economy:",
+        "Sector Performance": {
+          "summary": "Technology and consumer discretionary stocks led the gains earlier in the week. The S&P 500 and Nasdaq Composite both notched their longest winning streaks of 2024, with the S&P 500 rising nearly 1% and the Nasdaq Composite increasing by 1.4% on Monday ([Yahoo Finance](https://finance.yahoo.com/news/stock-market-today-sp-500-nasdaq-notch-longest-win-streaks-of-2024-as-august-turnaround-continues-200102693.html)). Notable performers included Nvidia (NVDA), which rose more than 4%, and AMD (AMD), which also saw a 4% increase following its announcement to acquire ZT Systems for $4.9 billion ([Yahoo Finance](https://finance.yahoo.com/news/stock-market-today-sp-500-nasdaq-notch-longest-win-streaks-of-2024-as-august-turnaround-continues-200102693.html)).",
           "details": [
             "",
-            "1. **Employment Report**: The U.S. Bureau of Labor Statistics released its monthly employment report on July 5, showing hiring levels and various measures of the unemployment rate. This report is crucial for understanding labor market trends and potential Federal Reserve actions ([NerdWallet](https://www.nerdwallet.com/article/investing/stock-market-outlook)).",
-            "",
-            "2. **Consumer Price Index (CPI)**: The Bureau of Labor Statistics' monthly CPI report, released on July 11, serves as a key gauge of inflation. The data from this report can influence Federal Reserve decisions on interest rates ([NerdWallet](https://www.nerdwallet.com/article/investing/stock-market-outlook)).",
-            "",
-            "3. **GDP Estimate**: The Bureau of Economic Analysis will release its first estimate of U.S. GDP for Q2 2024 on July 25. This measurement will indicate whether the economy grew or contracted over the quarter ([NerdWallet](https://www.nerdwallet.com/article/investing/stock-market-outlook)).",
-            "",
-            "4. **Michigan Consumer Survey**: Preliminary data for July from the University of Michigan's consumer survey will be released on July 26. This survey is a closely watched indicator of consumer sentiment and economic perceptions ([NerdWallet](https://www.nerdwallet.com/article/investing/stock-market-outlook)).",
-            "",
-            "5. **Federal Reserve Interest Rate Decision**: The Federal Reserve will announce its interest rate decision on July 31. While it is expected to leave rates unchanged at the current range of 5.25% to 5.50%, any changes or forward guidance will be closely scrutinized by investors ([NerdWallet](https://www.nerdwallet.com/article/investing/stock-market-outlook)).",
-            ""
-          ],
-          "references": []
-        },
-        "Global Economic Outlook": {
-          "summary": "The International Monetary Fund (IMF) has released its World Economic Outlook update for July 2024. Global growth is projected to remain steady at 3.2% in 2024 and 3.3% in 2025. However, persistent services inflation and geopolitical uncertainties pose risks to this outlook ([IMF](https://www.imf.org/en/Publications/WEO/Issues/2024/07/16/world-economic-outlook-update-july-2024)).",
-          "details": [
-            "",
-            "S&P Global Market Intelligence analysts have maintained their forecast for global real GDP growth at 2.7% for 2024. While there have been downward revisions for Canada and Japan, these have been offset by upward revisions for the UK, India, and Russia ([Seeking Alpha](https://seekingalpha.com/article/4704493-global-economic-outlook-july-2024)).",
+            "Energy stocks also showed strength, with the Energy Select Sector SPDR Fund (XLE) up by 0.8%, followed by gains in consumer discretionary and real estate sectors ([Yahoo Finance](https://finance.yahoo.com/news/stock-market-today-sp-500-nasdaq-notch-longest-win-streaks-of-2024-as-august-turnaround-continues-200102693.html)).",
             ""
           ],
           "references": []
         }
       },
       "Corporate Earnings": {
+        "summary": "Several major companies reported their quarterly earnings this week, influencing market movements. Target (TGT) jumped after exceeding profit expectations for the spring, while Macy's (M) dropped after cutting its sales forecast for the year due to more discriminating shoppers ([AP News](https://apnews.com/article/dow-jones-stock-market-fed-powell-78f6be126e37d88fcd8d8bf6efeb55b8)).",
+        "details": [
+          "",
+          "Advance Auto Parts (AAP) tumbled by 17.5% after its profit for the latest quarter fell short of Wall Street's expectations, citing a \"challenging demand environment\" and lowering its full-year profit forecast ([AP News](https://apnews.com/article/stock-markets-fed-inflation-earnings-japan-a829ed05df2841063ed5da6fb3767a98)).",
+          ""
+        ]
+      },
+      "Economic Data and Federal Reserve": {
         "summary": "",
-        "Blue-Chip Stocks": {
-          "summary": "Several blue-chip companies are set to report their earnings in July. Notably, J.P. Morgan Chase & Co. (JPM) is scheduled to release its earnings on July 12, with a consensus EPS forecast of $4.19. These earnings reports are significant trading events for options traders and day traders, given the high market capitalization and trading volume of these stocks ([NerdWallet](https://www.nerdwallet.com/article/investing/stock-market-outlook)).",
+        "Inflation and Employment": {
+          "summary": "The market's attention was also focused on economic data releases. A report showed a slight increase in U.S. workers applying for unemployment benefits, adding to the mixed signals about the economy's health ([AP News](https://apnews.com/article/stock-markets-fed-inflation-earnings-japan-a829ed05df2841063ed5da6fb3767a98)).",
           "details": [
             ""
           ],
           "references": []
         },
-        "Technology Sector": {
-          "summary": "The technology sector has been particularly volatile, with semiconductor companies facing significant challenges. Nvidia, ASML, and TSMC have all seen their stock prices hammered due to concerns over U.S. export restrictions and broader market trends ([Yahoo Finance](https://finance.yahoo.com/news)).",
-          "details": [
-            ""
-          ],
-          "references": []
-        },
-        "Airline Industry": {
-          "summary": "United Airlines reported second-quarter results that topped estimates, but its third-quarter earnings guidance fell short of expectations. This mixed performance reflects ongoing challenges in the airline industry, including discounting pressures and fluctuating demand ([Yahoo Finance](https://finance.yahoo.com/news)).",
+        "Federal Reserve": {
+          "summary": "Investors are eagerly awaiting Federal Reserve Chair Jerome Powell's speech at the Jackson Hole Economic Symposium on Friday. The speech is expected to provide insights into the Fed's future monetary policy, particularly regarding interest rate cuts. As of Monday, traders were pricing in a 72% chance of a 0.25% rate cut and a 28% chance of a 0.50% cut at the next meeting ([Yahoo Finance](https://finance.yahoo.com/news/stock-market-today-sp-500-nasdaq-notch-longest-win-streaks-of-2024-as-august-turnaround-continues-200102693.html)).",
           "details": [
             ""
           ],
           "references": []
         }
       },
-      "Geopolitical Events": {
+      "Global Markets": {
         "summary": "",
-        "U.S.-China Relations": {
-          "summary": "Tensions between the U.S. and China have escalated, particularly concerning technology and trade. The U.S. has imposed tighter restrictions on chip sales to China, leading to a significant selloff in semiconductor stocks globally. This development underscores the broader geopolitical risks that continue to impact financial markets ([Bloomberg](https://www.bloomberg.com/news/articles/2024-07-16/stock-market-today-dow-s-p-live-updates)).",
+        "Asia and Europe": {
+          "summary": "Global stock markets showed mixed performances. South Korea's Kospi rose by 0.2% after the Bank of Korea decided to keep rates unchanged, while Hong Kong's Hang Seng jumped by 1.4% ([AP News](https://apnews.com/article/stock-markets-fed-inflation-earnings-japan-a829ed05df2841063ed5da6fb3767a98)). In Europe, indexes made mostly modest moves, reflecting cautious sentiment ahead of the Fed's policy announcements.",
           "details": [
             ""
           ],
           "references": []
         },
-        "Political Developments in the U.S.": {
-          "summary": "Donald Trump's political activities have had a notable impact on the stock market. His selection of JD Vance as his running mate and his pro-cryptocurrency stance have influenced various sectors, including oil production, gun manufacturing, and private prisons. These developments highlight the intersection of politics and financial markets ([Bloomberg](https://www.bloomberg.com/news/articles/2024-07-14/us-futures-waver-as-traders-juggle-trump-win-bets-markets-wrap)).",
+        "Oil Market": {
+          "summary": "Oil prices faced a weekly decline due to demand concerns and ongoing geopolitical tensions in Gaza. The market's focus remains on the potential impact of these factors on global oil supply and demand dynamics ([Bloomberg](https://www.bloomberg.com/news/articles/2024-08-22/latest-oil-market-news-and-analysis-for-aug-23)).",
           "details": [
             ""
           ],
@@ -105,7 +72,7 @@
         }
       },
       "Conclusion": {
-        "summary": "Today's financial news reflects a complex and dynamic landscape, influenced by a mix of economic indicators, corporate earnings, and geopolitical events. The U.S. stock market is experiencing mixed performance, with significant volatility in the technology sector. Key economic data releases and Federal Reserve decisions will continue to shape market trends in the coming weeks. Globally, growth projections remain steady, but persistent inflation and geopolitical uncertainties pose ongoing risks. Investors should remain vigilant and informed as they navigate these challenging times.",
+        "summary": "This week has been eventful for financial markets, with significant movements driven by corporate earnings, economic data, and anticipation of Federal Reserve policy decisions. The technology and consumer discretionary sectors have shown resilience, while energy stocks have also performed well. However, mixed economic signals and geopolitical uncertainties continue to weigh on investor sentiment. As the week concludes, all eyes are on the Jackson Hole Economic Symposium, where Fed Chair Jerome Powell's speech is expected to provide crucial insights into the future direction of U.S. monetary policy.",
         "details": [
           ""
         ]

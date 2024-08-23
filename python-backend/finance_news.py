@@ -6,9 +6,9 @@ import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from markdown_converter import read_markdown_file, convert_markdown_to_json, convert_json_to_string
 from pydantic import BaseModel
 import json
+import markdown_to_json 
 
 load_dotenv(dotenv_path="../.env")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
@@ -37,21 +37,22 @@ class Query(BaseModel):
 async def researcher_response(query):
     researcher = GPTResearcher(query=query, report_type="research_report")
     research_result = await researcher.conduct_research()
-
     research_report = await researcher.write_report()
-    print(research_report)
+    # print(research_report)
 
     with open("research_report.txt", "w") as file:
         file.write(research_report)
 
-    md_text = read_markdown_file("research_report.txt")
+    lines = research_report.split("\n")
+    reformatted_md_text = ""
+    for line in lines:
+        if not line.startswith("# "):
+            reformatted_md_text += line + "\n"
 
-    json_data = convert_markdown_to_json(md_text)
-
-    json_str = convert_json_to_string(json_data)
-    with open("research_report.json", "w") as file:
-        file.write(json_str)
-    return json_data
+    json_data = markdown_to_json.dictify(reformatted_md_text)
+    json_data = json.dumps(json_data, indent=2)
+    json_obj = json.loads(json_data)
+    return json_obj
 
 @app.get("/")
 def read_root():

@@ -110,6 +110,7 @@ lxml_html_clean==0.2.0
 Markdown==3.6
 markdown-it-py==3.0.0
 markdown2==2.5.0
+markdown_to_json==2.1.1
 MarkupSafe==2.1.5
 marshmallow==3.21.3
 md2pdf==1.0.1
