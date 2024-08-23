@@ -11,7 +11,7 @@ export default function Portfolio() {
     useEffect(() => {
         setDashBoardNavBarState("Portfolio");
     }); 
-    // TODO: Add client name to the end of portfolio
+
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
             <div className="flex flex-row justify-between">
