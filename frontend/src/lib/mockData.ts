@@ -334,3 +334,93 @@ export const mockOptimizer = {
         {"Cash": 5.00},
     ]
 }
+
+export const mockStocks = [
+    {
+        name: "Apple",
+        ticker: "AAPL",
+        geography: "USA",
+        market: 8779.00,
+        last: 178.58,
+        cost: 130.23,
+    },
+    {
+        name: "NVIDIA",
+        ticker: "NVDA",
+        geography: "USA",
+        market: 3245.00,
+        last: 124.74,
+        cost: 120.42,
+    },
+    {
+        name: "Meta Platforms",
+        ticker: "META",
+        geography: "USA",
+        market: 12472.00,
+        last: 447.86,
+        cost: 324.23,
+    }
+]
+
+export const mockAssets = [
+    {
+        "name": "Global Tech Fund",
+        "ticker": "GTF",
+        "geography": "Global",
+        "cost": 125.45
+    },
+    {
+        "name": "US Treasury Bonds",
+        "ticker": "USTB",
+        "geography": "USA",
+        "cost": 102.30
+    },
+    {
+        "name": "Emerging Markets Equity",
+        "ticker": "EME",
+        "geography": "Emerging Markets",
+        "cost": 87.75
+    },
+    {
+        "name": "European Real Estate Fund",
+        "ticker": "EREF",
+        "geography": "Europe",
+        "cost": 150.20
+    },
+    {
+        "name": "Asia Pacific Growth",
+        "ticker": "APG",
+        "geography": "Asia Pacific",
+        "cost": 98.50
+    },
+    {
+        "name": "Canadian Energy ETF",
+        "ticker": "CEETF",
+        "geography": "Canada",
+        "cost": 56.90
+    },
+    {
+        "name": "Latin America Infrastructure",
+        "ticker": "LAI",
+        "geography": "Latin America",
+        "cost": 132.40
+    },
+    {
+        "name": "Japanese Small Cap",
+        "ticker": "JSC",
+        "geography": "Japan",
+        "cost": 78.60
+    },
+    {
+        "name": "Australian Natural Resources",
+        "ticker": "ANR",
+        "geography": "Australia",
+        "cost": 65.30
+    },
+    {
+        "name": "African Development Fund",
+        "ticker": "ADF",
+        "geography": "Africa",
+        "cost": 110.75
+    }
+]
