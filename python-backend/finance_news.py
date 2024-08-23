@@ -85,7 +85,6 @@ async def keyword_extraction():
     '''
     with open("research_report.json", "r") as file:
         research_report = file.read()
-        print(research_report)
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -114,8 +113,21 @@ async def keyword_extraction():
         ],
         temperature=0,
     )
-    print(response.choices[0].message.content)
-    return response.choices[0].message.content
+
+    answer = response.choices[0].message.content
+    json_obj = {}
+    answer_list = answer.split("\n")
+    current_header = ""
+    for line in answer_list:
+        if line.startswith("**"):
+            current_header = line[2:-2]
+            json_obj[current_header] = []
+        else:
+            if current_header == "":
+                pass
+            else:
+                json_obj[current_header].append(line[2:])
+    return json_obj
 
 if __name__ == "__main__":
     uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
