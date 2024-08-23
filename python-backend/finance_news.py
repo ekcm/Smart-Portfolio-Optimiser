@@ -147,47 +147,52 @@ async def sentiment_analysis():
 
     with open("research_report.txt", "r") as file:
         research_report = file.read()
+
+    negative_sentiment_analysis = []
+
+    for k,v in keyword_extraction.items():
+        for keyword in v:
     
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Your role is to search for the sentence or paragraph that is relevant to the keyword."},
-            {"role": "user", "content": f'''
-                ### Instruction ###
-                Extract the sentence or paragraph that is relevant to the keyword.
-                Keywords: "Macy's (M)"
-                Text: {research_report}.
-            '''
-            }
-        ],
-        temperature=0,
-    )
-    keyword_sentence = response.choices[0].message.content
-    print(keyword_sentence)
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Your role is to search for the sentence or paragraph that is relevant to the keyword."},
+                    {"role": "user", "content": f'''
+                        ### Instruction ###
+                        Extract the sentence or paragraph that is relevant to the keyword.
+                        Keywords: "{keyword}".
+                        Text: {research_report}.
+                    '''
+                    }
+                ],
+                temperature=0,
+            )
+            keyword_sentence = response.choices[0].message.content
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Your role is to perform sentiment analysis on the extracted text."},
-            {"role": "user", "content": f'''
-                ### Instruction ###
-                Perform sentiment analysis on the extracted text. Return the output as Positive, Negative, or Neutral.
-                Text: {keyword_sentence}.
-            '''
-            }
-        ],
-        temperature=0,
-    )
-    sentiment_analysis = response.choices[0].message.content
-    print(sentiment_analysis)
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Your role is to perform sentiment analysis on the extracted text."},
+                    {"role": "user", "content": f'''
+                        ### Instruction ###
+                        Perform sentiment analysis on the extracted text. Return the output as Positive, Negative, or Neutral.
+                        Text: {keyword_sentence}.
+                    '''
+                    }
+                ],
+                temperature=0,
+            )
+            sentiment_analysis = response.choices[0].message.content
+            if sentiment_analysis == "Negative":
+                return_json = {
+                    "keyword_extraction": keyword,
+                    "keyword_sentence": keyword_sentence,
+                    "sentiment_analysis": sentiment_analysis
+                }
+                negative_sentiment_analysis.append(return_json)
+            print(f"{keyword}: {sentiment_analysis}")
 
-    return_json = {
-        "keyword_extraction": "Macy's (M)",
-        "keyword_sentence": keyword_sentence,
-        "sentiment_analysis": sentiment_analysis
-    }
-
-    return return_json
+    return negative_sentiment_analysis
 
 if __name__ == "__main__":
     uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
