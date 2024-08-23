@@ -1,7 +1,7 @@
-// TODO: Change alert to boolean
 interface PortfolioItem {
     portfolioId: number;
     clientEmail: string;
+    clientName:  string;
     portfolioName: string;
     totalAssets: string;
     riskAppetite: string;
@@ -68,6 +68,8 @@ interface OrderExecutionProgress {
 
 interface PortfolioData {
   portfolioId: number;
+  portfolioName: string;
+  clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
   triggeredAlerts: string[];
   portfolioBreakdown: PortfolioBreakdown;
