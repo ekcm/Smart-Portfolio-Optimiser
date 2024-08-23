@@ -127,6 +127,9 @@ async def keyword_extraction():
                 pass
             else:
                 json_obj[current_header].append(line[2:])
+    json_str = json.dumps(json_obj, indent=2)
+    with open("keyword_extraction.json", "w") as file:
+        file.write(json_str)
     return json_obj
 
 if __name__ == "__main__":
