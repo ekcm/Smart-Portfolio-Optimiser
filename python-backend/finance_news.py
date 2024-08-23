@@ -50,10 +50,10 @@ async def researcher_response(query):
     json_data = json.dumps(json_data, indent=2)
     json_obj = json.loads(json_data)
 
-    with open("research_report.txt", "w") as file:
+    with open("reports/research_report.txt", "w") as file:
         file.write(research_report)
 
-    with open("research_report.json", "w") as file:
+    with open("reports/research_report.json", "w") as file:
         file.write(json_data)
     return json_obj
 
@@ -77,13 +77,13 @@ async def retrieve_finance_news(query: Query):
 #         return json_obj
 
 @app.get("/keyword_extraction")
-async def keyword_extraction():
+def keyword_extraction():
     '''
     This service is used to perform keyword_extraction on the research report.
 
     It reads the research report from the file, extracts the key words such as specific industries and companies mentioned in the report, and performs sentiment analysis on the extracted text.
     '''
-    with open("research_report.json", "r") as file:
+    with open("reports/research_report.json", "r") as file:
         research_report = file.read()
 
     response = client.chat.completions.create(
@@ -128,12 +128,12 @@ async def keyword_extraction():
             else:
                 json_obj[current_header].append(line[2:])
     json_str = json.dumps(json_obj, indent=2)
-    with open("keyword_extraction.json", "w") as file:
+    with open("reports/keyword_extraction.json", "w") as file:
         file.write(json_str)
     return json_obj
 
 @app.get("/sentiment_analysis")
-async def sentiment_analysis():
+def sentiment_analysis():
     '''
     This service is used to perform sentiment analysis on the research report.
     
@@ -141,11 +141,14 @@ async def sentiment_analysis():
 
     Using the json object, it performs sentiment analysis on the extracted text.
     '''
-    with open("keyword_extraction.json", "r") as file:
+
+    # edit the keyword_extraction.json file
+    with open("reports/keyword_extraction.json", "r") as file:
         keyword_extraction = file.read()
         keyword_extraction = json.loads(keyword_extraction)
 
-    with open("research_report.txt", "r") as file:
+    # edit the research_report.txt file
+    with open("reports/research_report.txt", "r") as file:
         research_report = file.read()
 
     negative_sentiment_analysis = []
@@ -183,16 +186,24 @@ async def sentiment_analysis():
                 temperature=0,
             )
             sentiment_analysis = response.choices[0].message.content
-            if sentiment_analysis == "Negative":
+            if "Negative" in sentiment_analysis:
                 return_json = {
                     "keyword_extraction": keyword,
                     "keyword_sentence": keyword_sentence,
-                    "sentiment_analysis": sentiment_analysis
+                    "sentiment_analysis": "Negative"
                 }
                 negative_sentiment_analysis.append(return_json)
             print(f"{keyword}: {sentiment_analysis}")
 
     return negative_sentiment_analysis
+
+# if this approach is better, we can use this instead of the other endpoints
+@app.post("/orchestrate_sentiment_analysis")
+async def orchestrate_sentiment_analysis():
+    query = "Give financial news information for this week"
+    await researcher_response(query)
+    keyword_extraction()
+    sentiment_analysis()
 
 if __name__ == "__main__":
     uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
