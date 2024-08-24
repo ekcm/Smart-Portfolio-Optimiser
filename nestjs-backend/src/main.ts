@@ -14,6 +14,7 @@ async function bootstrap() {
     .addTag('Order Service')
     .addTag('Asset Service')
     .addTag('AssetPrice Service')
+    .addTag("Core Service")
     .build()
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document)
