@@ -21,9 +21,9 @@ export class CoreService {
     constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService) { }
 
 
-    async loadHomepage(): Promise<DashboardCard[]> {
-        // const portfolios: Portfolio[] = await this.portfolioService.getByManager(managerId)
-        const portfolios: Portfolio[] = await this.portfolioService.getAll()
+    async loadHomepage(managerId: string): Promise<DashboardCard[]> {
+        const portfolios: Portfolio[] = await this.portfolioService.getByManager(managerId)
+        
         const portfolioCards: DashboardCard[] = []
 
 

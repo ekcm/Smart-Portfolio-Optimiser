@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CoreService, DashboardCard } from "src/service/core.service";
 
@@ -7,10 +7,10 @@ import { CoreService, DashboardCard } from "src/service/core.service";
 export class CoreController {
     constructor(private coreService: CoreService) { }
 
-    @Get()
+    @Get(":manager")
     @ApiOperation({ summary: "Get all Portfolios by Manager" })
-    async getAll(): Promise<DashboardCard[]> {
-      return await this.coreService.loadHomepage();
+    async loadHomepage(@Param('manager') manager: string): Promise<DashboardCard[]> {
+      return await this.coreService.loadHomepage(manager);
     }
 
 }
