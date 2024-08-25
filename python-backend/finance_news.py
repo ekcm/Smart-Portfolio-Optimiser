@@ -126,7 +126,10 @@ def keyword_extraction():
             if current_header == "":
                 pass
             else:
-                json_obj[current_header].append(line[2:])
+                if line[2:] == "":
+                    pass
+                else:
+                    json_obj[current_header].append(line[2:])
     json_str = json.dumps(json_obj, indent=2)
     with open("reports/keyword_extraction.json", "w") as file:
         file.write(json_str)
@@ -151,7 +154,7 @@ def sentiment_analysis():
     with open("reports/research_report.txt", "r") as file:
         research_report = file.read()
 
-    negative_sentiment_analysis = []
+    sentiment_analysis_list = []
 
     for k,v in keyword_extraction.items():
         for keyword in v:
@@ -186,16 +189,20 @@ def sentiment_analysis():
                 temperature=0,
             )
             sentiment_analysis = response.choices[0].message.content
+            sentiment_analysis_classification = 2
             if "Negative" in sentiment_analysis:
-                return_json = {
-                    "keyword_extraction": keyword,
-                    "keyword_sentence": keyword_sentence,
-                    "sentiment_analysis": "Negative"
-                }
-                negative_sentiment_analysis.append(return_json)
-            print(f"{keyword}: {sentiment_analysis}")
+                sentiment_analysis_classification = 1
+            elif "Positive" in sentiment_analysis:
+                sentiment_analysis_classification = 3
+            return_json = {
+                "keyword_extraction": keyword,
+                "keyword_sentence": keyword_sentence,
+                "sentiment_analysis": sentiment_analysis_classification
+            }
+            sentiment_analysis_list.append(return_json)
+        print(f"{keyword}: {sentiment_analysis}")
 
-    return negative_sentiment_analysis
+    return sentiment_analysis_list
 
 # if this approach is better, we can use this instead of the other endpoints
 @app.post("/orchestrate_sentiment_analysis")
