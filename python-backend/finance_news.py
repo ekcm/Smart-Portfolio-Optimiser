@@ -203,7 +203,8 @@ async def orchestrate_sentiment_analysis():
     query = "Give financial news information for this week"
     await researcher_response(query)
     keyword_extraction()
-    sentiment_analysis()
+    json_obj = sentiment_analysis()
+    return json_obj
 
 if __name__ == "__main__":
     uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
