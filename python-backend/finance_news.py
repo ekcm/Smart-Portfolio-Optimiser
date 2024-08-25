@@ -2,13 +2,13 @@ import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from gpt_researcher import GPTResearcher
-import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from markdown_converter import read_markdown_file, convert_markdown_to_json, convert_json_to_string
 from pydantic import BaseModel
 import json
+import markdown_to_json 
+from openai import OpenAI
 
 load_dotenv(dotenv_path="../.env")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
@@ -30,6 +30,7 @@ app.add_middleware(
 )
 
 llm = ChatOpenAI(model="gpt4o")
+client = OpenAI()
 
 class Query(BaseModel):
     query: str
@@ -37,21 +38,24 @@ class Query(BaseModel):
 async def researcher_response(query):
     researcher = GPTResearcher(query=query, report_type="research_report")
     research_result = await researcher.conduct_research()
-
     research_report = await researcher.write_report()
-    print(research_report)
 
-    with open("research_report.txt", "w") as file:
+    lines = research_report.split("\n")
+    reformatted_md_text = ""
+    for line in lines:
+        if not line.startswith("# "):
+            reformatted_md_text += line + "\n"
+
+    json_data = markdown_to_json.dictify(reformatted_md_text)
+    json_data = json.dumps(json_data, indent=2)
+    json_obj = json.loads(json_data)
+
+    with open("reports/research_report.txt", "w") as file:
         file.write(research_report)
 
-    md_text = read_markdown_file("research_report.txt")
-
-    json_data = convert_markdown_to_json(md_text)
-
-    json_str = convert_json_to_string(json_data)
-    with open("research_report.json", "w") as file:
-        file.write(json_str)
-    return json_data
+    with open("reports/research_report.json", "w") as file:
+        file.write(json_data)
+    return json_obj
 
 @app.get("/")
 def read_root():
@@ -71,6 +75,135 @@ async def retrieve_finance_news(query: Query):
 #         print(type(response))
 #         json_obj = json.loads(response)
 #         return json_obj
+
+@app.get("/keyword_extraction")
+def keyword_extraction():
+    '''
+    This service is used to perform keyword_extraction on the research report.
+
+    It reads the research report from the file, extracts the key words such as specific industries and companies mentioned in the report, and performs sentiment analysis on the extracted text.
+    '''
+    with open("reports/research_report.json", "r") as file:
+        research_report = file.read()
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "Your role is to extract industry keywords and stock tickers from the research report"},
+            {"role": "user", "content": f'''
+                ### Instruction ###
+                Extract the industry keywords and stock tickers from the research report.
+                Text: Advance Auto Parts (AAP) tumbled by 17.5% after its profit for the latest quarter fell short of Wall Street's expectations, citing a \"challenging demand environment\" and lowering its full-year profit forecast ([AP News](https://apnews.com/article/stock-markets-fed-inflation-earnings-japan-a829ed05df2841063ed5da6fb3767a98)).
+            '''
+            },
+            {"role": "assistant", "content": "AAP"},
+            {"role": "user", "content": f'''
+                ### Instruction ###
+                Extract the industry keywords and stock tickers from the research report.
+                Text: Oil prices faced a weekly decline due to demand concerns and ongoing geopolitical tensions in Gaza. The market's focus remains on the potential impact of these factors on global oil supply and demand dynamics ([Bloomberg](https://www.bloomberg.com/news/articles/2024-08-22/latest-oil-market-news-and-analysis-for-aug-23)).
+            '''
+            },
+            {"role": "assistant", "content": "Oil"},
+            {"role": "user", "content": f'''
+                ### Instruction ###
+                Extract the industry keywords and stock tickers from the research report.
+                Text: {research_report}.
+            '''
+            }
+        ],
+        temperature=0,
+    )
+
+    answer = response.choices[0].message.content
+    json_obj = {}
+    answer_list = answer.split("\n")
+    current_header = ""
+    for line in answer_list:
+        if line.startswith("**"):
+            current_header = line[2:-2]
+            json_obj[current_header] = []
+        else:
+            if current_header == "":
+                pass
+            else:
+                json_obj[current_header].append(line[2:])
+    json_str = json.dumps(json_obj, indent=2)
+    with open("reports/keyword_extraction.json", "w") as file:
+        file.write(json_str)
+    return json_obj
+
+@app.get("/sentiment_analysis")
+def sentiment_analysis():
+    '''
+    This service is used to perform sentiment analysis on the research report.
+    
+    It retrieves the json object from keyword_extraction.json and the entire research text from research_report.txt.
+
+    Using the json object, it performs sentiment analysis on the extracted text.
+    '''
+
+    # edit the keyword_extraction.json file
+    with open("reports/keyword_extraction.json", "r") as file:
+        keyword_extraction = file.read()
+        keyword_extraction = json.loads(keyword_extraction)
+
+    # edit the research_report.txt file
+    with open("reports/research_report.txt", "r") as file:
+        research_report = file.read()
+
+    negative_sentiment_analysis = []
+
+    for k,v in keyword_extraction.items():
+        for keyword in v:
+    
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Your role is to search for the sentence or paragraph that is relevant to the keyword."},
+                    {"role": "user", "content": f'''
+                        ### Instruction ###
+                        Extract the sentence or paragraph that is relevant to the keyword.
+                        Keywords: "{keyword}".
+                        Text: {research_report}.
+                    '''
+                    }
+                ],
+                temperature=0,
+            )
+            keyword_sentence = response.choices[0].message.content
+
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Your role is to perform sentiment analysis on the extracted text."},
+                    {"role": "user", "content": f'''
+                        ### Instruction ###
+                        Perform sentiment analysis on the extracted text. Return the output as Positive, Negative, or Neutral.
+                        Text: {keyword_sentence}.
+                    '''
+                    }
+                ],
+                temperature=0,
+            )
+            sentiment_analysis = response.choices[0].message.content
+            if "Negative" in sentiment_analysis:
+                return_json = {
+                    "keyword_extraction": keyword,
+                    "keyword_sentence": keyword_sentence,
+                    "sentiment_analysis": "Negative"
+                }
+                negative_sentiment_analysis.append(return_json)
+            print(f"{keyword}: {sentiment_analysis}")
+
+    return negative_sentiment_analysis
+
+# if this approach is better, we can use this instead of the other endpoints
+@app.post("/orchestrate_sentiment_analysis")
+async def orchestrate_sentiment_analysis():
+    query = "Give financial news information for this week"
+    await researcher_response(query)
+    keyword_extraction()
+    sentiment_analysis()
 
 if __name__ == "__main__":
     uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
