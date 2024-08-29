@@ -29,14 +29,11 @@ export class PortfolioCalculatorService {
         var totalValue: number;
 
         const assetHoldings = portfolio.assetHoldings;
-        assetHoldings.forEach(assetHolding => {
-            valueStart += assetHolding.cost
-            const assetPrice = this.assetPriceService.getByTickerAndDate(assetHolding.ticker, new Date())
-            assetPrice.then((result) => {
-                valueYesterday += result.yesterdayClose * assetHolding.quantity
-                valueToday += result.todayClose * assetHolding.quantity
-            })
-        });
+        for (var assetHolding of assetHoldings) {
+            const assetPrice = await this.assetPriceService.getByTickerAndDate(assetHolding.ticker, new Date())
+            valueYesterday += assetPrice.yesterdayClose * assetHolding.quantity
+            valueToday += assetPrice.todayClose * assetHolding.quantity
+        }
 
         absoluteDailyPnl = valueToday - valueYesterday
         absolutePnl = valueToday - valueStart
