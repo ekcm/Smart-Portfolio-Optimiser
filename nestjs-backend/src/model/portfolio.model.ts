@@ -8,7 +8,7 @@ export enum RiskAppetite {
   HIGH = 'HIGH',
 }
 
-@Schema()
+@Schema({ collection: 'Portfolio' })
 export class Portfolio extends Document {
   @Prop()
   client: string;

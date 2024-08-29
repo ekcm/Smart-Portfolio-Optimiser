@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { AssetModule } from './module/asset.module';
 import { OrderModule } from './module/order.module';
 import { PortfolioModule } from './module/portfolio.module';
@@ -15,13 +14,11 @@ import { CoreModule } from './module/core.module';
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({
-      useFactory: async () => {
-        const mongodb = await MongoMemoryServer.create();
-        const uri = mongodb.getUri();
-        return {
-          uri
-        };
-      },
+      useFactory: () => ({
+        uri: process.env.MONGO_URI,
+        directConnection: true,
+        retryWrites: false,
+      }),
     }),
     OrderModule,
     PortfolioModule,
@@ -31,4 +28,4 @@ import { CoreModule } from './module/core.module';
     CoreModule
   ],
 })
-export class AppModule { }
+export class AppModule {}
