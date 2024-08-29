@@ -70,4 +70,12 @@ export class AssetPriceService {
       throw new NotFoundException(`AssetPrice with ticker ${ticker} on ${date.toISOString().split('T')[0]} not found`);
     }
   }
+
+  async getLatest(ticker: string): Promise<AssetPrice> {
+    const result = await this.assetPriceModel.findOne().sort({ date: -1}).exec()
+    if (!result) {
+      throw new NotFoundException(`AssetPrice with ticker ${ticker} not found`)
+    }
+    return result
+  }
 }

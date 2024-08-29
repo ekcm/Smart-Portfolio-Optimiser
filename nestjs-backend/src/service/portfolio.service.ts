@@ -50,4 +50,21 @@ export class PortfolioService {
       }, 1000)
     })
   }
+
+  async update(id: string, portfolioDto: PortfolioDto): Promise<Portfolio> {
+    return new Promise((resolve, reject) => {
+        setTimeout(async () => {
+            const existingPortfolio = await this.portfolioModel.findByIdAndUpdate(
+                id,
+                portfolioDto,
+                { new: true }
+            );
+            if (!existingPortfolio) {
+                reject(new NotFoundException('Portfolio #${id} not found'));
+            } else {
+                resolve(existingPortfolio)
+            }
+        }, 1000)
+    })
+}
 }

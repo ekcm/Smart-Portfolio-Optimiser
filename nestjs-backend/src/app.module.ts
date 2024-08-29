@@ -8,6 +8,7 @@ import { AssetPriceModule } from './module/assetprice.module';
 import { PortfolioCalculatorModule } from './module/portfolioCalculator.module';
 import { CoreModule } from './module/core.module';
 import { UserModule } from './module/user.module';
+import { TransactionsModule } from './module/transactions.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { UserModule } from './module/user.module';
     AssetPriceModule,
     PortfolioCalculatorModule,
     CoreModule,
-    UserModule
+    UserModule,
+    TransactionsModule,
   ],
 })
 export class AppModule {}
