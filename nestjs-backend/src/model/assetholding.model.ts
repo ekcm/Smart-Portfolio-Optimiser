@@ -1,7 +1,7 @@
 import { Prop, Schema } from "@nestjs/mongoose";
 import { Type } from "class-transformer";
 
-@Schema()
+@Schema({ collection: 'AssetHolding' })
 export class AssetHolding {
     @Prop({ required: true })
     ticker: string;
