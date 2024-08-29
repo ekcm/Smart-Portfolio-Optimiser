@@ -6,7 +6,7 @@ export enum OrderType {
     SELL = 'SELL',
 }
 
-@Schema()
+@Schema({ collection: 'Order' })
 export class Order extends Document {
     @Prop({ enum: OrderType })
     orderType: OrderType;

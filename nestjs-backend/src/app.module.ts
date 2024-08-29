@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { AssetModule } from './module/asset.module';
 import { OrderModule } from './module/order.module';
 import { PortfolioModule } from './module/portfolio.module';
 import { AssetPriceModule } from './module/assetprice.module';
 import { PortfolioCalculatorModule } from './module/portfolioCalculator.module';
 import { CoreModule } from './module/core.module';
+import { UserModule } from './module/user.module';
+import { TransactionsModule } from './module/transactions.module';
 
 @Module({
   imports: [
@@ -15,20 +16,20 @@ import { CoreModule } from './module/core.module';
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({
-      useFactory: async () => {
-        const mongodb = await MongoMemoryServer.create();
-        const uri = mongodb.getUri();
-        return {
-          uri
-        };
-      },
+      useFactory: () => ({
+        uri: process.env.MONGO_URI,
+        directConnection: true,
+        retryWrites: false,
+      }),
     }),
     OrderModule,
     PortfolioModule,
     AssetModule,
     AssetPriceModule,
     PortfolioCalculatorModule,
-    CoreModule
+    CoreModule,
+    UserModule,
+    TransactionsModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}
