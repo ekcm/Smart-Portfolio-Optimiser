@@ -6,3 +6,4 @@
 pyvenv.cfg
 /python-backend/.ipynb_checkpoints
 /python-backend/reports
+.DS_Store

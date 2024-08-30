@@ -6,7 +6,7 @@ export enum AssetType {
     BOND = 'BOND',
 }
 
-@Schema()
+@Schema({ collection: 'Asset' })
 export class Asset extends Document {
     @Prop()
     ticker: string;

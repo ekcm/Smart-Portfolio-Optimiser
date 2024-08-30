@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import yahoo_fin.stock_info as si
 import json
 import uvicorn
+import requests
 
 app = FastAPI()
 
@@ -82,13 +83,24 @@ def get_all_stock_info():
     for stock in dow_list:
         stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
         stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
-        stock_info[stock] = {
+        stock_data = {
             "ticker": stock,
             "company": dow_list_info[stock][0],
             "sector": dow_list_info[stock][1],
-            "today_close": stock_info_today["close"].iloc[-1],
-            "yesterday_close": stock_info_yesterday["close"].iloc[-1]
+            "todayClose": stock_info_today["close"].iloc[-1],
+            "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
+            "date": today.strftime('%Y-%m-%d')
         }
+
+        # Send data to NestJS backend to insert into the AssetPrice collection
+        response = requests.post("http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
+
+        if response.status_code != 201:  # Check if creation was successful
+            print(f"Failed to insert data for {stock}: {response.text}")
+        else:
+            print(f"Successfully inserted data for {stock}")
+
+        stock_info[stock] = stock_data
 
     return stock_info
 
@@ -97,15 +109,24 @@ def get_stock_info(stock):
     today, yesterday, previousday = get_trading_days()
     stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
     stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
-    stock_info = {
+    stock_data = {
         "ticker": stock,
         "company": dow_list_info[stock][0],
         "sector": dow_list_info[stock][1],
-        "today_close": stock_info_today["close"].iloc[-1],
-        "yesterday_close": stock_info_yesterday["close"].iloc[-1]
+        "todayClose": stock_info_today["close"].iloc[-1],
+        "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
+        "date": today.strftime('%Y-%m-%d')
     }
 
-    return stock_info
+    # Send data to NestJS backend to insert into the AssetPrice collection
+    response = requests.post(f"http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
+
+    if response.status_code != 201:  # Check if creation was successful
+        print(f"Failed to insert data for {stock}: {response.text}")
+    else:
+        print(f"Successfully inserted data for {stock}")
+
+    return stock_data
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)

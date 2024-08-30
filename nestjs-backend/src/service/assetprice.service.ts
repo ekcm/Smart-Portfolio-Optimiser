@@ -9,98 +9,73 @@ export class AssetPriceService {
   constructor(@InjectModel(AssetPrice.name) private assetPriceModel: Model<AssetPrice>) { }
 
   async getAll(): Promise<AssetPrice[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.assetPriceModel.find().exec());
-      }, 1000);
-    });
+    return await this.assetPriceModel.find().exec();
   }
 
   async getByTicker(ticker: string): Promise<AssetPrice[]> {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const assetPrices = await this.assetPriceModel.find({ ticker }).exec();
-        if (assetPrices && assetPrices.length > 0) {
-          resolve(assetPrices);
-        } else {
-          reject(new NotFoundException(`Asset prices with ticker ${ticker} not found`));
-        }
-      }, 1000);
-    });
+    const assetPrices = await this.assetPriceModel.find({ ticker }).exec();
+    if (assetPrices && assetPrices.length > 0) {
+      return assetPrices;
+    } else {
+      throw new NotFoundException(`Asset prices with ticker ${ticker} not found`);
+    }
   }
 
   async getByTickerAndDate(ticker: string, date: Date): Promise<AssetPrice> {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        const assetPrice = await this.assetPriceModel.findOne({ ticker, date }).exec();
-        if (assetPrice) {
-          resolve(assetPrice);
-        } else {
-          reject(new NotFoundException(`AssetPrice with ticker ${ticker} on ${date.toISOString().split('T')[0]} not found`));
-        }
-      }, 1000);
-    });
+    const assetPrice = await this.assetPriceModel.findOne({ ticker, date }).exec();
+    if (assetPrice) {
+      return assetPrice;
+    } else {
+      throw new NotFoundException(`AssetPrice with ticker ${ticker} on ${date.toISOString().split('T')[0]} not found`);
+    }
   }
 
   async create(assetPriceDto: AssetPriceDto): Promise<AssetPrice> {
-    return new Promise((resolve, reject) => {
+    console.log('Attempting to insert asset price:', assetPriceDto);  // Debugging log
+  
+    // Convert date string to Date object if necessary
+    if (typeof assetPriceDto.date === 'string') {
+      assetPriceDto.date = new Date(assetPriceDto.date);  // Convert string to Date
+    }
+  
+    try {
       const createdAssetPrice = new this.assetPriceModel(assetPriceDto);
-      setTimeout(async () => {
-        try {
-          const existingAssetPrice = await this.assetPriceModel.findOne({
-            ticker: assetPriceDto.ticker,
-            date: assetPriceDto.date,
-          }).exec();
-
-          if (existingAssetPrice) {
-            reject(new ConflictException(`An asset price record for ticker ${assetPriceDto.ticker} on ${assetPriceDto.date.toISOString().split('T')[0]} already exists`));
-          } else {
-            resolve(await createdAssetPrice.save());
-          }
-        } catch (error) {
-          reject(error);
-        }
-      }, 1000);
-    });
-  }
+      const result = await createdAssetPrice.save();
+      console.log('Inserted data:', result);  // Confirm insertion
+      return result;
+    } catch (error) {
+      console.error('Error inserting data:', error.message);  // Log the error message
+      throw new Error('Failed to insert asset price.');  // General error to prevent sensitive details leakage
+    }
+  }  
 
   async update(ticker: string, date: Date, updateDto: AssetPriceDto): Promise<AssetPrice> {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        try {
-          const updatedAssetPrice = await this.assetPriceModel.findOneAndUpdate(
-            { ticker, date },  
-            updateDto,         
-            { new: true }      
-          ).exec();
+    const updatedAssetPrice = await this.assetPriceModel.findOneAndUpdate(
+      { ticker, date },
+      updateDto,
+      { new: true }
+    ).exec();
 
-          if (!updatedAssetPrice) {
-            reject(new NotFoundException(`AssetPrice with ticker ${ticker} on ${date.toISOString().split('T')[0]} not found`));
-          } else {
-            resolve(updatedAssetPrice);
-          }
-        } catch (error) {
-          reject(error);
-        }
-      }, 1000);
-    });
+    if (!updatedAssetPrice) {
+      throw new NotFoundException(`AssetPrice with ticker ${ticker} on ${date.toISOString().split('T')[0]} not found`);
+    } else {
+      return updatedAssetPrice;
+    }
   }
 
   async delete(ticker: string, date: Date): Promise<void> {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        try {
-          const result = await this.assetPriceModel.findOneAndDelete({ ticker, date }).exec();
+    const result = await this.assetPriceModel.findOneAndDelete({ ticker, date }).exec();
 
-          if (!result) {
-            reject(new NotFoundException(`AssetPrice with ticker ${ticker} on ${date.toISOString().split('T')[0]} not found`));
-          } else {
-            resolve();
-          }
-        } catch (error) {
-          reject(error);
-        }
-      }, 1000);
-    });
+    if (!result) {
+      throw new NotFoundException(`AssetPrice with ticker ${ticker} on ${date.toISOString().split('T')[0]} not found`);
+    }
+  }
+
+  async getLatest(ticker: string): Promise<AssetPrice> {
+    const result = await this.assetPriceModel.findOne().sort({ date: -1}).exec()
+    if (!result) {
+      throw new NotFoundException(`AssetPrice with ticker ${ticker} not found`)
+    }
+    return result
   }
 }
