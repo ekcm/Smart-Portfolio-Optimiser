@@ -30,12 +30,10 @@ export class PortfolioBreakdownService{
             var assetPrice
             
             while (!success && counter < 3) {
-                console.log(date)
                 try {
                     assetPrice = await this.assetPriceService.getByTickerAndDate(assetHolding.ticker, date)
                     success = true
                 } catch (error) { 
-                    console.log(error)
                     date.setDate(date.getDate() - 1)
                     counter++
                 }
