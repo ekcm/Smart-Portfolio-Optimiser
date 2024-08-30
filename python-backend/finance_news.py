@@ -9,6 +9,7 @@ from pydantic import BaseModel
 import json
 import markdown_to_json 
 from openai import OpenAI
+from datetime import datetime
 
 load_dotenv(dotenv_path="../.env")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
@@ -126,7 +127,10 @@ def keyword_extraction():
             if current_header == "":
                 pass
             else:
-                json_obj[current_header].append(line[2:])
+                if line[2:] == "":
+                    pass
+                else:
+                    json_obj[current_header].append(line[2:])
     json_str = json.dumps(json_obj, indent=2)
     with open("reports/keyword_extraction.json", "w") as file:
         file.write(json_str)
@@ -151,7 +155,7 @@ def sentiment_analysis():
     with open("reports/research_report.txt", "r") as file:
         research_report = file.read()
 
-    negative_sentiment_analysis = []
+    sentiment_analysis_list = []
 
     for k,v in keyword_extraction.items():
         for keyword in v:
@@ -186,16 +190,20 @@ def sentiment_analysis():
                 temperature=0,
             )
             sentiment_analysis = response.choices[0].message.content
+            sentiment_analysis_classification = 2
             if "Negative" in sentiment_analysis:
-                return_json = {
-                    "keyword_extraction": keyword,
-                    "keyword_sentence": keyword_sentence,
-                    "sentiment_analysis": "Negative"
-                }
-                negative_sentiment_analysis.append(return_json)
-            print(f"{keyword}: {sentiment_analysis}")
+                sentiment_analysis_classification = 1
+            elif "Positive" in sentiment_analysis:
+                sentiment_analysis_classification = 3
+            return_json = {
+                "keyword_extraction": keyword,
+                "keyword_sentence": keyword_sentence,
+                "sentiment_analysis": sentiment_analysis_classification,
+                "date": datetime.now().date()
+            }
+            sentiment_analysis_list.append(return_json)
 
-    return negative_sentiment_analysis
+    return sentiment_analysis_list
 
 # if this approach is better, we can use this instead of the other endpoints
 @app.post("/orchestrate_sentiment_analysis")
@@ -203,7 +211,8 @@ async def orchestrate_sentiment_analysis():
     query = "Give financial news information for this week"
     await researcher_response(query)
     keyword_extraction()
-    sentiment_analysis()
+    json_obj = sentiment_analysis()
+    return json_obj
 
 if __name__ == "__main__":
     uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
