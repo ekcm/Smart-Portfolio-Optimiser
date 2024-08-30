@@ -30,7 +30,22 @@ export class PortfolioCalculatorService {
 
         const assetHoldings = portfolio.assetHoldings;
         for (var assetHolding of assetHoldings) {
-            const assetPrice = await this.assetPriceService.getByTickerAndDate(assetHolding.ticker, new Date())
+            let date = new Date()
+            date.setHours(8, 0, 0, 0)
+            let success = false
+            let counter = 0
+            var assetPrice
+            while (!success && counter < 3) {
+                console.log(date)
+                try {
+                    assetPrice =  await this.assetPriceService.getByTickerAndDate(assetHolding.ticker, date)
+                    success = true
+                } catch (error) {
+                    date.setDate(date.getDate() - 1) 
+                    counter++
+                }
+            }
+
             valueYesterday += assetPrice.yesterdayClose * assetHolding.quantity
             valueToday += assetPrice.todayClose * assetHolding.quantity
         }
