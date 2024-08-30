@@ -5,6 +5,7 @@ import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioBreakdown, PortfolioBreakdownService } from './portfolioBreakdown.service';
 
 export type DashboardCard = {
+    portfolioId: string,
     clientName: string,
     portfolioName: string,
     riskAppetite: string,
@@ -47,6 +48,7 @@ export class CoreService {
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
 
             portfolioCards.push({
+                portfolioId: portfolio._id.toString(),
                 clientName: portfolio.client,
                 portfolioName: portfolio.portfolioName,
                 riskAppetite: portfolio.riskAppetite,
