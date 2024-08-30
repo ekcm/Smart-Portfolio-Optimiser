@@ -1,5 +1,6 @@
 /Lib/site-packages
 /python-backend/venv
+/python-backend/env
 .env
 /python-backend/__pycache__
 /Scripts

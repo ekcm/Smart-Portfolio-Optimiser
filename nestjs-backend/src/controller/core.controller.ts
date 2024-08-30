@@ -13,7 +13,7 @@ export class CoreController {
       return await this.coreService.loadHomepage(manager);
     }
 
-    @Get(":portfolioId")
+    @Get("portfolio/:portfolioId")
     @ApiOperation({ summary: "Load Portfolio data of a specified portfolio"})
     async loadPortfolio(@Param('portfolioId') portfolioId: string): Promise<PortfolioData> {
       return await this.coreService.loadPortfolio(portfolioId);
