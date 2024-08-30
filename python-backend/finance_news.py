@@ -9,6 +9,7 @@ from pydantic import BaseModel
 import json
 import markdown_to_json 
 from openai import OpenAI
+from datetime import datetime
 
 load_dotenv(dotenv_path="../.env")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
@@ -197,10 +198,10 @@ def sentiment_analysis():
             return_json = {
                 "keyword_extraction": keyword,
                 "keyword_sentence": keyword_sentence,
-                "sentiment_analysis": sentiment_analysis_classification
+                "sentiment_analysis": sentiment_analysis_classification,
+                "date": datetime.now().date()
             }
             sentiment_analysis_list.append(return_json)
-        print(f"{keyword}: {sentiment_analysis}")
 
     return sentiment_analysis_list
 
