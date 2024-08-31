@@ -2,12 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
-
-export type PortfolioBreakdown = {
-    industry: { [key: string]: number | undefined}[];
-    geography: { [key: string]: number | undefined}[];
-    securities: { [key: string]: number | undefined}[];
-};
+import { PortfolioBreakdown } from "src/types";
 
 @Injectable()
 export class PortfolioBreakdownService{

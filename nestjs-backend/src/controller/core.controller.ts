@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { CoreService, DashboardCard, PortfolioData } from "src/service/core.service";
+import { CoreService } from "src/service/core.service";
+import { DashboardCard, PortfolioData } from "src/types"
 
 @ApiTags("Core Service")
 @Controller("core")
