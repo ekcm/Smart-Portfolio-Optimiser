@@ -22,24 +22,7 @@ export class PortfolioBreakdownService{
 
         for (var assetHolding of assetsHoldings) {
             const asset = await this.assetService.getByTicker(assetHolding.ticker)
-            let date = new Date()
-            date.setDate(date.getDate() + 1)
-            date.setHours(8, 0, 0, 0)
-            let success = false
-            let counter = 0
-            var assetPrice
-            
-            while (!success && counter < 3) {
-                try {
-                    assetPrice = await this.assetPriceService.getByTickerAndDate(assetHolding.ticker, date)
-                    success = true
-                } catch (error) { 
-                    date.setDate(date.getDate() - 1)
-                    counter++
-                }
-            }
-            
-
+            const assetPrice = await this.assetPriceService.getByTickerLatest(assetHolding.ticker)
             const industry = asset.industry
             const geography = asset.geography
             const value = assetHolding.quantity * assetPrice.todayClose

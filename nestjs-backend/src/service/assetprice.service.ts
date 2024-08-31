@@ -30,6 +30,15 @@ export class AssetPriceService {
     }
   }
 
+  async getByTickerLatest(ticker: string): Promise<AssetPrice> {
+    const assetPrice = await this.assetPriceModel.findOne({ ticker }).sort({ date: -1 }).exec();
+    if (assetPrice) {
+      return assetPrice;
+    } else {
+      throw new NotFoundException(`AssetPrice with ticker ${ticker} not found`);
+    }
+  }
+
   async create(assetPriceDto: AssetPriceDto): Promise<AssetPrice> {
     console.log('Attempting to insert asset price:', assetPriceDto);  // Debugging log
   
