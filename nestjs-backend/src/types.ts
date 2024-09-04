@@ -10,6 +10,7 @@ interface DashboardCard {
     totalPLPercentage: number,
     dailyPL: number,
     dailyPLPercentage: number,
+    // TODO: Add rateOfReturn
     // alertsPresent: boolean
 }
 
