@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { CoreService, DashboardCard, PortfolioData } from "src/service/core.service";
+import { CoreService } from "src/service/core.service";
+import { DashboardCard, PortfolioData } from "src/types"
 
 @ApiTags("Core Service")
 @Controller("core")
@@ -13,7 +14,7 @@ export class CoreController {
       return await this.coreService.loadHomepage(manager);
     }
 
-    @Get(":portfolioId")
+    @Get("portfolio/:portfolioId")
     @ApiOperation({ summary: "Load Portfolio data of a specified portfolio"})
     async loadPortfolio(@Param('portfolioId') portfolioId: string): Promise<PortfolioData> {
       return await this.coreService.loadPortfolio(portfolioId);

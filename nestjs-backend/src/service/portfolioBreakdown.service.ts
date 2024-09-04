@@ -2,12 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
-
-export type PortfolioBreakdown = {
-    industry: { [key: string]: number | undefined}[];
-    geography: { [key: string]: number | undefined}[];
-    securities: { [key: string]: number | undefined}[];
-};
+import { PortfolioBreakdown } from "src/types";
 
 @Injectable()
 export class PortfolioBreakdownService{
@@ -22,7 +17,7 @@ export class PortfolioBreakdownService{
 
         for (var assetHolding of assetsHoldings) {
             const asset = await this.assetService.getByTicker(assetHolding.ticker)
-            const assetPrice = await this.assetPriceService.getByTickerAndDate(assetHolding.ticker, new Date())
+            const assetPrice = await this.assetPriceService.getByTickerLatest(assetHolding.ticker)
             const industry = asset.industry
             const geography = asset.geography
             const value = assetHolding.quantity * assetPrice.todayClose

@@ -1,38 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
+import { DashboardCard, PortfolioData } from "src/types";
 import { PortfolioService } from "./portfolio.service";
+import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
-import { PortfolioBreakdown, PortfolioBreakdownService } from './portfolioBreakdown.service';
-
-export type DashboardCard = {
-    clientName: string,
-    portfolioName: string,
-    riskAppetite: string,
-    totalValue: number,
-    absolutePnl: number,
-    absoluteDailyPnl: number,
-    percentagePnl: number,
-    percentageDailyPnl: number,
-    // alertsPresent: boolean
-}
-
-export type PortfolioData = {
-    portfolioId: number;
-    portfolioAnalysis: PortfolioAnalysis;
-    triggeredAlerts: string[];
-    portfolioBreakdown: PortfolioBreakdown;
-    portfolioHoldings: [];
-    orderExecutionProgress: [];
-  };
-
-export type PortfolioAnalysis = {
-    totalAssets: number;
-    dailyPL: number;
-    dailyPLPercentage: number;
-    totalPL: number;
-    totalPLPercentage: number;
-    annualizedRoR: number;
-};
 
 @Injectable()
 export class CoreService {
@@ -47,14 +18,15 @@ export class CoreService {
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
 
             portfolioCards.push({
+                portfolioId: portfolio._id.toString(),
                 clientName: portfolio.client,
                 portfolioName: portfolio.portfolioName,
                 riskAppetite: portfolio.riskAppetite,
                 totalValue: portfolioCalculations.totalValue,
-                absolutePnl: portfolioCalculations.absolutePnl,
-                absoluteDailyPnl: portfolioCalculations.absoluteDailyPnl,
-                percentagePnl: portfolioCalculations.percentagePnl,
-                percentageDailyPnl: portfolioCalculations.percentageDailyPnl,
+                totalPL: portfolioCalculations.totalPL,
+                dailyPL: portfolioCalculations.dailyPL,
+                totalPLPercentage: portfolioCalculations.totalPLPercentage,
+                dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 // alertsPresent: boolean
             });
         }
@@ -69,10 +41,10 @@ export class CoreService {
             portfolioId: Number(portfolioId),
             portfolioAnalysis: {
                 totalAssets: portfolioCalculations.totalValue,
-                dailyPL: portfolioCalculations.absoluteDailyPnl,
-                dailyPLPercentage: portfolioCalculations.percentageDailyPnl,
-                totalPL: portfolioCalculations.absolutePnl,
-                totalPLPercentage: portfolioCalculations.percentagePnl,
+                dailyPL: portfolioCalculations.dailyPL,
+                dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
+                totalPL: portfolioCalculations.totalPL,
+                totalPLPercentage: portfolioCalculations.dailyPLPercentage,
                 annualizedRoR: 100
             },
             triggeredAlerts: [],

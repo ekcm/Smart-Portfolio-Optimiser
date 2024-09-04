@@ -2,15 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
 import { AssetPriceService } from "./assetprice.service";
 import { CalculatorUtility } from "src/utilities/calculatorUtility";
-
-type CalculatedPortfolio = {
-    portfolio: Portfolio,
-    absoluteDailyPnl: number,
-    absolutePnl: number,
-    percentageDailyPnl: number,
-    percentagePnl: number,
-    totalValue: number
-}
+import { CalculatedPortfolio } from "src/types";
 
 @Injectable()
 export class PortfolioCalculatorService {
@@ -19,10 +11,10 @@ export class PortfolioCalculatorService {
 
     async calculatePortfolioValue(portfolio: Portfolio): Promise<CalculatedPortfolio> {
         
-        var absolutePnl: number;
-        var absoluteDailyPnl: number;
-        var percentagePnl: number;
-        var percentageDailyPnl: number;
+        var totalPL: number;
+        var dailyPL: number;
+        var totalPLPercentage: number;
+        var dailyPLPercentage: number;
         var valueStart: number;
         var valueYesterday: number;
         var valueToday: number;
@@ -30,18 +22,18 @@ export class PortfolioCalculatorService {
 
         const assetHoldings = portfolio.assetHoldings;
         for (var assetHolding of assetHoldings) {
-            const assetPrice = await this.assetPriceService.getByTickerAndDate(assetHolding.ticker, new Date())
+            const assetPrice =  await this.assetPriceService.getByTickerLatest(assetHolding.ticker)
             valueYesterday += assetPrice.yesterdayClose * assetHolding.quantity
             valueToday += assetPrice.todayClose * assetHolding.quantity
         }
 
-        absoluteDailyPnl = valueToday - valueYesterday
-        absolutePnl = valueToday - valueStart
+        dailyPL = valueToday - valueYesterday
+        totalPL = valueToday - valueStart
 
-        percentageDailyPnl = CalculatorUtility.precisionRound(
+        dailyPLPercentage = CalculatorUtility.precisionRound(
             (valueToday / valueYesterday - 1) * 100, 2
         )
-        percentagePnl = CalculatorUtility.precisionRound(
+        totalPLPercentage = CalculatorUtility.precisionRound(
             (valueToday / valueStart - 1) * 100, 2
         )
 
@@ -49,10 +41,10 @@ export class PortfolioCalculatorService {
 
         return {
             portfolio: portfolio,
-            absoluteDailyPnl: absoluteDailyPnl,
-            absolutePnl: absolutePnl,
-            percentageDailyPnl: percentageDailyPnl,
-            percentagePnl: percentagePnl,
+            dailyPL: dailyPL,
+            totalPL: totalPL,
+            dailyPLPercentage: dailyPLPercentage,
+            totalPLPercentage: totalPLPercentage,
             totalValue: totalValue
         }
     }
