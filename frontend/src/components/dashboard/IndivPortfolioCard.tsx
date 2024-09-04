@@ -29,6 +29,12 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
                         </div>
                     </div>
                     <div className="flex gap-2 items-center">
+                        <h3 className="text-xl whitespace-nowrap">Client:</h3>
+                        <p className="text-xl font-bold">
+                            {data.clientName}
+                        </p>
+                    </div>
+                    <div className="flex gap-2 items-center">
                         <h3 className="text-xl whitespace-nowrap">Total assets:</h3>
                         <p className="text-xl font-bold">
                             ${data.totalAssets}

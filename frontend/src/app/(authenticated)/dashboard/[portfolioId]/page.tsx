@@ -14,7 +14,10 @@ export default function Portfolio() {
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
-            <h1 className="text-3xl font-bold">Portfolio Name 1</h1>
+            <div className="flex flex-row justify-between">
+                <h1 className="text-3xl font-semibold">{indivPortfolioData.portfolioName}</h1>
+                <h1 className="text-3xl font-medium">{indivPortfolioData.clientName}</h1>
+            </div>
             <MainPortfolio data={indivPortfolioData} />
         </main>
     )
