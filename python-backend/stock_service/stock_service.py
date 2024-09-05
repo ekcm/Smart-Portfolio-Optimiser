@@ -93,12 +93,12 @@ def get_all_stock_info():
         }
 
         # Send data to NestJS backend to insert into the AssetPrice collection
-        response = requests.post("http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
+        # response = requests.post("http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
 
-        if response.status_code != 201:  # Check if creation was successful
-            print(f"Failed to insert data for {stock}: {response.text}")
-        else:
-            print(f"Successfully inserted data for {stock}")
+        # if response.status_code != 201:  # Check if creation was successful
+        #     print(f"Failed to insert data for {stock}: {response.text}")
+        # else:
+        #     print(f"Successfully inserted data for {stock}")
 
         stock_info[stock] = stock_data
 
@@ -119,12 +119,12 @@ def get_stock_info(stock):
     }
 
     # Send data to NestJS backend to insert into the AssetPrice collection
-    response = requests.post(f"http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
+    # response = requests.post(f"http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
 
-    if response.status_code != 201:  # Check if creation was successful
-        print(f"Failed to insert data for {stock}: {response.text}")
-    else:
-        print(f"Successfully inserted data for {stock}")
+    # if response.status_code != 201:  # Check if creation was successful
+    #     print(f"Failed to insert data for {stock}: {response.text}")
+    # else:
+    #     print(f"Successfully inserted data for {stock}")
 
     return stock_data
 
