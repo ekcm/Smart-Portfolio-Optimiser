@@ -18,7 +18,7 @@ import { TransactionsModule } from './module/transactions.module';
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGO_URI,
-        directConnection: true,
+        // directConnection: true,
         retryWrites: false,
       }),
     }),
