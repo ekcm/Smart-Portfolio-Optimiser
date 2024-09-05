@@ -6,8 +6,7 @@ export class AssetHolding {
     @Prop({ required: true })
     ticker: string;
 
-    @Prop({ required: true })
-    @Type(() => Number)
+    @Prop({ required: true, type: Number })
     cost: number
 
     @Prop({ required: true })

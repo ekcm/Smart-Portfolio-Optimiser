@@ -39,8 +39,9 @@ export class CoreService {
         const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
+        console.log(portfolio)
         return {
-            portfolioId: Number(portfolioId),
+            portfolioId: portfolioId,
             portfolioAnalysis: {
                 totalAssets: portfolioCalculations.totalValue,
                 dailyPL: portfolioCalculations.dailyPL,

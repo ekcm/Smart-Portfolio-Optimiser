@@ -15,16 +15,18 @@ export class PortfolioCalculatorService {
         var dailyPL: number;
         var totalPLPercentage: number;
         var dailyPLPercentage: number;
-        var valueStart: number;
-        var valueYesterday: number;
-        var valueToday: number;
+        var valueStart: number = 0;
+        var valueYesterday: number = 0;
+        var valueToday: number = 0;
         var totalValue: number;
 
         const assetHoldings = portfolio.assetHoldings;
         for (var assetHolding of assetHoldings) {
             const assetPrice =  await this.assetPriceService.getByTickerLatest(assetHolding.ticker)
-            valueYesterday += assetPrice.yesterdayClose * assetHolding.quantity
-            valueToday += assetPrice.todayClose * assetHolding.quantity
+            const quantity = assetHolding.quantity
+            valueStart += assetHolding.cost * quantity
+            valueYesterday += assetPrice.yesterdayClose * quantity
+            valueToday += assetPrice.todayClose * quantity
         }
 
         dailyPL = valueToday - valueYesterday
@@ -47,5 +49,6 @@ export class PortfolioCalculatorService {
             totalPLPercentage: totalPLPercentage,
             totalValue: totalValue
         }
+        
     }
 }

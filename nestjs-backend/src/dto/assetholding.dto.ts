@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class AssetHoldingDto {
@@ -7,6 +8,7 @@ export class AssetHoldingDto {
 
     @IsNotEmpty()
     @IsNumber()
+    @Type(() => Number)
     cost: number;
 
     @IsNotEmpty()
