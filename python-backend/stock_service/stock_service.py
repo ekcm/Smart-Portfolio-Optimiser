@@ -7,6 +7,13 @@ import yahoo_fin.stock_info as si
 import json
 import uvicorn
 import requests
+from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path="../../.env")
+uri = os.getenv("MONGO_URI")
+client = MongoClient(uri)
 
 app = FastAPI()
 
@@ -127,6 +134,21 @@ def get_stock_info(stock):
     #     print(f"Successfully inserted data for {stock}")
 
     return stock_data
+
+@app.post("/")
+def retrieve_data():
+  try:
+      database = client.get_database("FYP-Test-DB")
+      assetPrice = database.get_collection("AssetPrice")
+      data = assetPrice.find()
+      print(data)
+      for record in data:
+          print(record)
+      client.close()
+      return {"data": "Success"}
+
+  except Exception as e:
+      return {"error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
