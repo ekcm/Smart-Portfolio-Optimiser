@@ -19,7 +19,7 @@ export class Portfolio extends Document {
   @Prop({ enum: RiskAppetite })
   riskAppetite: RiskAppetite;
 
-  @Prop({ type: Number })
+  @Prop({ required: true, type: Number })
   cashAmount: number;
 
   @Prop({ type: [{ type: AssetHolding }], default: [] })
