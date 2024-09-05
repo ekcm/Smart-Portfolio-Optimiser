@@ -1,9 +1,8 @@
 interface PortfolioItem {
     portfolioId: number;
-    clientEmail: string;
     clientName:  string;
     portfolioName: string;
-    totalAssets: string;
+    totalValue: string;
     riskAppetite: string;
     dailyPL: number;
     totalPL: number;

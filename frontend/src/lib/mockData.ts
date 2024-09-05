@@ -1,10 +1,9 @@
 export const PortfolioData = [
     {
         portfolioId: 1,
-        clientEmail: "Nvidia@email.com",
         clientName: "Nvidia",
         portfolioName: "Dummy portfolio",
-        totalAssets: "10000",
+        totalValue: "10000",
         riskAppetite: "High",
         dailyPL: -0.50,
         totalPL: 11.07,
@@ -13,10 +12,9 @@ export const PortfolioData = [
     },
     {
         portfolioId: 4,
-        clientEmail: "Chester@gmail.com",
         clientName: "Chester",
         portfolioName: "Dummy portfolio 2",
-        totalAssets: "14020",
+        totalValue: "14020",
         riskAppetite: "Medium",
         dailyPL: 1.20,
         totalPL: 14.25,
@@ -25,10 +23,9 @@ export const PortfolioData = [
     },
     {
         portfolioId: 7,
-        clientEmail: "Meta@gmail.com",
         clientName: "Meta",
         portfolioName: "Dummy portfolio 3",
-        totalAssets: "950",
+        totalValue: "950",
         riskAppetite: "Low",
         dailyPL: 1.20,
         totalPL: 14.25,

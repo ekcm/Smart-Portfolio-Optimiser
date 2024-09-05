@@ -35,9 +35,9 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
                         </p>
                     </div>
                     <div className="flex gap-2 items-center">
-                        <h3 className="text-xl whitespace-nowrap">Total assets:</h3>
+                        <h3 className="text-xl whitespace-nowrap">Portfolio Value:</h3>
                         <p className="text-xl font-bold">
-                            ${data.totalAssets}
+                            ${data.totalValue}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
