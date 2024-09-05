@@ -58,7 +58,7 @@ interface PortfolioData {
     portfolioAnalysis: PortfolioAnalysis;
     triggeredAlerts: string[];
     portfolioBreakdown: PortfolioBreakdown;
-    portfolioHoldings: [];
+    portfolioHoldings: PortfolioHoldings[];
     orderExecutionProgress: [];
 };
 
