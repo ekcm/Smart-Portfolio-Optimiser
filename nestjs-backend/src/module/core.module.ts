@@ -4,9 +4,10 @@ import { PortfolioModule } from "./portfolio.module";
 import { PortfolioCalculatorModule } from "./portfolioCalculator.module";
 import { CoreController } from "src/controller/core.controller";
 import { PortfolioBreakdownModule } from "./portfolioBreakdown.module";
+import { PortfolioHoldingsModule } from "./portfolioHoldings.module";
 
 @Module({
-    imports: [PortfolioCalculatorModule, PortfolioModule, PortfolioBreakdownModule],
+    imports: [PortfolioCalculatorModule, PortfolioModule, PortfolioBreakdownModule, PortfolioHoldingsModule],
     controllers: [CoreController],
     providers: [CoreService],
     exports: [CoreService],
