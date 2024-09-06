@@ -96,7 +96,7 @@ def get_all_stock_info():
             "sector": dow_list_info[stock][1],
             "todayClose": stock_info_today["close"].iloc[-1],
             "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
-            "date": today.strftime('%Y-%m-%d')
+            "date": datetime.now()
         }
 
         # Send data to NestJS backend to insert into the AssetPrice collection
@@ -122,7 +122,7 @@ def get_stock_info(stock):
         "sector": dow_list_info[stock][1],
         "todayClose": stock_info_today["close"].iloc[-1],
         "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
-        "date": today.strftime('%Y-%m-%d')
+        "date": datetime.now()
     }
 
     # Send data to NestJS backend to insert into the AssetPrice collection
@@ -135,20 +135,32 @@ def get_stock_info(stock):
 
     return stock_data
 
-@app.post("/")
+@app.get("/retrieve_data")
 def retrieve_data():
   try:
       database = client.get_database("FYP-Test-DB")
       assetPrice = database.get_collection("AssetPrice")
       data = assetPrice.find()
-      print(data)
       for record in data:
           print(record)
+          print(type(record['date']))
       client.close()
       return {"data": "Success"}
 
   except Exception as e:
       return {"error": str(e)}
+  
+@app.post("/insert_data")
+def insert_data():
+    stock_info = get_stock_info("AAPL")
+    try:
+        database = client.get_database("FYP-Test-DB")
+        assetPrice = database.get_collection("AssetPrice")
+        assetPrice.insert_one(stock_info)
+        client.close()
+        return {"data": "Success"}
+    except:
+        return {"error": "An error occurred"}
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
