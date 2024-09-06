@@ -183,6 +183,20 @@ def insert_all(stock_date: StockDate):
             return {"error": str(e)}
     return {"data": "All stocks were added successfully!"}
 
+@app.delete("/delete_data")
+def delete_data():
+    '''
+    deletes all data from the AssetPrice collection in the MongoDB database
+    '''
+    try:
+        with MongoClient(uri) as client:
+            database = client.get_database("FYP-Test-DB")
+            assetPrice = database.get_collection("AssetPrice")
+            assetPrice.delete_many({})
+            return {"data": "All data was deleted successfully!"}
+    except Exception as e:
+        return {"error": str(e)}
+
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
