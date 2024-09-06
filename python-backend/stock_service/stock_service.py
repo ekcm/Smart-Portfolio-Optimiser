@@ -32,41 +32,52 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+# dow_list_info = {
+#     "AAPL":["Apple", "Information Technology"],
+#     "AMGN":["Amgen", "Biopharmaceutical"],
+#     "AXP": ["American Express", "Financial Services"],
+#     "BA": ["Boeing", "Aerospace and defense"],
+#     "CAT": ["Caterpillar", "Construction and mining"],
+#     "CRM": ["Salesforce", "Information Technology"],
+#     "CSCO": ["Cisco", "Information Technology"],
+#     "CVX": ["Chevron", "Petroleum Industry"],
+#     "DIS": ["Disney", "Broadcasting and Entertainment"],
+#     "DOW": ["Dow", "Chemical Industry"],
+#     "GS": ["Goldman Sachs", "Financial Services"],
+#     "HD": ["Home Depot", "Home Improvement"],
+#     "HON": ["Honeywell", "Conglomerate"],
+#     "IBM": ["IBM", "Information Technology"],
+#     "INTC": ["Intel", "Semiconductor Industry"],
+#     "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
+#     "JPM": ["JPMorgan Chase", "Financial Services"],
+#     "KO": ["Coca-Cola", "Drink Industry"],
+#     "MCD": ["Mcdonalds", "Food Industry"],
+#     "MMM": ["3M", "Conglomerate"],
+#     "MRK": ["Merck", "Pharmaceutical Industry"],
+#     "MSFT": ["Microsoft", "Information Technology"],
+#     "NKE": ["Nike", "Clothing Industry"],
+#     "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
+#     "TRV": ["Travelers", "Insurance"],
+#     "UNH": ["UnitedHealth Group", "Managed health care"],
+#     "V": ["Visa", "Financial Services"],
+#     "VZ": ["Verizon", "Telecommunications Industry"],
+#     "WBA": ["Walgreens Boots Alliance", "Retailing"],
+#     "WMT": ["Walmart", "Retailing"]
+# }
+
 dow_list_info = {
     "AAPL":["Apple", "Information Technology"],
     "AMGN":["Amgen", "Biopharmaceutical"],
     "AXP": ["American Express", "Financial Services"],
     "BA": ["Boeing", "Aerospace and defense"],
-    "CAT": ["Caterpillar", "Construction and mining"],
-    "CRM": ["Salesforce", "Information Technology"],
-    "CSCO": ["Cisco", "Information Technology"],
-    "CVX": ["Chevron", "Petroleum Industry"],
-    "DIS": ["Disney", "Broadcasting and Entertainment"],
-    "DOW": ["Dow", "Chemical Industry"],
-    "GS": ["Goldman Sachs", "Financial Services"],
-    "HD": ["Home Depot", "Home Improvement"],
-    "HON": ["Honeywell", "Conglomerate"],
-    "IBM": ["IBM", "Information Technology"],
-    "INTC": ["Intel", "Semiconductor Industry"],
-    "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
-    "JPM": ["JPMorgan Chase", "Financial Services"],
-    "KO": ["Coca-Cola", "Drink Industry"],
-    "MCD": ["Mcdonalds", "Food Industry"],
-    "MMM": ["3M", "Conglomerate"],
-    "MRK": ["Merck", "Pharmaceutical Industry"],
-    "MSFT": ["Microsoft", "Information Technology"],
-    "NKE": ["Nike", "Clothing Industry"],
-    "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
-    "TRV": ["Travelers", "Insurance"],
-    "UNH": ["UnitedHealth Group", "Managed health care"],
-    "V": ["Visa", "Financial Services"],
-    "VZ": ["Verizon", "Telecommunications Industry"],
-    "WBA": ["Walgreens Boots Alliance", "Retailing"],
-    "WMT": ["Walmart", "Retailing"]
+    "CAT": ["Caterpillar", "Construction and mining"]
 }
 
 class StockItem(BaseModel):
     stock: str
+    date: Optional[datetime] = None
+
+class StockDate(BaseModel):
     date: Optional[datetime] = None
 
 def get_trading_days(today):
@@ -98,7 +109,7 @@ def get_stock_info(stock, date: Optional[datetime] = None):
     '''
     if date is None:
       date = datetime.now()
-      date = date - timedelta(1)
+    #   date = date - timedelta(1)
     
     if date.weekday() == 5 or date.weekday() == 6:
         return {"error": "Cannot insert data on weekends"}
@@ -154,6 +165,25 @@ def insert_stock(stock_item: StockItem):
             return {"data": f"stock {stock_item.stock} was added successfully!"}
   except Exception as e:
       return {"error": str(e)}
+  
+@app.post("/insert_all")
+def insert_all(stock_date: StockDate):
+    '''
+    insert all stocks into the AssetPrice collection in the MongoDB database
+    '''
+    
+    for stock in dow_list_info.keys():
+        stock_info = get_stock_info(stock, stock_date.date)
+        try:
+            with MongoClient(uri) as client:
+                database = client.get_database("FYP-Test-DB")
+                assetPrice = database.get_collection("AssetPrice")
+                assetPrice.insert_one(stock_info)
+        except Exception as e:
+            return {"error": str(e)}
+    return {"data": "All stocks were added successfully!"}
+
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
+
