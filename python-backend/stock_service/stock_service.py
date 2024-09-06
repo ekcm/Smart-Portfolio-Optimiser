@@ -2,6 +2,7 @@ from yahoo_fin.stock_info import get_data
 from datetime import date
 from datetime import timedelta, datetime
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 import yahoo_fin.stock_info as si
 import json
@@ -10,10 +11,11 @@ import requests
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
+from pydantic import BaseModel
+from typing import Optional
 
 load_dotenv(dotenv_path="../../.env")
 uri = os.getenv("MONGO_URI")
-client = MongoClient(uri)
 
 app = FastAPI()
 
@@ -63,57 +65,47 @@ dow_list_info = {
     "WMT": ["Walmart", "Retailing"]
 }
 
-def get_trading_days():
-    today = datetime.now()
+class StockItem(BaseModel):
+    stock: str
+    date: Optional[datetime] = None
+
+def get_trading_days(today):
     yesterday = today - timedelta(days=1)
     previousday = today - timedelta(days=2)
 
-    # if today is Sunday
-    if today.weekday() == 6:
-        today = today - timedelta(days=1)
-        yesterday = today - timedelta(days=2)
-        previousday = today - timedelta(days=3)
-        
-    # if today is Saturday
-    elif today.weekday() == 5:
-        today = today - timedelta(days=0)
-        yesterday = today - timedelta(days=1)
-        previousday = today - timedelta(days=2)
-        
+    # if today is a weekend, do not get data
+    if today.weekday() == 5 or today.weekday() == 6:
+        pass
+    else:
+        # if today is Monday
+        if today.weekday() == 0:
+            yesterday = today - timedelta(days=3)
+            previousday = today - timedelta(days=4)
+        # if today is Tuesday
+        elif today.weekday() == 1:
+            yesterday = today - timedelta(days=1)
+            previousday = today - timedelta(days=4)
+        else:
+            yesterday = today - timedelta(days=1)
+            previousday = today - timedelta(days=2)
+    
     return today, yesterday, previousday
 
-@app.get("/stock")
-def get_all_stock_info():
-    today, yesterday, previousday = get_trading_days()
-    dow_list = list(dow_list_info.keys())
-    stock_info = {}
-    for stock in dow_list:
-        stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
-        stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
-        stock_data = {
-            "ticker": stock,
-            "company": dow_list_info[stock][0],
-            "sector": dow_list_info[stock][1],
-            "todayClose": stock_info_today["close"].iloc[-1],
-            "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
-            "date": datetime.now()
-        }
-
-        # Send data to NestJS backend to insert into the AssetPrice collection
-        # response = requests.post("http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
-
-        # if response.status_code != 201:  # Check if creation was successful
-        #     print(f"Failed to insert data for {stock}: {response.text}")
-        # else:
-        #     print(f"Successfully inserted data for {stock}")
-
-        stock_info[stock] = stock_data
-
-    return stock_info
-
 @app.get("/stock/{stock}")
-def get_stock_info(stock):
-    today, yesterday, previousday = get_trading_days()
+def get_stock_info(stock, date: Optional[datetime] = None):
+    '''
+    retrieves a specific stock from yfinance and returns the data
+    '''
+    if date is None:
+      date = datetime.now()
+      date = date - timedelta(1)
+    
+    if date.weekday() == 5 or date.weekday() == 6:
+        return {"error": "Cannot insert data on weekends"}
+    if stock not in dow_list_info.keys():
+        return {"error": "Stock not in list"}
+
+    today, yesterday, previousday = get_trading_days(date)
     stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
     stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
     stock_data = {
@@ -122,45 +114,46 @@ def get_stock_info(stock):
         "sector": dow_list_info[stock][1],
         "todayClose": stock_info_today["close"].iloc[-1],
         "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
-        "date": datetime.now()
+        "date": today
     }
-
-    # Send data to NestJS backend to insert into the AssetPrice collection
-    # response = requests.post(f"http://localhost:8000/assetprice", json=stock_data)  # Ensure this URL matches your NestJS API
-
-    # if response.status_code != 201:  # Check if creation was successful
-    #     print(f"Failed to insert data for {stock}: {response.text}")
-    # else:
-    #     print(f"Successfully inserted data for {stock}")
 
     return stock_data
 
 @app.get("/retrieve_data")
 def retrieve_data():
+  '''
+  retrieves data from the AssetPrice collection in the MongoDB database
+  '''
   try:
-      database = client.get_database("FYP-Test-DB")
-      assetPrice = database.get_collection("AssetPrice")
-      data = assetPrice.find()
-      for record in data:
-          print(record)
-          print(type(record['date']))
-      client.close()
-      return {"data": "Success"}
+        with MongoClient(uri) as client:
+            database = client.get_database("FYP-Test-DB")
+            assetPrice = database.get_collection("AssetPrice")
+            data = assetPrice.find()
 
+            records = []
+            for record in data:
+                record["_id"] = str(record["_id"])
+                record = jsonable_encoder(record)
+                records.append(record)
+            client.close()
+        return {"data": records}
   except Exception as e:
       return {"error": str(e)}
-  
-@app.post("/insert_data")
-def insert_data():
-    stock_info = get_stock_info("AAPL")
-    try:
-        database = client.get_database("FYP-Test-DB")
-        assetPrice = database.get_collection("AssetPrice")
-        assetPrice.insert_one(stock_info)
-        client.close()
-        return {"data": "Success"}
-    except:
-        return {"error": "An error occurred"}
+
+@app.post("/insert_stock")
+def insert_stock(stock_item: StockItem):  
+  '''
+  insert a stock into the AssetPrice collection in the MongoDB database
+  '''
+  stock_data =  get_stock_info(stock_item.stock, stock_item.date)
+  try:
+        with MongoClient(uri) as client:
+            database = client.get_database("FYP-Test-DB")
+            assetPrice = database.get_collection("AssetPrice")
+            assetPrice.insert_one(stock_data)
+            return {"data": f"stock {stock_item.stock} was added successfully!"}
+  except Exception as e:
+      return {"error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
