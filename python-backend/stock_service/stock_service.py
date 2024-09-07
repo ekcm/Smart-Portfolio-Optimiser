@@ -32,45 +32,37 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-# dow_list_info = {
-#     "AAPL":["Apple", "Information Technology"],
-#     "AMGN":["Amgen", "Biopharmaceutical"],
-#     "AXP": ["American Express", "Financial Services"],
-#     "BA": ["Boeing", "Aerospace and defense"],
-#     "CAT": ["Caterpillar", "Construction and mining"],
-#     "CRM": ["Salesforce", "Information Technology"],
-#     "CSCO": ["Cisco", "Information Technology"],
-#     "CVX": ["Chevron", "Petroleum Industry"],
-#     "DIS": ["Disney", "Broadcasting and Entertainment"],
-#     "DOW": ["Dow", "Chemical Industry"],
-#     "GS": ["Goldman Sachs", "Financial Services"],
-#     "HD": ["Home Depot", "Home Improvement"],
-#     "HON": ["Honeywell", "Conglomerate"],
-#     "IBM": ["IBM", "Information Technology"],
-#     "INTC": ["Intel", "Semiconductor Industry"],
-#     "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
-#     "JPM": ["JPMorgan Chase", "Financial Services"],
-#     "KO": ["Coca-Cola", "Drink Industry"],
-#     "MCD": ["Mcdonalds", "Food Industry"],
-#     "MMM": ["3M", "Conglomerate"],
-#     "MRK": ["Merck", "Pharmaceutical Industry"],
-#     "MSFT": ["Microsoft", "Information Technology"],
-#     "NKE": ["Nike", "Clothing Industry"],
-#     "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
-#     "TRV": ["Travelers", "Insurance"],
-#     "UNH": ["UnitedHealth Group", "Managed health care"],
-#     "V": ["Visa", "Financial Services"],
-#     "VZ": ["Verizon", "Telecommunications Industry"],
-#     "WBA": ["Walgreens Boots Alliance", "Retailing"],
-#     "WMT": ["Walmart", "Retailing"]
-# }
-
 dow_list_info = {
     "AAPL":["Apple", "Information Technology"],
     "AMGN":["Amgen", "Biopharmaceutical"],
     "AXP": ["American Express", "Financial Services"],
     "BA": ["Boeing", "Aerospace and defense"],
-    "CAT": ["Caterpillar", "Construction and mining"]
+    "CAT": ["Caterpillar", "Construction and mining"],
+    "CRM": ["Salesforce", "Information Technology"],
+    "CSCO": ["Cisco", "Information Technology"],
+    "CVX": ["Chevron", "Petroleum Industry"],
+    "DIS": ["Disney", "Broadcasting and Entertainment"],
+    "DOW": ["Dow", "Chemical Industry"],
+    "GS": ["Goldman Sachs", "Financial Services"],
+    "HD": ["Home Depot", "Home Improvement"],
+    "HON": ["Honeywell", "Conglomerate"],
+    "IBM": ["IBM", "Information Technology"],
+    "INTC": ["Intel", "Semiconductor Industry"],
+    "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
+    "JPM": ["JPMorgan Chase", "Financial Services"],
+    "KO": ["Coca-Cola", "Drink Industry"],
+    "MCD": ["Mcdonalds", "Food Industry"],
+    "MMM": ["3M", "Conglomerate"],
+    "MRK": ["Merck", "Pharmaceutical Industry"],
+    "MSFT": ["Microsoft", "Information Technology"],
+    "NKE": ["Nike", "Clothing Industry"],
+    "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
+    "TRV": ["Travelers", "Insurance"],
+    "UNH": ["UnitedHealth Group", "Managed health care"],
+    "V": ["Visa", "Financial Services"],
+    "VZ": ["Verizon", "Telecommunications Industry"],
+    "WBA": ["Walgreens Boots Alliance", "Retailing"],
+    "WMT": ["Walmart", "Retailing"]
 }
 
 class StockItem(BaseModel):
@@ -116,19 +108,23 @@ def get_stock_info(stock, date: Optional[datetime] = None):
     if stock not in dow_list_info.keys():
         return {"error": "Stock not in list"}
 
-    today, yesterday, previousday = get_trading_days(date)
-    stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
-    stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
-    stock_data = {
-        "ticker": stock,
-        "company": dow_list_info[stock][0],
-        "sector": dow_list_info[stock][1],
-        "todayClose": stock_info_today["close"].iloc[-1],
-        "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
-        "date": today
-    }
+    try:
+        today, yesterday, previousday = get_trading_days(date)
+        stock_info_today = get_data(stock, start_date=yesterday, end_date=today, index_as_date = True, interval="1d")
+        stock_info_yesterday = get_data(stock, start_date=previousday, end_date=yesterday, index_as_date = True, interval="1d")
+        stock_data = {
+            "ticker": stock,
+            "company": dow_list_info[stock][0],
+            "sector": dow_list_info[stock][1],
+            "todayClose": stock_info_today["close"].iloc[-1],
+            "yesterdayClose": stock_info_yesterday["close"].iloc[-1],
+            "date": today
+        }
 
-    return stock_data
+        return stock_data
+    except Exception as e:
+        # return {"error": str(e)}
+        pass
 
 @app.get("/retrieve_data")
 def retrieve_data():
@@ -156,15 +152,20 @@ def insert_stock(stock_item: StockItem):
   '''
   insert a stock into the AssetPrice collection in the MongoDB database
   '''
-  stock_data =  get_stock_info(stock_item.stock, stock_item.date)
+  stock_data = get_stock_info(stock_item.stock, stock_item.date)
   try:
-        with MongoClient(uri) as client:
-            database = client.get_database("FYP-Test-DB")
-            assetPrice = database.get_collection("AssetPrice")
-            assetPrice.insert_one(stock_data)
-            return {"data": f"stock {stock_item.stock} was added successfully!"}
+        if "error" in stock_data:
+            print("error: ", stock_data["error"], "date: ", stock_item.date)
+            pass
+        else:
+            with MongoClient(uri) as client:
+                database = client.get_database("FYP-Test-DB")
+                assetPrice = database.get_collection("AssetPrice")
+                assetPrice.insert_one(stock_data)
+                return {"data": f"stock {stock_item.stock} was added successfully!"}
   except Exception as e:
       return {"error": str(e)}
+
   
 @app.post("/insert_all")
 def insert_all(stock_date: StockDate):
@@ -174,14 +175,49 @@ def insert_all(stock_date: StockDate):
     
     for stock in dow_list_info.keys():
         stock_info = get_stock_info(stock, stock_date.date)
+
         try:
-            with MongoClient(uri) as client:
-                database = client.get_database("FYP-Test-DB")
-                assetPrice = database.get_collection("AssetPrice")
-                assetPrice.insert_one(stock_info)
+            if "error" in stock_info:
+                print("error: ", stock_info["error"], "date: ", stock_info.date)
+                pass
+            else:
+                with MongoClient(uri) as client:
+                    database = client.get_database("FYP-Test-DB")
+                    assetPrice = database.get_collection("AssetPrice")
+                    assetPrice.insert_one(stock_info)
         except Exception as e:
             return {"error": str(e)}
+
     return {"data": "All stocks were added successfully!"}
+
+@app.post("/insert_all_date_range")
+def insert_all_date_range():
+    '''
+    inserts stocks for a range of dates into the AssetPrice collection
+    '''
+    errors = []
+    dates = []
+
+    for i in range(1,30):
+        aug_date = datetime(2024, 8, i)
+        dates.append(aug_date)
+
+    today = datetime.now()
+    today_date = today.day
+    for i in range(1, today_date):
+        sep_date = datetime(2024, 9, i)
+        dates.append(sep_date)
+
+    try:
+        for date in dates:
+            print(date)
+            stock_date = StockDate(date=date)
+            result = insert_all(stock_date)
+            if "error" in result:
+                errors.append({"date": date, "error": result["error"]})
+    except Exception as e:  
+        return {"error": str(e)}
+    return {"data": "All stocks were added successfully!", "errors": errors}
 
 @app.delete("/delete_data")
 def delete_data():
