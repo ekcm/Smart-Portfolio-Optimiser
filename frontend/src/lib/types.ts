@@ -1,5 +1,5 @@
 interface PortfolioItem {
-    portfolioId: number;
+    portfolioId: string;
     clientName:  string;
     portfolioName: string;
     totalValue: string;
@@ -66,7 +66,7 @@ interface OrderExecutionProgress {
 };
 
 interface PortfolioData {
-  portfolioId: number;
+  portfolioId: string;
   portfolioName: string;
   clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
