@@ -1,20 +1,24 @@
 import { PortfolioData } from "@/lib/mockData";
 import IndivPortfolioCard from "./IndivPortfolioCard";
-import { useDashboardFilterStore } from "../../store/DashBoardFilterState";
+import { useDashboardFilterStore } from "@/store/DashBoardFilterState";
 import { useEffect, useState } from "react";
 import { PortfolioItem } from "@/lib/types";
 import { fetchPortfolios } from "@/api/core";
 
 export default function Portfolios() {
+    // ! TODO: Add managerId from sessionStorage for fetching portfolios api call
     // all states from filter
     const portfolioName = useDashboardFilterStore((state) => state.portfolioName);
     const riskAppetite = useDashboardFilterStore((state) => state.riskAppetite);
     const triggeredAlerts = useDashboardFilterStore((state) => state.triggeredAlerts);
-    const [portfolios, setPortfolios] = useState<PortfolioItem[]>(PortfolioData);
-    const [filteredPortfolios, setFilteredPortfolios] = useState<PortfolioItem[]>(PortfolioData);
+    const [portfolios, setPortfolios] = useState<PortfolioItem[]>([]);
+    const [filteredPortfolios, setFilteredPortfolios] = useState<PortfolioItem[]>([]);
 
     useEffect(() => {
-        getPortfolios()
+        getPortfolios();
+    }, []);
+
+    useEffect(() => {
         // Filter the portfolio data based on the filter variables
         const filtered = portfolios.filter((portfolio) => {
             const matchesName = portfolioName
@@ -24,21 +28,21 @@ export default function Portfolios() {
                 ? portfolio.riskAppetite === riskAppetite
                 : true;
             const matchesAlerts = triggeredAlerts
-                ? portfolio.alert
+                ? portfolio.alertsPresent
                 : true;
 
             return matchesName && matchesRiskAppetite && matchesAlerts;
         });
 
         setFilteredPortfolios(filtered);
-    }, [portfolioName, riskAppetite, triggeredAlerts, portfolios]);
+    }, [portfolios, portfolioName, riskAppetite, triggeredAlerts]);
 
     const getPortfolios = async() => {
         try {
-            const data = await fetchPortfolios()
-            setPortfolios(data)
+            const data = await fetchPortfolios("66d9815bacb3da812c4e4c5b");
+            setPortfolios(data);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
