@@ -1,6 +1,6 @@
 export const PortfolioData = [
     {
-        portfolioId: 1,
+        portfolioId: "1",
         clientName: "Nvidia",
         portfolioName: "Dummy portfolio",
         totalValue: "10000",
@@ -11,7 +11,7 @@ export const PortfolioData = [
         alert: true
     },
     {
-        portfolioId: 4,
+        portfolioId: "4",
         clientName: "Chester",
         portfolioName: "Dummy portfolio 2",
         totalValue: "14020",
@@ -22,7 +22,7 @@ export const PortfolioData = [
         alert: false
     },
     {
-        portfolioId: 7,
+        portfolioId: "7",
         clientName: "Meta",
         portfolioName: "Dummy portfolio 3",
         totalValue: "950",
@@ -166,7 +166,7 @@ export const FinanceNewsData = [
 ];
 
 export const indivPortfolioData = {
-    portfolioId: 1,
+    portfolioId: "1",
     portfolioName:  "Nvidia Portfolio Max Risk",
     clientName: "Nvidia",
     portfolioAnalysis: {

@@ -1,5 +1,5 @@
 interface PortfolioItem {
-    portfolioId: number;
+    portfolioId: string;
     clientName:  string;
     portfolioName: string;
     totalValue: string;
