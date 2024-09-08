@@ -28,8 +28,8 @@ export class CoreService {
                 dailyPL: portfolioCalculations.dailyPL,
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
-                rateOfReturn: 100
-                // alertsPresent: boolean
+                rateOfReturn: 100,
+                alertsPresent: true,
             });
         }
         return portfolioCards
