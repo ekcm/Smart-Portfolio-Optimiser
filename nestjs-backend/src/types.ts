@@ -10,8 +10,8 @@ interface DashboardCard {
     totalPLPercentage: number,
     dailyPL: number,
     dailyPLPercentage: number,
-    rateOfReturn: number 
-    // alertsPresent: boolean
+    rateOfReturn: number,
+    alertsPresent: boolean
 }
 
 interface FinanceNewsItem {
