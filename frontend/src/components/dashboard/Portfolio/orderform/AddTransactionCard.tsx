@@ -5,7 +5,7 @@ import { useState } from "react";
 import { AddTransactionDataType } from "@/lib/types";
 
 interface AddTransactionCardProps {
-    portfolioId: number;
+    portfolioId: string;
     addTransaction: (data: AddTransactionDataType) => void;
 }
 
