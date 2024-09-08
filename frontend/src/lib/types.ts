@@ -66,7 +66,7 @@ interface OrderExecutionProgress {
 };
 
 interface PortfolioData {
-  portfolioId: number;
+  portfolioId: string;
   portfolioName: string;
   clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
