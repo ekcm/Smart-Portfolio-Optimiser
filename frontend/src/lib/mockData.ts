@@ -6,31 +6,37 @@ export const PortfolioData = [
         totalValue: "10000",
         riskAppetite: "High",
         dailyPL: -0.50,
+        dailyPLPercentage: 0.69,
         totalPL: 11.07,
+        totalPLPercentage: -4.65,
         rateOfReturn: 22.14,
-        alert: true
+        alertsPresent: true
     },
     {
         portfolioId: "4",
         clientName: "Chester",
         portfolioName: "Dummy portfolio 2",
-        totalValue: "14020",
+        totalValue: 14020,
         riskAppetite: "Medium",
         dailyPL: 1.20,
+        dailyPLPercentage: 0.69,
         totalPL: 14.25,
+        totalPLPercentage: -4.65,
         rateOfReturn: -30.40,
-        alert: false
+        alertsPresent: false
     },
     {
         portfolioId: "7",
         clientName: "Meta",
         portfolioName: "Dummy portfolio 3",
-        totalValue: "950",
+        totalValue: 950,
         riskAppetite: "Low",
         dailyPL: 1.20,
+        dailyPLPercentage: 0.69,
         totalPL: 14.25,
+        totalPLPercentage: -4.65,
         rateOfReturn: -30.40,
-        alert: false
+        alertsPresent: false
     }
 ];
 

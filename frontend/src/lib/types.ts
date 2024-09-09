@@ -2,12 +2,14 @@ interface PortfolioItem {
     portfolioId: string;
     clientName:  string;
     portfolioName: string;
-    totalValue: string;
+    totalValue: number;
     riskAppetite: string;
     dailyPL: number;
+    dailyPLPercentage: number,
+    totalPLPercentage: number,
     totalPL: number;
     rateOfReturn: number;
-    alert: boolean;
+    alertsPresent: boolean;
 }
 
 interface FinanceNewsItem {

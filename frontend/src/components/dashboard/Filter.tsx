@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useDashboardFilterStore } from "../../store/DashBoardFilterState";
+import { useDashboardFilterStore } from "@/store/DashBoardFilterState";
 
 export default function Filter() {
     const portfolioName = useDashboardFilterStore((state) => state.portfolioName);
@@ -12,7 +12,12 @@ export default function Filter() {
     const setRiskAppetite = useDashboardFilterStore((state) => state.setRiskAppetite);
     const setTriggeredAlerts = useDashboardFilterStore((state) => state.setTriggeredAlerts);
 
-    const riskAppetiteLevels = ["No Filter", "Low", "Medium", "High"];
+    const riskAppetiteLevels = {
+        "No Filter": "No Filter",
+        "Low": "LOW",
+        "Medium": "MEDIUM",
+        "High": "HIGH",
+    };
 
     return (
         <div className="flex items-center justify-center">
@@ -34,8 +39,10 @@ export default function Filter() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                {riskAppetiteLevels.map((level, index) => (
-                                    <SelectItem key={index} value={level}>{level}</SelectItem>
+                                {Object.entries(riskAppetiteLevels).map(([key, value], index) => (
+                                    <SelectItem key={index} value={value}>
+                                        {key}
+                                    </SelectItem>
                                 ))}
                             </SelectGroup>
                         </SelectContent>
