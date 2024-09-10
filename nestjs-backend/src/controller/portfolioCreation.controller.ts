@@ -8,7 +8,7 @@ import { OrderDto } from "src/dto/order.dto";
 export class PortfolioCreationController {
     constructor(private portfolioCreationService: PortfolioCreationService) { }
     
-    @Get(':id/:cash')
+    @Get(':portfolioId/:cash')
     @ApiOperation({ summary: "Generate orders for an optimized portfolio"})
     @ApiQuery({
         name: 'exclusions',
@@ -17,8 +17,8 @@ export class PortfolioCreationController {
         description: 'Array of the tickers of excluded assets',
         example: ['AAPL']
     })
-    async generateOrders(@Param('id') id: string, @Param('cash') cash: number, @Param('riskAppetite') riskAppetite: string, @Query('exclusions') exclusions: string[] = []): Promise<OrderDto[]>{
+    async generateOrders(@Param('portfolioId') portfolioId: string, @Param('cash') cash: number, @Param('riskAppetite') riskAppetite: string, @Query('exclusions') exclusions: string[] = []): Promise<OrderDto[]>{
         const exclusionsArray = Array.isArray(exclusions) ? exclusions : [exclusions];
-        return await this.portfolioCreationService.generateOrders(cash, riskAppetite, exclusionsArray, id);
+        return await this.portfolioCreationService.generateOrders(cash, riskAppetite, exclusionsArray, portfolioId);
     }
 }
