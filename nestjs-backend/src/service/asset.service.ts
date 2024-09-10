@@ -65,4 +65,15 @@ export class AssetService {
             }, 1000)
         })
     }
+
+    async getAllExcept(tickers: string[]): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            setTimeout(async() => {
+                const assets = await this.assetModel.find({
+                    assetName: {$nin: tickers},
+                }).exec();
+                resolve(assets);
+            }, 1000)
+        })
+    }
 }
