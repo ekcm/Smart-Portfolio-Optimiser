@@ -45,7 +45,9 @@ interface PortfolioHoldings {
   market: number;
   last: number;
   cost: number;
-  PL: number;
+  totalPL: number;
+  totalPLPercentage: number;
+  dailyPLPercentage: number;
   dailyPL: number;
   positionsRatio: number;
 };

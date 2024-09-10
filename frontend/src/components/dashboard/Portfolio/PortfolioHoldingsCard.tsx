@@ -7,6 +7,7 @@ interface PortfolioHoldingsCardProps {
 }
 
 export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardProps) {
+    console.log(data);
     const getCellClass = (value: number) => value > 0 ? 'text-green-700' : value < 0 ? 'text-red-700' : '';
     // TODO: ADD "+" to P&L when positive
     return (
@@ -48,7 +49,7 @@ export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardPr
                                     <span className="text-xs text-gray-500">{item.cost}</span>
                                 </div>
                             </TableCell>
-                            <TableCell className={getCellClass(item.PL)}>{item.PL.toFixed(2)}</TableCell>
+                            <TableCell className={getCellClass(item.totalPL)}>{item.totalPL.toFixed(2)}</TableCell>
                             <TableCell className={getCellClass(item.dailyPL)}>{item.dailyPL.toFixed(2)}</TableCell>
                             <TableCell>{item.positionsRatio.toFixed(2)}%</TableCell>
                         </TableRow>
