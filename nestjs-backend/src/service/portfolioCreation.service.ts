@@ -22,7 +22,7 @@ export class PortfolioCreationService{
                 orderType: OrderType.BUY,
                 orderDate: new Date(),
                 assetName: ticker,
-                quantity: (cash * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / (await assetPrice).todayClose,
+                quantity: (cash * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / assetPrice.todayClose,
                 price: assetPrice.todayClose,
                 portfolioId: portfolioId
             })
