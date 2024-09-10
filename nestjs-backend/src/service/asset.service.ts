@@ -66,7 +66,7 @@ export class AssetService {
         })
     }
 
-    async getAllExcept(tickers: string[]): Promise<Asset[]> {
+    async getAllExcept(tickers: string[] = []): Promise<Asset[]> {
         return new Promise((resolve) => {
             setTimeout(async() => {
                 const assets = await this.assetModel.find({
