@@ -56,6 +56,8 @@ interface PortfolioHoldings {
 
 interface PortfolioData {
     portfolioId: string;
+    clientName: string;
+    portfolioName: string;
     portfolioAnalysis: PortfolioAnalysis;
     triggeredAlerts: string[];
     portfolioBreakdown: PortfolioBreakdown;

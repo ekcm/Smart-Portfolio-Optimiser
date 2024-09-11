@@ -43,6 +43,8 @@ export class CoreService {
         console.log(portfolio)
         return {
             portfolioId: portfolioId,
+            clientName: portfolio.client,
+            portfolioName: portfolio.portfolioName,
             portfolioAnalysis: {
                 totalAssets: portfolioCalculations.totalValue,
                 dailyPL: portfolioCalculations.dailyPL,
