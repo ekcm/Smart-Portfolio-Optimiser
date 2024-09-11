@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { PortfolioCreationService } from '../service/portfolioCreation.service';
-import { OrderDto } from "src/dto/order.dto";
+import { ProposedPortfolio } from "src/types";
+import { PortfolioDto } from "src/dto/portfolio.dto";
 
 @ApiTags("Portfolio Generation Service")
 @Controller("generate")
@@ -17,8 +18,8 @@ export class PortfolioCreationController {
         description: 'Array of the tickers of excluded assets',
         example: ['AAPL']
     })
-    async generateOrders(@Param('portfolioId') portfolioId: string, @Param('cash') cash: number, @Param('riskAppetite') riskAppetite: string, @Query('exclusions') exclusions: string[] = []): Promise<OrderDto[]>{
+    async generateOrders(@Body()portfolioDto: PortfolioDto, @Query('exclusions') exclusions: string[] = []): Promise<ProposedPortfolio>{
         const exclusionsArray = Array.isArray(exclusions) ? exclusions : [exclusions];
-        return await this.portfolioCreationService.generateOrders(cash, riskAppetite, exclusionsArray, portfolioId);
+        return await this.portfolioCreationService.generateOrders(portfolioDto, exclusionsArray);
     }
 }

@@ -3,7 +3,7 @@ import { OrderService } from './order.service';
 import { AssetPriceService } from './assetprice.service';
 import { PortfolioService } from "./portfolio.service";
 import { OrderDto } from '../dto/order.dto';
-import { Order } from "src/model/order.model";
+import { Order, OrderStatus } from "src/model/order.model";
 import { AssetHolding } from "src/model/assetholding.model";
 import { Asset, AssetType } from "src/model/asset.model";
 import { AssetService } from "./asset.service";
@@ -20,9 +20,11 @@ export class TransactionService {
 
         const assetPrice = await this.assetPriceService.getLatest(order.assetName)
         const asset = await this.assetService.getByTicker(order.assetName)
-        if (order.price <= assetPrice.todayClose) {
+        if (order.price >= assetPrice.todayClose) {
+            order.price = assetPrice.todayClose
             portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, asset.type)
             await this.portfolioService.update(portfolio.id, portfolio)
+            order.orderStatus = OrderStatus.FILLED
         }
         const result = await this.orderService.create(order)
         return result
