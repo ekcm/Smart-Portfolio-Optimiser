@@ -27,6 +27,9 @@ export class Portfolio extends Document {
 
   @Prop()
   manager: string;
+
+  @Prop({ type: [String], default: []})
+  exclusions: string[]
 }
 
 // missing and transactionsList

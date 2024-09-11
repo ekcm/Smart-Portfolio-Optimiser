@@ -23,7 +23,8 @@ export class PortfolioCreationService{
             riskAppetite: RiskAppetite[riskAppetite],
             cashAmount: cash,
             assetHoldings: [],
-            manager: managerId
+            manager: managerId,
+            exclusions: []
         })
         const assets = await this.assetService.getAllExcept(exclusions);
         const tickers = assets.map(asset => asset.ticker);
