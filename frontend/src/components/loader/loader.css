@@ -1,44 +1,49 @@
 /* HTML: <div class="loader"></div> */
 .loader {
-    width: 20px;
-    height: 80px;
-    background: #935936;
+    height: 60px;
+    aspect-ratio: 1;
     position: relative;
 }
 
-.loader:before {
+.loader::before,
+.loader::after {
     content: "";
     position: absolute;
-    top: 10px;
-    left: -22px;
-    width: 25px;
-    height: 60px;
+    inset: 0;
+    border-radius: 50%;
+    transform-origin: bottom;
+}
+
+.loader::after {
     background:
-        radial-gradient(farthest-side, #fff 92%, #0000) 60% 6px/4px 4px,
-        radial-gradient(50% 60%, #53707b 92%, #0000) center/70% 55%,
-        radial-gradient(farthest-side, #53707b 92%, #0000) 50% 3px/14px 14px,
-        radial-gradient(142% 100% at bottom right, #0000 64%, #53707b 65%) bottom/57% 40%,
-        conic-gradient(from -120deg at right, #53707b 36deg, #0000 0)100% 3px/51% 12px,
-        conic-gradient(from 120deg at top left, #0000, #ef524a 2deg 40deg, #0000 43deg) top/100% 10px;
+        radial-gradient(at 75% 15%, #fffb, #0000 35%),
+        radial-gradient(at 80% 40%, #0000, #0008),
+        radial-gradient(circle 5px, #fff 94%, #0000),
+        radial-gradient(circle 10px, #000 94%, #0000),
+        linear-gradient(#F93318 0 0) top /100% calc(50% - 5px),
+        linear-gradient(#fff 0 0) bottom/100% calc(50% - 5px) #000;
     background-repeat: no-repeat;
-    transform: rotate(-26deg);
-    transform-origin: 100% 80%;
-    animation: l16 .25s infinite linear alternate;
+    animation: l20 1s infinite cubic-bezier(0.5, 120, 0.5, -120);
 }
 
-.loader:after {
-    content: "";
-    position: absolute;
-    width: 6px;
-    height: 12px;
-    left: -6px;
-    bottom: 15px;
-    border-radius: 100px 0 0 100px;
-    background: #53707b;
+.loader::before {
+    background: #ddd;
+    filter: blur(8px);
+    transform: scaleY(0.4) translate(-13px, 0px);
 }
 
-@keyframes l16 {
-    100% {
-        transform: rotate(0)
+@keyframes l20 {
+
+    30%,
+    70% {
+        transform: rotate(0deg)
+    }
+
+    49.99% {
+        transform: rotate(0.2deg)
+    }
+
+    50% {
+        transform: rotate(-0.2deg)
     }
 }
