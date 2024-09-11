@@ -7,9 +7,15 @@ interface PortfolioHoldingsCardProps {
 }
 
 export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardProps) {
-    console.log(data);
+    const computePL = (PL: number) => {
+        const formattedPL = Math.abs(PL).toFixed(2);
+        if (PL < 0) {
+            return "-$" + formattedPL;
+        } else {
+            return "+$" + formattedPL;
+        }
+    }
     const getCellClass = (value: number) => value > 0 ? 'text-green-700' : value < 0 ? 'text-red-700' : '';
-    // TODO: ADD "+" to P&L when positive
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
             <h2 className="text-xl font-medium">Portfolio Holdings</h2>
@@ -45,12 +51,12 @@ export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardPr
                             </TableCell>
                             <TableCell>
                                 <div className="flex flex-col">
-                                    <span>{item.last}</span>
-                                    <span className="text-xs text-gray-500">{item.cost}</span>
+                                    <span>{item.last.toFixed(2)}</span>
+                                    <span className="text-xs text-gray-500">{item.cost.toFixed(2)}</span>
                                 </div>
                             </TableCell>
-                            <TableCell className={getCellClass(item.totalPL)}>{item.totalPL.toFixed(2)}</TableCell>
-                            <TableCell className={getCellClass(item.dailyPL)}>{item.dailyPL.toFixed(2)}</TableCell>
+                            <TableCell className={getCellClass(item.totalPL)}>{computePL(item.totalPL)}</TableCell>
+                            <TableCell className={getCellClass(item.dailyPL)}>{computePL(item.dailyPL)}</TableCell>
                             <TableCell>{item.positionsRatio.toFixed(2)}%</TableCell>
                         </TableRow>
                     ))}

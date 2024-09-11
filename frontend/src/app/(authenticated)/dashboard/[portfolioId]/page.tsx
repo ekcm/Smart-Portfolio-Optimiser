@@ -12,12 +12,13 @@ export default function Portfolio() {
     const pathname = usePathname();
     const portfolioId = pathname.split("/")[2];
     const [indivPortfolioData, setPortfolio] = useState<PortfolioData | null>(null);
+    // loaders
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         setDashBoardNavBarState("Portfolio");
-    }, [setDashBoardNavBarState]); 
+    }); 
 
     useEffect(() => {
         const getPortfolio = async () => {

@@ -65,7 +65,7 @@ export default function CustomTable({ data }: CustomTableProps) {
                         </TableCell>
                         {isHoldings ? (
                             <>
-                                <TableCell className={getCellClass((item as PortfolioHoldings).PL)}>{(item as PortfolioHoldings).PL.toFixed(2)}</TableCell>
+                                <TableCell className={getCellClass((item as PortfolioHoldings).totalPL)}>{(item as PortfolioHoldings).totalPL.toFixed(2)}</TableCell>
                                 <TableCell className={getCellClass((item as PortfolioHoldings).dailyPL)}>{(item as PortfolioHoldings).dailyPL.toFixed(2)}</TableCell>
                                 <TableCell>{(item as PortfolioHoldings).positionsRatio.toFixed(2)}%</TableCell>
                             </>
