@@ -45,12 +45,25 @@ interface PortfolioHoldings {
   market: number;
   last: number;
   cost: number;
-  PL: number;
+  totalPL: number;
+  totalPLPercentage: number;
+  dailyPLPercentage: number;
   dailyPL: number;
   positionsRatio: number;
 };
 
-interface PortfolioHoldingsDifference extends PortfolioHoldings {
+interface PortfolioHoldingsDifference {
+  name: string;
+  ticker: string;
+  type: string;
+  geography: string;
+  position: number;
+  market: number;
+  last: number;
+  cost: number;
+  totalPL: number;
+  dailyPL: number;
+  positionsRatio: number;
   difference: number;
 };
 

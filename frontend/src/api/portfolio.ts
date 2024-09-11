@@ -1,11 +1,13 @@
+import { PortfolioData } from '@/lib/types';
 import axios from 'axios'
 
-// CLEMENT
-export const viewPortfolio = async (portfolioId : string) => {
+export const viewPortfolio = async (portfolioId : string) : Promise<PortfolioData> => {
     try {
-
+        const response = await axios.get(`http://localhost:8000/core/portfolio/${portfolioId}`);
+        return response.data;
     } catch (error) {
-
+        console.error('Error fetching portfolio:', error);
+        throw error;
     }
 }
 
