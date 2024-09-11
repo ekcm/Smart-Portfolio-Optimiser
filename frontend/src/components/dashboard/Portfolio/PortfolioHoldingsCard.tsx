@@ -22,7 +22,7 @@ export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardPr
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Symbol | Name</TableHead>
+                        <TableHead>Symbol | Ticker</TableHead>
                         <TableHead>Security Type</TableHead>
                         <TableHead>Geography</TableHead>
                         <TableHead>Position | Mkt</TableHead>
