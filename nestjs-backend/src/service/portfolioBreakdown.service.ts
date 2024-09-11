@@ -3,6 +3,7 @@ import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
 import { PortfolioBreakdown } from "src/types";
+import { CalculatorUtility } from '../utilities/calculatorUtility';
 
 @Injectable()
 export class PortfolioBreakdownService{
@@ -39,12 +40,12 @@ export class PortfolioBreakdownService{
         securities.set("stock", total);
 
         industries.forEach((value, industry) => {
-            industries.set(industry, value / total)
+            industries.set(industry, CalculatorUtility.precisionRound(value / total * 100, 2))
         });
         const industriesArray = Array.from(industries, ([key, value]) => ({[key]: value}))
 
         geographies.forEach((value, geography) => {
-            geographies.set(geography, value / total)
+            geographies.set(geography, CalculatorUtility.precisionRound(value / total * 100, 2))
         });
         const geographiesArray = Array.from(geographies, ([key, value]) => ({[key]: value}))
 
