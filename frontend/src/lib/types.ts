@@ -106,7 +106,7 @@ interface AssetsItem {
 
 interface AddTransactionDataType {
     type: string;
-    name: string;
+    ticker: string;
     cost: number;
     position: number;
     orderType: string;
