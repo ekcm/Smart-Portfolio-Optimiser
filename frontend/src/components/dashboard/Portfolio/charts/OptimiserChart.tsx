@@ -16,8 +16,8 @@ const chartConfig = {
     securities: {
         label: "Securities",
     },
-    equity: {
-        label: "Equity",
+    stock: {
+        label: "Stocks",
         color: "hsl(var(--chart-1))",
     },
     bonds: {
