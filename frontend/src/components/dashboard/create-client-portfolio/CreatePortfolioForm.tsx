@@ -1,56 +1,101 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@/components/ui/select";
 import { useTransitionRouter } from "next-view-transitions";
+import { Asset } from "@/lib/types";
+import { fetchAllAssets } from "@/api/asset";
+import MenuLoader from "@/components/loader/MenuLoader";
 
-// Define types for the errors
 type ErrorState = {
   clientName?: string;
   portfolioName?: string;
   riskAppetite?: string;
-  cash?: string;
+  cashAmount?: string;
 };
 
 export default function CreatePortfolioForm() {
   const router = useTransitionRouter();
-
-  // State management for each input field
-  const [clientName, setClientName] = useState("");
+  const [client, setClient] = useState("");
   const [portfolioName, setPortfolioName] = useState("");
   const [riskAppetite, setRiskAppetite] = useState("");
-  const [cash, setCash] = useState(0);
+  const [cashAmount, setCashAmount] = useState(0);
+  const [exclusions, setExclusions] = useState<string[]>([]);
   const [errors, setErrors] = useState<ErrorState>({});
+  const [assetsLoading, setAssetsLoading] = useState(true);
+  const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
+  const [assetError, setAssetError] = useState<string | null>(null);
 
-  // Handle form submission
+  // risk appetite levels
+  const riskAppetites = {
+    LOW: "Low",
+    MEDIUM: "Medium",
+    HIGH: "High",
+  };
+
+
+  useEffect(() => {
+    getAllAssets();
+  }, []);
+
+  const getAllAssets = async () => {
+    try {
+      const data = await fetchAllAssets();
+      setAllAssets(data);
+    } catch (error) {
+      console.error("Error fetching assets: ", error);
+      setAssetError("Failed to load assets");
+    } finally {
+      setAssetsLoading(false);
+    }
+  };
+
+  const handleAddExclusion = (value: string) => {
+    if (!exclusions.includes(value)) {
+      setExclusions([...exclusions, value]);
+    }
+  };
+
+  const handleRemoveExclusion = (index: number) => {
+    setExclusions(exclusions.filter((_, i) => i !== index));
+  };
+
+  const handleResetExclusions = () => {
+    setExclusions([]); // Reset the exclusions array
+  };
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validation logic
     const newErrors: ErrorState = {};
-    if (!clientName) newErrors.clientName = "Client name is required.";
+    if (!client) newErrors.clientName = "Client name is required.";
     if (portfolioName.length < 2)
       newErrors.portfolioName = "Portfolio name must be at least 2 characters.";
     if (!riskAppetite) newErrors.riskAppetite = "Select a valid risk appetite.";
-    if (cash === 0) newErrors.cash = "Cash amount must be at least 0";
-    // Set errors if any are found
+    if (cashAmount === 0) newErrors.cashAmount = "Cash amount must be at least 0";
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
-    // Clear errors if validation passes
     setErrors({});
 
-    // Prepare form data
     const formData = {
-      clientName,
+      client,
       portfolioName,
       riskAppetite,
-      cash,
+      cashAmount,
+      exclusions,
+      manager: "66d9815bacb3da812c4e4c5b",
+      assetHoldings: [],
     };
 
     console.log("Form data submitted:", formData);
@@ -59,13 +104,12 @@ export default function CreatePortfolioForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-8">
       <div className="flex flex-col w-1/2 gap-4">
-        {/* Client Name */}
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
           Client Name:
           <Input
             type="text"
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
+            value={client}
+            onChange={(e) => setClient(e.target.value)}
             className={errors.clientName ? "border-red-500" : ""}
           />
           {errors.clientName && (
@@ -73,7 +117,6 @@ export default function CreatePortfolioForm() {
           )}
         </Label>
 
-        {/* Portfolio Name */}
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
           Portfolio Name:
           <Input
@@ -87,7 +130,6 @@ export default function CreatePortfolioForm() {
           )}
         </Label>
 
-        {/* Risk Appetite */}
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
           Client Risk Appetite:
           <Select value={riskAppetite} onValueChange={setRiskAppetite}>
@@ -96,9 +138,9 @@ export default function CreatePortfolioForm() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {["Low", "Medium", "High"].map((risk, index) => (
-                  <SelectItem key={index} value={risk}>
-                    {risk}
+                 {Object.entries(riskAppetites).map(([key, value]) => (
+                  <SelectItem key={key} value={key}>
+                    {value}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -109,18 +151,72 @@ export default function CreatePortfolioForm() {
           )}
         </Label>
 
-        {/* Cash Amount */}
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
           Portfolio Cash Amount:
           <Input
             type="number"
-            value={cash}
-            onChange={(e) => setCash(parseFloat(e.target.value))}
+            value={cashAmount}
+            onChange={(e) => setCashAmount(parseFloat(e.target.value))}
           />
+        </Label>
+
+        {/* Exclusions using Select */}
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Exclusions List:
+          <Select onValueChange={handleAddExclusion}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select assets to exclude" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {assetsLoading ? (
+                  <MenuLoader />
+                ) : (
+                  <SelectGroup>
+                    {allAssets?.map((asset, index) => (
+                      <SelectItem key={index} value={asset.ticker}>
+                        {asset.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                )}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          {assetError && <span className="text-red-500">{assetError}</span>}
+          <ul className="flex flex-col list-disc list-inside gap-2">
+            {exclusions.length !==0 ?
+               <span>Your Exclusions:</span>
+               : 
+               <span>No Exclusions Selected</span>
+            }
+            {exclusions.map((exclusion, index) => (
+              <li key={index} className="flex items-center justify-between">
+                {exclusion}
+                <Button
+                  type="button"
+                  onClick={() => handleRemoveExclusion(index)}
+                  size="sm"
+                  variant="destructive"
+                >
+                  Remove
+                </Button>
+              </li>
+            ))}
+          </ul>
+          {/* Reset Button */}
+          {exclusions.length > 0 && (
+            <Button
+              type="button"
+              onClick={handleResetExclusions}
+              className="mt-2"
+            >
+              Reset Exclusions
+            </Button>
+          )}
         </Label>
       </div>
 
-      {/* Buttons */}
       <div className="flex gap-2 mt-4">
         <Button type="submit" className="bg-red-500">
           Create Portfolio

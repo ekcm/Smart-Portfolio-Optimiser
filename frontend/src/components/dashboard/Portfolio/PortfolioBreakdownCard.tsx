@@ -14,7 +14,7 @@ export default function PortfolioBreakdownCard({ data } : PortfolioBreakdownCard
             <h2 className="text-xl font-medium">Portfolio BreakDown</h2>
             <div className="grid grid-cols-3 gap-4">
                 <div className="flex flex-col gap-2">
-                    <span className="text-md text-gray-500">Industry Sector</span>
+                    <span className="text-md text-gray-500">Industrial Sector</span>
                     {/* <div className="flex items-center justify-between pr-8">
                         <span className="text-xs">Industry Sector</span>
                         <span className="text-xs">Sector Ratio</span>
@@ -22,7 +22,7 @@ export default function PortfolioBreakdownCard({ data } : PortfolioBreakdownCard
                     <IndustryChart data={data.industry} />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <span className="text-md text-gray-500">Geography Sector</span>
+                    <span className="text-md text-gray-500">Geographical Sector</span>
                     {/* <div className="flex items-center justify-between pr-8">
                         <span className="text-xs">Geography Sector</span>
                         <span className="text-xs">Sector Ratio</span>
