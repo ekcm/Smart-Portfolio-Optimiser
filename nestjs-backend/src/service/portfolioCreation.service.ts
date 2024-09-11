@@ -7,6 +7,7 @@ import { PortfolioService } from './portfolio.service';
 import { PortfolioDto } from 'src/dto/portfolio.dto';
 import { OrderStatus } from '../model/order.model';
 import { ProposedPortfolio } from 'src/types';
+import { RiskAppetite } from 'src/model/portfolio.model';
 
 @Injectable()
 export class PortfolioCreationService{
@@ -15,8 +16,15 @@ export class PortfolioCreationService{
 
     constructor(private assetService: AssetService, private assetPriceService: AssetPriceService, private portfolioService: PortfolioService) {}
     
-    async generateOrders(portfolio: PortfolioDto, exclusions: string[]): Promise<ProposedPortfolio> {
-        const createdPortfolio = await this.portfolioService.create(portfolio)
+    async generateOrders(clientName: string, portfolioName: string, riskAppetite: string, cash: number, managerId: string, exclusions: string[]): Promise<ProposedPortfolio> {
+        const createdPortfolio = await this.portfolioService.create({
+            client: clientName,
+            portfolioName: portfolioName,
+            riskAppetite: RiskAppetite[riskAppetite],
+            cashAmount: cash,
+            assetHoldings: [],
+            manager: managerId
+        })
         const assets = await this.assetService.getAllExcept(exclusions);
         const tickers = assets.map(asset => asset.ticker);
         const weights = {'AAPL': 1}
