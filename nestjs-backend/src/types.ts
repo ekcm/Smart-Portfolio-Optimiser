@@ -1,3 +1,5 @@
+import { OrderDto } from "./dto/order.dto";
+import { PortfolioDto } from "./dto/portfolio.dto";
 import { Portfolio } from "./model/portfolio.model";
 
 interface DashboardCard {
@@ -87,9 +89,14 @@ interface CalculatedPortfolio {
     totalValue: number
 }
 
+interface ProposedPortfolio {
+    portfolioId: string,
+    orders: OrderDto[]
+}
 
 export type {
     DashboardCard, FinanceNewsItem,
     OrderExecutionProgress, PortfolioAnalysis,
-    PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio
+    PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
+    ProposedPortfolio
 };

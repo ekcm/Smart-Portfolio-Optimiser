@@ -33,10 +33,10 @@ export class PortfolioCalculatorService {
         totalPL = CalculatorUtility.precisionRound(valueToday - valueStart,2)
 
         dailyPLPercentage = CalculatorUtility.precisionRound(
-            (valueToday / valueYesterday - 1) * 100, 2
+            ((valueToday / valueYesterday) - 1) * 100, 2
         )
         totalPLPercentage = CalculatorUtility.precisionRound(
-            (valueToday / valueStart - 1) * 100, 2
+            ((valueToday / valueStart) - 1) * 100, 2
         )
 
         totalValue = CalculatorUtility.precisionRound(valueToday + portfolio.cashAmount, 2)

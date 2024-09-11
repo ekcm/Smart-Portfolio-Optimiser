@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { OrderType } from "../model/order.model";
+import { OrderStatus, OrderType } from "../model/order.model";
 import { IsEnum, IsNotEmpty, IsString, IsNumber, IsDate } from "class-validator";
 
 export class OrderDto{
@@ -29,4 +29,8 @@ export class OrderDto{
     @IsNotEmpty()
     @IsString()
     portfolioId: string;
+
+    @IsNotEmpty()
+    @IsEnum(OrderStatus)
+    orderStatus: OrderStatus;
   }
