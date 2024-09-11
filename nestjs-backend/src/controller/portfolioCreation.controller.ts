@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { PortfolioCreationService } from '../service/portfolioCreation.service';
 import { ProposedPortfolio } from "src/types";
@@ -9,7 +9,7 @@ import { PortfolioDto } from "src/dto/portfolio.dto";
 export class PortfolioCreationController {
     constructor(private portfolioCreationService: PortfolioCreationService) { }
     
-    @Get(':portfolioId/:cash')
+    @Post("/proposal")
     @ApiOperation({ summary: "Generate orders for an optimized portfolio"})
     @ApiQuery({
         name: 'exclusions',

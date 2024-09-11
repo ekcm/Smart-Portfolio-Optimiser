@@ -17,12 +17,16 @@ export class AssetService {
             }, 1000);
         });
     }
-
+    
     async getByTicker(ticker: string): Promise<Asset> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 const asset = await this.assetModel.findOne({ ticker: ticker }).exec();
-                resolve(asset);
+                if (asset) {
+                    resolve(asset);
+                } else {
+                    reject(new NotFoundException("Not such asset was found"))
+                }
             }, 1000)
         })
     }
