@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import MainPortfolio from "@/components/dashboard/Portfolio/MainPortfolio";
 import { usePathname } from "next/navigation";
-import { viewPortfolio, getNames } from "@/api/portfolio";
+import { viewPortfolio } from "@/api/portfolio";
 import { PortfolioData } from "@/lib/types";
 
 export default function Portfolio() {
@@ -24,19 +24,12 @@ export default function Portfolio() {
         const getPortfolio = async () => {
             try {
                 const portfolioData = await viewPortfolio(portfolioId);
-                const namesData = await getNames(portfolioId);
-                const completeData: PortfolioData = {
-                    ...portfolioData, 
-                    portfolioName: namesData.portfolioName, 
-                    clientName: namesData.client,
-                };
-                setPortfolio(completeData);
-                console.log('Complete Data:', completeData);
+                setPortfolio(portfolioData);
             } catch (error) {
                 console.error('Error fetching portfolio:', error);
                 setError('Failed to load portfolio data');
             } finally {
-                setLoading(false);
+            setLoading(false);
             }
         };
 
@@ -44,8 +37,6 @@ export default function Portfolio() {
             getPortfolio();
         }
     }, [portfolioId]); 
-
-    console.log(indivPortfolioData);
 
     if (loading) {
         return (
