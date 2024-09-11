@@ -5,7 +5,12 @@ type CustomBadgeProps = {
 };
 
 export default function CustomBadge({ amount }: CustomBadgeProps) {
-    const formattedAmount = amount.toFixed(2);
+    var formattedAmount = "";
+    if (amount) {
+        formattedAmount = amount.toFixed(2).toString();
+    } else {
+        formattedAmount = "-"
+    }
     const badgeClasses =
         "variant='outline' w-24 h-8 flex items-center justify-center px-2 py-1 text-md text-white";
 
