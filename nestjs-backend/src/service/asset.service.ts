@@ -17,12 +17,16 @@ export class AssetService {
             }, 1000);
         });
     }
-
+    
     async getByTicker(ticker: string): Promise<Asset> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 const asset = await this.assetModel.findOne({ ticker: ticker }).exec();
-                resolve(asset);
+                if (asset) {
+                    resolve(asset);
+                } else {
+                    reject(new NotFoundException("Not such asset was found"))
+                }
             }, 1000)
         })
     }
@@ -62,6 +66,17 @@ export class AssetService {
                 } else {
                     resolve();
                 }
+            }, 1000)
+        })
+    }
+
+    async getAllExcept(tickers: string[] = []): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            setTimeout(async() => {
+                const assets = await this.assetModel.find({
+                    assetName: {$nin: tickers},
+                }).exec();
+                resolve(assets);
             }, 1000)
         })
     }

@@ -6,6 +6,11 @@ export enum OrderType {
     SELL = 'SELL',
 }
 
+export enum OrderStatus {
+    FILLED = 'FILLED',
+    PENDING = 'PENDING'
+}
+
 @Schema({ collection: 'Order' })
 export class Order extends Document {
     @Prop({ enum: OrderType })
@@ -25,6 +30,9 @@ export class Order extends Document {
 
     @Prop()
     portfolioId: string;
+
+    @Prop({ enum: OrderStatus})
+    orderStatus: OrderStatus;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

@@ -50,7 +50,7 @@ export class CoreService {
                 dailyPL: portfolioCalculations.dailyPL,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 totalPL: portfolioCalculations.totalPL,
-                totalPLPercentage: portfolioCalculations.dailyPLPercentage,
+                totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 annualizedRoR: 100
             },
             triggeredAlerts: [],
