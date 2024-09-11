@@ -49,7 +49,7 @@ export default function OrderList({ data, newOrders, triggeredAlerts } : OrderLi
                     market: newOrder.market,
                     last: newOrder.last,
                     cost: newOrder.cost,
-                    PL: 0, // Set PL to 0 as a placeholder
+                    totalPL: 0, // Set PL to 0 as a placeholder
                     dailyPL: 0, // Set dailyPL to 0 as a placeholder
                     positionsRatio: 0, // Set positionsRatio to 0 as a placeholder
                     difference: newOrder.orderType === "Buy" ? 1 : -1 // Set difference based on order type

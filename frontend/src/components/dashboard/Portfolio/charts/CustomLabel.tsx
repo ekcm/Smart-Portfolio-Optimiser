@@ -4,7 +4,7 @@ export default function CustomLabel(props: PieLabelRenderProps) {
     const { x, y, value } = props;
     return (
         <text x={x} y={y} fill="black" textAnchor="middle" dominantBaseline="central">
-            {`${value}%`}
+            {`${value.toFixed(2)}%`}
         </text>
     );
 };

@@ -213,8 +213,10 @@ export const indivPortfolioData = {
             market: 6511.50,
             last: 178.58,
             cost: 130.23,
-            PL: 2417.50,
             dailyPL: -1.50,
+            totalPL: 2417.50,
+            totalPLPercentage: 0.50,
+            dailyPLPercentage: 0.69,
             positionsRatio: 35.20
         },
         {
@@ -226,8 +228,10 @@ export const indivPortfolioData = {
             market: 6021.00,
             last: 124.74,
             cost: 120.42,
-            PL: 2417.50,
             dailyPL: 1.50,
+            totalPL: 2417.50,
+            totalPLPercentage: 0.79,
+            dailyPLPercentage: -0.25,
             positionsRatio: 35.80
         },
         {
@@ -239,8 +243,10 @@ export const indivPortfolioData = {
             market: 16211.50,
             last: 447.86,
             cost: 324.23,
-            PL: 2417.50,
             dailyPL: -1.50,
+            totalPL: 2417.50,
+            totalPLPercentage: 0.44,
+            dailyPLPercentage: 0.82,
             positionsRatio: 30.00
         }
     ],
@@ -302,7 +308,7 @@ export const mockOptimizer = {
             market: 6511.50,
             last: 178.58,
             cost: 130.23,
-            PL: 2417.50,
+            totalPL: 2417.50,
             dailyPL: -1.50,
             positionsRatio: 35.20,
             difference: 1
@@ -316,7 +322,7 @@ export const mockOptimizer = {
             market: 6021.00,
             last: 124.74,
             cost: 120.42,
-            PL: 2417.50,
+            totalPL: 2417.50,
             dailyPL: 1.50,
             positionsRatio: 35.80,
             difference: 1
@@ -330,7 +336,7 @@ export const mockOptimizer = {
             market: 16211.50,
             last: 447.86,
             cost: 324.23,
-            PL: 2417.50,
+            totalPL: 2417.50,
             dailyPL: -1.50,
             positionsRatio: 30.00,
             difference: -1
