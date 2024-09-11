@@ -112,6 +112,15 @@ interface AddTransactionDataType {
     orderType: string;
 }
 
+interface Asset {
+  id: string;
+  ticker: string;
+  name: string;
+  type: string;
+  geography: string;
+  industry: string;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -122,5 +131,6 @@ export type {
     OrderExecutionProgress,
     PortfolioData,
     AssetsItem,
-    AddTransactionDataType
+    AddTransactionDataType,
+    Asset,
 }
