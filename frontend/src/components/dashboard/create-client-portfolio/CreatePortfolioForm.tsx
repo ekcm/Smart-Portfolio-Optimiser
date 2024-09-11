@@ -15,7 +15,7 @@ import {
 import { useTransitionRouter } from "next-view-transitions";
 import { Asset } from "@/lib/types";
 import { fetchAllAssets } from "@/api/asset";
-import MenuLoader from "@/components/loader/MenuLoader";
+import Loader from "@/components/loader/Loader";
 
 type ErrorState = {
   clientName?: string;
@@ -170,7 +170,7 @@ export default function CreatePortfolioForm() {
             <SelectContent>
               <SelectGroup>
                 {assetsLoading ? (
-                  <MenuLoader />
+                  <Loader />
                 ) : (
                   <SelectGroup>
                     {allAssets?.map((asset, index) => (
