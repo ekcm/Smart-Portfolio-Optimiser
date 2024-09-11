@@ -1,11 +1,12 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import MainPortfolio from "@/components/dashboard/Portfolio/MainPortfolio";
 import { usePathname } from "next/navigation";
 import { viewPortfolio } from "@/api/portfolio";
 import { PortfolioData } from "@/lib/types";
+import Loader from "@/components/loader/Loader";
 
 export default function Portfolio() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
@@ -40,15 +41,13 @@ export default function Portfolio() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
-            </div>
+            <Loader/>
         );
     }
     
     if (error) return <div>{error}</div>;
     if (!indivPortfolioData) return <div>No portfolio data available.</div>;
-
+    
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
             <div className="flex flex-row justify-between">
