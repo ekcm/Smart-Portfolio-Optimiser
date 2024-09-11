@@ -22,23 +22,24 @@ export default function Portfolio() {
     }); 
 
     useEffect(() => {
-        const getPortfolio = async () => {
-            try {
-                const portfolioData = await viewPortfolio(portfolioId);
-                setPortfolio(portfolioData);
-            } catch (error) {
-                console.error('Error fetching portfolio:', error);
-                setError('Failed to load portfolio data');
-            } finally {
-            setLoading(false);
-            }
-        };
-
         if (portfolioId) {
-            getPortfolio();
+            getIndividualPortfolio();
         }
     }, [portfolioId]); 
+    
+    const getIndividualPortfolio = async () => {
+        try {
+            const portfolioData = await viewPortfolio(portfolioId);
+            setPortfolio(portfolioData);
+        } catch (error) {
+            console.error('Error fetching portfolio:', error);
+            setError('Failed to load portfolio data');
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    // loading state
     if (loading) {
         return (
             <Loader/>
