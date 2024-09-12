@@ -15,7 +15,7 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
         <Card className="flex flex-col w-full p-4 gap-2">
             <h2 className="text-xl font-medium">Orders Checkout</h2>
             {data.length === 0 ?
-                <p className="text-gray-400">No orders to checkout.</p>
+                <p className="text-gray-400">No orders to checkout</p>
             :
                 <Table>
                     <TableHeader>
