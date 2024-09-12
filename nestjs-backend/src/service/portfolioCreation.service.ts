@@ -4,7 +4,6 @@ import { AssetPriceService } from './assetprice.service';
 import { OrderDto } from 'src/dto/order.dto';
 import { OrderType } from 'src/model/order.model';
 import { PortfolioService } from './portfolio.service';
-import { PortfolioDto } from 'src/dto/portfolio.dto';
 import { OrderStatus } from '../model/order.model';
 import { ProposedPortfolio } from 'src/types';
 import { RiskAppetite } from 'src/model/portfolio.model';
@@ -24,7 +23,7 @@ export class PortfolioCreationService{
             cashAmount: cash,
             assetHoldings: [],
             manager: managerId,
-            exclusions: []
+            exclusions: exclusions
         })
         const assets = await this.assetService.getAllExcept(exclusions);
         const tickers = assets.map(asset => asset.ticker);
