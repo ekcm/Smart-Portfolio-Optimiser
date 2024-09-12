@@ -16,7 +16,7 @@ export class Order extends Document {
     @Prop({ enum: OrderType })
     orderType: OrderType;
 
-    @Prop({ type: Date })
+    @Prop({ type: Date, default: new Date()})
     orderDate: Date;
 
     @Prop()
@@ -31,7 +31,7 @@ export class Order extends Document {
     @Prop()
     portfolioId: string;
 
-    @Prop({ enum: OrderStatus})
+    @Prop({ enum: OrderStatus, default: OrderStatus.PENDING})
     orderStatus: OrderStatus;
 }
 
