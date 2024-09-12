@@ -1,0 +1,32 @@
+stages:
+  - build
+  - deploy
+
+variables:
+    APP_VERSION: $CI_PIPELINE_IID
+
+
+build-backend:
+  stage: build
+  script:
+    - cd backend
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin 
+    - docker build -t $CI_REGISTRY_IMAGE -t $CI_REGISTRY_IMAGE:$APP_VERSION .
+    - docker image ls
+    - docker push --all-tags $CI_REGISTRY_IMAGE
+    
+
+    
+  only:
+    changes:
+      - nestjs-backend/**
+
+.deploy-backend:
+  stage: deploy
+  script:
+    - cd backend
+    - echo "Deploying backend..."
+    - 
+  only:
+    changes:
+      - nestjs-backend/**
