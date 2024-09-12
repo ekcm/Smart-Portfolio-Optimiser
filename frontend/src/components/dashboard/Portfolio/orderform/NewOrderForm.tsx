@@ -65,7 +65,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     }, []);
 
     const addTransaction = async (formData: AddTransactionDataType) => {
-        console.log("Received form data in parent:", formData);
+        // console.log("Received form data in parent:", formData);
         // Call apis to get necessary asset info
         try {
             const assetTicker = formData.ticker;

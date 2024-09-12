@@ -23,7 +23,7 @@ export default function AddTransactionCard({ portfolioId, assetsData, addTransac
     const [formData, setFormData] = useState(initialFormData);
 
     const handleFormSubmit = (data: typeof formData) => {
-        console.log("Form Data:", data);
+        // console.log("Form Data:", data);
         addTransaction(data);
         handleFormReset();
     };
