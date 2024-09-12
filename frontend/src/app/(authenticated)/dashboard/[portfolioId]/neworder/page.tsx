@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
-import { indivPortfolioData } from "@/lib/mockData";
+import { useEffect, useState } from "react";
+import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import NewOrderForm from "@/components/dashboard/Portfolio/orderform/NewOrderForm";
 import { usePathname, useSearchParams } from "next/navigation";
-import { AssetsItem } from "@/lib/types";
+import { AssetsItem, PortfolioData } from "@/lib/types";
+import { viewPortfolio } from "@/api/portfolio";
+import Loader from "@/components/loader/Loader";
 
 export default function NewOrder() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
@@ -14,6 +15,10 @@ export default function NewOrder() {
     const portfolioId = pathname.split("/")[2];
     const searchParams = useSearchParams();
     const ordersParam = searchParams.get('orders');
+    const [indivPortfolioData, setIndividualPortfolio] = useState<PortfolioData | null>(null);
+    // loaders
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     // ! Data will be called from backend, ideally from cache since already called previously
     let orders: AssetsItem[] = [];
@@ -24,6 +29,34 @@ export default function NewOrder() {
     useEffect(() => {
         setDashBoardNavBarState("Empty");
     }); 
+
+    useEffect(() => {
+        if (portfolioId) {
+            getIndividualPortfolio();
+        }
+    }, [portfolioId]); 
+
+    const getIndividualPortfolio = async () => {
+        try {
+            const portfolioData = await viewPortfolio(portfolioId);
+            setIndividualPortfolio(portfolioData);
+        } catch (error) {
+            console.error('Error fetching portfolio:', error);
+            setError('Failed to load portfolio data');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // loading state
+    if (loading) {
+        return (
+            <Loader />
+        );
+    }
+
+    if (error) return <div>{error}</div>;
+    if (!indivPortfolioData) return <div>No portfolio data available.</div>;
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
