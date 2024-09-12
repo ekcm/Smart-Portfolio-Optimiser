@@ -27,9 +27,9 @@ export class OrderService {
 
     async create(orderDto: OrderDto): Promise<Order> {
         return new Promise((resolve) => {
-            setTimeout(() => {
+            setTimeout(async () => {
                 const createdOrder = new this.orderModel(orderDto);
-                resolve(createdOrder.save());
+                resolve(await createdOrder.save());
             }, 1000);
         })
     }
