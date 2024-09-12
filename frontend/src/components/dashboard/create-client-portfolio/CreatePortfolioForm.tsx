@@ -16,6 +16,7 @@ import { useTransitionRouter } from "next-view-transitions";
 import { Asset } from "@/lib/types";
 import { fetchAllAssets } from "@/api/asset";
 import Loader from "@/components/loader/Loader";
+import { createPortfolio } from "@/api/portfolio";
 
 type ErrorState = {
   clientName?: string;
@@ -25,6 +26,9 @@ type ErrorState = {
 };
 
 export default function CreatePortfolioForm() {
+  // ! Call managerId from session storage after auth completed
+  const managerId = "66d9815bacb3da812c4e4c5b";
+
   const router = useTransitionRouter();
   const [client, setClient] = useState("");
   const [portfolioName, setPortfolioName] = useState("");
@@ -74,9 +78,10 @@ export default function CreatePortfolioForm() {
     setExclusions([]); // Reset the exclusions array
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: ErrorState = {};
+    // Validation checks
     if (!client) newErrors.clientName = "Client name is required.";
     if (portfolioName.length < 2)
       newErrors.portfolioName = "Portfolio name must be at least 2 characters.";
@@ -94,9 +99,18 @@ export default function CreatePortfolioForm() {
       riskAppetite,
       cashAmount,
       exclusions,
-      manager: "66d9815bacb3da812c4e4c5b",
+      manager: managerId,
       assetHoldings: [],
     };
+
+    try {
+      // Call createPortfolio function and pass formData as the parameter
+      const result = await createPortfolio(formData);
+      console.log("Portfolio created successfully:", result);
+      router.back();
+    } catch (error) {
+      console.error("Failed to create portfolio:", error);
+    }
 
     console.log("Form data submitted:", formData);
   };

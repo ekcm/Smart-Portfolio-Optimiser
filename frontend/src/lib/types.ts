@@ -121,6 +121,28 @@ interface Asset {
   industry: string;
 }
 
+
+
+// API CALL TYPES
+// Define the interface for the asset holdings
+interface apiAssetHolding {
+  ticker: string;
+  cost: number;
+  quantity: number;
+  assetType: string;
+}
+
+// Define the interface for the form parameter
+interface CreatePortfolioForm {
+  client: string;
+  portfolioName: string;
+  riskAppetite: string;
+  cashAmount: number;
+  assetHoldings: apiAssetHolding[];
+  manager: string;
+  exclusions: string[];
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -133,4 +155,7 @@ export type {
     AssetsItem,
     AddTransactionDataType,
     Asset,
+    // API CALL TYPES
+    apiAssetHolding,
+    CreatePortfolioForm
 }
