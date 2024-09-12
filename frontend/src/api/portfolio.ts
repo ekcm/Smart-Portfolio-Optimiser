@@ -18,7 +18,7 @@ export const viewPortfolio = async (portfolioId : string) : Promise<PortfolioDat
 
 export const createPortfolio = async (form: CreatePortfolioForm) => {
     try {
-        const api = `${basePortfolioUrl}/portfolio`;
+        const api = `${basePortfolioUrl}`;
         const response = await axios.post(api, form);
         console.log('Portfolio created successfully:', response.data);
         return response.data;
