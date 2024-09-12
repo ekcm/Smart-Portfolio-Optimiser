@@ -12,7 +12,7 @@ export default function Portfolio() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
     const pathname = usePathname();
     const portfolioId = pathname.split("/")[2];
-    const [indivPortfolioData, setPortfolio] = useState<PortfolioData | null>(null);
+    const [indivPortfolioData, setIndividualPortfolio] = useState<PortfolioData | null>(null);
     // loaders
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -30,7 +30,7 @@ export default function Portfolio() {
     const getIndividualPortfolio = async () => {
         try {
             const portfolioData = await viewPortfolio(portfolioId);
-            setPortfolio(portfolioData);
+            setIndividualPortfolio(portfolioData);
         } catch (error) {
             console.error('Error fetching portfolio:', error);
             setError('Failed to load portfolio data');

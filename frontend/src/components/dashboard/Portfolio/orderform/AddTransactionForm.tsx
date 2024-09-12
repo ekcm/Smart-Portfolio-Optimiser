@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { Asset } from "@/lib/types";
 import { fetchCurrentAssetPrice } from "@/api/asset";
+import { delay } from "@/utils/utils";
 
 interface AddTransactionFormProps {
     assetsData: Asset[] | undefined;
@@ -33,6 +34,9 @@ interface AddTransactionFormProps {
 }
 
 export default function AddTransactionForm({ assetsData, formData, setFormData, onSubmit, onReset }: AddTransactionFormProps) {
+    // Loading state
+    const [isLoading, setIsLoading] = useState(false); 
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -53,9 +57,17 @@ export default function AddTransactionForm({ assetsData, formData, setFormData, 
         }
     };
 
-    const handleSubmit = () => {
-        console.log(formData);
-        onSubmit(formData);
+    const handleSubmit = async () => {
+        setIsLoading(true); // Set loading to true when submit starts
+        try {
+            onSubmit(formData); // Wait for the transaction to be added
+            await delay(1500); // Introduce a 10-second delay
+        } catch (error) {
+            console.error("Error while adding transaction:", error);
+            window.alert("An error occurred while adding the transaction. Please try again.");
+        } finally {
+            setIsLoading(false); // Reset loading state
+        }
     };
 
     const getAssetPrice = async (ticker: string) => {
@@ -151,7 +163,14 @@ export default function AddTransactionForm({ assetsData, formData, setFormData, 
                 />
             </div>
             <div className="flex gap-2 mt-4">
-                <Button className="bg-red-700" onClick={handleSubmit}>Add Transaction to Checkout</Button>
+                {/* <Button className="bg-red-700" onClick={handleSubmit}>Add Transaction to Checkout</Button> */}
+                <Button
+                    className="bg-red-700"
+                    onClick={handleSubmit}
+                    disabled={isLoading} // Disable button when loading
+                >
+                    {isLoading ? "Adding..." : "Add Transaction to Checkout"}
+                </Button>
                 <Button className="bg-gray-400 text-white" onClick={onReset}>Clear</Button>
             </div>
         </div>

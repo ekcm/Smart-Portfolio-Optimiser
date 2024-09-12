@@ -17,6 +17,7 @@ export default function GenerateOrderList() {
     let orders = [];
     if (ordersParam) {
         orders = JSON.parse(ordersParam);
+        console.log(orders);
     }
 
     return (

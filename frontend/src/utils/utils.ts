@@ -7,3 +7,5 @@ export const getTodayFormattedDate = (): string => {
   // return `${year}-${month}-${day}`;
   return `${year}-${month}-06`;
 };
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

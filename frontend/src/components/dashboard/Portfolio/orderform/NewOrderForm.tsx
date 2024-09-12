@@ -67,17 +67,21 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const addTransaction = async (formData: AddTransactionDataType) => {
         console.log("Received form data in parent:", formData);
         // Call apis to get necessary asset info
-        const assetTicker = formData.ticker;
-        const assetInfo = await fetchAsset(assetTicker);
-        const assetPrice = await fetchCurrentAssetPrice(assetTicker);
-        const newOrder: AssetsItem = {
-            ...formData,
-            name: assetInfo.name,
-            geography: assetInfo.geography,
-            market: formData.cost * formData.position,
-            last: assetPrice, 
-        };
-        setOrders([...orders, newOrder]);
+        try {
+            const assetTicker = formData.ticker;
+            const assetInfo = await fetchAsset(assetTicker);
+            const assetPrice = await fetchCurrentAssetPrice(assetTicker);
+            const newOrder: AssetsItem = {
+                ...formData,
+                name: assetInfo.name,
+                geography: assetInfo.geography,
+                market: formData.cost * formData.position,
+                last: assetPrice, 
+            };
+            setOrders([...orders, newOrder]);
+        } catch (error) {
+            window.alert("An error occurred while adding the transaction. Please try again.");
+        }
     }
 
     const generateOrders = () => {
