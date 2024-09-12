@@ -132,6 +132,14 @@ interface apiAssetHolding {
   assetType: string;
 }
 
+interface CreateOrderItem {
+  orderType: string;
+  assetName: string;
+  quantity: number;
+  price: number;
+  portfolioId: string;
+}
+
 // Define the interface for the form parameter
 interface CreatePortfolioForm {
   client: string;
@@ -157,5 +165,6 @@ export type {
     Asset,
     // API CALL TYPES
     apiAssetHolding,
-    CreatePortfolioForm
+    CreatePortfolioForm,
+    CreateOrderItem,
 }

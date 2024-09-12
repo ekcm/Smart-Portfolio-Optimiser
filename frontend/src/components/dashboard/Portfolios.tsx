@@ -46,7 +46,6 @@ export default function Portfolios() {
     const getPortfolios = async() => {
         try {
             const data = await fetchPortfolios(managerId);
-            console.log(data);
             setPortfolios(data);
         } catch (error) {
             console.error("Error fetching portfolio: ", error);
