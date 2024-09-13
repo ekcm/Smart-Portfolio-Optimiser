@@ -57,7 +57,6 @@ jobs:
       working-directory: nestjs-backend
 
 
-  # Backend Deployment on push to main (nestjs-backend)
   build-and-deploy-backend:
     if: github.event_name == 'push' || true
     runs-on: ubuntu-latest
