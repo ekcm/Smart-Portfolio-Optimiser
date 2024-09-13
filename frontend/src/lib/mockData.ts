@@ -198,7 +198,7 @@ export const indivPortfolioData = {
             {"China": 50.00 }
         ],
         securities: [
-            {"Equity": 70.00},
+            {"Stock": 70.00},
             {"Bonds": 20.00},
             {"Cash": 10.00},
         ]

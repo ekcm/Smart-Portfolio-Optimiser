@@ -2,18 +2,19 @@ import { Card } from "@/components/ui/card";
 import TriggeredAlert from "../TriggeredAlert";
 import AddTransactionForm from "./AddTransactionForm";
 import { useState } from "react";
-import { AddTransactionDataType } from "@/lib/types";
+import { AddTransactionDataType, Asset } from "@/lib/types";
 
 interface AddTransactionCardProps {
     portfolioId: string;
+    assetsData: Asset[] | undefined;
     addTransaction: (data: AddTransactionDataType) => void;
 }
 
 // TODO: Check on how formdata is gna be tracked/sent to backend OR just update on orders checkout since there is missing information (eg quantity)
-export default function AddTransactionCard({ portfolioId, addTransaction} : AddTransactionCardProps) {
+export default function AddTransactionCard({ portfolioId, assetsData, addTransaction} : AddTransactionCardProps) {
     const initialFormData = {
         type: "",
-        name: "",
+        ticker: "",
         cost: 0,
         position: 0,
         orderType: "Buy",
@@ -22,9 +23,7 @@ export default function AddTransactionCard({ portfolioId, addTransaction} : AddT
     const [formData, setFormData] = useState(initialFormData);
 
     const handleFormSubmit = (data: typeof formData) => {
-        // Send API request with form data
-        // ! Maybe call api for all info for chosen stock and then the returned info send up thru addTransaction()
-        console.log("Form Data:", data);
+        // console.log("Form Data:", data);
         addTransaction(data);
         handleFormReset();
     };
@@ -39,6 +38,7 @@ export default function AddTransactionCard({ portfolioId, addTransaction} : AddT
                 <div className="flex flex-col gap-2">
                     <h2 className="text-xl font-medium">Add Transaction</h2>
                     <AddTransactionForm
+                        assetsData={assetsData}
                         formData={formData}
                         setFormData={setFormData}
                         onSubmit={handleFormSubmit}

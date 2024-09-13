@@ -106,10 +106,49 @@ interface AssetsItem {
 
 interface AddTransactionDataType {
     type: string;
-    name: string;
+    ticker: string;
     cost: number;
     position: number;
     orderType: string;
+}
+
+interface Asset {
+  id: string;
+  ticker: string;
+  name: string;
+  type: string;
+  geography: string;
+  industry: string;
+}
+
+
+
+// API CALL TYPES
+// Define the interface for the asset holdings
+interface apiAssetHolding {
+  ticker: string;
+  cost: number;
+  quantity: number;
+  assetType: string;
+}
+
+interface CreateOrderItem {
+  orderType: string;
+  assetName: string;
+  quantity: number;
+  price: number;
+  portfolioId: string;
+}
+
+// Define the interface for the form parameter
+interface CreatePortfolioForm {
+  client: string;
+  portfolioName: string;
+  riskAppetite: string;
+  cashAmount: number;
+  assetHoldings: apiAssetHolding[];
+  manager: string;
+  exclusions: string[];
 }
 
 export type {
@@ -122,5 +161,10 @@ export type {
     OrderExecutionProgress,
     PortfolioData,
     AssetsItem,
-    AddTransactionDataType
+    AddTransactionDataType,
+    Asset,
+    // API CALL TYPES
+    apiAssetHolding,
+    CreatePortfolioForm,
+    CreateOrderItem,
 }

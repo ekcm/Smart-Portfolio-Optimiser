@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { AddTransactionDataType, AssetsItem, PortfolioData } from "@/lib/types";
+import { AddTransactionDataType, Asset, AssetsItem, PortfolioData } from "@/lib/types";
 import PortfolioBreakdownCard from "../PortfolioBreakdownCard";
 import AddTransactionCard from "./AddTransactionCard";
 import OrdersCheckoutCard from "./OrdersCheckoutCard";
 import { Button } from "@/components/ui/button";
 import { Link as TransitionLink } from "next-view-transitions";
 import Link from 'next/link';
+import { fetchAllAssets, fetchAsset, fetchCurrentAssetPrice } from "@/api/asset";
 
 interface NewOrderFormProps {
     data: PortfolioData;
@@ -49,44 +50,66 @@ const initialMockOrders: AssetsItem[] = [
     ]
 
 export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
-    // ! Change initialMockOrders to [] to simulate blank state
-    const [orders, setOrders] = useState<AssetsItem[]>(initialMockOrders);
+    const [orders, setOrders] = useState<AssetsItem[]>([]);
+    const [assetsLoading, setAssetsLoading] = useState(true);
+    const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
+    const [assetError, setAssetError] = useState<string | null>(null);
+
+
     useEffect(() => {
         if (prevOrders) setOrders(prevOrders);
     }, [prevOrders]);
 
-    // TODO: Remove in future after backend implemented
-    const [fakeTickerCount, setFakeTickerCount] = useState<number>(0);
-    const fakeTickers = ["APPL", "FAKE", "BTCN"];
+    useEffect(() => {
+        getAllAssets();
+    }, []);
 
-    const addTransaction = (formData: AddTransactionDataType) => {
-        console.log("Received form data in parent:", formData);
-        // ! Need to call api for this to get necessary asset info
-        const newOrder: AssetsItem = {
-            ...formData,
-            ticker: fakeTickers[fakeTickerCount], // ! asset ticker need to be called from backend
-            geography: "USA", // ! geography need to be called from backend
-            market: formData.cost * formData.position,
-            last: 178.58, // ! Cost of asset need to be called from backend
-        };
-        setOrders([...orders, newOrder]);
-        setFakeTickerCount(prevCount => prevCount+1);
+    const addTransaction = async (formData: AddTransactionDataType) => {
+        // console.log("Received form data in parent:", formData);
+        // Call apis to get necessary asset info
+        try {
+            const assetTicker = formData.ticker;
+            const assetInfo = await fetchAsset(assetTicker);
+            const assetPrice = await fetchCurrentAssetPrice(assetTicker);
+            const newOrder: AssetsItem = {
+                ...formData,
+                name: assetInfo.name,
+                geography: assetInfo.geography,
+                market: formData.cost * formData.position,
+                last: assetPrice, 
+            };
+            setOrders([...orders, newOrder]);
+        } catch (error) {
+            window.alert("An error occurred while adding the transaction. Please try again.");
+        }
     }
 
     const generateOrders = () => {
-        // take orders and push it into backend
+        // TODO: take orders and push it into backend
     }
 
     const deleteOrder = (ticker: string) => {
         setOrders((prevOrders) => prevOrders.filter(order => order.ticker !== ticker));
     }
 
+    const getAllAssets = async () => {
+        try {
+            const data = await fetchAllAssets();
+            setAllAssets(data);
+        } catch (error) {
+            console.error("Error fetching assets: ", error);
+            setAssetError("Failed to load assets");
+        } finally {
+            setAssetsLoading(false);
+        }
+    };
+
 
     return (
         <div className="flex flex-col justify-center gap-4 pb-8">
             <PortfolioBreakdownCard data={data.portfolioBreakdown} />
             <OrdersCheckoutCard data={orders} onDelete={deleteOrder}/>
-            <AddTransactionCard portfolioId={data.portfolioId} addTransaction={addTransaction}/>
+            <AddTransactionCard portfolioId={data.portfolioId} assetsData={allAssets} addTransaction={addTransaction}/>
             <div className="flex gap-4">
                 <Link 
                     href={{

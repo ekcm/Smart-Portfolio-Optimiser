@@ -15,10 +15,9 @@ export default function NewOrdersCard({ data } : NewOrdersCardProps) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Symbol | Name</TableHead>
+                        <TableHead>Symbol | Ticker</TableHead>
                         <TableHead>Position | Mkt</TableHead>
                         <TableHead>Last | Cost</TableHead>
-                        {/* <TableHead>Positions Ratio</TableHead> */}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -42,7 +41,6 @@ export default function NewOrdersCard({ data } : NewOrdersCardProps) {
                                     <span className="text-xs text-gray-500">{item.cost}</span>
                                 </div>
                             </TableCell>
-                            {/* <TableCell className={getCellClass(item.difference)}>{item.positionsRatio.toFixed(2)}%</TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

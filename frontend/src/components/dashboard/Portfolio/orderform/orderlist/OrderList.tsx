@@ -1,9 +1,11 @@
-import { AssetsItem, PortfolioData, PortfolioHoldings, PortfolioHoldingsDifference } from "@/lib/types";
+import { AssetsItem, CreateOrderItem, PortfolioData, PortfolioHoldings, PortfolioHoldingsDifference } from "@/lib/types";
 import ChangeList from "./ChangeList";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SecuritiesChart from "../../charts/SecuritiesChart";
 import TriggeredAlert from "../../TriggeredAlert";
+import { createMultipleOrders } from "@/api/order";
+import { useTransitionRouter } from "next-view-transitions";
 
 interface OrderListProps {
     data: PortfolioData;
@@ -12,6 +14,7 @@ interface OrderListProps {
 }
 
 export default function OrderList({ data, newOrders, triggeredAlerts } : OrderListProps) {
+    const router = useTransitionRouter();
     // Helper function to calculate the final portfolio holdings
     const calculateFinalOrders = (oldOrders: PortfolioHoldings[], newOrders: AssetsItem[]): PortfolioHoldingsDifference[] => {
         // Create a map to hold the final orders
@@ -60,19 +63,29 @@ export default function OrderList({ data, newOrders, triggeredAlerts } : OrderLi
         // Convert the map back to an array
         const finalOrders = Array.from(finalOrdersMap.values());
 
-        // Calculate the total market value of the portfolio
-        // const totalMarketValue = finalOrders.reduce((total, order) => total + order.market, 0);
-
-        // // Update positionsRatio for each asset
-        // finalOrders.forEach(order => {
-        //     order.positionsRatio = (order.market / totalMarketValue) * 100;
-        // });
-
         return finalOrders;
     }
 
-    const handleSubmit = () => {
+    // TODO: Add loader here
+    const handleSubmit = async () => {
         // Submit to backend to update orders db with newOrders
+        const formattedOrders: CreateOrderItem[] = newOrders.map((order) => ({
+            orderType: order.orderType.toUpperCase(),
+            assetName: order.ticker,
+            quantity: Number(order.position),
+            price: Number(order.cost),
+            portfolioId: data.portfolioId,
+        }));
+
+        try {
+            const result = await createMultipleOrders(formattedOrders);
+            console.log("Orders created successfully: ", result);
+            // Navigate back to the dashboard after successful submission
+            window.alert("!!! Lousy Implementation (for demo purposes) !!! Orders have been added to the orderbook, you will now be redirected back to the dashboard...")
+            router.push(`/dashboard/${data.portfolioId}`);
+        } catch (error) {
+            console.error("Failed to create orders: ", error);
+        }
     }
 
     const finalOrders = calculateFinalOrders(data.portfolioHoldings, newOrders);

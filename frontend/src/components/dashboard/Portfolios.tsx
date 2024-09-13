@@ -4,15 +4,21 @@ import { useDashboardFilterStore } from "@/store/DashBoardFilterState";
 import { useEffect, useState } from "react";
 import { PortfolioItem } from "@/lib/types";
 import { fetchPortfolios } from "@/api/core";
+import Loader from "../loader/Loader";
 
 export default function Portfolios() {
     // ! TODO: Add managerId from sessionStorage for fetching portfolios api call
+    const managerId = "66d9815bacb3da812c4e4c5b";
     // all states from filter
     const portfolioName = useDashboardFilterStore((state) => state.portfolioName);
     const riskAppetite = useDashboardFilterStore((state) => state.riskAppetite);
     const triggeredAlerts = useDashboardFilterStore((state) => state.triggeredAlerts);
     const [portfolios, setPortfolios] = useState<PortfolioItem[]>([]);
     const [filteredPortfolios, setFilteredPortfolios] = useState<PortfolioItem[]>([]);
+
+    // loaders
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         getPortfolios();
@@ -39,12 +45,25 @@ export default function Portfolios() {
 
     const getPortfolios = async() => {
         try {
-            const data = await fetchPortfolios("66d9815bacb3da812c4e4c5b");
+            const data = await fetchPortfolios(managerId);
             setPortfolios(data);
         } catch (error) {
-            console.error(error);
+            console.error("Error fetching portfolio: ", error);
+            setError("Failed to load portfolios");
+        } finally {
+            setLoading(false);
         }
     }
+
+    // loading state
+    if (loading) {
+        return (
+            <Loader />
+        )
+    }
+
+    if (error) return <div>{error}</div>;
+    if (!portfolios) return <div>No portfolio data available.</div>;
 
     return (
         <div className="flex flex-col gap-6">

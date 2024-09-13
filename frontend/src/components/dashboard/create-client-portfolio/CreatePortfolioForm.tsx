@@ -1,170 +1,251 @@
-"use client"
-// TODO: remove zod
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
+"use client";
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
-import { useTransitionRouter } from 'next-view-transitions';
-import { useState } from "react";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@/components/ui/select";
+import { useTransitionRouter } from "next-view-transitions";
+import { Asset } from "@/lib/types";
+import { fetchAllAssets } from "@/api/asset";
+import Loader from "@/components/loader/Loader";
+import { createPortfolio } from "@/api/portfolio";
 
-const formSchema = z.object({
-  clientEmail: z.string().email({ message: "Invalid email address" }),
-  portfolioName: z.string().min(2, { message: "Portfolio name must be at least 2 characters." }),
-  riskAppetite: z.enum(["", "Low", "Medium", "High"], { message: "Select a valid risk appetite" }),
-  cash: z.number().min(0, { message: "Cash amount must be at least 0" }),
-  exclusions: z.array(z.string().min(1, { message: "Exclusion cannot be empty" })),
-});
-
-type FormData = z.infer<typeof formSchema>;
+type ErrorState = {
+  clientName?: string;
+  portfolioName?: string;
+  riskAppetite?: string;
+  cashAmount?: string;
+};
 
 export default function CreatePortfolioForm() {
-    const router = useTransitionRouter();
+  // ! Call managerId from session storage after auth completed
+  const managerId = "66d9815bacb3da812c4e4c5b";
 
-    const { handleSubmit, control, setValue, watch } = useForm<FormData>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            clientEmail: "",
-            portfolioName: "",
-            riskAppetite: "",
-            cash: 0,
-            exclusions: [],
-        },
-    });
+  const router = useTransitionRouter();
+  const [client, setClient] = useState("");
+  const [portfolioName, setPortfolioName] = useState("");
+  const [riskAppetite, setRiskAppetite] = useState("");
+  const [cashAmount, setCashAmount] = useState(0);
+  const [exclusions, setExclusions] = useState<string[]>([]);
+  const [errors, setErrors] = useState<ErrorState>({});
+  const [assetsLoading, setAssetsLoading] = useState(true);
+  const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
+  const [assetError, setAssetError] = useState<string | null>(null);
 
-    const exclusions = watch("exclusions");
-    const [exclusionInput, setExclusionInput] = useState("");
+  // risk appetite levels
+  const riskAppetites = {
+    LOW: "Low",
+    MEDIUM: "Medium",
+    HIGH: "High",
+  };
 
-    const handleAddExclusion = () => {
-        if (exclusionInput) {
-            setValue("exclusions", [...exclusions, exclusionInput]);
-            setExclusionInput("");
-        }
+
+  useEffect(() => {
+    getAllAssets();
+  }, []);
+
+  const getAllAssets = async () => {
+    try {
+      const data = await fetchAllAssets();
+      setAllAssets(data);
+    } catch (error) {
+      console.error("Error fetching assets: ", error);
+      setAssetError("Failed to load assets");
+    } finally {
+      setAssetsLoading(false);
+    }
+  };
+
+  const handleAddExclusion = (value: string) => {
+    if (!exclusions.includes(value)) {
+      setExclusions([...exclusions, value]);
+    }
+  };
+
+  const handleRemoveExclusion = (index: number) => {
+    setExclusions(exclusions.filter((_, i) => i !== index));
+  };
+
+  const handleResetExclusions = () => {
+    setExclusions([]); // Reset the exclusions array
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: ErrorState = {};
+    // Validation checks
+    if (!client) newErrors.clientName = "Client name is required.";
+    if (portfolioName.length < 2)
+      newErrors.portfolioName = "Portfolio name must be at least 2 characters.";
+    if (!riskAppetite) newErrors.riskAppetite = "Select a valid risk appetite.";
+    if (cashAmount === 0) newErrors.cashAmount = "Cash amount must be at least 0";
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
+
+    const formData = {
+      client,
+      portfolioName,
+      riskAppetite,
+      cashAmount,
+      exclusions,
+      manager: managerId,
+      assetHoldings: [],
     };
 
-    const handleRemoveExclusion = (index: number) => {
-        setValue("exclusions", exclusions.filter((_, i) => i !== index));
-    };
+    try {
+      // Call createPortfolio function and pass formData as the parameter
+      const result = await createPortfolio(formData);
+      console.log("Portfolio created successfully:", result);
+      router.back();
+    } catch (error) {
+      console.error("Failed to create portfolio:", error);
+    }
 
-    const onSubmit = (data: FormData) => {
-        // Submit form logic here
-        console.log("Form data submitted:", data);
-    };
+    console.log("Form data submitted:", formData);
+  };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-        }
-    };
+  return (
+    <form onSubmit={onSubmit} className="space-y-8">
+      <div className="flex flex-col w-1/2 gap-4">
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Client Name:
+          <Input
+            type="text"
+            value={client}
+            onChange={(e) => setClient(e.target.value)}
+            className={errors.clientName ? "border-red-500" : ""}
+          />
+          {errors.clientName && (
+            <span className="text-red-500">{errors.clientName}</span>
+          )}
+        </Label>
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown} className="space-y-8">
-            <div className="flex flex-col w-1/2 gap-4">
-                <Controller
-                    control={control}
-                    name="clientEmail"
-                    render={({ field, fieldState }) => (
-                        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
-                            Portfolio Client:
-                            <Input
-                                type="text"
-                                {...field}
-                                className={fieldState.invalid ? "border-red-500" : ""}
-                            />
-                            {fieldState.error && <span className="text-red-500">{fieldState.error.message}</span>}
-                        </Label>
-                    )}
-                />
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Portfolio Name:
+          <Input
+            type="text"
+            value={portfolioName}
+            onChange={(e) => setPortfolioName(e.target.value)}
+            className={errors.portfolioName ? "border-red-500" : ""}
+          />
+          {errors.portfolioName && (
+            <span className="text-red-500">{errors.portfolioName}</span>
+          )}
+        </Label>
 
-                <Controller
-                    control={control}
-                    name="portfolioName"
-                    render={({ field, fieldState }) => (
-                        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
-                            Portfolio Name:
-                            <Input
-                                type="text"
-                                {...field}
-                                className={fieldState.invalid ? "border-red-500" : ""}
-                            />
-                            {fieldState.error && <span className="text-red-500">{fieldState.error.message}</span>}
-                        </Label>
-                    )}
-                />
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Client Risk Appetite:
+          <Select value={riskAppetite} onValueChange={setRiskAppetite}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select risk appetite" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                 {Object.entries(riskAppetites).map(([key, value]) => (
+                  <SelectItem key={key} value={key}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          {errors.riskAppetite && (
+            <span className="text-red-500">{errors.riskAppetite}</span>
+          )}
+        </Label>
 
-                <Controller
-                    control={control}
-                    name="riskAppetite"
-                    render={({ field, fieldState }) => (
-                        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
-                            Client Risk Appetite:
-                            <Select value={field.value} onValueChange={field.onChange}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select risk appetite" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {["Low", "Medium", "High"].map((risk, index) => (
-                                            <SelectItem key={index} value={risk}>{risk}</SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                            {fieldState.error && <span className="text-red-500">{fieldState.error.message}</span>}
-                        </Label>
-                    )}
-                />
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Portfolio Cash Amount:
+          <Input
+            type="number"
+            value={cashAmount}
+            onChange={(e) => setCashAmount(parseFloat(e.target.value))}
+          />
+        </Label>
 
-                <Controller
-                    name="cash"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
-                            Portfolio Cash Amount:
-                            <Input
-                                type="number"
-                                {...field}
-                                value={field.value.toString()}
-                                onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                                className={fieldState.invalid ? "border-red-500" : ""}
-                            />
-                            {fieldState.error && <span className="text-red-500">{fieldState.error.message}</span>}
-                        </Label>
-                    )}
-                />
-
-                <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
-                    Exclusions List:
-                    <div className="flex items-center gap-2">
-                        <Input
-                            type="text"
-                            value={exclusionInput}
-                            onChange={(e) => setExclusionInput(e.target.value)}
-                            className="flex-grow"
-                        />
-                        <Button type="button" onClick={handleAddExclusion}>Add</Button>
-                    </div>
-                    <ul className="flex flex-col list-disc list-inside gap-2">
-                        {exclusions.map((exclusion, index) => (
-                            <li key={index} className="flex items-center justify-between">
-                                {exclusion}
-                                <Button type="button" onClick={() => handleRemoveExclusion(index)} size="sm" variant="destructive">Remove</Button>
-                            </li>
-                        ))}
-                    </ul>
-                </Label>
-            </div>
-            <div className="flex gap-2 mt-4">
-                <Button type="submit" className="bg-red-500">Create Portfolio</Button>
-                <Button type="button" className="bg-gray-400 text-white" onClick={(e) => {
-                    e.preventDefault()
-                    router.back()
-                }}>
-                    Cancel
+        {/* Exclusions using Select */}
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Exclusions List:
+          <Select onValueChange={handleAddExclusion}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select assets to exclude" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {assetsLoading ? (
+                  <Loader />
+                ) : (
+                  <SelectGroup>
+                    {allAssets?.map((asset, index) => (
+                      <SelectItem key={index} value={asset.ticker}>
+                        {asset.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                )}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          {assetError && <span className="text-red-500">{assetError}</span>}
+          <ul className="flex flex-col list-disc list-inside gap-2">
+            {exclusions.length !==0 ?
+               <span>Your Exclusions:</span>
+               : 
+               <span>No Exclusions Selected</span>
+            }
+            {exclusions.map((exclusion, index) => (
+              <li key={index} className="flex items-center justify-between">
+                {exclusion}
+                <Button
+                  type="button"
+                  onClick={() => handleRemoveExclusion(index)}
+                  size="sm"
+                  variant="destructive"
+                >
+                  Remove
                 </Button>
-            </div>
-        </form>
-    );
+              </li>
+            ))}
+          </ul>
+          {/* Reset Button */}
+          {exclusions.length > 0 && (
+            <Button
+              type="button"
+              onClick={handleResetExclusions}
+              className="mt-2"
+            >
+              Reset Exclusions
+            </Button>
+          )}
+        </Label>
+      </div>
+
+      <div className="flex gap-2 mt-4">
+        <Button type="submit" className="bg-red-500">
+          Create Portfolio
+        </Button>
+        <Button
+          type="button"
+          className="bg-gray-400 text-white"
+          onClick={(e) => {
+            e.preventDefault();
+            router.back();
+          }}
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
+  );
 }
