@@ -30,6 +30,7 @@ jobs:
         node-version: '16'
 
     - name: Cache Node.js dependencies
+      if: false
       uses: actions/cache@v3
       with:
         path: nestjs-backend/node_modules
@@ -77,6 +78,7 @@ jobs:
         node-version: '16'
 
     - name: Cache Node.js dependencies
+      if: false
       uses: actions/cache@v3
       with:
         path: nestjs-backend/node_modules
