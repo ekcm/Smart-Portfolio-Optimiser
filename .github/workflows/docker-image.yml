@@ -4,8 +4,8 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - ".github/workflows/**"         # Trigger when any file inside the GitHub Actions folder is modified
-      - "nestjs-backend/**"            # Trigger when any file inside the 'nestjs-backend' directory is modified
+      - ".github/workflows/**"
+      - "nestjs-backend/**"
   pull_request:
     branches: [ "main" ]
     paths:
@@ -13,7 +13,6 @@ on:
       - "nestjs-backend/**"
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
 
@@ -26,11 +25,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4  # Checkout the code from the repository
 
-    - name: Set up Docker Buildx
+    - name: Set up Docker Buildx with Credential Helper
       uses: docker/setup-buildx-action@v2
       with:
         install: true
         use: true
+        driver-opts: network=host
+
+    - name: Set up Docker Credential Helper
+      run: |
+        echo '{"credsStore":"secretservice"}' > ~/.docker/config.json  # Configuring the Docker credential helper
 
     - name: Log in to Docker Hub
       run: |
@@ -39,7 +43,7 @@ jobs:
         DOCKER_CLI_CONFIG: /github/home/.docker  # Ensure credentials are stored securely
 
     - name: Build the Docker image
-      working-directory: nestjs-backend  # Set the working directory to 'nestjs-backend'
+      working-directory: nestjs-backend
       run: docker build -t fyp-be:latest .
 
     - name: Tag Docker image
