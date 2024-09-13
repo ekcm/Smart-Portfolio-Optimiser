@@ -16,6 +16,7 @@ jobs:
 
   # Backend Verification on PR (nestjs-backend)
   verify-PR-backend:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     name: Verify PR - Backend
 
@@ -26,7 +27,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3.1.0
       with:
-        node-version: '16'
+        node-version: '20.11.0'
 
     - name: Cache Node.js dependencies
       if: false
@@ -58,6 +59,7 @@ jobs:
 
   # Backend Deployment on push to main (nestjs-backend)
   build-and-deploy-backend:
+    if: github.event_name == 'push' || true
     runs-on: ubuntu-latest
     name: Build and Deploy Backend
 
