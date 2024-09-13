@@ -1,4 +1,5 @@
 stages:
+  - test
   - build
   - deploy
 
@@ -6,7 +7,14 @@ variables:
     APP_VERSION: $CI_PIPELINE_IID
 
 
-build-backend:
+
+test-pipeline:
+  stage: test
+  script:
+    - echo "Running tests..."
+
+
+.build-backend:
   stage: build
   script:
     - cd backend
