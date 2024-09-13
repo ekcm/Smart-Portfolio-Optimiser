@@ -16,7 +16,6 @@ jobs:
 
   # Backend Verification on PR (nestjs-backend)
   verify-PR-backend:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     name: Verify PR - Backend
 
@@ -59,7 +58,6 @@ jobs:
 
   # Backend Deployment on push to main (nestjs-backend)
   build-and-deploy-backend:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     name: Build and Deploy Backend
 
