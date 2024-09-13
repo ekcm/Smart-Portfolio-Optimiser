@@ -1,0 +1,39 @@
+name: Docker Image CICD
+
+env:
+    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+on:
+  push:
+    branches: [ "main" ]  
+  pull_request:
+    branches: [ "main" ]  
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4 
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+
+    - name: Build the Docker image
+      run: docker build -t fyp-be . 
+    
+    - name: Tag Docker image
+      run: docker tag fyp-be:latest $DOCKER_USERNAME/fyp:latest
+
+    - name: Push Docker image
+      run: docker push $DOCKER_USERNAME/fyp:latest
