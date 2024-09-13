@@ -43,7 +43,7 @@ jobs:
 
 
     - name: Build the Docker image
-      run: cd nestjs-backend ; docker build -t fyp-be . 
+      run: cd nestjs-backend ; docker build -t fyp-be:latest . 
     
     - name: Tag Docker image
       run: docker tag fyp-be:latest $DOCKER_USERNAME/fyp:latest
