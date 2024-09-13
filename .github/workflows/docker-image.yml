@@ -58,7 +58,7 @@ jobs:
 
 
   build-and-deploy-backend:
-    if: github.event_name == 'push' || true
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     name: Build and Deploy Backend
 
