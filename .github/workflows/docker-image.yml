@@ -23,15 +23,12 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Go to backend directory
-      run: cd nestjs-backend
-
     - name: Log in to Docker Hub
       run: |
         echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin 
 
     - name: Build the Docker image
-      run: docker build -t fyp-be . 
+      run: pwd ; cd nestjs-backend ; docker build -t fyp-be . 
     
     - name: Tag Docker image
       run: docker tag fyp-be:latest $DOCKER_USERNAME/fyp:latest
