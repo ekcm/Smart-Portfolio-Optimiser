@@ -2,9 +2,15 @@ name: Docker Image CICD
 
 on:
   push:
-    branches: [ "main" ]  
+    branches: [ "main" ]
+    paths:
+        - ".github/workflows/**"       # Trigger when any file inside the GitHub Actions folder is modified
+        - "nestjs-backend/**"           # Trigger when any file inside the 'nestjs-backend' directory is modified
   pull_request:
-    branches: [ "main" ]  
+    branches: [ "main" ]
+    paths:
+        - ".github/workflows/**"       # Trigger when any file inside the GitHub Actions folder is modified
+        - "nestjs-backend/**"           # Trigger when any file inside the 'nestjs-backend' directory is modified
 
 jobs:
 
@@ -15,17 +21,26 @@ jobs:
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4 
 
-    - name: Set up Docker Buildx
+    - name: Set up Docker Buildx with Credential Helper
       uses: docker/setup-buildx-action@v2
+      with:
+        install: true
+        use: true
+        driver-opts: network=host  # Enable credential store setup
+
 
     - name: Log in to Docker Hub
       run: |
-        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin 
+        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      env:
+        DOCKER_CLI_CONFIG: /github/home/.docker  # This ensures credentials are stored securely in GitHub Actions
+
 
     - name: Build the Docker image
       run: pwd ; cd nestjs-backend ; docker build -t fyp-be . 
@@ -35,3 +50,7 @@ jobs:
 
     - name: Push Docker image
       run: docker push $DOCKER_USERNAME/fyp:latest
+    
+    - name: Trigger Render Deploy Hook
+      run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+      if: success()
