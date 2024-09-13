@@ -4,8 +4,8 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - ".github/workflows/**"         # Trigger when any file inside the GitHub Actions folder is modified
-      - "nestjs-backend/**"            # Trigger when any file inside the 'nestjs-backend' directory is modified
+      - ".github/workflows/**"
+      - "nestjs-backend/**"
   pull_request:
     branches: [ "main" ]
     paths:
@@ -14,8 +14,51 @@ on:
 
 jobs:
 
-  build:
+  # Backend Verification on PR (nestjs-backend)
+  verify-PR-backend:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    name: Verify PR - Backend
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.0.0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3.1.0
+      with:
+        node-version: '16'
+
+    - name: Cache Node.js dependencies
+      uses: actions/cache@v3
+      with:
+        path: nestjs-backend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('nestjs-backend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: nestjs-backend
+
+    - name: Run lint checks
+      run: npm run lint
+      working-directory: nestjs-backend
+
+    - name: Run tests
+      run: npm test
+      working-directory: nestjs-backend
+
+    - name: Build project
+      run: npm run build
+      working-directory: nestjs-backend
+
+
+  # Backend Deployment on push to main (nestjs-backend)
+  build-and-deploy-backend:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    name: Build and Deploy Backend
 
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -24,7 +67,24 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Checkout the code from the repository
+      uses: actions/checkout@v4.0.0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3.1.0
+      with:
+        node-version: '16'
+
+    - name: Cache Node.js dependencies
+      uses: actions/cache@v3
+      with:
+        path: nestjs-backend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('nestjs-backend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: nestjs-backend
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -34,14 +94,18 @@ jobs:
         echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
     - name: Build the Docker image
-      working-directory: nestjs-backend  # Set the working directory to 'nestjs-backend'
-      run: docker build -t fyp-be:latest .
+      working-directory: nestjs-backend
+      run: docker build -t fyp-be:${{ github.sha }} .
 
     - name: Tag Docker image
-      run: docker tag fyp-be:latest $DOCKER_USERNAME/fyp:latest
+      run: |
+        docker tag fyp-be:${{ github.sha }} $DOCKER_USERNAME/fyp:latest
+        docker tag fyp-be:${{ github.sha }} $DOCKER_USERNAME/fyp:${{ github.sha }}
 
     - name: Push Docker image
-      run: docker push $DOCKER_USERNAME/fyp:latest
+      run: |
+        docker push $DOCKER_USERNAME/fyp:latest
+        docker push $DOCKER_USERNAME/fyp:${{ github.sha }}
 
     - name: Trigger Render Deploy Hook
       run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
