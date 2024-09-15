@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://fyp-ubs-fyp.vercel.app/', // Allow only your frontend origin
+    origin: process.env.PROD_URL, // Allow only your frontend origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   });
