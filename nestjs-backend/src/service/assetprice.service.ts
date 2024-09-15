@@ -54,7 +54,7 @@ export class AssetPriceService {
       return result;
     } catch (error) {
       console.error('Error inserting data:', error.message);  // Log the error message
-      throw new Error('Failed to insert asset price.');  // General error to prevent sensitive details leakage
+      throw new Error('Failed to insert asset price into DB');  // General error to prevent sensitive details leakage
     }
   }  
 

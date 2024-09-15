@@ -1,0 +1,114 @@
+name: Docker Image CICD
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/**"
+      - "nestjs-backend/**"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/**"
+      - "nestjs-backend/**"
+
+jobs:
+
+  verify-PR-backend:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    name: Verify PR - Backend
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.0.0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3.1.0
+      with:
+        node-version: '20.11.0'
+
+    - name: Cache Node.js dependencies
+      if: false
+      uses: actions/cache@v3
+      with:
+        path: nestjs-backend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('nestjs-backend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: nestjs-backend
+
+    - name: Run lint checks
+      if: false
+      run: npm run lint
+      working-directory: nestjs-backend
+
+    - name: Run tests
+      if: false
+      run: npm test
+      working-directory: nestjs-backend
+
+    - name: Build project
+      run: npm run build
+      working-directory: nestjs-backend
+
+
+  build-and-deploy-backend:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    name: Build and Deploy Backend
+
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.0.0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3.1.0
+      with:
+        node-version: '16'
+
+    - name: Cache Node.js dependencies
+      if: false
+      uses: actions/cache@v3
+      with:
+        path: nestjs-backend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('nestjs-backend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: nestjs-backend
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      run: |
+        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+
+    - name: Build the Docker image
+      working-directory: nestjs-backend
+      run: docker build -t fyp-be:${{ github.sha }} .
+
+    - name: Tag Docker image
+      run: |
+        docker tag fyp-be:${{ github.sha }} $DOCKER_USERNAME/fyp:latest
+        docker tag fyp-be:${{ github.sha }} $DOCKER_USERNAME/fyp:${{ github.sha }}
+
+    - name: Push Docker image
+      run: |
+        docker push $DOCKER_USERNAME/fyp:latest
+        docker push $DOCKER_USERNAME/fyp:${{ github.sha }}
+
+    - name: Trigger Render Deploy Hook
+      run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+      if: success()
