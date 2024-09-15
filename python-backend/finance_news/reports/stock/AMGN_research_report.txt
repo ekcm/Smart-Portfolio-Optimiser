@@ -1,0 +1,70 @@
+# Financial Report on AMGN Stock as of September 16, 2024
+
+## Introduction
+
+Amgen Inc. (NASDAQ: AMGN) has been a focal point in the biotechnology sector, demonstrating significant movements in its stock price and operational performance. This report provides a comprehensive analysis of AMGN's financial status, recent key events, and market performance as of September 16, 2024. The analysis is based on the latest available data and news from various reliable sources.
+
+## Financial Performance Overview
+
+### Market Capitalization and Valuation Metrics
+
+As of the latest data, Amgen's market capitalization stands at $178.64 billion, with an enterprise value of $231.98 billion. The stock's trailing price-to-earnings (P/E) ratio is 57.32, while the forward P/E ratio is significantly lower at 16.26, indicating expectations of higher future earnings ([Yahoo Finance](https://sg.finance.yahoo.com/quote/AMGN/)). The PEG ratio, which accounts for the company's expected earnings growth over the next five years, is 2.31. These metrics suggest that while the stock is currently valued highly, future earnings growth is anticipated to justify this valuation.
+
+### Profitability and Income Statement
+
+Amgen's profitability metrics are robust, with a profit margin of 10.12%, a return on assets (ROA) of 4.48%, and a return on equity (ROE) of 49.27% ([Yahoo Finance](https://sg.finance.yahoo.com/quote/AMGN/)). The company reported total revenue of $30.93 billion over the trailing twelve months (TTM), with a net income attributable to common shareholders of $3.13 billion. The diluted earnings per share (EPS) for the same period is $5.78.
+
+### Balance Sheet and Cash Flow
+
+Amgen's balance sheet reveals total cash holdings of $9.3 billion and a total debt-to-equity ratio of 1,057.30%, indicating a high level of leverage ([Yahoo Finance](https://sg.finance.yahoo.com/quote/AMGN/)). The company's levered free cash flow stands at $3.01 billion, reflecting its ability to generate cash after accounting for financial obligations.
+
+## Recent Key Events
+
+### Stock Performance and Market Movements
+
+Amgen's stock has shown a notable performance over the past six months, rising by nearly 20% and outperforming both its industry and the S&P 500 index ([Zacks](https://www.zacks.com/stock/news/2332203/amgen-stock-rises-almost-20-in-6-months-buy-sell-or-hold)). The stock has consistently traded above its 50-day and 200-day moving averages since early August 2024, indicating strong market sentiment and technical strength.
+
+### Earnings Reports and Financial Results
+
+Amgen reported its second-quarter 2024 financial results on August 6, 2024. The company highlighted a strong portfolio of in-market products and a rapidly advancing pipeline of innovative medicines ([Amgen Press Release](https://www.amgen.com/newsroom/press-releases/2024/08/amgen-reports-second-quarter-2024-financial-results)). Key financial results included:
+
+- Total revenues of $8.39 billion for Q2 2024, up from $6.99 billion in Q2 2023.
+- Net income of $746 million, down from $1.38 billion in the same quarter last year.
+- Diluted EPS of $1.38, compared to $2.57 in Q2 2023.
+
+The company also declared a $2.25 per share dividend for the third quarter of 2024, payable on September 6, 2024 ([Amgen Press Release](https://www.amgen.com/newsroom/press-releases/2024/08/amgen-announces-2024-third-quarter-dividend)).
+
+### Pipeline Developments and Clinical Trials
+
+Amgen continues to advance its pipeline with several key developments. Notably, the company is expecting a phase III readout for Uplizna, a drug for myasthenia gravis, in the second half of 2024 ([Zacks](https://www.zacks.com/stock/news/2332203/amgen-stock-rises-almost-20-in-6-months-buy-sell-or-hold)). Additionally, Amgen is set to present data from multiple early-stage clinical trials at the European Society for Medical Oncology (ESMO) Congress 2024, showcasing its broad oncology pipeline ([Yahoo Finance](https://finance.yahoo.com/quote/AMGN/news/)).
+
+### Insider Transactions and Institutional Ownership
+
+There have been significant insider transactions over the past year, with insiders selling substantial stakes in the company. This could be interpreted as a signal of caution among those closely associated with the company ([Yahoo Finance](https://finance.yahoo.com/quote/AMGN/news/)). However, institutional ownership remains high at 79%, indicating strong confidence from large investors.
+
+## Market Sentiment and Analyst Opinions
+
+### Valuation and Analyst Ratings
+
+Amgen's stock is currently trading at an attractive valuation relative to the industry, with a forward P/E ratio of 16.38 compared to the industry average of 20.49 ([Zacks](https://www.zacks.com/stock/news/2332203/amgen-stock-rises-almost-20-in-6-months-buy-sell-or-hold)). Despite a slight decline in earnings estimates for 2024 and 2025, analysts remain optimistic about the company's long-term growth prospects.
+
+### Recent Stock Movements
+
+On January 2, 2024, Amgen's stock reached a new all-time high of $300.35, reflecting a 4.28% increase from the previous close ([Morningstar](https://www.morningstar.com/news/dow-jones/202401023686/amgen-on-pace-for-record-high-close-data-talk)). This surge was driven by positive market sentiment and strong performance metrics, making it one of the best performers in the Dow Jones Industrial Average (DJIA) and the S&P 500 on that day.
+
+## Conclusion
+
+Amgen Inc. has demonstrated strong financial performance and market resilience in 2024. The company's robust revenue growth, high profitability, and significant advancements in its drug pipeline position it well for future growth. Despite high leverage, Amgen's strong cash flow generation and institutional support provide a solid foundation for continued success.
+
+The stock's recent performance, including a nearly 20% rise over the past six months and a new all-time high, underscores investor confidence in the company's strategic direction and operational execution. While insider sales may signal caution, the overall market sentiment remains positive, supported by attractive valuation metrics and ongoing clinical developments.
+
+Investors should continue to monitor Amgen's pipeline progress, particularly the upcoming phase III readout for Uplizna and presentations at major medical conferences. These developments, along with the company's financial performance, will be critical in shaping its future market trajectory.
+
+## References
+
+- Yahoo Finance. (2024). Amgen Inc. (AMGN) Stock Price, News, Quote & History. Retrieved from https://sg.finance.yahoo.com/quote/AMGN/
+- Zacks. (2024). Amgen Stock Rises Almost 20% in 6 Months: Buy, Sell or Hold? Retrieved from https://www.zacks.com/stock/news/2332203/amgen-stock-rises-almost-20-in-6-months-buy-sell-or-hold
+- Amgen Press Release. (2024). Amgen Reports Second Quarter 2024 Financial Results. Retrieved from https://www.amgen.com/newsroom/press-releases/2024/08/amgen-reports-second-quarter-2024-financial-results
+- Morningstar. (2024). Amgen On Pace for Record High Close — Data Talk. Retrieved from https://www.morningstar.com/news/dow-jones/202401023686/amgen-on-pace-for-record-high-close-data-talk
+- Yahoo Finance. (2024). Amgen Inc. (AMGN) News. Retrieved from https://finance.yahoo.com/quote/AMGN/news/
+- Amgen Press Release. (2024). Amgen Announces 2024 Third Quarter Dividend. Retrieved from https://www.amgen.com/newsroom/press-releases/2024/08/amgen-announces-2024-third-quarter-dividend
