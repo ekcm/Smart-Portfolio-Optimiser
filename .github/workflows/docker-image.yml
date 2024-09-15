@@ -14,7 +14,6 @@ on:
 
 jobs:
 
-  # Backend Verification on PR (nestjs-backend)
   verify-PR-backend:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
