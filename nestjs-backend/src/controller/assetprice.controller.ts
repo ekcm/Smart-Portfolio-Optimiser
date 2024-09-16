@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AssetPriceDto } from '../dto/assetprice.dto';
 import { AssetPrice } from '../model/assetprice.model';
 import { AssetPriceService } from '../service/assetprice.service';
@@ -46,5 +46,13 @@ export class AssetPriceController {
   async delete(@Param('ticker') ticker: string, @Param('date') date: string): Promise<void> {
     const parsedDate = new Date(date);
     return this.assetPriceService.delete(ticker, parsedDate);
+  }
+
+  @Get('/all/excluding/tickers')
+  @ApiQuery({ name: 'exclusions', required: false, description: 'tickers of excluded assets in the query'})
+  @ApiOperation({ summary: 'Get all AssetPrice excluding specified' })
+  async getAllExcept(@Query('exclusions') exclusions: string[] = []): Promise<AssetPriceDto[]> {
+    const assetPrices = await this.assetPriceService.getAllExcept(exclusions)
+    return assetPrices
   }
 }
