@@ -35,7 +35,7 @@ export default function CustomTable({ data }: CustomTableProps) {
                     ) : (
                         <>
                             <TableHead>Order Type</TableHead>
-                            <TableHead>Progress</TableHead>
+                            <TableHead>Order Status</TableHead>
                         </>
                     )}
                 </TableRow>
@@ -75,7 +75,7 @@ export default function CustomTable({ data }: CustomTableProps) {
                                     <OrderTypeBadge orderType={(item as OrderExecutionProgress).orderType} />
                                 </TableCell>
                                 <TableCell>
-                                    {(item as OrderExecutionProgress).progress}
+                                    {(item as OrderExecutionProgress).orderStatus}
                                 </TableCell>
                             </>
                         )}
