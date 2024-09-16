@@ -23,7 +23,7 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                             <TableHead>Position | Mkt</TableHead>
                             <TableHead>Last | Cost</TableHead>
                             <TableHead>Order Type</TableHead>
-                            <TableHead>Progress</TableHead>
+                            <TableHead>Order Status</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -53,7 +53,7 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                                     <OrderTypeBadge orderType={item.orderType} />
                                 </TableCell>
                                 <TableCell>
-                                    <span className="font-semibold">{item.progress}</span>
+                                    <span className="font-semibold">{item.orderStatus}</span>
                                 </TableCell>
                             </TableRow>
                         ))}

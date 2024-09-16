@@ -261,7 +261,7 @@ export const indivPortfolioData = {
             last: 178.58,
             cost: 130.23,
             orderType: "Buy",
-            progress: "Filled"
+            orderStatus: "Filled"
         },
         {
             name: "NVIDIA",
@@ -273,7 +273,7 @@ export const indivPortfolioData = {
             last: 124.74,
             cost: 120.42,
             orderType: "Sell",
-            progress: "Partial"
+            orderStatus: "Partial"
         },
         {
             name: "Meta Platforms",
@@ -285,7 +285,7 @@ export const indivPortfolioData = {
             last: 447.86,
             cost: 324.23,
             orderType: "Buy",
-            progress: "Not Filled"
+            orderStatus: "Not Filled"
         }
     ]
 }
