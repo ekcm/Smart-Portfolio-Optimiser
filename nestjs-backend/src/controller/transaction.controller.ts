@@ -12,7 +12,7 @@ export class TransactionController {
     @Post('/order')
     @ApiOperation({ summary: 'Place an order' })
     @ApiBody({
-        type: [OrderDto],
+        type: OrderDto,
         description: 'Order to be created',
         examples: {
             default: {
