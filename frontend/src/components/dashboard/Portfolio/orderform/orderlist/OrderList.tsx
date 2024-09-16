@@ -6,6 +6,7 @@ import SecuritiesChart from "../../charts/SecuritiesChart";
 import TriggeredAlert from "../../TriggeredAlert";
 import { createMultipleOrders } from "@/api/order";
 import { useTransitionRouter } from "next-view-transitions";
+import { createOrdersTransaction } from "@/api/transaction";
 
 interface OrderListProps {
     data: PortfolioData;
@@ -78,7 +79,8 @@ export default function OrderList({ data, newOrders, triggeredAlerts } : OrderLi
         }));
 
         try {
-            const result = await createMultipleOrders(formattedOrders);
+            // const result = await createMultipleOrders(formattedOrders);
+            const result = await createOrdersTransaction(data.portfolioId, formattedOrders);
             console.log("Orders created successfully: ", result);
             // Navigate back to the dashboard after successful submission
             window.alert("!!! Lousy Implementation (for demo purposes) !!! Orders have been added to the orderbook, you will now be redirected back to the dashboard...")
