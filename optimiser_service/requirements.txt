@@ -1,3 +1,5 @@
 requests
 PyPortfolioOpt
 scikit-learn
+flask
+python-dotenv
