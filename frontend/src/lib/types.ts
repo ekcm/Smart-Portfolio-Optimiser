@@ -77,7 +77,7 @@ interface OrderExecutionProgress {
   last: number;
   cost: number;
   orderType: string;
-  progress: string;
+  orderStatus: string;
 };
 
 interface PortfolioData {
