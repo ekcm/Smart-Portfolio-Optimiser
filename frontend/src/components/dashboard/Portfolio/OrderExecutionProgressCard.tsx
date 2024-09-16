@@ -22,6 +22,7 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                             <TableHead>Current Price</TableHead>
                             <TableHead>Order Type</TableHead>
                             <TableHead>Order Status</TableHead>
+                            <TableHead>Order Status</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -48,7 +49,7 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                                     <OrderTypeBadge orderType={item.orderType} />
                                 </TableCell>
                                 <TableCell>
-                                    <span className={`font-semibold ${item.orderStatus.toLowerCase() === 'filled' ? 'text-green-700' : 'text-yellow-600'}`}>{item.orderStatus}</span>
+                                    <span className="font-semibold">{item.orderStatus}</span>
                                 </TableCell>
                             </TableRow>
                         ))}
