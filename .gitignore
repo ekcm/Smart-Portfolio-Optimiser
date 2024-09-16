@@ -10,3 +10,4 @@ pyvenv.cfg
 /python-backend/finance_news/__pycache__
 /python-backend/stock_service/__pycache__
 optimiser_service/venv
+/optimiser_service/__pycache__
