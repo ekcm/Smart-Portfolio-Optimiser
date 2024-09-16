@@ -122,7 +122,6 @@ interface Asset {
 }
 
 
-
 // API CALL TYPES
 // Define the interface for the asset holdings
 interface apiAssetHolding {
