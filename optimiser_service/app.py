@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from collections import OrderedDict
 
 app = Flask(__name__)
