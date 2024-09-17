@@ -14,12 +14,11 @@ URL = os.getenv('ASSETPRICE_URI')
 
 @app.route('/optimiser', methods=['GET'])
 def optimise():
-    # exclusions = request.args.getlist('exclusions')
+    exclusions = request.args.getlist('exclusions')
 
-    # params = {'tickers': exclusions}
+    params = {'exclusions': exclusions}
 
-    # response = requests.get(url, params = params)
-    response = requests.get(URL)
+    response = requests.get(URL, params = params)
     data = response.json()
 
     df = pd.DataFrame(data)
