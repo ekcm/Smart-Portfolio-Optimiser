@@ -87,4 +87,15 @@ export class AssetPriceService {
     }
     return result
   }
+
+  async getAllExcept(tickers: string[] = []): Promise<AssetPrice[]> {
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        const assetPrices = await this.assetPriceModel.find({
+          ticker: { $nin: tickers },
+        }).exec();
+        resolve(assetPrices);
+      }, 1000)
+    })
+  }
 }
