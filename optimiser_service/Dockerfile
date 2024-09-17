@@ -15,7 +15,7 @@ RUN pip install -r requirements.txt
 COPY app.py /app
 
 # Expose the port that the application will listen on
-EXPOSE 5000
+EXPOSE 6969
 
 # Start the application
-CMD ["python", "-m", "flask", "run"]
+CMD ["python", "./app.py"]
