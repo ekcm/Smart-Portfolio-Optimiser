@@ -8,6 +8,7 @@ interface OrderExecutionProgressCardProps {
 }
 
 export default function OrderExecutionProgressCard({ data }: OrderExecutionProgressCardProps) {
+    console.log(data);
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
             <h2 className="text-xl font-medium">Order Execution Progress</h2>
