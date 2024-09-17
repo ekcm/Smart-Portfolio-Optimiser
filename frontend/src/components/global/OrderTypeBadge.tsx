@@ -8,7 +8,7 @@ export default function OrderTypeBadge({ orderType }: CustomBadgeProps) {
     const badgeClasses =
         "variant='outline' w-24 h-8 flex items-center justify-center px-2 py-1 text-md text-white";
 
-    if (orderType === "Buy") {
+    if (orderType === "BUY") {
         return (
             <Badge className={`${badgeClasses} bg-green-700`}>
                 Buy
