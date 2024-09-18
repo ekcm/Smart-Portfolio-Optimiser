@@ -43,7 +43,7 @@ export class CoreService {
         const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
-        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId)
+        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
         const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
         console.log(portfolio)
 
