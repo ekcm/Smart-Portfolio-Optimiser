@@ -45,8 +45,6 @@ export class CoreService {
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
         const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
         const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
-        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
-        const alerts = await this.alertService.getAlerts(portfolioHoldings.map(holding => holding.ticker))
         console.log(portfolio)
 
         return {
