@@ -6,10 +6,11 @@ import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioHoldingsService } from './portfolioHoldings.service';
 import { OrderExecutionsService } from './orderExecutions.service';
+import { AlertService } from "./alert.service";
 
 @Injectable()
 export class CoreService {
-    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService, private alertService: AlertService) { }
 
 
     async loadHomepage(managerId: string): Promise<DashboardCard[]> {
@@ -42,6 +43,7 @@ export class CoreService {
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
         const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
+        const alerts = await this.alertService.getAlerts(portfolioHoldings.map(holding => holding.ticker))
         console.log(portfolio)
 
         return {
@@ -56,7 +58,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 annualizedRoR: 100
             },
-            triggeredAlerts: [],
+            triggeredAlerts: alerts,
             portfolioBreakdown: portfolioBreakdown,
             portfolioHoldings: portfolioHoldings,
             orderExecutionProgress: orderExecutions
