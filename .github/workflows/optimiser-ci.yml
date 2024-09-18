@@ -45,5 +45,5 @@ jobs:
 
     - name: Push Docker image
       run: |
-        docker push $DOCKER_USERNAME/fyp-optimiser:latest-optimizer
-        docker push $DOCKER_USERNAME/fyp-optimiser:optimizer-${{ github.sha }}
+        docker push $DOCKER_USERNAME/fyp:latest-optimizer
+        docker push $DOCKER_USERNAME/fyp:optimizer-${{ github.sha }}
