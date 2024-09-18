@@ -36,7 +36,7 @@ jobs:
 
     - name: Build the Docker image
       working-directory: optimiser_service
-      run: docker build -t fyp-optimiser:${{ github.sha }} .
+      run: docker build -t fyp-optimizer:${{ github.sha }} .
 
     - name: Tag Docker image
       run: |
