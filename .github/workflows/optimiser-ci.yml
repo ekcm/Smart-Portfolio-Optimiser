@@ -1,0 +1,49 @@
+name: Optimiser CI/CD 
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/**"
+      - "optimiser_service/**"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/**"
+      - "optimiser_service/**"
+
+jobs:
+  build-image-and-deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    name: Build and Deploy Backend
+
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.0.0
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      run: |
+        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+
+    - name: Build the Docker image
+      working-directory: optimiser_service
+      run: docker build -t fyp-optimiser:${{ github.sha }} .
+
+    - name: Tag Docker image
+      run: |
+        docker tag fyp-optimiser:${{ github.sha }} $DOCKER_USERNAME/fyp:latest
+        docker tag fyp-optimiser:${{ github.sha }} $DOCKER_USERNAME/fyp:${{ github.sha }}
+
+    - name: Push Docker image
+      run: |
+        docker push $DOCKER_USERNAME/fyp:latest
+        docker push $DOCKER_USERNAME/fyp:${{ github.sha }}
