@@ -2,12 +2,7 @@ name: Optimiser CI/CD
 
 on:
   push:
-    branches: [ "feat/optimiser-microservice" ]
-    paths:
-      - ".github/workflows/**"
-      - "optimiser_service/**"
-  push:
-    branches: [ "main" ]
+    branches: [ "main", "feat/optimiser-microservice" ]
     paths:
       - ".github/workflows/**"
       - "optimiser_service/**"
