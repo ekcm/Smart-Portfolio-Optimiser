@@ -1,10 +1,11 @@
-import { PortfolioData } from "@/lib/mockData";
 import IndivPortfolioCard from "./IndivPortfolioCard";
 import { useDashboardFilterStore } from "@/store/DashBoardFilterState";
 import { useEffect, useState } from "react";
 import { PortfolioItem } from "@/lib/types";
 import { fetchPortfolios } from "@/api/core";
 import Loader from "../loader/Loader";
+import NoPortfolio from "./Portfolio/NoPortfolio";
+import Error from "../error/Error";
 
 export default function Portfolios() {
     // ! TODO: Add managerId from sessionStorage for fetching portfolios api call
@@ -62,8 +63,8 @@ export default function Portfolios() {
         )
     }
 
-    if (error) return <div>{error}</div>;
-    if (!portfolios) return <div>No portfolio data available.</div>;
+    if (error) return <Error error={error} />;
+    if (!portfolios) return <NoPortfolio />;
 
     return (
         <div className="flex flex-col gap-6">
