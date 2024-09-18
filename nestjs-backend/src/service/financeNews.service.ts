@@ -29,6 +29,18 @@ export class FinanceNewsService {
             }, 1000)
         })
     }
+    async getByTickerLatest(ticker: string): Promise<FinanceNews> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                const news = await this.financeNewsModel.findOne({ stock: ticker }).sort({ date: - 1 }).exec();
+                if (news) {
+                    resolve(news);
+                } else {
+                    reject(new NotFoundException("No such Finance News was found"))
+                }
+            }, 1000)
+        })
+    }
 
 
 

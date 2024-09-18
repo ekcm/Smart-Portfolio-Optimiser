@@ -12,7 +12,7 @@ export class AlertService {
         const alerts: AlertDto[] = []
 
         for (const ticker of tickers) {
-            const news = await this.financeNewsService.getByTicker(ticker)
+            const news = await this.financeNewsService.getByTickerLatest(ticker)
             // const generated: Map<any, any> = news.financeNews
             const generated : string = news.financeNews.get("Introduction") // delete this line once financeNews object is updated
             const insights = []
