@@ -1,14 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
-import { DashboardCard, PortfolioData } from "src/types";
+import { DashboardCard, OrderExecutionProgress, PortfolioData } from "src/types";
 import { PortfolioService } from "./portfolio.service";
 import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioHoldingsService } from './portfolioHoldings.service';
+import { OrderExecutionsService } from './orderExecutions.service';
 
 @Injectable()
 export class CoreService {
-    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService) { }
 
 
     async loadHomepage(managerId: string): Promise<DashboardCard[]> {
@@ -40,7 +41,9 @@ export class CoreService {
         const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
+        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
         console.log(portfolio)
+
         return {
             portfolioId: portfolioId,
             clientName: portfolio.client,
@@ -56,7 +59,7 @@ export class CoreService {
             triggeredAlerts: [],
             portfolioBreakdown: portfolioBreakdown,
             portfolioHoldings: portfolioHoldings,
-            orderExecutionProgress: []
+            orderExecutionProgress: orderExecutions
         }
     }
 }

@@ -1,6 +1,7 @@
 import { OrderDto } from "./dto/order.dto";
 import { PortfolioDto } from "./dto/portfolio.dto";
 import { Portfolio } from "./model/portfolio.model";
+import { Order } from "src/model/order.model";
 
 interface DashboardCard {
     portfolioId: string,
@@ -64,7 +65,7 @@ interface PortfolioData {
     triggeredAlerts: string[];
     portfolioBreakdown: PortfolioBreakdown;
     portfolioHoldings: PortfolioHoldings[];
-    orderExecutionProgress: [];
+    orderExecutionProgress: OrderExecutionProgress[];
 };
 
 interface OrderExecutionProgress {
