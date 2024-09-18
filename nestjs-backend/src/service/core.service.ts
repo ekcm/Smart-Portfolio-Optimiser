@@ -5,10 +5,11 @@ import { PortfolioService } from "./portfolio.service";
 import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioHoldingsService } from './portfolioHoldings.service';
+import { AlertService } from "./alert.service";
 
 @Injectable()
 export class CoreService {
-    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private alertService: AlertService) { }
 
 
     async loadHomepage(managerId: string): Promise<DashboardCard[]> {
@@ -40,6 +41,7 @@ export class CoreService {
         const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
+        const alerts = await this.alertService.getAlerts(portfolioHoldings.map(holding => holding.ticker))
         console.log(portfolio)
         return {
             portfolioId: portfolioId,
@@ -53,7 +55,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 annualizedRoR: 100
             },
-            triggeredAlerts: [],
+            triggeredAlerts: alerts,
             portfolioBreakdown: portfolioBreakdown,
             portfolioHoldings: portfolioHoldings,
             orderExecutionProgress: []

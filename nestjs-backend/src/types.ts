@@ -1,3 +1,4 @@
+import { AlertDto } from "./dto/alert.dto";
 import { OrderDto } from "./dto/order.dto";
 import { PortfolioDto } from "./dto/portfolio.dto";
 import { Portfolio } from "./model/portfolio.model";
@@ -61,7 +62,7 @@ interface PortfolioData {
     clientName: string;
     portfolioName: string;
     portfolioAnalysis: PortfolioAnalysis;
-    triggeredAlerts: string[];
+    triggeredAlerts: AlertDto[];
     portfolioBreakdown: PortfolioBreakdown;
     portfolioHoldings: PortfolioHoldings[];
     orderExecutionProgress: [];
@@ -94,9 +95,15 @@ interface ProposedPortfolio {
     orders: OrderDto[]
 }
 
+interface GeneratedInsight {
+    title: string;
+    subtitle?: string;
+    description: string;
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
-    ProposedPortfolio
+    ProposedPortfolio, GeneratedInsight
 };

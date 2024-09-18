@@ -11,6 +11,7 @@ import { UserModule } from './module/user.module';
 import { TransactionsModule } from './module/transactions.module';
 import { PortfolioCreationModule } from './module/portfolioCreation.module';
 import { FinanceNewsModule } from './module/financeNews.module';
+import { AlertModule } from './module/alert.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { FinanceNewsModule } from './module/financeNews.module';
     UserModule,
     TransactionsModule,
     PortfolioCreationModule,
-    FinanceNewsModule
+    FinanceNewsModule,
+    AlertModule
   ],
 })
 export class AppModule {}
