@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { OrderService } from "./order.service";
 import { AssetService } from "./asset.service";
-import { AssetPriceService } from "./assetprice.service"; // Assuming this service provides latest asset prices
+import { AssetPriceService } from "./assetprice.service";
 import { OrderExecutionProgress } from "src/types";
 import { CalculatorUtility } from "src/utilities/calculatorUtility";
 
