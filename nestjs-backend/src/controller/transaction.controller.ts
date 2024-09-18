@@ -10,7 +10,24 @@ export class TransactionController {
     constructor(private transactionService: TransactionService) { }
 
     @Post('/order')
-    @ApiOperation({summary: 'Place an order'})
+    @ApiOperation({ summary: 'Place an order' })
+    @ApiBody({
+        type: OrderDto,
+        description: 'Order to be created',
+        examples: {
+            default: {
+                summary: 'Example order',
+                value: {
+                    orderType: 'BUY',
+                    assetName: 'AAPL',
+                    quantity: 1,
+                    price: 300,
+                    portfolioId: '66d9ae695e15ad24b5e2053a',
+                }
+
+            }
+        }
+    })
     async placeOrder(@Body() orderDto: OrderDto): Promise<Order> {
         return await this.transactionService.placeOrder(orderDto)
     }
@@ -26,12 +43,10 @@ export class TransactionController {
                 value: [
                     {
                         orderType: 'BUY',
-                        orderDate: new Date(),
                         assetName: 'AAPL',
                         quantity: 1,
                         price: 300,
                         portfolioId: '66d9ae695e15ad24b5e2053a',
-                        orderStatus: 'PENDING'
                     }
                 ]
             }
