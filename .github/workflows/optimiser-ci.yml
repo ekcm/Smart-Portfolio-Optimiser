@@ -40,8 +40,8 @@ jobs:
 
     - name: Tag Docker image
       run: |
-        docker tag fyp-optimiser:${{ github.sha }} $DOCKER_USERNAME/fyp-optimiser:latest
-        docker tag fyp-optimiser:${{ github.sha }} $DOCKER_USERNAME/fyp-optimiser:${{ github.sha }}
+        docker tag fyp:${{ github.sha }} $DOCKER_USERNAME/fyp-optimiser:latest
+        docker tag fyp:${{ github.sha }} $DOCKER_USERNAME/fyp-optimiser:${{ github.sha }}
 
     - name: Push Docker image
       run: |
