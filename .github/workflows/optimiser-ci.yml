@@ -2,7 +2,7 @@ name: Optimiser CI/CD
 
 on:
   push:
-    branches: [ "main", "feat/optimiser-microservice" ]
+    branches: [ "main" ]
     paths:
       - ".github/workflows/**"
       - "optimiser_service/**"
@@ -47,3 +47,23 @@ jobs:
       run: |
         docker push $DOCKER_USERNAME/fyp:latest-optimizer
         docker push $DOCKER_USERNAME/fyp:optimizer-${{ github.sha }}
+
+    - name: Trigger Render Deploy Hook
+      run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_OPTIMIZER }}
+      if: success()
+
+  verify-build-optimizer:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    name: Verify Optimizer Build - Backend
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.0.0
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build the Docker image
+      working-directory: optimiser_service
+      run: docker build -t fyp-optimizer:${{ github.sha }} .
