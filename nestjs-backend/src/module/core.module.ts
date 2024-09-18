@@ -5,7 +5,7 @@ import { PortfolioCalculatorModule } from "./portfolioCalculator.module";
 import { CoreController } from "src/controller/core.controller";
 import { PortfolioBreakdownModule } from "./portfolioBreakdown.module";
 import { PortfolioHoldingsModule } from "./portfolioHoldings.module";
-import { OrderExecutionsModule } from "./orderexecutions.module";
+import { OrderExecutionsModule } from "./orderExecutions.module";
 import { AlertModule } from "./alert.module";
 
 @Module({
