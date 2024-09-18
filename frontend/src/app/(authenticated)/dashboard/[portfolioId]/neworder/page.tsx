@@ -7,6 +7,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { AssetsItem, PortfolioData } from "@/lib/types";
 import { viewPortfolio } from "@/api/portfolio";
 import Loader from "@/components/loader/Loader";
+import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
+import Error from "@/components/error/Error";
 
 export default function NewOrder() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
@@ -55,8 +57,8 @@ export default function NewOrder() {
         );
     }
 
-    if (error) return <div>{error}</div>;
-    if (!indivPortfolioData) return <div>No portfolio data available.</div>;
+    if (error) return <Error error={error} />;
+    if (!indivPortfolioData) return <NoPortfolio />;
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">

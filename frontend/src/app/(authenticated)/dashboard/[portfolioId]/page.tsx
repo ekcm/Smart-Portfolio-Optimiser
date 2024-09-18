@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { viewPortfolio } from "@/api/portfolio";
 import { PortfolioData } from "@/lib/types";
 import Loader from "@/components/loader/Loader";
+import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
+import Error from "@/components/error/Error";
 
 export default function Portfolio() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
@@ -19,14 +21,14 @@ export default function Portfolio() {
 
     useEffect(() => {
         setDashBoardNavBarState("Portfolio");
-    }); 
+    });
 
     useEffect(() => {
         if (portfolioId) {
             getIndividualPortfolio();
         }
-    }, [portfolioId]); 
-    
+    }, [portfolioId]);
+
     const getIndividualPortfolio = async () => {
         try {
             const portfolioData = await viewPortfolio(portfolioId);
@@ -42,13 +44,13 @@ export default function Portfolio() {
     // loading state
     if (loading) {
         return (
-            <Loader/>
+            <Loader />
         );
     }
-    
-    if (error) return <div>{error}</div>;
-    if (!indivPortfolioData) return <div>No portfolio data available.</div>;
-    
+
+    if (error) return <Error error={error} />;
+    if (!indivPortfolioData) return <NoPortfolio />;
+
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
             <div className="flex flex-row justify-between">

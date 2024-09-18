@@ -7,6 +7,8 @@ import { viewPortfolio } from '@/api/portfolio';
 import { useEffect, useState } from 'react';
 import { PortfolioData } from '@/lib/types';
 import Loader from '@/components/loader/Loader';
+import NoPortfolio from '@/components/dashboard/Portfolio/NoPortfolio';
+import Error from '@/components/error/Error';
 
 export default function GenerateOrderList() {
     const pathname = usePathname();
@@ -53,8 +55,8 @@ export default function GenerateOrderList() {
             <Loader />
         );
     }
-    if (error) return <div>{error}</div>;
-    if (!indivPortfolioData) return <div>No portfolio data available.</div>;
+    if (error) return <Error error={error} />;
+    if (!indivPortfolioData) return <NoPortfolio />;
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
