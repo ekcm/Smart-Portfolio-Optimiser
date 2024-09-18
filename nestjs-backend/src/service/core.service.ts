@@ -18,6 +18,7 @@ export class CoreService {
 
         for (const portfolio of portfolios) {
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
+            const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
 
             portfolioCards.push({
                 portfolioId: portfolio._id.toString(),
@@ -30,7 +31,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 rateOfReturn: 100,
-                alertsPresent: true,
+                alertsPresent: alerts.length > 0,
             });
         }
         return portfolioCards
@@ -41,7 +42,7 @@ export class CoreService {
         const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
-        const alerts = await this.alertService.getAlerts(portfolioHoldings.map(holding => holding.ticker))
+        const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
         console.log(portfolio)
         return {
             portfolioId: portfolioId,
