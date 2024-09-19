@@ -70,12 +70,9 @@ interface PortfolioHoldingsDifference {
 interface OrderExecutionProgress {
   name: string;
   ticker: string;
-  type: string;
-  geography: string;
   position: number;
-  market: number;
   last: number;
-  cost: number;
+  price: number;
   orderType: string;
   orderStatus: string;
 };
