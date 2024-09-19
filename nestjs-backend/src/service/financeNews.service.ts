@@ -42,6 +42,35 @@ export class FinanceNewsService {
         })
     }
 
+    async getLatestByTickers(tickers: string[]): Promise<FinanceNews[]> {
+        return new Promise((resolve) =>  {
+            setTimeout(async () => {
+                const news = await this.financeNewsModel.aggregate([
+                    {
+                        $match: {
+                            stock: { $in: tickers },
+                        },
+                    },
+                    {
+                        $sort: {
+                            date: -1,
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: "$stock",
+                            latestNews: { $first: "$$ROOT"},
+                        },
+                    },
+                    {
+                        $replaceRoot: { newRoot: "$latestNews"}
+                    }
+                ]).exec()
+                
+                resolve(news)
+            }, 1000)
+        })
+    }
 
 
 

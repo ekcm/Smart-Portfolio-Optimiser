@@ -10,11 +10,11 @@ export class AlertService {
     async getAlerts(tickers: string[]): Promise<AlertDto[]> {
 
         const alerts: AlertDto[] = []
+        
+        const newses = await this.financeNewsService.getLatestByTickers(tickers);
 
-        for (const ticker of tickers) {
-            const news = await this.financeNewsService.getByTickerLatest(ticker)
-            // const generated: Map<any, any> = news.financeNews
-            const generated : string = news.financeNews.get("Introduction") // delete this line once financeNews object is updated
+        for (const news of newses) {
+            const generated: string = news.financeNews["Introduction"]
             const insights = []
 
             // Edit this once financeNews object is updated
@@ -28,13 +28,9 @@ export class AlertService {
                 date: news.date,
                 sentimentRating: news.sentimentRating,
                 insights: insights,
-                references: news.financeNews.get("References")
+                references: news.financeNews["References"]
             })
-
         }
-
-
-
 
         return alerts
     }
