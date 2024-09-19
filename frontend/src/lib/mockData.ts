@@ -254,36 +254,27 @@ export const indivPortfolioData = {
         {
             name: "Apple",
             ticker: "AAPL",
-            type: "Stock",
-            geography: "USA",
             position: 50,
-            market: 8779.00,
             last: 178.58,
-            cost: 130.23,
+            price: 130.23,
             orderType: "Buy",
             orderStatus: "Filled"
         },
         {
             name: "NVIDIA",
             ticker: "NVDA",
-            type: "Stock",
-            geography: "USA",
             position: 50,
-            market: 3245.00,
             last: 124.74,
-            cost: 120.42,
+            price: 120.42,
             orderType: "Sell",
             orderStatus: "Partial"
         },
         {
             name: "Meta Platforms",
             ticker: "META",
-            type: "Stock",
-            geography: "USA",
             position: 50,
-            market: 12472.00,
             last: 447.86,
-            cost: 324.23,
+            price: 324.23,
             orderType: "Buy",
             orderStatus: "Not Filled"
         }
