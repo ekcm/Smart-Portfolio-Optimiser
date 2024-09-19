@@ -55,7 +55,6 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
     const [assetError, setAssetError] = useState<string | null>(null);
 
-
     useEffect(() => {
         if (prevOrders) setOrders(prevOrders);
     }, [prevOrders]);
