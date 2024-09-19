@@ -36,8 +36,8 @@ export default function OldOrdersCard({ data } : OldOrdersCardProps) {
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex flex-col">
-                                        <span>{item.last}</span>
-                                        <span className="text-xs text-gray-500">{item.cost}</span>
+                                        <span>{item.last.toFixed(2)}</span>
+                                        <span className="text-xs text-gray-500">{item.cost.toFixed(2)}</span>
                                     </div>
                                 </TableCell>
                             </TableRow>
