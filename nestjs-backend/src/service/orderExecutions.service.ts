@@ -24,19 +24,15 @@ export class OrderExecutionsService {
 
             const todayClose = assetPrice.todayClose;
             const quantity = order.quantity;
-            const cost = quantity * order.price;
 
             const orderExecution: OrderExecutionProgress = {
                 name: asset.name,
                 ticker: order.assetName,
-                type: asset.type,
-                geography: asset.geography,
                 position: quantity,
-                market: CalculatorUtility.calculateMarketValue(todayClose, quantity),
                 last: todayClose,
-                cost: cost,
+                price: order.price,
                 orderType: order.orderType,
-                progress: order.orderStatus
+                orderStatus: order.orderStatus
             };
 
             orderExecutions.push(orderExecution);
