@@ -31,6 +31,6 @@ export abstract class CalculatorUtility {
 
     public static calculatePositionsRatio(todayClose: number, quantity: number, totalValue: number): number {
         const marketValue = this.calculateMarketValue(todayClose, quantity)
-        return this.precisionRound(marketValue / totalValue, 2)
+        return this.precisionRound((marketValue / totalValue)*100, 2)
     }
 }
