@@ -42,8 +42,7 @@ export class CoreService {
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
         const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
-        console.log(portfolio)
-
+        
         return {
             portfolioId: portfolioId,
             clientName: portfolio.client,
