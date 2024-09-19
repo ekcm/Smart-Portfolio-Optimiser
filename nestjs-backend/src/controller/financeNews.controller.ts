@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { FinanceNews } from "../model/financeNews.model";
 import { FinanceNewsService } from "../service/financeNews.service";
@@ -18,6 +18,13 @@ export class FinanceNewsController {
 	@ApiOperation({ summary: "Get one Asset by ticker" })
 	async getByTicker(@Param('ticker') ticker: string): Promise<FinanceNews> {
 		return await this.financeNewsService.getByTicker(ticker);
+	}
+
+	@Get('/tickers/latest')
+	@ApiOperation({ summary: "Get the latest news for all specified tickers" })
+	async getLatestByTicker(@Query('tickers') tickers: string[] = []): Promise<FinanceNews[]> {
+		const tickersArray = Array.isArray(tickers) ? tickers : [tickers];
+		return await this.financeNewsService.getLatestByTickers(tickersArray);
 	}
 
 }
