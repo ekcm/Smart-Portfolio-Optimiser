@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SecuritiesChart from "../../charts/SecuritiesChart";
 import TriggeredAlert from "../../TriggeredAlert";
-import { createMultipleOrders } from "@/api/order";
 import { useTransitionRouter } from "next-view-transitions";
 import { createOrdersTransaction } from "@/api/transaction";
 
