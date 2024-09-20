@@ -10,7 +10,10 @@ from collections import OrderedDict
 
 app = Flask(__name__)
 load_dotenv()
-URL = os.getenv('ASSETPRICE_URI')
+API_PATH = os.getenv('API_PATH')
+ASSETPRICE_URL = API_PATH + '/tickers'
+ASSETPRICE_INCLUSIVE_URL = API_PATH + '/all/from/tickers'
+PORTFOLIO_URL = API_PATH + '/portfolio'
 
 @app.route('/optimiser', methods=['GET'])
 def optimise():
@@ -18,8 +21,37 @@ def optimise():
 
     params = {'exclusions': exclusions}
 
-    response = requests.get(URL, params = params)
+    response = requests.get(ASSETPRICE_URL, params = params)
     data = response.json()
+
+    df = pd.DataFrame(data)
+
+    pivot_df = df.pivot(index='date', columns = 'ticker', values='todayClose')
+
+    pivot_df.index = pd.to_datetime(pivot_df.index)
+    pivot_df = pivot_df.sort_index()
+
+    mu = mean_historical_return(pivot_df)
+    S = CovarianceShrinkage(pivot_df).ledoit_wolf()
+
+    ef = EfficientFrontier(mu, S)
+    weights = ef.max_sharpe()
+
+    cleaned_weights = ef.clean_weights()
+
+    response = OrderedDict((k, v) for k, v in cleaned_weights.items() if v != 0)
+
+    return jsonify(response)
+
+@app.route('/optimiser/<portfolio_id>')
+def optimise_portfolio(portfolio_id):
+    portfolio_response = requests.get(PORTFOLIO_URL + "/" + portfolio_id)
+    portfolio_data = portfolio_response.json()
+    asset_holdings = portfolio_data['assetHoldings']
+    tickers = [asset_holding['ticker'] for asset_holding in asset_holdings]
+
+    asset_price_response = requests.get(ASSETPRICE_INCLUSIVE_URL, params = {'inclusions': tickers})
+    data = asset_price_response.json()
 
     df = pd.DataFrame(data)
 
