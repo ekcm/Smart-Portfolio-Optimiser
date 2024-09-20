@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
+import { Injectable, NotFoundException, ConflictException } from "@nestjs/common"; import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { AssetPriceDto } from "../dto/assetprice.dto";
 import { AssetPrice } from "../model/assetprice.model";
@@ -93,6 +92,17 @@ export class AssetPriceService {
       setTimeout(async () => {
         const assetPrices = await this.assetPriceModel.find({
           ticker: { $nin: tickers },
+        }).exec();
+        resolve(assetPrices);
+      }, 1000)
+    })
+  }
+  
+  async getFrom(tickers: string[]): Promise<AssetPrice[]> {
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        const assetPrices = await this.assetPriceModel.find({
+          ticker: { $in: tickers },
         }).exec();
         resolve(assetPrices);
       }, 1000)

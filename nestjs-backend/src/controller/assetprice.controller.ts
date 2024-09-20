@@ -55,4 +55,12 @@ export class AssetPriceController {
     const assetPrices = await this.assetPriceService.getAllExcept(exclusions)
     return assetPrices
   }
+
+  @Get('/all/from/tickers')
+  @ApiQuery({ name: 'inclusions', required: true, description: 'tickers of included assets in the query'})
+  @ApiOperation({ summary: 'Get all AssetPrice inclusive only of specified' })
+  async getFrom(@Query('exclusions') exclusions: string[]): Promise<AssetPriceDto[]> {
+    const assetPrices = await this.assetPriceService.getFrom(exclusions)
+    return assetPrices
+  }
 }
