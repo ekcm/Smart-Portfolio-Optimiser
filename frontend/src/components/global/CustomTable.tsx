@@ -49,18 +49,18 @@ export default function CustomTable({ data }: CustomTableProps) {
                                 <span className="text-xs text-gray-500">{item.ticker}</span>
                             </div>
                         </TableCell>
-                        <TableCell>{item.type}</TableCell>
-                        <TableCell>{item.geography}</TableCell>
+                        {/* <TableCell>{item.type}</TableCell>
+                        <TableCell>{item.geography}</TableCell> */}
                         <TableCell>
                             <div className="flex flex-col">
                                 <span>{item.position}</span>
-                                <span className="text-xs text-gray-500">{item.market}</span>
+                                {/* <span className="text-xs text-gray-500">{item.market}</span> */}
                             </div>
                         </TableCell>
                         <TableCell>
                             <div className="flex flex-col">
                                 <span>{item.last}</span>
-                                <span className="text-xs text-gray-500">{item.cost}</span>
+                                {/* <span className="text-xs text-gray-500">{item.cost}</span> */}
                             </div>
                         </TableCell>
                         {isHoldings ? (
