@@ -34,7 +34,7 @@ export class PortfolioController {
     }
 
     @Put(':id/cash')
-    @ApiOperation({ summary: "Add cash" })
+    @ApiOperation({ summary: "Add cash " })
     @ApiBody({
         description: 'Cash amount to be added or withdrawn',
         examples: {
