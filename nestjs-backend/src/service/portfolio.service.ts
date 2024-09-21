@@ -1,13 +1,9 @@
-import { Injectable, NotFoundException, ConflictException } from "@nestjs/common";
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { PortfolioDto } from "../dto/portfolio.dto";
 import { Portfolio } from "../model/portfolio.model";
 
-export enum HandleCash {
-    ADD = 'ADD',
-    WITHDRAW = 'WITHDRAW'
-}
 @Injectable()
 export class PortfolioService {
     constructor(@InjectModel(Portfolio.name) private portfolioModel: Model<Portfolio>) { }
@@ -72,11 +68,11 @@ export class PortfolioService {
         })
     }
 
-    async addCash(id: string, cash: number, type: HandleCash): Promise<Portfolio> {
+    async addCash(id: string, cash: number, type: "WITHDRAW" | "ADD"): Promise<Portfolio> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
 
-                if (type === HandleCash.ADD) {
+                if (type === "ADD") {
                     const existingPortfolio = await this.portfolioModel.findByIdAndUpdate(
                         id,
                         { $inc: { cashAmount: cash } },
@@ -104,6 +100,37 @@ export class PortfolioService {
 
             }, 1000)
         })
+    }
+
+    async updateCash(id: string, cashAmount: number, type: 'WITHDRAW' | 'ADD'): Promise<Portfolio> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                const existingPortfolio = await this.portfolioModel.findById(id);
+                if (!existingPortfolio) {
+                    reject(new NotFoundException(`Portfolio #${id} not found`));
+                }
+
+                let newCashAmount = existingPortfolio.cashAmount;
+
+                if (type === 'ADD') {
+                    newCashAmount += cashAmount;
+                } else if (type === 'WITHDRAW') {
+                    if (existingPortfolio.cashAmount < cashAmount) {
+                        reject(new BadRequestException('Insufficient funds for withdrawal'));
+                    }
+                    newCashAmount -= cashAmount;
+                }
+
+                const updatedPortfolio = await this.portfolioModel.findByIdAndUpdate(
+                    id,
+                    { cashAmount: newCashAmount },
+                    { new: true }
+                );
+
+                resolve(updatedPortfolio);
+            }, 1000)
+        })
+
     }
 
 
