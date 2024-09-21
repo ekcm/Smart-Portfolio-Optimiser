@@ -10,10 +10,12 @@ import json
 import markdown_to_json 
 from openai import OpenAI
 from datetime import datetime
+from pymongo import MongoClient
 
-load_dotenv(dotenv_path="../../.env")
+load_dotenv(dotenv_path="../.env")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
+uri = os.getenv("MONGO_URI")
 
 app = FastAPI()
 
@@ -30,13 +32,45 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-llm = ChatOpenAI(model="gpt4o")
+dow_list_info = {
+    "AAPL":["Apple", "Information Technology"],
+    "AMGN":["Amgen", "Biopharmaceutical"],
+    "AXP": ["American Express", "Financial Services"],
+    "BA": ["Boeing", "Aerospace and defense"],
+    "CAT": ["Caterpillar", "Construction and mining"],
+    "CRM": ["Salesforce", "Information Technology"],
+    "CSCO": ["Cisco", "Information Technology"],
+    "CVX": ["Chevron", "Petroleum Industry"],
+    "DIS": ["Disney", "Broadcasting and Entertainment"],
+    "DOW": ["Dow", "Chemical Industry"],
+    "GS": ["Goldman Sachs", "Financial Services"],
+    "HD": ["Home Depot", "Home Improvement"],
+    "HON": ["Honeywell", "Conglomerate"],
+    "IBM": ["IBM", "Information Technology"],
+    "INTC": ["Intel", "Semiconductor Industry"],
+    "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
+    "JPM": ["JPMorgan Chase", "Financial Services"],
+    "KO": ["Coca-Cola", "Drink Industry"],
+    "MCD": ["Mcdonalds", "Food Industry"],
+    "MMM": ["3M", "Conglomerate"],
+    "MRK": ["Merck", "Pharmaceutical Industry"],
+    "MSFT": ["Microsoft", "Information Technology"],
+    "NKE": ["Nike", "Clothing Industry"],
+    "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
+    "TRV": ["Travelers", "Insurance"],
+    "UNH": ["UnitedHealth Group", "Managed health care"],
+    "V": ["Visa", "Financial Services"],
+    "VZ": ["Verizon", "Telecommunications Industry"],
+    "WBA": ["Walgreens Boots Alliance", "Retailing"],
+    "WMT": ["Walmart", "Retailing"]
+}
+
 client = OpenAI()
 
-class Query(BaseModel):
-    query: str
+class Stock(BaseModel):
+    ticker: str
 
-async def researcher_response(query):
+async def researcher_response(query, ticker):
     researcher = GPTResearcher(query=query, report_type="research_report")
     research_result = await researcher.conduct_research()
     research_report = await researcher.write_report()
@@ -51,168 +85,106 @@ async def researcher_response(query):
     json_data = json.dumps(json_data, indent=2)
     json_obj = json.loads(json_data)
 
-    with open("reports/research_report.txt", "w") as file:
-        file.write(research_report)
-
-    with open("reports/research_report.json", "w") as file:
-        file.write(json_data)
     return json_obj
+
+async def generate_sentiment_analysis(ticker, extracted_text, references):
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "Your role is to perform sentiment analysis on the extracted text."},
+            {"role": "user", "content": f'''
+                ### Instruction ###
+                Perform sentiment analysis on the extracted text. Return the output as:
+                - Extremely Positive
+                - Positive
+                - Neutral
+                - Negative
+                - Extremely Negative
+
+                Text: {extracted_text}.
+            '''
+            }
+        ],
+        temperature=0,    
+    )
+    sentiment_analysis = response.choices[0].message.content
+
+    if "Extremely Positive" in sentiment_analysis:
+        sentimentRating = 5
+    elif "Positive" in sentiment_analysis:
+        sentimentRating = 4
+    elif "Negative" in sentiment_analysis:
+        sentimentRating = 2
+    elif "Extremely Negative" in sentiment_analysis:
+        sentimentRating = 1
+    else:
+        sentimentRating = 3
+
+    sentiment_analysis_json = {
+        "ticker": ticker,
+        "date": datetime.now(),
+        "sentimentRating": sentimentRating,
+        "summary": extracted_text,
+        "references": references
+    }
+
+    return sentiment_analysis_json
+
+def insert_into_mongo(json_obj):
+    try:
+        with MongoClient(uri) as client:
+            database = client.get_database("FYP-Test-DB")
+            alerts = database.get_collection("FinanceNews")
+            alerts.insert_one(json_obj)
+    except Exception as e:
+        return {"error": str(e)}
+    
+    return {"data": "Alert created successfully!"}
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
 @app.post("/")
-async def retrieve_finance_news(query: Query):
-    prompt = query.query
-    response = await researcher_response(prompt)
-    return response
+async def retrieve_finance_news(Stock: Stock):
+    ticker = Stock.ticker
+    date = datetime.now()
+    query = f"Give financial news information about the {ticker} stock on {date}, and give a summary of key events surrounding the stock."
+    stock_researcher = await researcher_response(query, ticker)
+    last_key, last_value = list(stock_researcher.items())[-1]
+    if not isinstance(last_value, list):
+        last_value = [last_value]
 
-# @app.post("/")
-# async def retrieve_json(query: Query):
-#     prompt = query.query 
-#     with open ("research_report.json", "r") as file:
-#         response = file.read()
-#         print(type(response))
-#         json_obj = json.loads(response)
-#         return json_obj
+    updated_json_obj = []
+    for key, value in list(stock_researcher.items())[:-1]:
+        temp_dict = {}
+        temp_dict["title"] = key
+        temp_dict["content"] = value
+        updated_json_obj.append(temp_dict)
 
-@app.get("/keyword_extraction")
-def keyword_extraction():
-    '''
-    This service is used to perform keyword_extraction on the research report.
-
-    It reads the research report from the file, extracts the key words such as specific industries and companies mentioned in the report, and performs sentiment analysis on the extracted text.
-    '''
-    with open("reports/research_report.json", "r") as file:
-        research_report = file.read()
-
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Your role is to extract industry keywords and stock tickers from the research report"},
-            {"role": "user", "content": f'''
-                ### Instruction ###
-                Extract the industry keywords and stock tickers from the research report.
-                Text: Advance Auto Parts (AAP) tumbled by 17.5% after its profit for the latest quarter fell short of Wall Street's expectations, citing a \"challenging demand environment\" and lowering its full-year profit forecast ([AP News](https://apnews.com/article/stock-markets-fed-inflation-earnings-japan-a829ed05df2841063ed5da6fb3767a98)).
-            '''
-            },
-            {"role": "assistant", "content": "AAP"},
-            {"role": "user", "content": f'''
-                ### Instruction ###
-                Extract the industry keywords and stock tickers from the research report.
-                Text: Oil prices faced a weekly decline due to demand concerns and ongoing geopolitical tensions in Gaza. The market's focus remains on the potential impact of these factors on global oil supply and demand dynamics ([Bloomberg](https://www.bloomberg.com/news/articles/2024-08-22/latest-oil-market-news-and-analysis-for-aug-23)).
-            '''
-            },
-            {"role": "assistant", "content": "Oil"},
-            {"role": "user", "content": f'''
-                ### Instruction ###
-                Extract the industry keywords and stock tickers from the research report.
-                Text: {research_report}.
-            '''
-            }
-        ],
-        temperature=0,
-    )
-
-    answer = response.choices[0].message.content
-    json_obj = {}
-    answer_list = answer.split("\n")
-    current_header = ""
-    for line in answer_list:
-        if line.startswith("**"):
-            current_header = line[2:-2]
-            json_obj[current_header] = []
-        else:
-            if current_header == "":
-                pass
-            else:
-                if line[2:] == "":
-                    pass
-                else:
-                    json_obj[current_header].append(line[2:])
-    json_str = json.dumps(json_obj, indent=2)
-    with open("reports/keyword_extraction.json", "w") as file:
-        file.write(json_str)
-    return json_obj
-
-@app.get("/sentiment_analysis")
-def sentiment_analysis():
-    '''
-    This service is used to perform sentiment analysis on the research report.
+    sentiment_analysis_entry = await generate_sentiment_analysis(ticker, updated_json_obj, last_value)
     
-    It retrieves the json object from keyword_extraction.json and the entire research text from research_report.txt.
+    result = insert_into_mongo(sentiment_analysis_entry)
+    return result
 
-    Using the json object, it performs sentiment analysis on the extracted text.
-    '''
+@app.post("/finance_news")
+async def retrieve_all_finance_news():
+    for ticker in dow_list_info.keys():
+        result = await retrieve_finance_news(Stock(ticker=ticker))
 
-    # edit the keyword_extraction.json file
-    with open("reports/keyword_extraction.json", "r") as file:
-        keyword_extraction = file.read()
-        keyword_extraction = json.loads(keyword_extraction)
+    return result
 
-    # edit the research_report.txt file
-    with open("reports/research_report.txt", "r") as file:
-        research_report = file.read()
+@app.delete("/")
+def delete_finance_news():
+    try:
+        with MongoClient(uri) as client:
+            database = client.get_database("FYP-Test-DB")
+            alerts = database.get_collection("FinanceNews")
+            alerts.delete_many({})
+            return {"data": "Finance news deleted successfully!"}
+    except Exception as e:
+        return {"error": str(e)}
 
-    sentiment_analysis_list = []
-
-    for k,v in keyword_extraction.items():
-        for keyword in v:
-    
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "Your role is to search for the sentence or paragraph that is relevant to the keyword."},
-                    {"role": "user", "content": f'''
-                        ### Instruction ###
-                        Extract the sentence or paragraph that is relevant to the keyword.
-                        Keywords: "{keyword}".
-                        Text: {research_report}.
-                    '''
-                    }
-                ],
-                temperature=0,
-            )
-            keyword_sentence = response.choices[0].message.content
-
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "Your role is to perform sentiment analysis on the extracted text."},
-                    {"role": "user", "content": f'''
-                        ### Instruction ###
-                        Perform sentiment analysis on the extracted text. Return the output as Positive, Negative, or Neutral.
-                        Text: {keyword_sentence}.
-                    '''
-                    }
-                ],
-                temperature=0,
-            )
-            sentiment_analysis = response.choices[0].message.content
-            sentiment_analysis_classification = 2
-            if "Negative" in sentiment_analysis:
-                sentiment_analysis_classification = 1
-            elif "Positive" in sentiment_analysis:
-                sentiment_analysis_classification = 3
-            return_json = {
-                "keyword_extraction": keyword,
-                "keyword_sentence": keyword_sentence,
-                "sentiment_analysis": sentiment_analysis_classification,
-                "date": datetime.now().date()
-            }
-            sentiment_analysis_list.append(return_json)
-
-    return sentiment_analysis_list
-
-# if this approach is better, we can use this instead of the other endpoints
-@app.post("/orchestrate_sentiment_analysis")
-async def orchestrate_sentiment_analysis():
-    query = "Give financial news information for this week"
-    await researcher_response(query)
-    keyword_extraction()
-    json_obj = sentiment_analysis()
-    return json_obj
 
 if __name__ == "__main__":
     uvicorn.run("finance_news:app", host='127.0.0.1', port=5000, reload=True)
