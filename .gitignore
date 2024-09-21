@@ -11,3 +11,4 @@ pyvenv.cfg
 /python-backend/stock_service/__pycache__
 optimiser_service/venv
 /optimiser_service/__pycache__
+venv
