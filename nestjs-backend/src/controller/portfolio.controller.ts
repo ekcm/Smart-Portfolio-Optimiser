@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { PortfolioDto } from "../dto/portfolio.dto";
 import { Portfolio } from "../model/portfolio.model";
-import { HandleCash, PortfolioService } from "../service/portfolio.service";
+import { PortfolioService } from "../service/portfolio.service";
 
 @ApiTags("Portfolio Service")
 @Controller("portfolio")
@@ -35,7 +35,21 @@ export class PortfolioController {
 
     @Put(':id/cash')
     @ApiOperation({ summary: "Add cash" })
-    async addCash(@Param('id') id: string, @Query('cash amount') cash: number, @Query('type') type : HandleCash): Promise<Portfolio> {
-        return await this.portfolioService.addCash(id, cash, type);
+    @ApiBody({
+        description: 'Cash amount to be added or withdrawn',
+        examples: {
+            default: {
+                summary: 'Example',
+                value:
+                {
+                    "cash amount": 100,
+                    "type": "ADD"
+                }
+
+            }
+        }
+    })
+    async updateCash(@Param('id') id: string, @Body('cash amount') cash: number, @Body('type') type: "WITHDRAW" | "ADD"): Promise<Portfolio> {
+        return await this.portfolioService.updateCash(id, cash, type);
     }
 }
