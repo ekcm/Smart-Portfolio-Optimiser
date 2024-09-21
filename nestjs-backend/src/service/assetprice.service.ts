@@ -81,7 +81,7 @@ export class AssetPriceService {
   }
 
   async getLatest(ticker: string): Promise<AssetPrice> {
-    const result = await this.assetPriceModel.findOne().sort({ date: -1}).exec()
+    const result = await this.assetPriceModel.findOne({ ticker }).sort({ date: -1}).exec()
     if (!result) {
       throw new NotFoundException(`AssetPrice with ticker ${ticker} not found`)
     }
