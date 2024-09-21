@@ -39,7 +39,7 @@ export class PortfolioController {
         description: 'Cash amount to be added or withdrawn',
         examples: {
             default: {
-                summary: 'Example add',
+                summary: 'Example add cash',
                 value:
                 {
                     "cash amount": 10000,
