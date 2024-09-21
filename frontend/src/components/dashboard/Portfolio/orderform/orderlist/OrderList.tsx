@@ -80,8 +80,8 @@ export default function OrderList({ data, newOrders, triggeredAlerts } : OrderLi
         console.log(formattedOrders);
 
         try {
-            // const result = await createOrdersTransaction(data.portfolioId, formattedOrders);
-            // console.log("Orders created successfully: ", result);
+            const result = await createOrdersTransaction(data.portfolioId, formattedOrders);
+            console.log("Orders created successfully: ", result);
             // Navigate back to the dashboard after successful submission
             window.alert("!!! Lousy Implementation (for demo purposes) !!! Orders have been added to the orderbook, you will now be redirected back to the dashboard...")
             router.push(`/dashboard/${data.portfolioId}`);
