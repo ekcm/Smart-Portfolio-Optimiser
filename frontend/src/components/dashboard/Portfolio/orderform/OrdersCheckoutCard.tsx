@@ -16,17 +16,15 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
             <h2 className="text-xl font-medium">Orders Checkout</h2>
             {data.length === 0 ?
                 <p className="text-gray-400">No orders to checkout</p>
-            :
+                :
                 <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead>Symbol | Ticker</TableHead>
-                            <TableHead>Security Type</TableHead>
-                            <TableHead>Geography</TableHead>
-                            <TableHead>Position | Mkt</TableHead>
-                            <TableHead>Last | Cost</TableHead>
+                            <TableHead>Position | Price</TableHead>
+                            <TableHead>Current Price</TableHead>
                             <TableHead>Order Type</TableHead>
-                            <TableHead>Action</TableHead>
+                            <TableHead>Remove</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -38,18 +36,15 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
                                         <span className="text-xs text-gray-500">{item.ticker}</span>
                                     </div>
                                 </TableCell>
-                                <TableCell>{item.type}</TableCell>
-                                <TableCell>{item.geography}</TableCell>
                                 <TableCell>
-                                    <div className="flex flex-col">
-                                        <span>{item.position}</span>
-                                        <span className="text-xs text-gray-500">{item.market.toFixed(2)}</span>
+                                    <div className="flex">
+                                        <span className="font-medium">{item.position} Share{item.position > 1 ? 's' : ''}</span>
+                                        <span>&nbsp;@ {Number(item.cost).toFixed(2)}</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex flex-col">
-                                        <span>{item.last}</span>
-                                        <span className="text-xs text-gray-500">{item.cost}</span>
+                                        <span>{Number(item.last).toFixed(2)}</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>
