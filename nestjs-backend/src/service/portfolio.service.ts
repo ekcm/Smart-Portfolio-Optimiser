@@ -68,40 +68,6 @@ export class PortfolioService {
         })
     }
 
-    async addCash(id: string, cash: number, type: "WITHDRAW" | "ADD"): Promise<Portfolio> {
-        return new Promise((resolve, reject) => {
-            setTimeout(async () => {
-
-                if (type === "ADD") {
-                    const existingPortfolio = await this.portfolioModel.findByIdAndUpdate(
-                        id,
-                        { $inc: { cashAmount: cash } },
-                        { new: true }
-                    );
-
-                    if (!existingPortfolio) {
-                        reject(new NotFoundException('Portfolio #${id} not found'));
-                    } else {
-                        resolve(existingPortfolio)
-                    }
-                } else {
-                    const existingPortfolio = await this.portfolioModel.findByIdAndUpdate(
-                        id,
-                        { $inc: { cashAmount: -cash } },
-                        { new: true }
-                    );
-
-                    if (!existingPortfolio) {
-                        reject(new NotFoundException('Portfolio #${id} not found'));
-                    } else {
-                        resolve(existingPortfolio)
-                    }
-                }
-
-            }, 1000)
-        })
-    }
-
     async updateCash(id: string, cashAmount: number, type: 'WITHDRAW' | 'ADD'): Promise<Portfolio> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
