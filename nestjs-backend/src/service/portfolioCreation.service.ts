@@ -60,8 +60,9 @@ export class PortfolioCreationService{
         } 
     }
 
-    async generatePortfolio( portfolio: Portfolio ): Promise<OrderDto[]> {
+    async generatePortfolio( portfolioId: string ): Promise<OrderDto[]> {
         var proposedOrders: OrderDto[] = []
+        const portfolio = await this.portfolioService.getById(portfolioId)
         try {
             const response = await lastValueFrom(
                 this.httpService.get(this.OPTIMIZER_URL, {
