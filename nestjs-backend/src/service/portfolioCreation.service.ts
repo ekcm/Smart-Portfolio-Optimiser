@@ -6,7 +6,7 @@ import { OrderType } from 'src/model/order.model';
 import { PortfolioService } from './portfolio.service';
 import { OrderStatus } from '../model/order.model';
 import { ProposedPortfolio } from 'src/types';
-import { RiskAppetite } from 'src/model/portfolio.model';
+import { Portfolio, RiskAppetite } from 'src/model/portfolio.model';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 
@@ -58,6 +58,36 @@ export class PortfolioCreationService{
             portfolioId: createdPortfolio._id.toString(),
             orders: proposedOrders
         } 
+    }
+
+    async generatePortfolio( portfolio: Portfolio ): Promise<OrderDto[]> {
+        var proposedOrders: OrderDto[] = []
+        try {
+            const response = await lastValueFrom(
+                this.httpService.get(this.OPTIMIZER_URL, {
+                    params: {
+                        exclusions: portfolio.exclusions,
+                    }
+                },
+            ))
+            const weights = response.data
+            for (let ticker in weights) {
+                const assetPrice = await this.assetPriceService.getByTickerLatest(ticker);
+                proposedOrders.push({
+                    orderType: OrderType.BUY,
+                    orderDate: new Date(),
+                    assetName: ticker,
+                    quantity: (portfolio.cashAmount * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / assetPrice.todayClose,
+                    price: assetPrice.todayClose,
+                    portfolioId: portfolio._id.toString(),
+                    orderStatus: OrderStatus.PENDING
+                })
+            }
+        } catch (error) {
+            throw new InternalServerErrorException('Optimizer service error')
+        }
+
+        return proposedOrders
     }
 }
 
