@@ -6,10 +6,11 @@ import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioHoldingsService } from './portfolioHoldings.service';
 import { OrderExecutionsService } from './orderExecutions.service';
+import { AlertService } from "./alert.service";
 
 @Injectable()
 export class CoreService {
-    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService, private alertService: AlertService) { }
 
 
     async loadHomepage(managerId: string): Promise<DashboardCard[]> {
@@ -18,6 +19,7 @@ export class CoreService {
 
         for (const portfolio of portfolios) {
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
+            const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
 
             portfolioCards.push({
                 portfolioId: portfolio._id.toString(),
@@ -30,7 +32,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 rateOfReturn: 100,
-                alertsPresent: true,
+                alertsPresent: alerts.length > 0,
             });
         }
         return portfolioCards
@@ -42,7 +44,8 @@ export class CoreService {
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
         const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
-        
+        const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
+
         return {
             portfolioId: portfolioId,
             clientName: portfolio.client,
@@ -55,7 +58,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 annualizedRoR: 100
             },
-            triggeredAlerts: [],
+            triggeredAlerts: alerts,
             portfolioBreakdown: portfolioBreakdown,
             portfolioHoldings: portfolioHoldings,
             orderExecutionProgress: orderExecutions
