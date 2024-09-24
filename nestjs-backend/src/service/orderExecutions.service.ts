@@ -3,7 +3,6 @@ import { OrderService } from "./order.service";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { OrderExecutionProgress } from "src/types";
-import { CalculatorUtility } from "src/utilities/calculatorUtility";
 
 @Injectable()
 export class OrderExecutionsService {
@@ -15,7 +14,10 @@ export class OrderExecutionsService {
     ) { }
 
     async getOrderExecutions(portfolioId: string): Promise<OrderExecutionProgress[]> {
-        const orders = await this.orderService.getByPortfolioId(portfolioId);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const orders = await this.orderService.getFilteredOrders(portfolioId, today);
         const orderExecutions: OrderExecutionProgress[] = [];
 
 
@@ -45,7 +47,8 @@ export class OrderExecutionsService {
                 last: last,
                 price: order.price,
                 orderType: order.orderType,
-                orderStatus: order.orderStatus
+                orderStatus: order.orderStatus,
+                orderDate: order.orderDate
             };
 
             orderExecutions.push(orderExecution);
