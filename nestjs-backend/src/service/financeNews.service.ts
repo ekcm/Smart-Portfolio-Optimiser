@@ -48,7 +48,7 @@ export class FinanceNewsService {
                 const news = await this.financeNewsModel.aggregate([
                     {
                         $match: {
-                            stock: { $in: tickers },
+                            ticker: { $in: tickers },
                         },
                     },
                     {
@@ -58,7 +58,7 @@ export class FinanceNewsService {
                     },
                     {
                         $group: {
-                            _id: "$stock",
+                            _id: "$ticker",
                             latestNews: { $first: "$$ROOT"},
                         },
                     },
