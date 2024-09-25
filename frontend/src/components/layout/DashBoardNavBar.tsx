@@ -48,6 +48,9 @@ export default function DashBoardNavBar() {
                         <Link href={`/dashboard/${id}/editportfolio`}>
                             <Button className="mr-4 bg-red-700">Edit Portfolio</Button>
                         </Link>
+                        <Link href={`/dashboard/${id}/addcash`}>
+                            <Button className="mr-4 bg-green-700">Add Cash</Button>
+                        </Link>
                     </>
                 );
             case "Empty":
