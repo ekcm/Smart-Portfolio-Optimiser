@@ -170,6 +170,7 @@ interface FinanceNewsCard {
     id: string;
     company: string;
     ticker: string;
+    date: Date;
     sentimentRating: number;
     introduction: string;
 }
