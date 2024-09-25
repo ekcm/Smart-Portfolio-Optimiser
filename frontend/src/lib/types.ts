@@ -75,6 +75,7 @@ interface OrderExecutionProgress {
   price: number;
   orderType: string;
   orderStatus: string;
+  orderDate: Date;
 };
 
 interface PortfolioData {
