@@ -91,6 +91,7 @@ interface PortfolioData {
 
 // Orders Checkout component
 interface AssetsItem {
+  id: string,
   name: string;
   ticker: string;
   type: string;

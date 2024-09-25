@@ -7,54 +7,62 @@ import { Button } from "@/components/ui/button";
 import { Link as TransitionLink } from "next-view-transitions";
 import Link from 'next/link';
 import { fetchAllAssets, fetchAsset, fetchCurrentAssetPrice } from "@/api/asset";
+import { getPortfolio } from "@/api/portfolio";
+import Loader from "@/components/loader/Loader";
+import Error from "@/components/error/Error";
+import { v4 as uuidv4 } from 'uuid';
 
 interface NewOrderFormProps {
     data: PortfolioData;
     prevOrders?: AssetsItem[];
 }
 
-const initialMockOrders: AssetsItem[] = [
-        {
-            name: "Apple",
-            ticker: "AAPL",
-            type: "Stock",
-            geography: "USA",
-            position: 10,
-            market: 8779.00,
-            last: 178.58,
-            cost: 130.23,
-            orderType: "Buy",
-        },
-        {
-            name: "NVIDIA",
-            ticker: "NVDA",
-            type: "Stock",
-            geography: "USA",
-            position: 10,
-            market: 3245.00,
-            last: 124.74,
-            cost: 120.42,
-            orderType: "Sell",
-        },
-        {
-            name: "Meta Platforms",
-            ticker: "META",
-            type: "Stock",
-            geography: "USA",
-            position: 10,
-            market: 8779.00,
-            last: 178.58,
-            cost: 130.23,
-            orderType: "Buy",
-        }
-    ]
+// const initialMockOrders: AssetsItem[] = [
+//     {
+//         name: "Apple",
+//         ticker: "AAPL",
+//         type: "Stock",
+//         geography: "USA",
+//         position: 10,
+//         market: 8779.00,
+//         last: 178.58,
+//         cost: 130.23,
+//         orderType: "Buy",
+//     },
+//     {
+//         name: "NVIDIA",
+//         ticker: "NVDA",
+//         type: "Stock",
+//         geography: "USA",
+//         position: 10,
+//         market: 3245.00,
+//         last: 124.74,
+//         cost: 120.42,
+//         orderType: "Sell",
+//     },
+//     {
+//         name: "Meta Platforms",
+//         ticker: "META",
+//         type: "Stock",
+//         geography: "USA",
+//         position: 10,
+//         market: 8779.00,
+//         last: 178.58,
+//         cost: 130.23,
+//         orderType: "Buy",
+//     }
+// ]
 
 export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
+    // loaders
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const [orders, setOrders] = useState<AssetsItem[]>([]);
     const [assetsLoading, setAssetsLoading] = useState(true);
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
     const [assetError, setAssetError] = useState<string | null>(null);
-
+    const [cashBalance, setCashBalance] = useState<number>(0);
 
     useEffect(() => {
         if (prevOrders) setOrders(prevOrders);
@@ -62,7 +70,20 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
 
     useEffect(() => {
         getAllAssets();
+        getCashBalance();
     }, []);
+
+    const getCashBalance = async () => {
+        try {
+            const getPortfolioData = await getPortfolio(data.portfolioId);
+            setCashBalance(getPortfolioData.cashAmount);
+        } catch (error) {
+            console.error("Error fetching cash balance: ", error);
+            setError("Failed to load portfolios");
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const addTransaction = async (formData: AddTransactionDataType) => {
         // console.log("Received form data in parent:", formData);
@@ -71,14 +92,42 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
             const assetTicker = formData.ticker;
             const assetInfo = await fetchAsset(assetTicker);
             const assetPrice = await fetchCurrentAssetPrice(assetTicker);
-            const newOrder: AssetsItem = {
-                ...formData,
-                name: assetInfo.name,
-                geography: assetInfo.geography,
-                market: formData.cost * formData.position,
-                last: assetPrice, 
-            };
-            setOrders([...orders, newOrder]);
+
+            const newOrderTotalCost = formData.cost * formData.position;
+            const existingOrder = orders.find(
+                (order) =>
+                    order.ticker === formData.ticker &&
+                    order.orderType === formData.orderType &&
+                    order.cost === formData.cost
+            );
+            if (existingOrder) {
+                const updatedOrder = {
+                    ...existingOrder,
+                    position: Number(existingOrder.position) + Number(formData.position),
+                };
+                setOrders((prevOrders) =>
+                    prevOrders.map((order) =>
+                        order.id === existingOrder.id ? updatedOrder : order
+                    )
+                );
+
+                if (formData.orderType === "Buy") {
+                    setCashBalance((prevBalance) => prevBalance - newOrderTotalCost);
+                }
+            } else {
+                const newOrder: AssetsItem = {
+                    ...formData,
+                    id: uuidv4(),
+                    name: assetInfo.name,
+                    geography: assetInfo.geography,
+                    market: formData.cost * formData.position,
+                    last: assetPrice,
+                };
+                setOrders([...orders, newOrder]);
+                if (formData.orderType === "Buy") {
+                    setCashBalance((prevBalance) => prevBalance - newOrderTotalCost);
+                }
+            }
         } catch (error) {
             window.alert("An error occurred while adding the transaction. Please try again.");
         }
@@ -88,8 +137,11 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
         // TODO: take orders and push it into backend
     }
 
-    const deleteOrder = (ticker: string) => {
-        setOrders((prevOrders) => prevOrders.filter(order => order.ticker !== ticker));
+    const deleteOrder = (id: string, orderType: string, totalCost: number) => {
+        setOrders((prevOrders) => prevOrders.filter(order => order.id !== id));
+        if (orderType === "Buy") {
+            setCashBalance((prevBalance) => prevBalance + totalCost);
+        }
     }
 
     const getAllAssets = async () => {
@@ -105,13 +157,22 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     };
 
 
+
+    if (loading) {
+        return (
+            <Loader />
+        )
+    }
+
+    if (error) return <Error error={error} />
+
     return (
         <div className="flex flex-col justify-center gap-4 pb-8">
             <PortfolioBreakdownCard data={data.portfolioBreakdown} />
-            <OrdersCheckoutCard data={orders} onDelete={deleteOrder}/>
-            <AddTransactionCard portfolioId={data.portfolioId} assetsData={allAssets} addTransaction={addTransaction}/>
+            <OrdersCheckoutCard data={orders} onDelete={deleteOrder} />
+            <AddTransactionCard portfolioId={data.portfolioId} cashBalance={cashBalance} assetsData={allAssets} addTransaction={addTransaction} />
             <div className="flex gap-4">
-                <Link 
+                <Link
                     href={{
                         pathname: `/dashboard/${data.portfolioId}/neworder/generateorderlist`,
                         query: { orders: JSON.stringify(orders) },

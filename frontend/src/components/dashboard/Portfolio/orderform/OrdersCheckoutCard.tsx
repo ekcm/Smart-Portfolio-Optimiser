@@ -7,7 +7,7 @@ import { X } from 'lucide-react';
 
 interface OrdersCheckoutCardProps {
     data: AssetsItem[];
-    onDelete: (ticker: string) => void;
+    onDelete: (ticker: string, orderType: string, totalCost: number) => void;
 }
 
 export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCardProps) {
@@ -23,13 +23,14 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
                             <TableHead>Symbol | Ticker</TableHead>
                             <TableHead>Position | Price</TableHead>
                             <TableHead>Current Price</TableHead>
+                            <TableHead>Total Cost</TableHead>
                             <TableHead>Order Type</TableHead>
                             <TableHead>Remove</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data.map((item) => (
-                            <TableRow key={item.ticker}>
+                        {data.map((item, index) => (
+                            <TableRow key={index}>
                                 <TableCell className="font-medium">
                                     <div className="flex flex-col">
                                         <span>{item.name}</span>
@@ -48,10 +49,15 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
                                     </div>
                                 </TableCell>
                                 <TableCell>
+                                    <div className="flex flex-col">
+                                        <span>{(item.cost * item.position).toFixed(2)}</span>
+                                    </div>
+                                </TableCell>
+                                <TableCell>
                                     <OrderTypeBadge orderType={item.orderType} />
                                 </TableCell>
                                 <TableCell>
-                                    <Button variant="ghost" className="hover:bg-red-500 hover:text-white" onClick={() => onDelete(item.ticker)}><X /></Button>
+                                    <Button variant="ghost" className="hover:bg-red-500 hover:text-white" onClick={() => onDelete(item.id, item.orderType, item.cost * item.position)}><X /></Button>
                                 </TableCell>
                             </TableRow>
                         ))}
