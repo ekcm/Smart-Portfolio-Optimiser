@@ -258,6 +258,7 @@ export const indivPortfolioData = {
             last: 178.58,
             price: 130.23,
             orderType: "Buy",
+            orderDate: new Date(),
             orderStatus: "Filled"
         },
         {
@@ -267,6 +268,7 @@ export const indivPortfolioData = {
             last: 124.74,
             price: 120.42,
             orderType: "Sell",
+            orderDate: new Date(),
             orderStatus: "Partial"
         },
         {
@@ -276,6 +278,7 @@ export const indivPortfolioData = {
             last: 447.86,
             price: 324.23,
             orderType: "Buy",
+            orderDate: new Date(),
             orderStatus: "Not Filled"
         }
     ]
