@@ -51,6 +51,8 @@ export const updatePortfolioCash = async(portfolioId: string, amount: number, ed
     } catch (error) {
         console.error('Error updating cash balance: ' + error);
         throw error;       
+    }
+}
 
 export const getPortfolio = async (portfolioId: string) : Promise<CreatePortfolioForm> => {
     try {
