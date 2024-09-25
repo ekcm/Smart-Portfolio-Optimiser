@@ -95,9 +95,12 @@ interface ProposedPortfolio {
 
 interface GeneratedInsight {
     title: string;
-    subtitle?: string;
-    content: string;
+    content: string | NestedInsight[];
 
+}
+interface NestedInsight {
+    subtitle: string;
+    content: string;
 }
 interface NestedSummary {
     [key: string]: string | object[]
@@ -128,5 +131,5 @@ export type {
     DashboardCard, FinanceNewsItem,
     OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
-    ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle
+    ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight
 };

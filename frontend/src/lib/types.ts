@@ -149,9 +149,12 @@ interface CreatePortfolioForm {
 
 interface GeneratedInsight {
     title: string;
-    subtitle?: string;
     content: string;
 
+}
+interface NestedInsight {
+    subtitle: string;
+    content: string;
 }
 interface NestedSummary {
     [key: string]: string | object[]
@@ -190,6 +193,7 @@ export type {
     AddTransactionDataType,
     Asset,
     GeneratedInsight,
+    NestedInsight,
     GeneratedSummary,
     NestedSummary,
     FinanceNewsCard,
