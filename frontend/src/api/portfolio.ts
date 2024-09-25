@@ -16,6 +16,17 @@ export const viewPortfolio = async (portfolioId : string) : Promise<PortfolioDat
     }
 }
 
+export const viewBasicPortfolio = async (portfolioId : string) => {
+    try {
+        const api = `${basePortfolioUrl}/${portfolioId}`;
+        const response = await axios.get(api);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching basic portfolio: ' + error);
+        throw error;
+    }
+}
+
 export const createPortfolio = async (form: CreatePortfolioForm) => {
     try {
         const api = `${basePortfolioUrl}`;
@@ -28,6 +39,19 @@ export const createPortfolio = async (form: CreatePortfolioForm) => {
     }
 }
 
+export const updatePortfolioCash = async(portfolioId: string, amount: number, editType: string) => {
+    try {
+        const api = `${basePortfolioUrl}/${portfolioId}/cash`;
+        const response = await axios.put(api, {
+            "cash amount" : amount,
+            "type" : editType
+        });
+        console.log('Portfolio cash updated successfully:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating cash balance: ' + error);
+        throw error;       
+
 export const getPortfolio = async (portfolioId: string) : Promise<CreatePortfolioForm> => {
     try {
         const api = `${basePortfolioUrl}/${portfolioId}`;
@@ -36,5 +60,6 @@ export const getPortfolio = async (portfolioId: string) : Promise<CreatePortfoli
     } catch (error) {
         console.error('Error fetching portfolio: ', error);
         throw error;
+
     }
 }

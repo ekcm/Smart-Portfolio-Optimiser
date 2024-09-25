@@ -128,13 +128,13 @@ export default function EditPortfolioForm({ portfolioId, exclusionsList} : EditP
                 </Label>
             </div>
             <div className="flex gap-2 mt-4">
-                <Button type="submit" className="bg-red-500">Confirm Changes</Button>
                 <Button type="button" className="bg-gray-400 text-white" onClick={(e) => {
                     e.preventDefault()
                     router.back()
                 }}>
                     Cancel
                 </Button>
+                <Button type="submit" className="bg-red-500">Confirm Changes</Button>
             </div>
         </form>
     );
