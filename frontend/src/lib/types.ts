@@ -149,6 +149,36 @@ interface CreatePortfolioForm {
   exclusions: string[];
 }
 
+interface GeneratedInsight {
+    title: string;
+    subtitle?: string;
+    content: string;
+
+}
+interface NestedSummary {
+    [key: string]: string | object[]
+}
+interface GeneratedSummary {
+    title: string
+    content: string | NestedSummary
+}
+
+interface FinanceNewsCard {
+    id: string;
+    company: string;
+    ticker: string;
+    sentimentRating: number;
+    introduction: string;
+}
+interface NewsArticle {
+    id: string;
+    company: string;
+    ticker: string;
+    sentimentRating: number;
+    insights: GeneratedInsight[];
+    references: string[];
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -161,6 +191,11 @@ export type {
     AssetsItem,
     AddTransactionDataType,
     Asset,
+    GeneratedInsight,
+    GeneratedSummary,
+    NestedSummary,
+    FinanceNewsCard,
+    NewsArticle,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,
