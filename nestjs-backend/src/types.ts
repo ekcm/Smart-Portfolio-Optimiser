@@ -1,3 +1,4 @@
+import { AlertDto } from "./dto/alert.dto";
 import { OrderDto } from "./dto/order.dto";
 import { PortfolioDto } from "./dto/portfolio.dto";
 import { Portfolio } from "./model/portfolio.model";
@@ -62,7 +63,7 @@ interface PortfolioData {
     clientName: string;
     portfolioName: string;
     portfolioAnalysis: PortfolioAnalysis;
-    triggeredAlerts: string[];
+    triggeredAlerts: AlertDto[];
     portfolioBreakdown: PortfolioBreakdown;
     portfolioHoldings: PortfolioHoldings[];
     orderExecutionProgress: OrderExecutionProgress[];
@@ -76,6 +77,7 @@ interface OrderExecutionProgress {
     price: number;
     orderType: string;
     orderStatus: string;
+    orderDate: Date;
 };
 
 interface CalculatedPortfolio {
@@ -92,9 +94,43 @@ interface ProposedPortfolio {
     orders: OrderDto[]
 }
 
+interface GeneratedInsight {
+    title: string;
+    content: string | NestedInsight[];
+
+}
+interface NestedInsight {
+    subtitle: string;
+    content: string;
+}
+interface NestedSummary {
+    [key: string]: string | object[]
+}
+interface GeneratedSummary {
+    title: string
+    content: string | NestedSummary
+}
+
+interface FinanceNewsCard {
+    id: string;
+    company: string;
+    ticker: string;
+    sentimentRating: number;
+    introduction: string;
+}
+
+interface NewsArticle {
+    id: string;
+    company: string;
+    ticker: string;
+    sentimentRating: number;
+    insights: GeneratedInsight[];
+    references: string[];
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
-    ProposedPortfolio
+    ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight
 };

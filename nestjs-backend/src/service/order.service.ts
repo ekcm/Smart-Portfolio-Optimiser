@@ -25,6 +25,21 @@ export class OrderService {
         });
     }
 
+    async getFilteredOrders(portfolioId: string, today: Date): Promise<Order[]> {
+        return new Promise((resolve) => {
+            setTimeout(async () => {
+                const filteredOrders = await this.orderModel.find({
+                    portfolioId: portfolioId,
+                    $or: [
+                        { orderStatus: 'FILLED', orderDate: { $gte: today } },
+                        { orderStatus: 'PENDING' } 
+                    ]
+                }).exec();
+                resolve(filteredOrders);
+            }, 1000);
+        });
+    }
+
     async create(orderDto: OrderDto): Promise<Order> {
         return new Promise((resolve) => {
             setTimeout(async () => {
