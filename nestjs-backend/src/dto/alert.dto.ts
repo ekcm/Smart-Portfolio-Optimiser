@@ -1,8 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsDate, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
-import { GeneratedInsight } from 'src/types';
+import { IsArray, IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class AlertDto {
+
+    @IsNotEmpty()
+    @IsString()
+    id: string;
+
     @IsNotEmpty()
     @IsString()
     ticker: string;
@@ -18,11 +22,7 @@ export class AlertDto {
     sentimentRating: number;
 
     @IsArray()
-    @ValidateNested({ each: true })
-    summary: GeneratedInsight[]
+    @IsString()
+    introduction: string;
 
-    @IsArray()
-    @IsString({ each: true })
-    @IsNotEmpty()
-    references: string[];
 }
