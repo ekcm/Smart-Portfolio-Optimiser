@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { fetchCurrentAssetPrice } from "@/api/asset";
 import { delay } from "@/utils/utils";
 
 interface AddTransactionFormProps {
+    cashBalance: number;
     assetsData: Asset[] | undefined;
     formData: {
         type: string;
@@ -33,9 +34,27 @@ interface AddTransactionFormProps {
     onReset: () => void;
 }
 
-export default function AddTransactionForm({ assetsData, formData, setFormData, onSubmit, onReset }: AddTransactionFormProps) {
+export default function AddTransactionForm({ cashBalance, assetsData, formData, setFormData, onSubmit, onReset }: AddTransactionFormProps) {
     // Loading state
-    const [isLoading, setIsLoading] = useState(false); 
+    const [isLoading, setIsLoading] = useState(false);
+    const [availableCash, setAvailableCash] = useState(cashBalance);
+    const [totalCost, setTotalCost] = useState(0);
+    const [showWarning, setShowWarning] = useState(false);
+
+    useEffect(() => {
+        setTotalCost(formData.cost * formData.position);
+    }, [formData.cost, formData.position])
+
+    useEffect(() => {
+        if (formData.orderType === "Buy") {
+            const updatedCash = cashBalance - totalCost;
+            setAvailableCash(updatedCash >= 0 ? updatedCash : 0);
+            setShowWarning(totalCost > cashBalance);
+        } else {
+            setAvailableCash(cashBalance);
+            setShowWarning(false);
+        }
+    }, [totalCost, cashBalance, formData.orderType])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -85,6 +104,21 @@ export default function AddTransactionForm({ assetsData, formData, setFormData, 
     return (
         <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
+                <Label className="w-40 text-md font-light">Cash Balance:</Label>
+                <span>${cashBalance.toFixed(2)}</span>
+            </div>
+            <div className="flex gap-4 items-center">
+                <Label className="w-40 text-md font-light">Available Cash:</Label>
+                <span className={`${availableCash > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    ${availableCash.toFixed(2)}
+                </span>
+                {totalCost > 0 && formData.orderType === "Buy" && (
+                    <span className="text-red-600">
+                        {` (-$${totalCost.toFixed(2)})`}
+                    </span>
+                )}
+            </div>
+            <div className="flex gap-4 items-center">
                 <Label className="w-40 text-md font-light">
                     Order Type:
                 </Label>
@@ -125,17 +159,17 @@ export default function AddTransactionForm({ assetsData, formData, setFormData, 
                 <Select
                     value={formData.ticker}
                     onValueChange={(value) => handleSelectChange("ticker", value)}
-                    >
+                >
                     <SelectTrigger>
                         <SelectValue placeholder="Select stock" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                        {assetsData?.map((asset, index) => (
-                            <SelectItem key={index} value={asset.ticker}>
-                            {asset.name}
-                            </SelectItem>
-                        ))}
+                            {assetsData?.map((asset, index) => (
+                                <SelectItem key={index} value={asset.ticker}>
+                                    {asset.name}
+                                </SelectItem>
+                            ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
@@ -144,7 +178,7 @@ export default function AddTransactionForm({ assetsData, formData, setFormData, 
                 <Label className="w-40 text-md font-light">
                     Target Price:
                 </Label>
-                <Input 
+                <Input
                     type="number"
                     name="cost"
                     value={formData.cost}
@@ -155,19 +189,23 @@ export default function AddTransactionForm({ assetsData, formData, setFormData, 
                 <Label className="w-40 text-md font-light">
                     Quantity:
                 </Label>
-                <Input 
+                <Input
                     type="number"
                     name="position"
                     value={formData.position}
                     onChange={handleChange}
                 />
             </div>
+            {/* Show warning if balance is insufficient */}
+            <div className={`text-sm mb-2 h-2 ${showWarning ? 'text-red-600 visible' : 'invisible'}`}>
+                Insufficient balance to complete this transaction.
+            </div>
             <div className="flex gap-2 mt-4">
                 {/* <Button className="bg-red-700" onClick={handleSubmit}>Add Transaction to Checkout</Button> */}
                 <Button
                     className="bg-red-700"
                     onClick={handleSubmit}
-                    disabled={isLoading} // Disable button when loading
+                    disabled={isLoading || showWarning} // Disable button when loading
                 >
                     {isLoading ? "Adding..." : "Add Transaction to Checkout"}
                 </Button>

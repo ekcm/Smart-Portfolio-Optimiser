@@ -11,7 +11,7 @@ export const viewPortfolio = async (portfolioId : string) : Promise<PortfolioDat
         const response = await axios.get(api);
         return response.data;
     } catch (error) {
-        console.error('Error fetching portfolio:', error);
+        console.error('Error fetching portfolio: ', error);
         throw error;
     }
 }
@@ -24,6 +24,17 @@ export const createPortfolio = async (form: CreatePortfolioForm) => {
         return response.data;
     } catch (error) {
         console.error('Error creating portfolio: ' + error);
+        throw error;
+    }
+}
+
+export const getPortfolio = async (portfolioId: string) : Promise<CreatePortfolioForm> => {
+    try {
+        const api = `${basePortfolioUrl}/${portfolioId}`;
+        const response = await axios.get(api);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching portfolio: ', error);
         throw error;
     }
 }
