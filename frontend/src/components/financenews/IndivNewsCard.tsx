@@ -1,15 +1,17 @@
 import { Link } from "next-view-transitions";
 import { Card } from "../ui/card";
-import { FinanceNewsItem } from "@/lib/types";
+import { FinanceNewsCard } from "@/lib/types";
+import SentimentRatingCustomBadge from "./SentimentRatingCustomBadge";
 
 export type IndivNewsCardProps = {
-    data: FinanceNewsItem;
+    data: FinanceNewsCard;
 }
 
 export default function IndivNewsCard({data} : IndivNewsCardProps) {
+    const formattedDate = new Date(data.date);
     return (
         <Link 
-            href={`${data.newsSourceLink}`}
+            href={`/financenews/${data.id}`}
             passHref
             className="w-full"
         >
@@ -18,12 +20,15 @@ export default function IndivNewsCard({data} : IndivNewsCardProps) {
             >
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center">
-                        <h2 className="text-2xl font-semibold">{data.newsName} - {data.newsSource}</h2>
+                        <h2 className="text-2xl font-semibold">{data.ticker}</h2>
                     </div>
-                    <h3 className="text-md   text-gray-400 whitespace-nowrap">{data.newsDate}</h3>
+                    <div>
+                        <h3 className="text-md text-gray-400 whitespace-nowrap">{formattedDate.toDateString()}</h3>
+                        <SentimentRatingCustomBadge amount={data.sentimentRating} />
+                    </div>
                 </div>
                 <div className="flex items-center w-full text-justify">
-                    {data.newsDescription}
+                    {data.introduction}
                 </div>
             </Card>
         </Link>

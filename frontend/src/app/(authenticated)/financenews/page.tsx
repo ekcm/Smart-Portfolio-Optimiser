@@ -16,7 +16,7 @@ export default function FinanceNews() {
   }
   
   useEffect(() => {
-    setDashBoardNavBarState("Main");
+    setDashBoardNavBarState("Empty");
   });
 
   return (
