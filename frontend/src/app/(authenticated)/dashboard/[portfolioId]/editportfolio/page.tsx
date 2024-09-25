@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import EditPortfolioForm from "@/components/dashboard/Portfolio/EditPortfolioForm";
 import { usePathname } from "next/navigation";
 
