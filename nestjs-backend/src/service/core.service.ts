@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
-import { DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from "src/types";
+import { DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from "src/types";
 import { PortfolioService } from "./portfolio.service";
 import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
@@ -97,16 +97,21 @@ export class CoreService {
         for (const analysis of generated) {
             const content: string | NestedSummary = analysis.content
             if (typeof content === 'object') {
+                const nestedInsights: NestedInsight[] = []
                 for (const key in content) {
                     if (typeof content[key] === 'string') {
-                        const insight: GeneratedInsight = {
-                            title: analysis.title,
+                        const nestedInsight: NestedInsight = {
                             subtitle: key,
                             content: content[key]
                         }
-                        insights.push(insight)
+                        nestedInsights.push(nestedInsight)
                     }
                 }
+                const insight: GeneratedInsight = {
+                    title: analysis.title,
+                    content: nestedInsights
+                }
+                insights.push(insight)
             }
             if (typeof content === 'string') {
                 const insight: GeneratedInsight = {
