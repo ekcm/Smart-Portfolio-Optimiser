@@ -80,6 +80,7 @@ export class CoreService {
                 id: news._id.toString(),
                 company: assetMap.get(news.ticker),
                 ticker: news.ticker,
+                date: news.date,
                 sentimentRating: news.sentimentRating,
                 introduction: news.summary[0].content as string,
             })
