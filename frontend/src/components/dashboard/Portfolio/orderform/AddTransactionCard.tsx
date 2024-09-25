@@ -6,12 +6,13 @@ import { AddTransactionDataType, Asset } from "@/lib/types";
 
 interface AddTransactionCardProps {
     portfolioId: string;
+    cashBalance: number;
     assetsData: Asset[] | undefined;
     addTransaction: (data: AddTransactionDataType) => void;
 }
 
 // TODO: Check on how formdata is gna be tracked/sent to backend OR just update on orders checkout since there is missing information (eg quantity)
-export default function AddTransactionCard({ portfolioId, assetsData, addTransaction} : AddTransactionCardProps) {
+export default function AddTransactionCard({ portfolioId, cashBalance, assetsData, addTransaction }: AddTransactionCardProps) {
     const initialFormData = {
         type: "",
         ticker: "",
@@ -38,6 +39,7 @@ export default function AddTransactionCard({ portfolioId, assetsData, addTransac
                 <div className="flex flex-col gap-2">
                     <h2 className="text-xl font-medium">Add Transaction</h2>
                     <AddTransactionForm
+                        cashBalance={cashBalance}
                         assetsData={assetsData}
                         formData={formData}
                         setFormData={setFormData}
