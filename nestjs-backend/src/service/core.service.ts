@@ -1,15 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
-import { DashboardCard, OrderExecutionProgress, PortfolioData } from "src/types";
+import { DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from "src/types";
 import { PortfolioService } from "./portfolio.service";
 import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioHoldingsService } from './portfolioHoldings.service';
 import { OrderExecutionsService } from './orderExecutions.service';
+import { AlertService } from "./alert.service";
+import { FinanceNewsService } from "./financeNews.service";
+import { AssetService } from "./asset.service";
 
 @Injectable()
 export class CoreService {
-    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService, private alertService: AlertService, private financeNewsService: FinanceNewsService, private assetService: AssetService) { }
 
 
     async loadHomepage(managerId: string): Promise<DashboardCard[]> {
@@ -18,6 +21,7 @@ export class CoreService {
 
         for (const portfolio of portfolios) {
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
+            const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
 
             portfolioCards.push({
                 portfolioId: portfolio._id.toString(),
@@ -30,7 +34,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 rateOfReturn: 100,
-                alertsPresent: true,
+                alertsPresent: alerts.length > 0,
             });
         }
         return portfolioCards
@@ -41,8 +45,9 @@ export class CoreService {
         const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
-        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId); 
-        
+        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId);
+        const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
+
         return {
             portfolioId: portfolioId,
             clientName: portfolio.client,
@@ -55,10 +60,77 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 annualizedRoR: 100
             },
-            triggeredAlerts: [],
+            triggeredAlerts: alerts,
             portfolioBreakdown: portfolioBreakdown,
             portfolioHoldings: portfolioHoldings,
             orderExecutionProgress: orderExecutions
+        }
+    }
+
+    async loadFinanceNewsCards(): Promise<FinanceNewsCard[]> {
+        const newses = await this.financeNewsService.getAll()
+        const assets = await this.assetService.getAll()
+        const assetMap = new Map<string, string>();
+        assets.forEach(asset => {
+            assetMap.set(asset.ticker, asset.name);
+        });
+        const financeNewsCards: FinanceNewsCard[] = []
+        for (const news of newses) {
+            financeNewsCards.push({
+                id: news._id.toString(),
+                company: assetMap.get(news.ticker),
+                ticker: news.ticker,
+                sentimentRating: news.sentimentRating,
+                introduction: news.summary[0].content as string,
+            })
+        }
+
+        return financeNewsCards
+    }
+
+    async loadNewsArticle(newsId: string): Promise<NewsArticle> {
+        const news = await this.financeNewsService.getById(newsId)
+        const asset = await this.assetService.getByTicker(news.ticker)
+        const generated: GeneratedSummary[] = news.summary
+
+        const insights = []
+        for (const analysis of generated) {
+            const content: string | NestedSummary = analysis.content
+            if (typeof content === 'object') {
+                const nestedInsights: NestedInsight[] = []
+                for (const key in content) {
+                    if (typeof content[key] === 'string') {
+                        const nestedInsight: NestedInsight = {
+                            subtitle: key,
+                            content: content[key]
+                        }
+                        nestedInsights.push(nestedInsight)
+                    }
+                }
+                const insight: GeneratedInsight = {
+                    title: analysis.title,
+                    content: nestedInsights
+                }
+                if (nestedInsights.length > 0) {insights.push(insight)};
+            }
+            if (typeof content === 'string') {
+                const insight: GeneratedInsight = {
+                    title: analysis['title'],
+                    content: content
+                }
+                insights.push(insight)
+            }
+
+        }
+
+        
+        return {
+            id: newsId,
+            company: asset.name,
+            ticker: news.ticker,
+            sentimentRating: news.sentimentRating,
+            insights: insights,
+            references: news.references
         }
     }
 }
