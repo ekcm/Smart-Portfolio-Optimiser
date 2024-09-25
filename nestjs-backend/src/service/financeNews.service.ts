@@ -16,6 +16,19 @@ export class FinanceNewsService {
             }, 1000);
         });
     }
+
+    async getById(id: string): Promise<FinanceNews> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                const news = await this.financeNewsModel.findById(id).exec();
+                if (news) {
+                    resolve(news);
+                } else {
+                    reject(new NotFoundException("No such Finance News was found"))
+                }
+            }, 1000)
+        })
+    }
     
     async getByTicker(ticker: string): Promise<FinanceNews> {
         return new Promise((resolve, reject) => {
