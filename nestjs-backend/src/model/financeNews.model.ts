@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { GeneratedSummary } from 'src/types';
+
 
 @Schema({ collection: 'FinanceNews' })
 export class FinanceNews extends Document {
     @Prop({ required: true })
-    stock: string;
+    ticker: string;
 
     @Prop({ required: true, type: Date })
     date: Date;
@@ -12,8 +14,11 @@ export class FinanceNews extends Document {
     @Prop({ required: true, type: Number })
     sentimentRating: number;
 
-    @Prop({ required: true, type: Map })
-    financeNews: Map<any, any>;
+    @Prop({ required: true, type: Array })
+    summary: GeneratedSummary[];
+
+    @Prop({ required: true, type: Array })
+    references: string[];
 
 }
 

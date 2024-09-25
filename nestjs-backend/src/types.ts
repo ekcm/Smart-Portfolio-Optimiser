@@ -96,13 +96,37 @@ interface ProposedPortfolio {
 interface GeneratedInsight {
     title: string;
     subtitle?: string;
-    description: string;
+    content: string;
 
+}
+interface NestedSummary {
+    [key: string]: string | object[]
+}
+interface GeneratedSummary {
+    title: string
+    content: string | NestedSummary
+}
+
+interface FinanceNewsCard {
+    id: string;
+    company: string;
+    ticker: string;
+    sentimentRating: number;
+    introduction: string;
+}
+
+interface NewsArticle {
+    id: string;
+    company: string;
+    ticker: string;
+    sentimentRating: number;
+    insights: GeneratedInsight[];
+    references: string[];
 }
 
 export type {
     DashboardCard, FinanceNewsItem,
     OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
-    ProposedPortfolio, GeneratedInsight
+    ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle
 };

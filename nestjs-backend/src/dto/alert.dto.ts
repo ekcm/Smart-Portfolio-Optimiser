@@ -19,7 +19,7 @@ export class AlertDto {
 
     @IsArray()
     @ValidateNested({ each: true })
-    insights: GeneratedInsight[]
+    summary: GeneratedInsight[]
 
     @IsArray()
     @IsString({ each: true })
