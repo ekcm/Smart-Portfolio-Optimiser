@@ -111,7 +111,7 @@ export class CoreService {
                     title: analysis.title,
                     content: nestedInsights
                 }
-                insights.push(insight)
+                if (nestedInsights.length > 0) {insights.push(insight)};
             }
             if (typeof content === 'string') {
                 const insight: GeneratedInsight = {
