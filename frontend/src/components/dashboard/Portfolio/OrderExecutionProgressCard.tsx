@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import OrderTypeBadge from "@/components/global/OrderTypeBadge";
 import { Card } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
@@ -8,6 +9,25 @@ interface OrderExecutionProgressCardProps {
 }
 
 export default function OrderExecutionProgressCard({ data }: OrderExecutionProgressCardProps) {
+    const [sortDirection, setSortDirection] = useState("")
+    const [sortedData, setSortedData] = useState(data)
+
+    useEffect(() => {
+        setSortedData(data);
+    }, [data])
+
+    const sortByDate = () => {
+        const sorted = [...data].sort((a, b) => {
+            const dateA = new Date(a.orderDate).getTime()
+            const dateB = new Date(b.orderDate).getTime()
+
+            return sortDirection === "asc" ? dateA - dateB : dateB - dateA
+        })
+
+        setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+        setSortedData(sorted)
+    }
+
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
             <h2 className="text-xl font-medium">Order Execution Progress</h2>
@@ -22,11 +42,12 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                             <TableHead>Current Price</TableHead>
                             <TableHead>Order Type</TableHead>
                             <TableHead>Order Status</TableHead>
+                            <TableHead onClick={sortByDate} className="cursor-pointer">Order Date {sortDirection === "asc" ? "↑" : "↓"}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data.map((item) => (
-                            <TableRow key={item.ticker}>
+                        {sortedData.map((item, index) => (
+                            <TableRow key={index}>
                                 <TableCell className="font-medium">
                                     <div className="flex flex-col">
                                         <span>{item.name}</span>
@@ -49,6 +70,11 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                                 </TableCell>
                                 <TableCell>
                                     <span className={`font-semibold ${item.orderStatus.toLowerCase() === 'filled' ? 'text-green-700' : 'text-yellow-600'}`}>{item.orderStatus}</span>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex flex-col">
+                                        <span>{new Date(item.orderDate).toLocaleDateString()} @ {new Date(item.orderDate).toLocaleTimeString()}</span>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}
