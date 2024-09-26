@@ -21,4 +21,10 @@ export class PortfolioCreationController {
         const exclusionsArray = Array.isArray(exclusions) ? exclusions : [exclusions];
         return await this.portfolioCreationService.generateOrders(clientName, portfolioName, riskAppetite, cash, managerId, exclusionsArray);
     }
+    
+    @Get(":portfolioId")
+    @ApiOperation({ summary: "Optimise the current holdings of a portfolio" })
+    async optimisePortfolio(@Param('portfolioId') portfolioId: string): Promise<ProposedPortfolio> {
+        return await this.portfolioCreationService.optimisePortfolio(portfolioId)
+    }
 }
