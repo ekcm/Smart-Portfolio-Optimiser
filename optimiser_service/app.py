@@ -43,14 +43,13 @@ def optimise():
 
     return jsonify(response)
 
-@app.route('/optimiser/<portfolio_id>')
-def optimise_portfolio(portfolio_id):
-    portfolio_response = requests.get(PORTFOLIO_URL + "/" + portfolio_id)
-    portfolio_data = portfolio_response.json()
-    asset_holdings = portfolio_data['assetHoldings']
-    tickers = [asset_holding['ticker'] for asset_holding in asset_holdings]
+@app.route('/optimiser/include')
+def optimise_portfolio():
+    inclusions = request.args.getlist('inclusions')
 
-    asset_price_response = requests.get(ASSETPRICE_INCLUSIVE_URL, params = {'inclusions': tickers})
+    params = {'inclusions': inclusions}
+
+    asset_price_response = requests.get(ASSETPRICE_INCLUSIVE_URL, params = {'inclusions': inclusions})
     data = asset_price_response.json()
 
     df = pd.DataFrame(data)
