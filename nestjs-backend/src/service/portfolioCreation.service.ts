@@ -47,5 +47,50 @@ export class PortfolioCreationService{
             orders: proposedOrders
         } 
     }
+    
+    async optimisePortfolio( portfolioId: string ): Promise<ProposedPortfolio> {
+        var proposedOrders: OrderDto[] = []
+        const portfolio = await this.portfolioService.getById(portfolioId)
+        const tickers = portfolio.assetHoldings.map(assetHolding => assetHolding.ticker)
+        const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
+        const assetPriceMap = assetPrices.reduce((map, assetPrice) => {
+            map.set(assetPrice.ticker, assetPrice)
+            return map
+        }, new Map<string, AssetPrice>)
+
+        var availableFunds = 0
+        portfolio.assetHoldings.forEach(holding => {
+           availableFunds += holding.quantity * assetPriceMap[holding.ticker].todayClose 
+        })
+        try {
+            const response = await lastValueFrom(
+                this.httpService.get(this.OPTIMIZER_URL + "/include", {
+                    params: {
+                        inclusions: tickers,
+                    }
+                },
+            ))
+            const weights = response.data
+            for (let ticker in weights) {
+                const assetPrice = assetPriceMap[ticker]
+                proposedOrders.push({
+                    orderType: OrderType.BUY,
+                    orderDate: new Date(),
+                    assetName: ticker,
+                    quantity: (availableFunds * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / assetPrice.todayClose,
+                    price: assetPrice.todayClose,
+                    portfolioId: portfolio._id.toString(),
+                    orderStatus: OrderStatus.PENDING
+                })
+            }
+        } catch (error) {
+            throw new InternalServerErrorException('Optimizer service error')
+        }
+
+        return {
+            portfolioId: portfolioId,
+            orders: proposedOrders
+        } 
+    }
 }
 
