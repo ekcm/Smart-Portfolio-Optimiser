@@ -124,6 +124,7 @@ interface NewsArticle {
     id: string;
     company: string;
     ticker: string;
+    date: Date;
     sentimentRating: number;
     insights: GeneratedInsight[];
     references: string[];
