@@ -63,6 +63,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
     const [assetError, setAssetError] = useState<string | null>(null);
     const [cashBalance, setCashBalance] = useState<number>(0);
+    const [buyingPower, setBuyingPower] = useState<number>(0);
 
     useEffect(() => {
         if (prevOrders) setOrders(prevOrders);
@@ -77,6 +78,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
         try {
             const getPortfolioData = await getPortfolio(data.portfolioId);
             setCashBalance(getPortfolioData.cashAmount);
+            setBuyingPower(getPortfolioData.cashAmount);
         } catch (error) {
             console.error("Error fetching cash balance: ", error);
             setError("Failed to load portfolios");
@@ -112,7 +114,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 );
 
                 if (formData.orderType === "Buy") {
-                    setCashBalance((prevBalance) => prevBalance - newOrderTotalCost);
+                    setBuyingPower((prevBalance) => prevBalance - newOrderTotalCost);
                 }
             } else {
                 const newOrder: AssetsItem = {
@@ -125,7 +127,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 };
                 setOrders([...orders, newOrder]);
                 if (formData.orderType === "Buy") {
-                    setCashBalance((prevBalance) => prevBalance - newOrderTotalCost);
+                    setBuyingPower((prevBalance) => prevBalance - newOrderTotalCost);
                 }
             }
         } catch (error) {
@@ -140,7 +142,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const deleteOrder = (id: string, orderType: string, totalCost: number) => {
         setOrders((prevOrders) => prevOrders.filter(order => order.id !== id));
         if (orderType === "Buy") {
-            setCashBalance((prevBalance) => prevBalance + totalCost);
+            setBuyingPower((prevBalance) => prevBalance + totalCost);
         }
     }
 
@@ -170,7 +172,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
         <div className="flex flex-col justify-center gap-4 pb-8">
             <PortfolioBreakdownCard data={data.portfolioBreakdown} />
             <OrdersCheckoutCard data={orders} onDelete={deleteOrder} />
-            <AddTransactionCard portfolioId={data.portfolioId} cashBalance={cashBalance} assetsData={allAssets} addTransaction={addTransaction} />
+            <AddTransactionCard portfolioId={data.portfolioId} cashBalance={cashBalance} buyingPower={buyingPower} assetsData={allAssets} addTransaction={addTransaction} />
             <div className="flex gap-4">
                 <Link
                     href={{
