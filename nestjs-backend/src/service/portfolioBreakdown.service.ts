@@ -4,6 +4,8 @@ import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
 import { PortfolioBreakdown } from "src/types";
 import { CalculatorUtility } from '../utilities/calculatorUtility';
+import { AssetPrice } from "src/model/assetprice.model";
+import { Asset } from "src/model/asset.model";
 
 @Injectable()
 export class PortfolioBreakdownService{
@@ -13,12 +15,29 @@ export class PortfolioBreakdownService{
         var industries = new Map<string, number>()
         var geographies = new Map<string, number>()
         var securities = new Map<string, number>()
-        var assetsHoldings = portfolio.assetHoldings
+        var assetHoldings = portfolio.assetHoldings
         var total = 0
 
-        for (var assetHolding of assetsHoldings) {
-            const asset = await this.assetService.getByTicker(assetHolding.ticker)
-            const assetPrice = await this.assetPriceService.getByTickerLatest(assetHolding.ticker)
+        const tickers = assetHoldings.map(assetHolding => assetHolding.ticker)
+        const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
+        const assets = await this.assetService.getAllFrom(tickers)
+        console.log(assets)
+
+        const assetPriceMap = assetPrices.reduce((map, assetPrice) => {
+            map.set(assetPrice.ticker, assetPrice)
+            return map
+        }, new Map<string, AssetPrice>)
+    
+
+
+        const assetMap = assets.reduce((map, asset) => {
+            map.set(asset.ticker, asset)
+            return map
+        }, new Map<string, Asset>)
+
+        for (var assetHolding of assetHoldings) {
+            const asset = assetMap.get(assetHolding.ticker)
+            const assetPrice = assetPriceMap.get(assetHolding.ticker)
             const industry = asset.industry
             const geography = asset.geography
             const value = assetHolding.quantity * assetPrice.todayClose
