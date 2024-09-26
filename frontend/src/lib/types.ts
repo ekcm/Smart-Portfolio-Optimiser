@@ -83,7 +83,7 @@ interface PortfolioData {
   portfolioName: string;
   clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
-  triggeredAlerts: string[];
+  triggeredAlerts: Alert[];
   portfolioBreakdown: PortfolioBreakdown;
   portfolioHoldings: PortfolioHoldings[];
   orderExecutionProgress: OrderExecutionProgress[];
@@ -184,6 +184,14 @@ interface NewsArticle {
     references: string[];
 }
 
+interface Alert {
+  id: string;
+  ticker: string;
+  date: Date;
+  sentimentRating: number;
+  introduction: string;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -202,6 +210,7 @@ export type {
     NestedSummary,
     FinanceNewsCard,
     NewsArticle,
+    Alert,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,
