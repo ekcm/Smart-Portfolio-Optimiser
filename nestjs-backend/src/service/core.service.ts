@@ -129,6 +129,7 @@ export class CoreService {
             id: newsId,
             company: asset.name,
             ticker: news.ticker,
+            date: news.date,
             sentimentRating: news.sentimentRating,
             insights: insights,
             references: news.references

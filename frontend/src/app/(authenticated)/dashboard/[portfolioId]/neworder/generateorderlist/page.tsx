@@ -5,7 +5,7 @@ import { indivPortfolioData } from "@/lib/mockData";
 import OrderList from '@/components/dashboard/Portfolio/orderform/orderlist/OrderList';
 import { viewPortfolio } from '@/api/portfolio';
 import { useEffect, useState } from 'react';
-import { PortfolioData } from '@/lib/types';
+import { Alert, PortfolioData } from '@/lib/types';
 import Loader from '@/components/loader/Loader';
 import NoPortfolio from '@/components/dashboard/Portfolio/NoPortfolio';
 import Error from '@/components/error/Error';
@@ -24,7 +24,7 @@ export default function GenerateOrderList() {
     // TODO: Add api call to alertsdb for entire portfolio -> call portfolio + orders for data  -> call alertsdb to have triggered alerts based on portfolio + orders data
 
     // ! Data will be called from backend, ideally from cache since already called previously
-    const mockTriggeredAlerts = ["Threshold exceeded"];
+    const mockTriggeredAlerts: Alert[] = [];
 
     useEffect(() => {
         if (portfolioId) {

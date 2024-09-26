@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 
 export default function FinanceNewsFilter() {
     const newsName = useFinanceNewsFilterStore((state) => state.newsName);
-    const newsSource = useFinanceNewsFilterStore((state) => state.newsSource);
+    const newsRating = useFinanceNewsFilterStore((state) => state.newsRating);
     const newsDate = useFinanceNewsFilterStore((state) => state.newsDate);
     const setNewsName = useFinanceNewsFilterStore((state) => state.setNewsName);
-    const setNewsSource = useFinanceNewsFilterStore((state) => state.setNewsSource);
+    const setNewsRating = useFinanceNewsFilterStore((state) => state.setNewsRating);
     const setNewsDate = useFinanceNewsFilterStore((state) => state.setNewsDate);
     const [date, setDate] = useState<Date | null>(null as Date | null);
 
@@ -29,7 +29,7 @@ export default function FinanceNewsFilter() {
     };
 
     useEffect(() => {
-        if (newsDate === "") {
+        if (newsDate === null) {
             setDate(null);
         }
     }, [newsDate]);
@@ -46,12 +46,13 @@ export default function FinanceNewsFilter() {
                         className="flex-grow"
                     />
                 </Label>
+                {/* TODO: Change to select instead of input if still using this as filter */}
                 <Label className="flex flex-1 flex-grow-0 basis-2/5 items-center space-x-2 whitespace-nowrap text-md gap-2">
-                    News Source:
+                    News Rating:
                     <Input
-                        type="text"
-                        value={newsSource}
-                        onChange={(e) => setNewsSource(e.target.value)}
+                        type="number"
+                        value={newsRating}
+                        onChange={(e) => setNewsRating(Number(e.target.value))}
                         className="flex-grow"
                     />
                 </Label>

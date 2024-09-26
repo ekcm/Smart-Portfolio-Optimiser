@@ -1,4 +1,4 @@
-import { AssetsItem, CreateOrderItem, PortfolioData, PortfolioHoldings, PortfolioHoldingsDifference } from "@/lib/types";
+import { Alert, AssetsItem, CreateOrderItem, PortfolioData, PortfolioHoldings, PortfolioHoldingsDifference } from "@/lib/types";
 import ChangeList from "./ChangeList";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import { createOrdersTransaction } from "@/api/transaction";
 interface OrderListProps {
     data: PortfolioData;
     newOrders: AssetsItem[];
-    triggeredAlerts: string[];
+    triggeredAlerts: Alert[];
 }
 
 export default function OrderList({ data, newOrders, triggeredAlerts } : OrderListProps) {

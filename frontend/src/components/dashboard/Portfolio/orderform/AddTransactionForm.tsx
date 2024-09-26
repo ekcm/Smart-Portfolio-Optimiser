@@ -9,6 +9,7 @@ import { delay } from "@/utils/utils";
 
 interface AddTransactionFormProps {
     cashBalance: number;
+    buyingPower: number;
     assetsData: Asset[] | undefined;
     formData: {
         type: string;
@@ -34,10 +35,10 @@ interface AddTransactionFormProps {
     onReset: () => void;
 }
 
-export default function AddTransactionForm({ cashBalance, assetsData, formData, setFormData, onSubmit, onReset }: AddTransactionFormProps) {
+export default function AddTransactionForm({ cashBalance, buyingPower, assetsData, formData, setFormData, onSubmit, onReset }: AddTransactionFormProps) {
     // Loading state
     const [isLoading, setIsLoading] = useState(false);
-    const [availableCash, setAvailableCash] = useState(cashBalance);
+    const [buyingPowerVar, setBuyingPowerVar] = useState(buyingPower);
     const [totalCost, setTotalCost] = useState(0);
     const [showWarning, setShowWarning] = useState(false);
 
@@ -47,14 +48,14 @@ export default function AddTransactionForm({ cashBalance, assetsData, formData, 
 
     useEffect(() => {
         if (formData.orderType === "Buy") {
-            const updatedCash = cashBalance - totalCost;
-            setAvailableCash(updatedCash >= 0 ? updatedCash : 0);
-            setShowWarning(totalCost > cashBalance);
+            const updatedCash = buyingPower - totalCost;
+            setBuyingPowerVar(updatedCash >= 0 ? updatedCash : 0);
+            setShowWarning(totalCost > buyingPower);
         } else {
-            setAvailableCash(cashBalance);
+            setBuyingPowerVar(buyingPower);
             setShowWarning(false);
         }
-    }, [totalCost, cashBalance, formData.orderType])
+    }, [totalCost, buyingPower, formData.orderType])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -108,9 +109,9 @@ export default function AddTransactionForm({ cashBalance, assetsData, formData, 
                 <span>${cashBalance.toFixed(2)}</span>
             </div>
             <div className="flex gap-4 items-center">
-                <Label className="w-40 text-md font-light">Available Cash:</Label>
-                <span className={`${availableCash > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    ${availableCash.toFixed(2)}
+                <Label className="w-40 text-md font-light">Buying Power:</Label>
+                <span className={`${buyingPowerVar > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    ${buyingPowerVar.toFixed(2)}
                 </span>
                 {totalCost > 0 && formData.orderType === "Buy" && (
                     <span className="text-red-600">
