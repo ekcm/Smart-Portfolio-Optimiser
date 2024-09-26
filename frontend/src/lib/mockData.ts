@@ -183,9 +183,7 @@ export const indivPortfolioData = {
         totalPLPercentage: 10.00,
         annualizedRoR: 20.00,
     },
-    triggeredAlerts: [
-        "Threshold of aggressive financial securities",
-    ],
+    triggeredAlerts: [],
     portfolioBreakdown: {
         industry: [
             {"Information Technology": 35.00},
