@@ -108,4 +108,28 @@ export class AssetPriceService {
       }, 1000)
     })
   }
+
+  async getLatestFrom(tickers: string[]): Promise<AssetPrice[]> {
+    return this.assetPriceModel.aggregate([
+      {
+        $match: {
+          ticker: { $in: tickers },
+        },
+      },
+      {
+        $sort: {
+          date: -1,
+        },
+      },
+      {
+        $group: {
+          _id: "$ticker",
+          latestPrice: { $first: "$$ROOT" },
+        },
+      },
+      {
+        $replaceRoot: { newRoot: "$latestPrice" },
+      },
+    ]).exec();
+  }
 }

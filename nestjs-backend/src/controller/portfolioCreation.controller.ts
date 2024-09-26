@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { PortfolioCreationService } from '../service/portfolioCreation.service';
 import { ProposedPortfolio } from "src/types";
@@ -20,5 +20,11 @@ export class PortfolioCreationController {
     async generateOrders(@Query('clientName') clientName: string, @Query('portfolioName') portfolioName: string, @Query('riskAppetite') riskAppetite: string, @Query('cash') cash: number, @Query('managerId') managerId: string, @Query('exclusions') exclusions: string[] = []): Promise<ProposedPortfolio>{
         const exclusionsArray = Array.isArray(exclusions) ? exclusions : [exclusions];
         return await this.portfolioCreationService.generateOrders(clientName, portfolioName, riskAppetite, cash, managerId, exclusionsArray);
+    }
+
+    @Get(":portfolioId")
+    @ApiOperation({ summary: "Optimise the current holdings of a portfolio" })
+    async optimisePortfolio(@Param('portfolioId') portfolioId: string): Promise<ProposedPortfolio> {
+        return await this.portfolioCreationService.optimisePortfolio(portfolioId)
     }
 }
