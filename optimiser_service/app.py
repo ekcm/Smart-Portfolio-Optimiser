@@ -16,7 +16,7 @@ ASSETPRICE_INCLUSIVE_URL = API_PATH + '/assetprice/all/from/tickers'
 
 @app.route('/optimiser', methods=['GET'])
 def optimise():
-    exclusions = request.args.getlist('exclusions')
+    exclusions = request.args.getlist('exclusions[]')
 
     params = {'exclusions': exclusions}
 
@@ -44,9 +44,7 @@ def optimise():
 
 @app.route('/optimiser/include')
 def optimise_portfolio():
-    inclusions = request.args.getlist('inclusions')
-
-    params = {'inclusions': inclusions}
+    inclusions = request.args.getlist('inclusions[]')
 
     asset_price_response = requests.get(ASSETPRICE_INCLUSIVE_URL, params = {'inclusions': inclusions})
     data = asset_price_response.json()
