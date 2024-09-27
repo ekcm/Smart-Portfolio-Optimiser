@@ -74,7 +74,17 @@ export class AssetService {
         return new Promise((resolve) => {
             setTimeout(async() => {
                 const assets = await this.assetModel.find({
-                    assetName: {$nin: tickers},
+                    ticker: {$nin: tickers},
+                }).exec();
+                resolve(assets);
+            }, 1000)
+        })
+    }
+    async getAllFrom(tickers: string[]): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            setTimeout(async() => {
+                const assets = await this.assetModel.find({
+                    ticker: {$in: tickers},
                 }).exec();
                 resolve(assets);
             }, 1000)
