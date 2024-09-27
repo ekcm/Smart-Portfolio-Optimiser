@@ -11,8 +11,8 @@ from collections import OrderedDict
 app = Flask(__name__)
 load_dotenv()
 API_PATH = os.getenv('API_PATH')
-ASSETPRICE_URL = API_PATH + 'assetprice/all/excluding/tickers'
-ASSETPRICE_INCLUSIVE_URL = API_PATH + 'assetprice/all/from/tickers'
+ASSETPRICE_URL = API_PATH + '/assetprice/all/excluding/tickers'
+ASSETPRICE_INCLUSIVE_URL = API_PATH + '/assetprice/all/from/tickers'
 PORTFOLIO_URL = API_PATH + '/portfolio'
 
 @app.route('/optimiser', methods=['GET'])
