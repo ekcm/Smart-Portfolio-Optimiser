@@ -72,19 +72,19 @@ export class PortfolioCreationService{
 
         var availableFunds = 0
         portfolio.assetHoldings.forEach(holding => {
-           availableFunds += holding.quantity * assetPriceMap[holding.ticker].todayClose 
+           availableFunds += holding.quantity * assetPriceMap.get(holding.ticker).todayClose 
         })
         try {
             const response = await lastValueFrom(
                 this.httpService.get(this.OPTIMIZER_URL + "/include", {
                     params: {
-                        inclusions: tickers,
+                        inclusions: tickers
                     }
                 },
             ))
             const weights = response.data
             for (let ticker in weights) {
-                const assetPrice = assetPriceMap[ticker]
+                const assetPrice = assetPriceMap.get(ticker)
                 proposedOrders.push({
                     orderType: OrderType.BUY,
                     orderDate: new Date(),
