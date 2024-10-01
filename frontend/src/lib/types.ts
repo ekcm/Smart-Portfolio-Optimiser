@@ -13,12 +13,12 @@ interface PortfolioItem {
 }
 
 interface FinanceNewsItem {
-    newsId: number;
-    newsName: string;
-    newsSource: string;
-    newsDescription: string;
-    newsDate: string;
-    newsSourceLink: string;
+    id: string;
+    ticker: string;
+    date: Date;
+    sentimentRating: number;
+    summary: string;
+    references: string[];
 };
 
 interface PortfolioAnalysis {

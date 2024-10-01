@@ -24,7 +24,7 @@ const TriggeredAlert = memo(function TriggeredAlert({ type, data }: TriggeredAle
     }
 
     return (
-        <Card className="flex flex-col w-full pt-4 pb-2 px-4 bg-red-100 gap-2">
+        <Card className="flex flex-col flex-grow w-full pt-4 pb-2 px-4 bg-red-100 gap-2">
             <h2 className="text-xl font-medium">Triggered Alerts:</h2>
             <ul className="list-disc">
                 {data
