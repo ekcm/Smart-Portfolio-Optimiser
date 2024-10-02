@@ -17,7 +17,12 @@ export default function DashBoardNavBar() {
       const pathParts = pathname.split('/').filter(Boolean);
       return pathParts.map((part, index) => {
         const href = '/' + pathParts.slice(0, index + 1).join('/');
-        const label = part.charAt(0).toUpperCase() + part.slice(1).replace(/([A-Z])/g, ' $1').trim();
+        let label = part.charAt(0).toUpperCase() + part.slice(1).replace(/([A-Z])/g, ' $1').trim();
+        const portfolioName = localStorage.getItem("portfolioName");
+        if (index === 1 && portfolioName) {
+            label = portfolioName;
+        }
+
         return { href, label };
       });
     };
@@ -26,7 +31,7 @@ export default function DashBoardNavBar() {
 
     const getButtonSet = (state: string) => {
         const id = pathname.split('/')[2];
-
+        
         switch (state) {
             case "Main":
                 return (

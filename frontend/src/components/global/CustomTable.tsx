@@ -34,7 +34,7 @@ export default function CustomTable({ data }: CustomTableProps) {
                         </>
                     ) : (
                         <>
-                            <TableHead>Order Type</TableHead>
+                            <TableHead>Direction</TableHead>
                             <TableHead>Order Status</TableHead>
                         </>
                     )}
