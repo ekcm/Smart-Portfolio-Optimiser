@@ -3,19 +3,31 @@
 import { useEffect, useState } from "react";
 import { useDashBoardNavBarStore } from "../../../../../store/DashBoardNavBarState";
 import BigChartCard from "@/components/dashboard/Portfolio/optimiser/BigChartCard";
-import { indivPortfolioData } from "@/lib/mockData";
 import OptimiserChangeList from "@/components/dashboard/Portfolio/optimiser/OptimiserChangeList";
 import { Button } from "@/components/ui/button";
 import { useTransitionRouter } from "next-view-transitions";
+import { viewPortfolio } from "@/api/portfolio";
+import { usePathname } from "next/navigation";
+import { PortfolioData } from "@/lib/types";
+import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
+import Loader from "@/components/loader/Loader";
 
 export default function Optimization() {
     const router = useTransitionRouter();
 
-    const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
-    const [optimizedState, setOptimizedState] = useState<boolean>(false);
+    // * Get portfolio id to call api
+    const pathname = usePathname();
+    const portfolioId = pathname.split("/")[2];
 
-    // TODO: Add api call to alertsdb for entire portfolio -> call portfolio + orders for data  -> call alertsdb to have triggered alerts based on portfolio + orders data for optimiser
-    const mockAlerts = ["Threshold exceeded", "Another mock alert"];
+    const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
+    const [indivPortfolioData, setIndividualPortfolio] = useState<PortfolioData | null>(null);
+    const [optimizedState, setOptimizedState] = useState<boolean>(false);
+    const [optimizedData, setOptimizedData] = useState();
+
+    // loaders
+    const [loading, setLoading] = useState<boolean>(true);
+    const [optimiserLoading, setOptimiserLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const optimisePortfolio = () => {
         // TODO: Add api call to optimiser to get optimised portfolio
@@ -27,18 +39,55 @@ export default function Optimization() {
         // TODO: Add api call to optimiser to post req to optimise portfolio
         console.log("Optimise portfolio request sent");
     }
+
+    useEffect(() => {
+        if (portfolioId) {
+            getIndividualPortfolio(portfolioId);
+        }
+    }, [portfolioId]); 
     
     useEffect(() => {
         setDashBoardNavBarState("Empty");
     }); 
 
+    const getIndividualPortfolio = async (portfolioId : string) => {
+        try {
+            const portfolioData = await viewPortfolio(portfolioId);
+            setIndividualPortfolio(portfolioData);
+        } catch (error) {
+            console.error('Error fetching portfolio:', error);
+            setError('Failed to load portfolio data');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    // TODO: Add type to optimisedData
+    // TODO: Set data to optimisedData
+    const getOptimisedPortfolio = async (portfolioId : string) => {
+        setOptimiserLoading(true);
+        try {
+            const optimisedPortfolioData = await getOptimisedPortfolio(portfolioId);
+        } catch (error) {
+            console.error('Error fetching optimised portfolio data: ', error);
+            setError('Failed to fetch optimised portfolio data');
+        } finally {
+            setOptimiserLoading(false);
+        }
+    }
+
+    if (loading) {
+        return <Loader />
+    };
+
+    if (!indivPortfolioData) return <NoPortfolio />;
+
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
             <h1 className="text-3xl font-bold">Portfolio Optimiser</h1>
-            <BigChartCard data={indivPortfolioData} alerts={mockAlerts} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio}  />
+            <BigChartCard data={indivPortfolioData} alerts={indivPortfolioData.triggeredAlerts} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio}  />
             <OptimiserChangeList data={indivPortfolioData} optimisedFlag={optimizedState} />
             <div className="flex gap-2 mb-4">
-                {/* <Button type="submit" className="bg-red-500" onClick={confirmOptimisePortfolio}>Confirm Optimisation</Button> */}
                 <Button
                     type="submit"
                     className={`bg-red-500 ${!optimizedState ? "opacity-50 cursor-not-allowed" : ""}`}

@@ -1,11 +1,11 @@
 import { Card } from "@/components/ui/card";
 import OptimiserChart from "../charts/OptimiserChart";
-import { PortfolioData } from "@/lib/types";
+import { Alert, PortfolioData } from "@/lib/types";
 import OptimiserAlert from "./OptimiserAlert";
 
 interface BigChartCardProps {
     data: PortfolioData;
-    alerts: string[];
+    alerts: Alert[];
     optimisedFlag: boolean;
     onOptimisePortfolio: () => void;
 }
