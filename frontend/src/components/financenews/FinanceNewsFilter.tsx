@@ -8,6 +8,7 @@ import { Calendar } from "../ui/calendar";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 export default function FinanceNewsFilter() {
     const newsName = useFinanceNewsFilterStore((state) => state.newsName);
@@ -18,13 +19,23 @@ export default function FinanceNewsFilter() {
     const setNewsDate = useFinanceNewsFilterStore((state) => state.setNewsDate);
     const [date, setDate] = useState<Date | null>(null as Date | null);
 
+    const ratingLevels = {
+        0: "No Filter",
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+    }
+
     const handleDateSelect = (selectedDate: Date | undefined) => {
         if (selectedDate) {
-            setDate(selectedDate);
-            const formattedDate = format(selectedDate, "yyyy-MM-dd");
-            setNewsDate(formattedDate);
+            console.log(selectedDate);
+            setDate(selectedDate);  // Set the local state
+            setNewsDate(selectedDate);  // Set the Zustand store date
         } else {
-            setNewsDate("");
+            setDate(null);  // Clear the local state
+            setNewsDate(null);  // Clear the Zustand store date
         }
     };
 
@@ -49,12 +60,20 @@ export default function FinanceNewsFilter() {
                 {/* TODO: Change to select instead of input if still using this as filter */}
                 <Label className="flex flex-1 flex-grow-0 basis-2/5 items-center space-x-2 whitespace-nowrap text-md gap-2">
                     News Rating:
-                    <Input
-                        type="number"
-                        value={newsRating}
-                        onChange={(e) => setNewsRating(Number(e.target.value))}
-                        className="flex-grow"
-                    />
+                    <Select value={newsRating === 0 ? "" : newsRating.toString()} onValueChange={(value) => setNewsRating(Number(value))}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select news rating level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {Object.entries(ratingLevels).map(([key, value]) => (
+                                    <SelectItem key={key} value={key}>
+                                        {value === 0 ? "No Filter" : value}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                 </Label>
                 <Label className="flex flex-1 flex-grow-0 basis-auto items-center space-x-2 whitespace-nowrap text-md gap-2">
                     News Date:
