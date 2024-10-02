@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { PortfolioData } from "@/lib/types";
 import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
 import Loader from "@/components/loader/Loader";
+import OrderExecutionProgressCard from "@/components/dashboard/Portfolio/OrderExecutionProgressCard";
 
 export default function Optimization() {
     const router = useTransitionRouter();
@@ -87,6 +88,7 @@ export default function Optimization() {
             <h1 className="text-3xl font-bold">Portfolio Optimiser</h1>
             <BigChartCard data={indivPortfolioData} alerts={indivPortfolioData.triggeredAlerts} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio}  />
             <OptimiserChangeList data={indivPortfolioData} optimisedFlag={optimizedState} />
+            <OrderExecutionProgressCard data={[]} />
             <div className="flex gap-2 mb-4">
                 <Button
                     type="submit"

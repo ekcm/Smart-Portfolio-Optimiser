@@ -27,7 +27,7 @@ export default function OptimiserChangeList({ data, optimisedData, optimisedFlag
                     <OptimisedOrdersCard data={mockOptimizer.portfolioHoldings} optimisedFlag={optimisedFlag} />
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                     <h2 className="text-xl font-medium">Current Portfolio Breakdown</h2>
                     <Card className="flex flex-col w-full p-4 gap-2 h-80 overflow-y-auto">
@@ -38,10 +38,9 @@ export default function OptimiserChangeList({ data, optimisedData, optimisedFlag
                     <h2 className="text-xl font-medium">Proposed Portfolio Breakdown</h2>
                     <Card className="flex flex-col w-full p-4 gap-2 h-80 overflow-y-auto">
                        <OptimisedSecuritiesChart data={mockOptimizer.portfolioBreakdown} optimisedFlag={optimisedFlag} />
-                       {/* <OptimisedSecuritiesChart data={[]} optimisedFlag={optimisedFlag} /> */}
                     </Card>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
