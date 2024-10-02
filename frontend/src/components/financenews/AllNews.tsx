@@ -28,11 +28,15 @@ export default function AllNews() {
     // TODO: Edit filters for new types
     useEffect(() => {
         const filtered = financenews.filter((news) => {
+            // Check for newsName filter
             const matchesName = newsName ? news.ticker.toLowerCase().includes(newsName.toLowerCase()) : true;
-            const matchesRating = newsRating ? news.sentimentRating === newsRating : true;
-            const matchesDate = newsDate ? news.date === newsDate : true;
+            // Check for newsRating filter (treat rating 0 as "No Filter")
+            const matchesRating = newsRating !== 0 ? news.sentimentRating === newsRating : true;
+            // Check for newsDate filter
+            const matchesDate = newsDate ? new Date(news.date).toDateString() === new Date(newsDate).toDateString() : true;
             return matchesName && matchesRating && matchesDate;
         });
+
         setFilteredFinanceNews(filtered);
     }, [financenews, newsName, newsRating, newsDate]);
 
@@ -59,10 +63,11 @@ export default function AllNews() {
     if (error) return <Error error={error} />;
     // TODO: Add no finance news component
     if (!financenews) return <>Error!</>;
+    if (filteredFinanceNews.length === 0) return <>Oops! No  finance news found for this date!</>;
 
     return (
         <div className="flex flex-col items-center gap-6">
-            {financenews.map((news, index) => (
+            {filteredFinanceNews.map((news, index) => (
                 <IndivNewsCard key={news.id} data={news}/>
             ))}
         </div>
