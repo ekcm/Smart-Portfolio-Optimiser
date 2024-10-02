@@ -2,18 +2,18 @@ import { Card } from "@/components/ui/card";
 import TriggeredAlert from "../TriggeredAlert";
 import AddTransactionForm from "./AddTransactionForm";
 import { useState } from "react";
-import { AddTransactionDataType, Asset } from "@/lib/types";
+import { AddTransactionDataType, Alert, Asset } from "@/lib/types";
 
 interface AddTransactionCardProps {
     portfolioId: string;
     cashBalance: number;
     buyingPower: number;
     assetsData: Asset[] | undefined;
+    triggeredAlerts: Alert[];
     addTransaction: (data: AddTransactionDataType) => void;
 }
 
-// TODO: Check on how formdata is gna be tracked/sent to backend OR just update on orders checkout since there is missing information (eg quantity)
-export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, assetsData, addTransaction }: AddTransactionCardProps) {
+export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, assetsData, triggeredAlerts, addTransaction }: AddTransactionCardProps) {
     const initialFormData = {
         type: "",
         ticker: "",
@@ -50,7 +50,7 @@ export default function AddTransactionCard({ portfolioId, buyingPower, cashBalan
                     />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <TriggeredAlert type="orderForm" data={[]} />
+                    <TriggeredAlert type="orderForm" data={triggeredAlerts} />
                 </div>
             </div>
         </Card>

@@ -5,7 +5,7 @@ type CustomBadgeProps = {
 };
 
 export default function SentimentRatingCustomBadge({ amount }: CustomBadgeProps) {
-    const badgeClasses = "w-100 h-6 flex items-center justify-center px-2 py-1 text-md text-white";
+    const badgeClasses = "variant='outline' h-6 flex items-center justify-center px-2 py-1 text-md text-white";
 
     let colorClass = "";
     if (amount === 5) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AddTransactionDataType, Asset, AssetsItem, PortfolioData } from "@/lib/types";
+import { AddTransactionDataType, Alert, Asset, AssetsItem, PortfolioData } from "@/lib/types";
 import PortfolioBreakdownCard from "../PortfolioBreakdownCard";
 import AddTransactionCard from "./AddTransactionCard";
 import OrdersCheckoutCard from "./OrdersCheckoutCard";
@@ -11,47 +11,13 @@ import { getPortfolio } from "@/api/portfolio";
 import Loader from "@/components/loader/Loader";
 import Error from "@/components/error/Error";
 import { v4 as uuidv4 } from 'uuid';
+import { viewIndivLatestNews } from "@/api/financenews";
+import { date } from "zod";
 
 interface NewOrderFormProps {
     data: PortfolioData;
     prevOrders?: AssetsItem[];
 }
-
-// const initialMockOrders: AssetsItem[] = [
-//     {
-//         name: "Apple",
-//         ticker: "AAPL",
-//         type: "Stock",
-//         geography: "USA",
-//         position: 10,
-//         market: 8779.00,
-//         last: 178.58,
-//         cost: 130.23,
-//         orderType: "Buy",
-//     },
-//     {
-//         name: "NVIDIA",
-//         ticker: "NVDA",
-//         type: "Stock",
-//         geography: "USA",
-//         position: 10,
-//         market: 3245.00,
-//         last: 124.74,
-//         cost: 120.42,
-//         orderType: "Sell",
-//     },
-//     {
-//         name: "Meta Platforms",
-//         ticker: "META",
-//         type: "Stock",
-//         geography: "USA",
-//         position: 10,
-//         market: 8779.00,
-//         last: 178.58,
-//         cost: 130.23,
-//         orderType: "Buy",
-//     }
-// ]
 
 export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     // loaders
@@ -59,6 +25,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const [error, setError] = useState<string | null>(null);
 
     const [orders, setOrders] = useState<AssetsItem[]>([]);
+    const [triggeredAlerts, setTriggeredAlerts] = useState<Alert[]>(data.triggeredAlerts);
     const [assetsLoading, setAssetsLoading] = useState(true);
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
     const [assetError, setAssetError] = useState<string | null>(null);
@@ -130,6 +97,17 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                     setBuyingPower((prevBalance) => prevBalance - newOrderTotalCost);
                 }
             }
+            console.log("New finance news being generated...");
+            const newOrderNews = await viewIndivLatestNews(formData.ticker);
+            // Set new alert with other unnecessary data since not used in alerts
+            const newAlert = {
+                id:  uuidv4(),
+                ticker:  formData.ticker,
+                date: new Date(),
+                sentimentRating: newOrderNews[0].sentimentRating,
+                introduction: ""
+            }
+            setTriggeredAlerts((prevAlerts) => [...prevAlerts, newAlert]);
         } catch (error) {
             window.alert("An error occurred while adding the transaction. Please try again.");
         }
@@ -172,7 +150,14 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
         <div className="flex flex-col justify-center gap-4 pb-8">
             <PortfolioBreakdownCard data={data.portfolioBreakdown} />
             <OrdersCheckoutCard data={orders} onDelete={deleteOrder} />
-            <AddTransactionCard portfolioId={data.portfolioId} cashBalance={cashBalance} buyingPower={buyingPower} assetsData={allAssets} addTransaction={addTransaction} />
+            <AddTransactionCard 
+                portfolioId={data.portfolioId} 
+                cashBalance={cashBalance} 
+                buyingPower={buyingPower} 
+                assetsData={allAssets}
+                triggeredAlerts={triggeredAlerts}
+                addTransaction={addTransaction} 
+            />
             <div className="flex gap-4">
                 <Link
                     href={{

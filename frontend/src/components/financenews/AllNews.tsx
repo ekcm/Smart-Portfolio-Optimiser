@@ -1,8 +1,7 @@
-import { FinanceNewsData } from "@/lib/mockData";
 import IndivNewsCard from "./IndivNewsCard";
 import { useFinanceNewsFilterStore } from "../../store/FinanceNewsFilterState";
 import { useEffect, useState } from "react";
-import { FinanceNewsItem, FinanceNewsCard } from "@/lib/types";
+import { FinanceNewsCard } from "@/lib/types";
 import { viewAllNews } from "@/api/financenews";
 import Loader from "../loader/Loader";
 import Error from "../error/Error";
@@ -13,7 +12,6 @@ export default function AllNews() {
     const newsRating = useFinanceNewsFilterStore((state) => state.newsRating);
     const newsDate = useFinanceNewsFilterStore((state) => state.newsDate);
 
-    // const [filteredFinanceNews, setFilteredFinanceNews] = useState<FinanceNewsItem[]>(FinanceNewsData);
     const [financenews, setFinanceNews] = useState<FinanceNewsCard[]>([]);
     const [filteredFinanceNews, setFilteredFinanceNews] = useState<FinanceNewsCard[]>([]);
 
