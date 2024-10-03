@@ -40,6 +40,7 @@ export class PortfolioBreakdownService{
             const assetPrice = assetPriceMap.get(assetHolding.ticker)
             const industry = asset.industry
             const geography = asset.geography
+            const assetType = asset.type
             const value = assetHolding.quantity * assetPrice.todayClose
 
             if (industries.has(industry)) {
@@ -52,11 +53,14 @@ export class PortfolioBreakdownService{
             } else {
                 geographies.set(geography, value)
             }
+            if (securities.has(assetType)) {
+                securities.set(assetType, securities.get(assetType) + value)
+            } else {
+                securities.set(assetType, value)
+            }
 
             total += value
         }
-
-        securities.set("stock", total);
 
         industries.forEach((value, industry) => {
             industries.set(industry, CalculatorUtility.precisionRound(value / total * 100, 2))
@@ -68,6 +72,9 @@ export class PortfolioBreakdownService{
         });
         const geographiesArray = Array.from(geographies, ([key, value]) => ({[key]: value}))
 
+        securities.forEach((value, security) => {
+            securities.set(security, CalculatorUtility.precisionRound(value / total * 100, 2))
+        });
         const securitiesArray = Array.from(securities, ([key, value]) => ({[key]: value}))
 
 
