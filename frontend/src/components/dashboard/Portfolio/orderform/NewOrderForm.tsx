@@ -11,8 +11,8 @@ import { getPortfolio } from "@/api/portfolio";
 import Loader from "@/components/loader/Loader";
 import Error from "@/components/error/Error";
 import { v4 as uuidv4 } from 'uuid';
-import { viewIndivLatestNews } from "@/api/financenews";
 import { date } from "zod";
+import { viewIndivLatestNews } from "@/api/financenews";
 
 interface NewOrderFormProps {
     data: PortfolioData;
@@ -105,7 +105,8 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 ticker:  formData.ticker,
                 date: new Date(),
                 sentimentRating: newOrderNews[0].sentimentRating,
-                introduction: ""
+                introduction: "",
+                assetName: newOrderNews[0].assetName,
             }
             setTriggeredAlerts((prevAlerts) => [...prevAlerts, newAlert]);
         } catch (error) {

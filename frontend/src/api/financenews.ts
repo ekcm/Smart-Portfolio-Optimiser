@@ -28,7 +28,7 @@ export const viewIndivNews = async(financeNewsId: string) : Promise<NewsArticle>
 }
 
 // TODO: Add promise
-export const viewIndivLatestNews = async(ticker: string) => {
+export const viewIndivLatestNews = async(ticker: string) : Promise<any> => {
     try {
         const api = `${baseFinanceNewsUrl}/tickers/latest`;
         const response = await axios.get(api, {

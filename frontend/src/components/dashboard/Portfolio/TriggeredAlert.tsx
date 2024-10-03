@@ -39,7 +39,7 @@ const TriggeredAlert = memo(function TriggeredAlert({ type, data }: TriggeredAle
                             <a href={`/financenews/${item.id}`}>
                                 <div className="grid grid-cols-[1fr_auto] items-center gap-4 hover:bg-gray-300 transition-colors p-1">
                                         {/* TODO: Change this to ticker name for clarity */}
-                                        {item.ticker}
+                                        {item.assetName} ({item.ticker})
                                     <SentimentRatingCustomBadge amount={item.sentimentRating} />
                                 </div>
                             </a>
