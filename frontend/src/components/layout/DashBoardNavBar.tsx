@@ -12,15 +12,22 @@ export default function DashBoardNavBar() {
     
     const pathname = usePathname();
 
+    const getPortfolioName = () => {
+        if (typeof window !== "undefined") {
+            return localStorage.getItem("portfolioName");
+        }
+        return null;
+    };
+
     // TODO: Fix breadcrumbs labelling
     const generateBreadcrumbs = (pathname: string) => {
       const pathParts = pathname.split('/').filter(Boolean);
       return pathParts.map((part, index) => {
         const href = '/' + pathParts.slice(0, index + 1).join('/');
         let label = part.charAt(0).toUpperCase() + part.slice(1).replace(/([A-Z])/g, ' $1').trim();
-        const portfolioName = localStorage.getItem("portfolioName");
-        if (index === 1 && portfolioName) {
-            label = portfolioName;
+        const portfolioName = getPortfolioName();
+        if (index === 1) {
+            label = portfolioName ? portfolioName : label;
         }
 
         return { href, label };
