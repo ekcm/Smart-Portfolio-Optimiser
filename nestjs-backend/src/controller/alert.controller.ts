@@ -11,7 +11,8 @@ export class AlertController {
 
     @Get()
     @ApiOperation({ summary: "Get alerts by Tickers and add Company Name" })
-    async getAlerts(@Query("tickers") tickers: string[]): Promise<AlertDto[]> {
-        return await this.alertService.getAlerts(tickers);
+    async getAlerts(@Query("tickers") tickers: string[] = []): Promise<AlertDto[]> {
+        const tickersArray = Array.isArray(tickers) ? tickers : [tickers];
+        return await this.alertService.getAlerts(tickersArray);
     }
 }
