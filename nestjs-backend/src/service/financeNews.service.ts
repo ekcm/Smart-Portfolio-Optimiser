@@ -33,7 +33,7 @@ export class FinanceNewsService {
     async getByTicker(ticker: string): Promise<FinanceNews> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
-                const news = await this.financeNewsModel.findOne({ stock: ticker }).exec();
+                const news = await this.financeNewsModel.findOne({ ticker: ticker }).exec();
                 if (news) {
                     resolve(news);
                 } else {
@@ -45,7 +45,7 @@ export class FinanceNewsService {
     async getByTickerLatest(ticker: string): Promise<FinanceNews> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
-                const news = await this.financeNewsModel.findOne({ stock: ticker }).sort({ date: - 1 }).exec();
+                const news = await this.financeNewsModel.findOne({ ticker: ticker }).sort({ date: - 1 }).exec();
                 if (news) {
                     resolve(news);
                 } else {
