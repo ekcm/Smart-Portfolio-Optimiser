@@ -98,17 +98,17 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 }
             }
             console.log("New finance news being generated...");
-            const newOrderNews = await viewIndivLatestNews(formData.ticker);
+            const newsAlerts = await viewIndivLatestNews(formData.ticker);
             // Set new alert with other unnecessary data since not used in alerts
-            const newAlert = {
-                id:  uuidv4(),
-                ticker:  formData.ticker,
-                date: new Date(),
-                sentimentRating: newOrderNews[0].sentimentRating,
-                introduction: "",
-                assetName: newOrderNews[0].assetName,
-            }
-            setTriggeredAlerts((prevAlerts) => [...prevAlerts, newAlert]);
+            // const newAlert = {
+            //     id:  uuidv4(),
+            //     ticker:  formData.ticker,
+            //     date: new Date(),
+            //     sentimentRating: newOrderNews[0].sentimentRating,
+            //     introduction: "",
+            //     assetName: newOrderNews[0].assetName,
+            // }
+            setTriggeredAlerts((prevAlerts) => [...prevAlerts, newsAlerts[0]]);
         } catch (error) {
             window.alert("An error occurred while adding the transaction. Please try again.");
         }
