@@ -3,13 +3,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
-import { Asset } from "@/lib/types";
+import { Asset, PortfolioHoldings } from "@/lib/types";
 import { fetchCurrentAssetPrice } from "@/api/asset";
 import { delay } from "@/utils/utils";
 
 interface AddTransactionFormProps {
     cashBalance: number;
     buyingPower: number;
+    portfolioAssets: PortfolioHoldings[];
     assetsData: Asset[] | undefined;
     formData: {
         type: string;
@@ -35,12 +36,23 @@ interface AddTransactionFormProps {
     onReset: () => void;
 }
 
-export default function AddTransactionForm({ cashBalance, buyingPower, assetsData, formData, setFormData, onSubmit, onReset }: AddTransactionFormProps) {
+export default function AddTransactionForm({ 
+    cashBalance, 
+    buyingPower, 
+    portfolioAssets, 
+    assetsData, 
+    formData, 
+    setFormData, 
+    onSubmit, 
+    onReset 
+}: AddTransactionFormProps) {
     // Loading state
     const [isLoading, setIsLoading] = useState(false);
     const [buyingPowerVar, setBuyingPowerVar] = useState(buyingPower);
     const [totalCost, setTotalCost] = useState(0);
     const [showWarning, setShowWarning] = useState(false);
+    const [showWarningPosition, setShowWarningPosition] = useState(false);
+    const [maxQuantity, setMaxQuantity] = useState(0);
 
     useEffect(() => {
         setTotalCost(formData.cost * formData.position);
@@ -55,14 +67,40 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
             setBuyingPowerVar(buyingPower);
             setShowWarning(false);
         }
-    }, [totalCost, buyingPower, formData.orderType])
+        if (formData.orderType === "Sell") {
+            setShowWarningPosition(formData.position === maxQuantity);
+        }
+    }, [totalCost, buyingPower, formData.orderType, formData.position])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        const numericValue = Number(value); // Ensure the input value is treated as a number
+
+        // Cap the position if the order type is "Sell"
+        if (name === "position" && formData.orderType === "Sell") {
+            const assetInPortfolio = portfolioAssets.find(asset => asset.ticker === formData.ticker);
+            
+            if (assetInPortfolio) {
+                const maxQuantity = assetInPortfolio.position;
+
+                // If user enters a quantity greater than they hold, cap it at the max they have
+                setFormData((prev) => ({
+                    ...prev,
+                    position: numericValue > maxQuantity ? maxQuantity : numericValue,
+                }));
+            } else {
+                // If the asset isn't found, set position to 0
+                setFormData((prev) => ({
+                    ...prev,
+                    position: 0,
+                }));
+            }
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: numericValue, // Use the value for other fields without capping
+            }));
+        }
     };
 
     const handleSelectChange = async (name: string, value: string) => {
@@ -71,9 +109,19 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
             [name]: value,
         }));
 
-        // Fetch asset price if security name is selected
+        // Fetch asset price
         if (name === "ticker") {
             await getAssetPrice(value);
+        }
+        if (formData.orderType === "Sell") {
+            const selectedAsset = portfolioAssets.find(asset => asset.ticker === value);
+            if (selectedAsset) {
+                setMaxQuantity(selectedAsset.position);
+                setFormData((prev) => ({
+                    ...prev,
+                    position: selectedAsset.position,
+                }))
+            }
         }
     };
 
@@ -81,7 +129,7 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
         setIsLoading(true); // Set loading to true when submit starts
         try {
             onSubmit(formData); // Wait for the transaction to be added
-            await delay(1500); // Introduce a 10-second delay
+            await delay(1500); // Introduce a 1.5-second delay
         } catch (error) {
             console.error("Error while adding transaction:", error);
             window.alert("An error occurred while adding the transaction. Please try again.");
@@ -101,6 +149,23 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
             console.error("Error fetching asset price: ", error);
         }
     };
+
+    // conditionally display portfolioAssets or assetsData
+    const getAssetOptions = () => {
+        if (formData.orderType === "Buy") {
+            return assetsData?.map((asset, index) => (
+                <SelectItem key={index} value={asset.ticker}>
+                    {asset.name}
+                </SelectItem>
+            ))
+        } else {
+            return portfolioAssets.map((asset, index) => (
+                <SelectItem key={index} value={asset.ticker}>
+                    {asset.name}
+                </SelectItem>
+            ))
+        }
+    }
 
     return (
         <div className="flex flex-col gap-2">
@@ -136,7 +201,7 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
                     </SelectContent>
                 </Select>
             </div>
-            <div className="flex gap-4 items-center">
+            {/* <div className="flex gap-4 items-center">
                 <Label className="w-40 text-md font-light">
                     Security Type:
                 </Label>
@@ -152,7 +217,7 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-            </div>
+            </div> */}
             <div className="flex gap-4 items-center">
                 <Label className="w-40 text-md font-light">
                     Security Name:
@@ -166,11 +231,7 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            {assetsData?.map((asset, index) => (
-                                <SelectItem key={index} value={asset.ticker}>
-                                    {asset.name}
-                                </SelectItem>
-                            ))}
+                            {getAssetOptions()}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
@@ -200,6 +261,9 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
             {/* Show warning if balance is insufficient */}
             <div className={`text-sm mb-2 h-2 ${showWarning ? 'text-red-600 visible' : 'invisible'}`}>
                 Insufficient balance to complete this transaction.
+            </div>
+            <div className="text-sm mb-2 h-2 text-red-600">
+                Max  quantity: {maxQuantity}
             </div>
             <div className="flex gap-2 mt-4">
                 {/* <Button className="bg-red-700" onClick={handleSubmit}>Add Transaction to Checkout</Button> */}

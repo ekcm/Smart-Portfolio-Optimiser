@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AddTransactionDataType, Alert, Asset, AssetsItem, PortfolioData } from "@/lib/types";
+import { AddTransactionDataType, Alert, Asset, AssetsItem, PortfolioData, PortfolioHoldings } from "@/lib/types";
 import PortfolioBreakdownCard from "../PortfolioBreakdownCard";
 import AddTransactionCard from "./AddTransactionCard";
 import OrdersCheckoutCard from "./OrdersCheckoutCard";
@@ -20,6 +20,7 @@ interface NewOrderFormProps {
 }
 
 export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
+    console.log(data);
     // loaders
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -27,6 +28,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const [orders, setOrders] = useState<AssetsItem[]>([]);
     const [triggeredAlerts, setTriggeredAlerts] = useState<Alert[]>(data.triggeredAlerts);
     const [assetsLoading, setAssetsLoading] = useState(true);
+    const [portfolioAssets, setPortfolioAssets] = useState<PortfolioHoldings[]>(data.portfolioHoldings);
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
     const [assetError, setAssetError] = useState<string | null>(null);
     const [cashBalance, setCashBalance] = useState<number>(0);
@@ -146,6 +148,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 portfolioId={data.portfolioId} 
                 cashBalance={cashBalance} 
                 buyingPower={buyingPower} 
+                portfolioAssets={portfolioAssets}
                 assetsData={allAssets}
                 triggeredAlerts={triggeredAlerts}
                 addTransaction={addTransaction} 
