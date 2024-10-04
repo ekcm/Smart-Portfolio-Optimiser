@@ -11,8 +11,8 @@ import { getPortfolio } from "@/api/portfolio";
 import Loader from "@/components/loader/Loader";
 import Error from "@/components/error/Error";
 import { v4 as uuidv4 } from 'uuid';
-import { viewIndivLatestNews } from "@/api/financenews";
 import { date } from "zod";
+import { viewIndivLatestNews } from "@/api/financenews";
 
 interface NewOrderFormProps {
     data: PortfolioData;
@@ -97,17 +97,9 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                     setBuyingPower((prevBalance) => prevBalance - newOrderTotalCost);
                 }
             }
-            console.log("New finance news being generated...");
-            const newOrderNews = await viewIndivLatestNews(formData.ticker);
-            // Set new alert with other unnecessary data since not used in alerts
-            const newAlert = {
-                id:  uuidv4(),
-                ticker:  formData.ticker,
-                date: new Date(),
-                sentimentRating: newOrderNews[0].sentimentRating,
-                introduction: ""
-            }
-            setTriggeredAlerts((prevAlerts) => [...prevAlerts, newAlert]);
+            // Add ticker alert to triggeredAlerts array
+            const newsAlerts = await viewIndivLatestNews(formData.ticker);
+            setTriggeredAlerts((prevAlerts) => [...prevAlerts, newsAlerts[0]]);
         } catch (error) {
             window.alert("An error occurred while adding the transaction. Please try again.");
         }
