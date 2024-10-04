@@ -12,11 +12,16 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
     const capitalizedRiskAppetite = data.riskAppetite.toLowerCase();
     const formattedRiskAppetite = capitalizedRiskAppetite.charAt(0).toUpperCase() + capitalizedRiskAppetite.slice(1);
 
+    const setPortfolioName = () => {
+        localStorage.setItem("portfolioName", data.portfolioName);
+    }
+
     return (
         <Link 
             href={`/dashboard/${data.portfolioId}`}
             passHref
             className="w-full"
+            onClick={setPortfolioName}
         >
             <Card 
                 className="relative flex flex-row items-center justify-between w-full p-8 transform transition-transform duration-300 hover:scale-105 cursor-pointer"

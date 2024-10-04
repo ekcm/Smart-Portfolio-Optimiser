@@ -121,7 +121,7 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
             </div>
             <div className="flex gap-4 items-center">
                 <Label className="w-40 text-md font-light">
-                    Order Type:
+                    Direction:
                 </Label>
                 <Select value={formData.orderType} onValueChange={(value) => handleSelectChange("orderType", value)}>
                     <SelectTrigger>
@@ -146,7 +146,7 @@ export default function AddTransactionForm({ cashBalance, buyingPower, assetsDat
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            {["Stock", "Asset"].map((type, index) => (
+                            {["Stock", "Bond"].map((type, index) => (
                                 <SelectItem key={index} value={type}>{type}</SelectItem>
                             ))}
                         </SelectGroup>

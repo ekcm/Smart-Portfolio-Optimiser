@@ -24,7 +24,7 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
                             <TableHead>Position | Price</TableHead>
                             <TableHead>Current Price</TableHead>
                             <TableHead>Total Cost</TableHead>
-                            <TableHead>Order Type</TableHead>
+                            <TableHead>Direction</TableHead>
                             <TableHead>Remove</TableHead>
                         </TableRow>
                     </TableHeader>

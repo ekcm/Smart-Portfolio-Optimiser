@@ -40,7 +40,7 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                             <TableHead>Symbol | Ticker</TableHead>
                             <TableHead>Position | Price</TableHead>
                             <TableHead>Current Price</TableHead>
-                            <TableHead>Order Type</TableHead>
+                            <TableHead>Direction</TableHead>
                             <TableHead>Order Status</TableHead>
                             <TableHead onClick={sortByDate} className="cursor-pointer">Order Date {sortDirection === "asc" ? "↑" : "↓"}</TableHead>
                         </TableRow>
