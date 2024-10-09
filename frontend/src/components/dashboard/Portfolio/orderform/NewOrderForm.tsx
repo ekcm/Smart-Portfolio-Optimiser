@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AddTransactionDataType, Alert, Asset, AssetsItem, PortfolioData } from "@/lib/types";
+import { AddTransactionDataType, Alert, Asset, AssetsItem, PortfolioData, PortfolioHoldings } from "@/lib/types";
 import PortfolioBreakdownCard from "../PortfolioBreakdownCard";
 import AddTransactionCard from "./AddTransactionCard";
 import OrdersCheckoutCard from "./OrdersCheckoutCard";
@@ -11,8 +11,8 @@ import { getPortfolio } from "@/api/portfolio";
 import Loader from "@/components/loader/Loader";
 import Error from "@/components/error/Error";
 import { v4 as uuidv4 } from 'uuid';
-import { viewIndivLatestNews } from "@/api/financenews";
 import { date } from "zod";
+import { viewIndivLatestNews } from "@/api/financenews";
 
 interface NewOrderFormProps {
     data: PortfolioData;
@@ -20,6 +20,7 @@ interface NewOrderFormProps {
 }
 
 export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
+    console.log(data);
     // loaders
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -27,6 +28,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const [orders, setOrders] = useState<AssetsItem[]>([]);
     const [triggeredAlerts, setTriggeredAlerts] = useState<Alert[]>(data.triggeredAlerts);
     const [assetsLoading, setAssetsLoading] = useState(true);
+    const [portfolioAssets, setPortfolioAssets] = useState<PortfolioHoldings[]>(data.portfolioHoldings);
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
     const [assetError, setAssetError] = useState<string | null>(null);
     const [cashBalance, setCashBalance] = useState<number>(0);
@@ -97,17 +99,9 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                     setBuyingPower((prevBalance) => prevBalance - newOrderTotalCost);
                 }
             }
-            console.log("New finance news being generated...");
-            const newOrderNews = await viewIndivLatestNews(formData.ticker);
-            // Set new alert with other unnecessary data since not used in alerts
-            const newAlert = {
-                id:  uuidv4(),
-                ticker:  formData.ticker,
-                date: new Date(),
-                sentimentRating: newOrderNews[0].sentimentRating,
-                introduction: ""
-            }
-            setTriggeredAlerts((prevAlerts) => [...prevAlerts, newAlert]);
+            // Add ticker alert to triggeredAlerts array
+            const newsAlerts = await viewIndivLatestNews(formData.ticker);
+            setTriggeredAlerts((prevAlerts) => [...prevAlerts, newsAlerts[0]]);
         } catch (error) {
             window.alert("An error occurred while adding the transaction. Please try again.");
         }
@@ -154,6 +148,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 portfolioId={data.portfolioId} 
                 cashBalance={cashBalance} 
                 buyingPower={buyingPower} 
+                portfolioAssets={portfolioAssets}
                 assetsData={allAssets}
                 triggeredAlerts={triggeredAlerts}
                 addTransaction={addTransaction} 

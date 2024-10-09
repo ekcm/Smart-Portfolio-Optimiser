@@ -2,18 +2,21 @@ import { Card } from "@/components/ui/card";
 import TriggeredAlert from "../TriggeredAlert";
 import AddTransactionForm from "./AddTransactionForm";
 import { useState } from "react";
-import { AddTransactionDataType, Alert, Asset } from "@/lib/types";
+import { AddTransactionDataType, Alert, Asset, PortfolioHoldings } from "@/lib/types";
 
 interface AddTransactionCardProps {
     portfolioId: string;
     cashBalance: number;
     buyingPower: number;
+    // stocks in this portfolio
+    portfolioAssets: PortfolioHoldings[];
+    // all stocks + their respective market price
     assetsData: Asset[] | undefined;
     triggeredAlerts: Alert[];
     addTransaction: (data: AddTransactionDataType) => void;
 }
 
-export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, assetsData, triggeredAlerts, addTransaction }: AddTransactionCardProps) {
+export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, portfolioAssets, assetsData, triggeredAlerts, addTransaction }: AddTransactionCardProps) {
     const initialFormData = {
         type: "",
         ticker: "",
@@ -42,6 +45,7 @@ export default function AddTransactionCard({ portfolioId, buyingPower, cashBalan
                     <AddTransactionForm
                         cashBalance={cashBalance}
                         buyingPower={buyingPower}
+                        portfolioAssets={portfolioAssets}
                         assetsData={assetsData}
                         formData={formData}
                         setFormData={setFormData}

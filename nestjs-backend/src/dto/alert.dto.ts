@@ -25,4 +25,7 @@ export class AlertDto {
     @IsString()
     introduction: string;
 
+    @IsNotEmpty()
+    @IsString()
+    assetName: string;
 }

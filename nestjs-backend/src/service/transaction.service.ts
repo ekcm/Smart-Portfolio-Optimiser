@@ -13,19 +13,50 @@ export class TransactionService {
 
     async placeOrder(order: OrderDto): Promise<Order> {
         const portfolio = await this.portfolioService.getById(order.portfolioId)
-        if (order.price * order.quantity > portfolio.cashAmount) {
-            throw new NotAcceptableException("Portfolio has insufficient cash to place order")
-        }
 
-        const assetPrice = await this.assetPriceService.getLatest(order.assetName)
-        const asset = await this.assetService.getByTicker(order.assetName)
-        if (order.price >= assetPrice.todayClose) {
-            order.price = assetPrice.todayClose
-            portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, asset.type)
-            portfolio.cashAmount -= order.price * order.quantity
-            await this.portfolioService.update(portfolio.id, portfolio)
-            order.orderStatus = OrderStatus.FILLED
+        if (order.orderType === 'SELL') {
+            const assetHolding = portfolio.assetHoldings.find(holding => holding.ticker === order.assetName);
+            if (!assetHolding) {
+                throw new NotAcceptableException("Asset not found in portfolio");
+            }
+
+            if (assetHolding.quantity < order.quantity) {
+                throw new NotAcceptableException("Insufficient quantity to sell");
+            }
+
+            const assetPrice = await this.assetPriceService.getLatest(order.assetName);
+            
+            if (order.price <= assetPrice.todayClose) { 
+                order.price = assetPrice.todayClose; 
+                portfolio.cashAmount += order.price * order.quantity; 
+                assetHolding.quantity -= order.quantity;
+
+                if (assetHolding.quantity === 0) {
+                    portfolio.assetHoldings = portfolio.assetHoldings.filter(holding => holding.ticker !== order.assetName);
+                }
+
+                order.orderStatus = OrderStatus.FILLED; 
+            } else {
+                order.orderStatus = OrderStatus.PENDING; 
+            }
+        } else if (order.orderType === 'BUY') {
+
+            if (order.price * order.quantity > portfolio.cashAmount) {
+                throw new NotAcceptableException("Portfolio has insufficient cash to place order")
+            }
+    
+            const assetPrice = await this.assetPriceService.getLatest(order.assetName)
+            const asset = await this.assetService.getByTicker(order.assetName)
+            if (order.price >= assetPrice.todayClose) {
+                order.price = assetPrice.todayClose
+                portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, asset.type)
+                portfolio.cashAmount -= order.price * order.quantity   
+                order.orderStatus = OrderStatus.FILLED;             
+            }
+        } else {
+            throw new NotAcceptableException("Invalid order type");
         }
+        await this.portfolioService.update(portfolio.id, portfolio)
         const result = await this.orderService.create(order)
         return result
     }
@@ -59,18 +90,47 @@ export class TransactionService {
         }
         for (let i = 0; i < orders.length; i++) {
             const order = orders[i]
-            const assetPrice = await this.assetPriceService.getLatest(order.assetName)
-            const asset = await this.assetService.getByTicker(order.assetName)
-            if (order.price >= assetPrice.todayClose) {
-                order.price = assetPrice.todayClose
-                portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, asset.type)
-                portfolio.cashAmount -= order.price * order.quantity
-                order.orderStatus = OrderStatus.FILLED
+
+            if (order.orderType === 'SELL') {
+                const assetHolding = portfolio.assetHoldings.find(holding => holding.ticker === order.assetName);
+                if (!assetHolding) {
+                    throw new NotAcceptableException("Asset not found in portfolio");
+                }
+    
+                if (assetHolding.quantity < order.quantity) {
+                    throw new NotAcceptableException("Insufficient quantity to sell");
+                }
+    
+                const assetPrice = await this.assetPriceService.getLatest(order.assetName);
+                
+                if (order.price <= assetPrice.todayClose) { 
+                    order.price = assetPrice.todayClose; 
+                    portfolio.cashAmount += order.price * order.quantity; 
+                    assetHolding.quantity -= order.quantity;
+    
+                    if (assetHolding.quantity === 0) {
+                        portfolio.assetHoldings = portfolio.assetHoldings.filter(holding => holding.ticker !== order.assetName);
+                    }
+    
+                    order.orderStatus = OrderStatus.FILLED; 
+                } else {
+                    order.orderStatus = OrderStatus.PENDING; 
+                }
+            } else if (order.orderType === 'BUY') {
+                const assetPrice = await this.assetPriceService.getLatest(order.assetName);
+                const asset = await this.assetService.getByTicker(order.assetName);
+                if (order.price >= assetPrice.todayClose) {
+                    order.price = assetPrice.todayClose;
+                    portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, asset.type);
+                    portfolio.cashAmount -= order.price * order.quantity;
+                    order.orderStatus = OrderStatus.FILLED;
+                }
+            } else {
+                throw new NotAcceptableException("Invalid order type");
             }
             const result = await this.orderService.create(order)
         }
         await this.portfolioService.update(portfolioId, portfolio)
-
         return orders
     }
 }

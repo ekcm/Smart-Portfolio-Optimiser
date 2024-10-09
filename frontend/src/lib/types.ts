@@ -190,6 +190,7 @@ interface Alert {
   date: Date;
   sentimentRating: number;
   introduction: string;
+  assetName: string;
 }
 
 export type {
