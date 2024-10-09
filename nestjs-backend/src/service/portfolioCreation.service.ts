@@ -1,14 +1,15 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AssetPriceService } from './assetprice.service';
 import { OrderDto } from 'src/dto/order.dto';
-import { OrderType } from 'src/model/order.model';
+import { Order, OrderType } from 'src/model/order.model';
 import { PortfolioService } from './portfolio.service';
 import { OrderStatus } from '../model/order.model';
-import { ProposedPortfolio } from 'src/types';
+import { OptimisedPortfolio, ProposedPortfolio } from 'src/types';
 import { RiskAppetite } from 'src/model/portfolio.model';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { AssetPrice } from 'src/model/assetprice.model';
+import { AssetHolding } from 'src/model/assetholding.model';
 
 @Injectable()
 export class PortfolioCreationService{
@@ -60,7 +61,8 @@ export class PortfolioCreationService{
         } 
     }
     
-    async optimisePortfolio( portfolioId: string ): Promise<ProposedPortfolio> {
+    async optimisePortfolio( portfolioId: string ): Promise<OptimisedPortfolio> {
+        var proposedHoldings: OrderDto[] = []
         var proposedOrders: OrderDto[] = []
         const portfolio = await this.portfolioService.getById(portfolioId)
         const tickers = portfolio.assetHoldings.map(assetHolding => assetHolding.ticker)
@@ -85,7 +87,7 @@ export class PortfolioCreationService{
             const weights = response.data
             for (let ticker in weights) {
                 const assetPrice = assetPriceMap.get(ticker)
-                proposedOrders.push({
+                proposedHoldings.push({
                     orderType: OrderType.BUY,
                     orderDate: new Date(),
                     assetName: ticker,
@@ -99,8 +101,48 @@ export class PortfolioCreationService{
             throw new InternalServerErrorException('Optimizer service error')
         }
 
+        const proposedHoldingsMap = proposedHoldings.reduce((map, proposedHolding) => {
+            map.set(proposedHolding.assetName, proposedHolding)
+            return map
+        }, new Map<string, OrderDto>)
+
+        const portfolioHoldingsMap = portfolio.assetHoldings.reduce((map, portfolioHolding) => {
+            map.set(portfolioHolding.ticker, portfolioHolding)
+            return map
+        }, new Map<string, AssetHolding>)
+
+        portfolioHoldingsMap.forEach((current, ticker) => {
+            if (proposedHoldingsMap.has(ticker)) {
+                const proposed = proposedHoldingsMap.get(ticker)
+                const quantity = Math.abs(proposed.quantity - current.quantity)
+                var orderType = OrderType.BUY
+                if (proposed.quantity < current.quantity) {
+                    orderType = OrderType.SELL
+                }
+                proposedOrders.push({
+                    orderType: orderType,
+                    orderDate: proposed.orderDate,
+                    assetName: ticker,
+                    quantity: quantity,
+                    price: proposed.price,
+                    portfolioId: portfolio._id.toString(),
+                    orderStatus: OrderStatus.PENDING
+                })
+            } else {
+                proposedOrders.push({
+                    orderType: OrderType.SELL,
+                    orderDate: new Date(),
+                    assetName: ticker,
+                    quantity: current.quantity,
+                    price: assetPriceMap.get(ticker).todayClose,
+                    portfolioId: portfolio._id.toString(),
+                    orderStatus: OrderStatus.PENDING
+                })
+            }
+        });
         return {
             portfolioId: portfolioId,
+            proposedHoldings: proposedHoldings,
             orders: proposedOrders
         } 
     }
