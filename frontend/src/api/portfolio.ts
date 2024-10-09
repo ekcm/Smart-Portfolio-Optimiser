@@ -69,7 +69,7 @@ export const getPortfolio = async (portfolioId: string) : Promise<CreatePortfoli
 export const getOptimisedPortfolio = async (portfolioId : string) => {
     try {
         const api = `${generatePortfolioUrl}/${portfolioId}`;
-        const response = await axios.post(api);
+        const response = await axios.get(api);
         return response.data;
     } catch (error) {
         console.error('Error optimising portfolio: ' + error);

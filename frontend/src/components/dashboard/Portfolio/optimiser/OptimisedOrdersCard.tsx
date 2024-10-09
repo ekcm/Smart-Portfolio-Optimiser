@@ -1,9 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { PortfolioHoldingsDifference } from "@/lib/types";
+import { PortfolioHoldingDifference } from "@/lib/types";
 
 interface OptimisedOrdersCardProps {
-    data: PortfolioHoldingsDifference[];
+    data: PortfolioHoldingDifference[];
     optimisedFlag: boolean;
 }
 
@@ -42,8 +42,8 @@ export default function OptimisedOrdersCard({ data, optimisedFlag }: OptimisedOr
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex flex-col">
-                                            <span>{item.last}</span>
-                                            <span className="text-xs text-gray-500">{item.cost}</span>
+                                            <span>{item.last.toFixed(2)}</span>
+                                            <span className="text-xs text-gray-500">{item.cost.toFixed(2)}</span>
                                         </div>
                                     </TableCell>
                                     {/* <TableCell className={getCellClass(item.difference)}>{item.positionsRatio.toFixed(2)}%</TableCell> */}

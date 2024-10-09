@@ -67,6 +67,16 @@ interface PortfolioHoldingsDifference {
   difference: number;
 };
 
+interface PortfolioHoldingDifference {
+    ticker: string;
+    name: string;
+    last: number;
+    position: number;
+    difference: number;
+    market: number;
+    cost: number;
+}
+
 interface OrderExecutionProgress {
   name: string;
   ticker: string;
@@ -193,6 +203,21 @@ interface Alert {
   assetName: string;
 }
 
+interface OptimisedPortfolio {
+  portfolioId: string,
+  proposedHoldings: OptimiserOrders[],
+  orders: OptimiserOrders[]
+}
+interface OptimiserOrders {
+  orderType: string;
+  orderDate: Date;
+  assetName: string;
+  quantity: number;
+  price: number;
+  portfolioId: string;
+  orderStatus: string;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -200,6 +225,7 @@ export type {
     PortfolioBreakdown,
     PortfolioHoldings,
     PortfolioHoldingsDifference,
+    PortfolioHoldingDifference,
     OrderExecutionProgress,
     PortfolioData,
     AssetsItem,
@@ -212,6 +238,8 @@ export type {
     FinanceNewsCard,
     NewsArticle,
     Alert,
+    OptimisedPortfolio,
+    OptimiserOrders,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,
