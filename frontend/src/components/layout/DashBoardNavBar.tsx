@@ -1,5 +1,6 @@
+'use client';
 import { Link } from "next-view-transitions";
-import { useDashBoardNavBarStore } from "../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator } from "../ui/breadcrumb";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
@@ -8,9 +9,19 @@ import React from "react";
 export default function DashBoardNavBar() {
     // main state of dashboard to display different set of buttons
     const DashBoardNavBarState = useDashBoardNavBarStore((state) => state.mainState);
-    const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
     
-    const pathname = usePathname();
+    const pathname = typeof window !== "undefined" ? usePathname() : "";
+
+    const pages: Record<string, string> = {
+        dashboard: "Dashboard",
+        financenews: "Finance News",
+        createclientportfolio: "Create Client Portfolio",
+        optimization: "Optimization",
+        neworder: "Create New Order",
+        generateorderlist: "Generate Order List",
+        editportfolio: "Edit Portfolio",
+        editcash: "Edit Cash",
+    }
 
     const getPortfolioName = () => {
         if (typeof window !== "undefined") {
@@ -18,16 +29,29 @@ export default function DashBoardNavBar() {
         }
         return null;
     };
+    
+    const getFinanceNewsName = () => {
+        if (typeof window !== "undefined") {
+            return localStorage.getItem("financeNews");
+        }
+        return null;
+    }
 
     // TODO: Fix breadcrumbs labelling
     const generateBreadcrumbs = (pathname: string) => {
       const pathParts = pathname.split('/').filter(Boolean);
       return pathParts.map((part, index) => {
         const href = '/' + pathParts.slice(0, index + 1).join('/');
-        let label = part.charAt(0).toUpperCase() + part.slice(1).replace(/([A-Z])/g, ' $1').trim();
-        const portfolioName = getPortfolioName();
-        if (index === 1) {
-            label = portfolioName ? portfolioName : label;
+        // let label = part.charAt(0).toUpperCase() + part.slice(1).replace(/([A-Z])/g, ' $1').trim();
+        let label = pages[part];
+        if (typeof window !== undefined && index === 1) {
+            if (pathParts[0] === "dashboard") {
+                const portfolioName = getPortfolioName();
+                label = portfolioName ? portfolioName : label;
+            } else if (pathParts[0] === "financenews") {
+                const financeNewsName = getFinanceNewsName();
+                label = financeNewsName ? financeNewsName : label;
+            }
         }
 
         return { href, label };

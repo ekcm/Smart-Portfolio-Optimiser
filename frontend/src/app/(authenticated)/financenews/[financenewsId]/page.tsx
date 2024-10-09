@@ -34,6 +34,7 @@ export default function FinanceNews() {
     const getFinanceNews = async (financeNewsId: string) => {
         try {
             const financeNewsData = await viewIndivNews(financeNewsId);
+            localStorage.setItem("financeNews", financeNewsData.company);
             setNews(financeNewsData);
         } catch (error) {
             console.error("Error fetching finance news: ", error);
