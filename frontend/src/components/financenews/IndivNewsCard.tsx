@@ -9,11 +9,15 @@ export type IndivNewsCardProps = {
 
 export default function IndivNewsCard({data} : IndivNewsCardProps) {
     const formattedDate = new Date(data.date);
+    const setFinanceNewsName = () => {
+        localStorage.setItem("financeNews", data.company);
+    }
     return (
         <Link 
             href={`/financenews/${data.id}`}
             passHref
             className="w-full"
+            onClick={setFinanceNewsName}
         >
             <Card 
                 className="flex flex-col w-full py-4 px-8 gap-4 transform transition-transform duration-300 hover:scale-105 cursor-pointer"
