@@ -130,9 +130,16 @@ interface NewsArticle {
     references: string[];
 }
 
+interface OptimisedPortfolio {
+    portfolioId: string,
+    proposedHoldings: OrderDto[],
+    orders: OrderDto[]
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
-    ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight
+    ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
+    OptimisedPortfolio
 };
