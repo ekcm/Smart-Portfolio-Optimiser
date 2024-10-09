@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button";
 import { useTransitionRouter } from "next-view-transitions";
 import { getOptimisedPortfolio, viewPortfolio } from "@/api/portfolio";
 import { usePathname } from "next/navigation";
-import { OptimisedPortfolio, OptimiserOrders, OrderExecutionProgress, PortfolioData } from "@/lib/types";
+import { CreateOrderItem, OptimisedPortfolio, OptimiserOrders, OrderExecutionProgress, PortfolioData } from "@/lib/types";
 import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
 import Loader from "@/components/loader/Loader";
 import OrderExecutionProgressCard from "@/components/dashboard/Portfolio/OrderExecutionProgressCard";
+import { createOrdersTransaction } from "@/api/transaction";
 
 export default function Optimization() {
     const router = useTransitionRouter();
@@ -35,9 +36,26 @@ export default function Optimization() {
         getOptimiser(portfolioId);
     }
 
-    const confirmOptimisePortfolio = () => {
-        // TODO: Add api call to optimiser to post req to optimise portfolio
+    const confirmOptimisePortfolio = async () => {
         console.log("Optimise portfolio request sent");
+        // Submit to backend to update orders db with newOrders
+        const formattedOrders: CreateOrderItem[] = orders.map((order) => ({
+            orderType: order.orderType.toUpperCase(),
+            assetName: order.ticker,
+            quantity: Number(order.position),
+            price: Number(order.price.toFixed(2)),
+            portfolioId: portfolioId,
+        }));
+
+        try {
+            const result = await createOrdersTransaction(portfolioId, formattedOrders);
+            console.log("Orders created successfully: ", result);
+            // Navigate back to the dashboard after successful submission
+            window.alert("!!! Lousy Implementation (for demo purposes) !!! Orders have been added to the orderbook, you will now be redirected back to the dashboard...")
+            router.push(`/dashboard/${portfolioId}`);
+        } catch (error) {
+            console.error("Failed to create orders: ", error);
+        }
     }
 
     useEffect(() => {
@@ -82,7 +100,6 @@ export default function Optimization() {
         const newOrders: OrderExecutionProgress[] = ordersData.map(order => {
             // Find the corresponding holding in indivPortfolioData
             const currentHolding = indivPortfolioData?.portfolioHoldings.find(holding => holding.ticker === order.assetName);
-            console.log(order);
             return {
                 name: currentHolding ? currentHolding.name : order.assetName, // Fallback to assetName if not found
                 ticker: order.assetName,
