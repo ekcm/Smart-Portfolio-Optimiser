@@ -262,9 +262,11 @@ export default function AddTransactionForm({
             <div className={`text-sm mb-2 h-2 ${showWarning ? 'text-red-600 visible' : 'invisible'}`}>
                 Insufficient balance to complete this transaction.
             </div>
-            <div className="text-sm mb-2 h-2 text-red-600">
-                Max  quantity: {maxQuantity}
-            </div>
+            {formData.orderType === "Sell" && (
+                <div className="text-sm mb-2 h-2 text-red-600">
+                    Max  quantity: {maxQuantity}
+                </div>
+            )}
             <div className="flex gap-2 mt-4">
                 {/* <Button className="bg-red-700" onClick={handleSubmit}>Add Transaction to Checkout</Button> */}
                 <Button
