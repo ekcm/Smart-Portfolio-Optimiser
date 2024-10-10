@@ -32,12 +32,11 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, optimized, loadingSt
                 {loadingState ? 
                     <Button className="w-1/2 font-medium" disabled>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Please wait
+                        Optimising
                     </Button>
                 : 
                     <Button className="bg-green-600 w-1/2 font-medium" onClick={onOptimise}>Optimise Portfolio</Button>
                     }
-                {/* <Button className="bg-green-600 w-1/2 font-medium" onClick={onOptimise}>Optimise Portfolio</Button> */}
             </Card>
         );
     };
@@ -69,7 +68,7 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, optimized, loadingSt
             {loadingState ? 
                 <Button className="w-1/2 font-medium" disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Please wait
+                    Optimising
                 </Button>
             : 
                 <Button className="bg-red-500 w-1/2 font-medium" onClick={onOptimise}>Optimise Portfolio</Button>

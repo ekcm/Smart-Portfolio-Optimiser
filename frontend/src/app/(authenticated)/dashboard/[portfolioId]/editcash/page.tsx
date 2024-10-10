@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { updatePortfolioCash, viewBasicPortfolio } from "@/api/portfolio";
 import EditCashForm from "@/components/dashboard/Portfolio/addcashform/AddCashForm";
 import Error from "@/components/error/Error";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useTransitionRouter } from "next-view-transitions";
 
 export default function AddCash() {
@@ -15,7 +15,6 @@ export default function AddCash() {
     const portfolioId = pathname.split("/")[2];
     const { toast } = useToast();
     const router = useTransitionRouter();
-    // TODO: Pull data from backend for current cash balance
     const [isLoading, setIsLoading] = useState(true);
     const [cashBalance, setCashBalance] = useState(0);
     const [error, setError] = useState<string | null>(null);
