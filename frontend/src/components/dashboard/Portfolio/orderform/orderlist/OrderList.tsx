@@ -7,6 +7,9 @@ import TriggeredAlert from "../../TriggeredAlert";
 import { createMultipleOrders } from "@/api/order";
 import { useTransitionRouter } from "next-view-transitions";
 import { createOrdersTransaction } from "@/api/transaction";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface OrderListProps {
     data: PortfolioData;
@@ -16,6 +19,9 @@ interface OrderListProps {
 
 export default function OrderList({ data, newOrders, triggeredAlerts } : OrderListProps) {
     const router = useTransitionRouter();
+    const [loading, setLoading] = useState<boolean>(false);
+    const { toast } = useToast();
+
     // Helper function to calculate the final portfolio holdings
     const calculateFinalOrders = (oldOrders: PortfolioHoldings[], newOrders: AssetsItem[]): PortfolioHoldingsDifference[] => {
         // Create a map to hold the final orders
@@ -69,6 +75,7 @@ export default function OrderList({ data, newOrders, triggeredAlerts } : OrderLi
 
     // TODO: Add loader here
     const handleSubmit = async () => {
+        setLoading(true);
         // Submit to backend to update orders db with newOrders
         const formattedOrders: CreateOrderItem[] = newOrders.map((order) => ({
             orderType: order.orderType.toUpperCase(),
@@ -83,10 +90,19 @@ export default function OrderList({ data, newOrders, triggeredAlerts } : OrderLi
             const result = await createOrdersTransaction(data.portfolioId, formattedOrders);
             console.log("Orders created successfully: ", result);
             // Navigate back to the dashboard after successful submission
-            window.alert("!!! Lousy Implementation (for demo purposes) !!! Orders have been added to the orderbook, you will now be redirected back to the dashboard...")
+            toast({
+                title: `Orders Sent!`,
+                description: `Orders have been added to the orderbook successfully, you will now be redirected back to the dashboard`,
+            });
+            setLoading(false);
             router.push(`/dashboard/${data.portfolioId}`);
         } catch (error) {
             console.error("Failed to create orders: ", error);
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: `There was a problem with your request: ${error}`,
+            });
         }
     }
 
@@ -101,7 +117,14 @@ export default function OrderList({ data, newOrders, triggeredAlerts } : OrderLi
             <h1 className="text-3xl font-semibold">Changes</h1>
             <ChangeList oldOrders={data.portfolioHoldings} newOrders={finalOrders} />
             <div className="flex gap-2 mt-4">
-                <Button className="bg-red-500" onClick={handleSubmit}>Confirm Orders</Button>
+                {loading ? 
+                    <Button className="bg-red-500" disabled>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Confirming Orders
+                    </Button>
+                : 
+                    <Button className="bg-red-500" onClick={handleSubmit}>Confirm Orders</Button>
+                }
                 <Link 
                     href={{
                         pathname: `/dashboard/${data.portfolioId}/neworder`,

@@ -13,6 +13,8 @@ import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
 import Loader from "@/components/loader/Loader";
 import OrderExecutionProgressCard from "@/components/dashboard/Portfolio/OrderExecutionProgressCard";
 import { createOrdersTransaction } from "@/api/transaction";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 export default function Optimization() {
     const router = useTransitionRouter();
@@ -20,6 +22,8 @@ export default function Optimization() {
     // * Get portfolio id to call api
     const pathname = usePathname();
     const portfolioId = pathname.split("/")[2];
+    
+    const { toast } = useToast();
 
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
     const [indivPortfolioData, setIndividualPortfolio] = useState<PortfolioData | null>(null);
@@ -30,6 +34,7 @@ export default function Optimization() {
     // loaders
     const [loading, setLoading] = useState<boolean>(true);
     const [optimiserLoading, setOptimiserLoading] = useState<boolean>(false);
+    const [sendOrdersLoading, setSendOrdersLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     const optimisePortfolio = () => {
@@ -38,6 +43,7 @@ export default function Optimization() {
 
     const confirmOptimisePortfolio = async () => {
         console.log("Optimise portfolio request sent");
+        setSendOrdersLoading(true);
         // Submit to backend to update orders db with newOrders
         const formattedOrders: CreateOrderItem[] = orders.map((order) => ({
             orderType: order.orderType.toUpperCase(),
@@ -51,10 +57,19 @@ export default function Optimization() {
             const result = await createOrdersTransaction(portfolioId, formattedOrders);
             console.log("Orders created successfully: ", result);
             // Navigate back to the dashboard after successful submission
-            window.alert("!!! Lousy Implementation (for demo purposes) !!! Orders have been added to the orderbook, you will now be redirected back to the dashboard...")
+            toast({
+                title: `Orders Sent!`,
+                description: `Orders have been added to the orderbook successfully, you will now be redirected back to the dashboard`,
+            });
+            setSendOrdersLoading(false);
             router.push(`/dashboard/${portfolioId}`);
         } catch (error) {
             console.error("Failed to create orders: ", error);
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: `There was a problem with your request: ${error}`,
+            });
         }
     }
 
@@ -127,14 +142,21 @@ export default function Optimization() {
             <OptimiserChangeList data={indivPortfolioData} optimisedData={optimizedData} optimisedFlag={optimizedState} />
             <OrderExecutionProgressCard data={orders} />
             <div className="flex gap-2 mb-4">
-                <Button
-                    type="submit"
-                    className={`bg-red-500 ${!optimizedState ? "opacity-50 cursor-not-allowed" : ""}`}
-                    onClick={confirmOptimisePortfolio}
-                    disabled={!optimizedState}
-                    >
-                    Confirm Optimisation
-                </Button>
+                {sendOrdersLoading ?     
+                    <Button className="bg-red-500" disabled>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Confirming Orders
+                    </Button>
+                :
+                    <Button
+                        type="submit"
+                        className={`bg-red-500 ${!optimizedState ? "opacity-50 cursor-not-allowed" : ""}`}
+                        onClick={confirmOptimisePortfolio}
+                        disabled={!optimizedState}
+                        >
+                        Confirm Optimisation
+                    </Button>
+                }
                 <Button type="button" className="bg-gray-400 text-white" onClick={(e) => {
                     e.preventDefault()
                     router.back()
