@@ -13,10 +13,11 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useTransitionRouter } from "next-view-transitions";
-import { Asset } from "@/lib/types";
+import { Asset, OptimiserOrders } from "@/lib/types";
 import { fetchAllAssets } from "@/api/asset";
 import Loader from "@/components/loader/Loader";
-import { createPortfolio } from "@/api/portfolio";
+import { createSuggestedPortfolio } from "@/api/portfolio";
+import { Loader2 } from "lucide-react";
 
 type ErrorState = {
   clientName?: string;
@@ -25,19 +26,29 @@ type ErrorState = {
   cashAmount?: string;
 };
 
-export default function CreatePortfolioForm() {
+interface CreatePortfolioFormProps {
+  createPortfolioState: boolean;
+  setCreatePortfolioState: (state: boolean) => void;
+  setOrders: (orders: OptimiserOrders[]) => void;
+  setPortfolioId: (portfolioId: string) => void;
+}
+
+export default function CreatePortfolioForm({ createPortfolioState, setCreatePortfolioState, setOrders, setPortfolioId} : CreatePortfolioFormProps) {
   // ! Call managerId from session storage after auth completed
   const managerId = "66d9815bacb3da812c4e4c5b";
 
   const router = useTransitionRouter();
-  const [client, setClient] = useState("");
-  const [portfolioName, setPortfolioName] = useState("");
+  const [client, setClient] = useState<string>("");
+  const [portfolioName, setPortfolioName] = useState<string>("");
   const [riskAppetite, setRiskAppetite] = useState("");
-  const [cashAmount, setCashAmount] = useState(0);
+  const [cashAmount, setCashAmount] = useState<number>(0);
   const [exclusions, setExclusions] = useState<string[]>([]);
   const [errors, setErrors] = useState<ErrorState>({});
-  const [assetsLoading, setAssetsLoading] = useState(true);
   const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
+
+  // loaders
+  const [createLoading, setCreateLoading] = useState<boolean>(false);
+  const [assetsLoading, setAssetsLoading] = useState<boolean>(true);
   const [assetError, setAssetError] = useState<string | null>(null);
 
   // risk appetite levels
@@ -92,24 +103,27 @@ export default function CreatePortfolioForm() {
       return;
     }
     setErrors({});
-
+    setCreateLoading(true);
     const formData = {
-      client,
+      clientName: client,
       portfolioName,
       riskAppetite,
-      cashAmount,
+      cash: cashAmount,
+      managerId,
       exclusions,
-      manager: managerId,
-      assetHoldings: [],
     };
 
     try {
       // Call createPortfolio function and pass formData as the parameter
-      const result = await createPortfolio(formData);
+      const result = await createSuggestedPortfolio(formData);
       console.log("Portfolio created successfully:", result);
-      router.back();
+      setOrders(result.orders);
+      setPortfolioId(result.portfolioId);
     } catch (error) {
       console.error("Failed to create portfolio:", error);
+    } finally {
+      setCreateLoading(false);
+      setCreatePortfolioState(true);
     }
 
     console.log("Form data submitted:", formData);
@@ -117,7 +131,7 @@ export default function CreatePortfolioForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-8">
-      <div className="flex flex-col w-1/2 gap-4">
+      <div className="flex flex-col w-full gap-4">
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
           Client Name:
           <Input
@@ -232,9 +246,16 @@ export default function CreatePortfolioForm() {
       </div>
 
       <div className="flex gap-2 mt-4">
-        <Button type="submit" className="bg-red-500">
-          Create Portfolio
-        </Button>
+        {createLoading ? 
+          <Button className="bg-red-500" disabled>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Creating Portfolio...
+          </Button>
+        : 
+          <Button type="submit" className="bg-red-500">
+            Create Portfolio
+          </Button>
+        }
         <Button
           type="button"
           className="bg-gray-400 text-white"
