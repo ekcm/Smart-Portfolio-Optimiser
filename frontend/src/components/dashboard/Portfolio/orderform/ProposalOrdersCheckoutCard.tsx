@@ -3,14 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { ClassicOrder } from "@/lib/types";
-import { X } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
+import { useTransitionRouter } from "next-view-transitions";
 
 interface ProposalOrdersCheckoutCardProps {
     data: ClassicOrder[];
+    ordersLoading: boolean;
+    onConfirmOrder: () => void;
     onDelete: (ticker: string) => void;
 }
 
-export default function ProposalOrdersCheckoutCard({ data, onDelete }: ProposalOrdersCheckoutCardProps) {
+export default function ProposalOrdersCheckoutCard({ data, ordersLoading, onConfirmOrder, onDelete }: ProposalOrdersCheckoutCardProps) {
+    const router = useTransitionRouter();
+
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
             <h2 className="text-xl font-medium">Orders Checkout</h2>
@@ -64,6 +69,28 @@ export default function ProposalOrdersCheckoutCard({ data, onDelete }: ProposalO
                     </TableBody>
                 </Table>
             }
+            <div className="flex gap-2 mb-4">
+                {ordersLoading ?     
+                    <Button className="bg-red-500" disabled>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Confirming Orders
+                    </Button>
+                :
+                    <Button
+                        type="submit"
+                        className="bg-red-500"
+                        onClick={onConfirmOrder}
+                        >
+                        Confirm Orders
+                    </Button>
+                }
+                <Button type="button" className="bg-gray-400 text-white" onClick={(e) => {
+                    e.preventDefault()
+                    router.back()
+                }}>
+                    Cancel
+                </Button>
+            </div>
         </Card>
     );
 }
