@@ -56,14 +56,13 @@ export default function DashBoardNavBar() {
         // Handle state update or breadcrumb update based on these
     }, [pathname]);
 
-    // TODO: Fix breadcrumbs labelling
     const generateBreadcrumbs = (pathname: string) => {
       const pathParts = pathname.split('/').filter(Boolean);
       return pathParts.map((part, index) => {
         const href = '/' + pathParts.slice(0, index + 1).join('/');
         let label = pages[part];
         if (typeof window !== undefined && index === 1) {
-            if (pathParts[0] === "dashboard") {
+            if (pathParts[0] === "dashboard" && !Object.hasOwn(pages, pathParts[1])) {
                 const portfolioName = getPortfolioName();
                 label = portfolioName ? portfolioName : label;
             } else if (pathParts[0] === "financenews") {
