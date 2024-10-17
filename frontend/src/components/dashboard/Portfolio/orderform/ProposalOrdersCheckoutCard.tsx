@@ -2,12 +2,12 @@ import OrderTypeBadge from "@/components/global/OrderTypeBadge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { AssetsItem, OptimiserOrders } from "@/lib/types";
+import { ClassicOrder } from "@/lib/types";
 import { X } from 'lucide-react';
 
 interface ProposalOrdersCheckoutCardProps {
-    data: OptimiserOrders[];
-    onDelete: (ticker: string, orderType: string, totalCost: number) => void;
+    data: ClassicOrder[];
+    onDelete: (ticker: string) => void;
 }
 
 export default function ProposalOrdersCheckoutCard({ data, onDelete }: ProposalOrdersCheckoutCardProps) {
@@ -20,8 +20,9 @@ export default function ProposalOrdersCheckoutCard({ data, onDelete }: ProposalO
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Ticker</TableHead>
+                            <TableHead>Symbol | Ticker</TableHead>
                             <TableHead>Position | Price</TableHead>
+                            <TableHead>Current Price</TableHead>
                             <TableHead>Total Cost</TableHead>
                             <TableHead>Direction</TableHead>
                             <TableHead>Remove</TableHead>
@@ -33,12 +34,18 @@ export default function ProposalOrdersCheckoutCard({ data, onDelete }: ProposalO
                                 <TableCell className="font-medium">
                                     <div className="flex flex-col">
                                         <span>{item.assetName}</span>
+                                        <span className="text-xs text-gray-500">{item.company}</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex">
                                         <span className="font-medium">{item.quantity} Share{item.quantity > 1 ? 's' : ''}</span>
                                         <span>&nbsp;@ {Number(item.price).toFixed(2)}</span>
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex flex-col">
+                                        <span>{Number(item.last).toFixed(2)}</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>
@@ -50,7 +57,7 @@ export default function ProposalOrdersCheckoutCard({ data, onDelete }: ProposalO
                                     <OrderTypeBadge orderType={item.orderType} />
                                 </TableCell>
                                 <TableCell>
-                                    <Button variant="ghost" className="hover:bg-red-500 hover:text-white" onClick={() => onDelete(item.assetName, item.orderType, item.price * item.quantity)}><X /></Button>
+                                    <Button variant="ghost" className="hover:bg-red-500 hover:text-white" onClick={() => onDelete(item.assetName)}><X /></Button>
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -4,7 +4,7 @@ import { OrderDto } from 'src/dto/order.dto';
 import { Order, OrderType } from 'src/model/order.model';
 import { PortfolioService } from './portfolio.service';
 import { OrderStatus } from '../model/order.model';
-import { OptimisedPortfolio, ProposedPortfolio } from 'src/types';
+import { ClassicOrder, OptimisedPortfolio, ProposedPortfolio } from 'src/types';
 import { RiskAppetite } from 'src/model/portfolio.model';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
@@ -38,14 +38,16 @@ export class PortfolioCreationService{
                 },
             ))
             const weights = response.data
-            var proposedOrders: OrderDto[] = []
+            var proposedOrders: ClassicOrder[] = []
             for (let ticker in weights) {
                 const assetPrice = await this.assetPriceService.getByTickerLatest(ticker);
                 proposedOrders.push({
                     orderType: OrderType.BUY,
                     orderDate: new Date(),
                     assetName: ticker,
-                    quantity: (createdPortfolio.cashAmount * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / assetPrice.todayClose,
+                    company: assetPrice.company,
+                    last: Number(assetPrice.todayClose.toFixed(2)),
+                    quantity: Number(((createdPortfolio.cashAmount * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / assetPrice.todayClose).toFixed(0)),
                     price: assetPrice.todayClose,
                     portfolioId: createdPortfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING

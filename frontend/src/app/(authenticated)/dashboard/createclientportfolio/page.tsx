@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import CreatePortfolioForm from "@/components/dashboard/create-client-portfolio/CreatePortfolioForm";
-import { OptimiserOrders } from "@/lib/types";
+import { ClassicOrder } from "@/lib/types";
 import ProposalOrdersCheckoutCard from "@/components/dashboard/Portfolio/orderform/ProposalOrdersCheckoutCard";
 
 export default function CreateClientPortfolio() {
@@ -12,16 +12,15 @@ export default function CreateClientPortfolio() {
     // Page state
     const [createPortfolioState, setCreatePortfolioState] = useState<boolean>(false);
     const [portfolioId, setPortfolioId] = useState<string>("");
-    const [orders, setOrders] = useState<OptimiserOrders[]>([]);
+    const [orders, setOrders] = useState<ClassicOrder[]>([]);
 
     useEffect(() => {
         setDashBoardNavBarState("Empty");
     }); 
 
-
-
-    const handleDelete = () => {
-
+    const handleDelete = (ticker: string) => {
+        setOrders((prevOrders) => prevOrders.filter(order => order.assetName !== ticker));
+        console.log(orders);
     }
 
     return (

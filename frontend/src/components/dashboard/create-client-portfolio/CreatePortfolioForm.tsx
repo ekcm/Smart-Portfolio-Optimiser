@@ -13,7 +13,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useTransitionRouter } from "next-view-transitions";
-import { Asset, OptimiserOrders } from "@/lib/types";
+import { Asset, ClassicOrder } from "@/lib/types";
 import { fetchAllAssets } from "@/api/asset";
 import Loader from "@/components/loader/Loader";
 import { createSuggestedPortfolio } from "@/api/portfolio";
@@ -29,7 +29,7 @@ type ErrorState = {
 interface CreatePortfolioFormProps {
   createPortfolioState: boolean;
   setCreatePortfolioState: (state: boolean) => void;
-  setOrders: (orders: OptimiserOrders[]) => void;
+  setOrders: (orders: ClassicOrder[]) => void;
   setPortfolioId: (portfolioId: string) => void;
 }
 
@@ -139,6 +139,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
             value={client}
             onChange={(e) => setClient(e.target.value)}
             className={errors.clientName ? "border-red-500" : ""}
+            disabled={createPortfolioState}
           />
           {errors.clientName && (
             <span className="text-red-500">{errors.clientName}</span>
@@ -152,6 +153,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
             value={portfolioName}
             onChange={(e) => setPortfolioName(e.target.value)}
             className={errors.portfolioName ? "border-red-500" : ""}
+            disabled={createPortfolioState}
           />
           {errors.portfolioName && (
             <span className="text-red-500">{errors.portfolioName}</span>
@@ -160,7 +162,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
 
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
           Client Risk Appetite:
-          <Select value={riskAppetite} onValueChange={setRiskAppetite}>
+          <Select value={riskAppetite} onValueChange={setRiskAppetite} disabled={createPortfolioState}>
             <SelectTrigger>
               <SelectValue placeholder="Select risk appetite" />
             </SelectTrigger>
@@ -183,6 +185,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
           Portfolio Cash Amount:
           <Input
             type="number"
+            disabled={createPortfolioState}
             value={cashAmount}
             onChange={(e) => setCashAmount(parseFloat(e.target.value))}
           />
@@ -191,7 +194,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
         {/* Exclusions using Select */}
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
           Exclusions List:
-          <Select onValueChange={handleAddExclusion}>
+          <Select onValueChange={handleAddExclusion} disabled={createPortfolioState}>
             <SelectTrigger>
               <SelectValue placeholder="Select assets to exclude" />
             </SelectTrigger>
@@ -252,13 +255,18 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
               Creating Portfolio...
           </Button>
         : 
-          <Button type="submit" className="bg-red-500">
+          <Button 
+            type="submit" 
+            className="bg-red-500"
+            disabled={createPortfolioState}
+          >
             Create Portfolio
           </Button>
         }
         <Button
           type="button"
           className="bg-gray-400 text-white"
+          disabled={createPortfolioState}
           onClick={(e) => {
             e.preventDefault();
             router.back();
