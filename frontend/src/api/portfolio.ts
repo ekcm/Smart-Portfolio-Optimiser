@@ -27,11 +27,25 @@ export const viewBasicPortfolio = async (portfolioId : string) => {
     }
 }
 
+// Create portfolio from base api
 export const createPortfolio = async (form: CreatePortfolioForm) => {
     try {
         const api = `${basePortfolioUrl}`;
         const response = await axios.post(api, form);
         console.log('Portfolio created successfully:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating portfolio: ' + error);
+        throw error;
+    }
+}
+
+// Create portfolio and returns a list of suggested stock
+export const createSuggestedPortfolio = async(formData: any) => {
+    try {
+        const api = `${generatePortfolioUrl}/proposal`;
+        const queryParams = new URLSearchParams(formData).toString();
+        const response = await axios.post(`${api}?${queryParams}`);
         return response.data;
     } catch (error) {
         console.error('Error creating portfolio: ' + error);

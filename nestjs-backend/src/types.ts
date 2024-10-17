@@ -130,6 +130,11 @@ interface NewsArticle {
     references: string[];
 }
 
+interface ClassicOrder extends OrderDto {
+    company: string;
+    last: number;
+}
+
 interface OptimisedPortfolio {
     portfolioId: string,
     proposedHoldings: OrderDto[],
@@ -138,7 +143,7 @@ interface OptimisedPortfolio {
 
 export type {
     DashboardCard, FinanceNewsItem,
-    OrderExecutionProgress, PortfolioAnalysis,
+    ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
     OptimisedPortfolio

@@ -218,6 +218,12 @@ interface OptimiserOrders {
   orderStatus: string;
 }
 
+// Add attribute for ticker name
+interface ClassicOrder extends OptimiserOrders {
+  company: string;
+  last: number;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -240,6 +246,7 @@ export type {
     Alert,
     OptimisedPortfolio,
     OptimiserOrders,
+    ClassicOrder,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,

@@ -140,6 +140,7 @@ export default function Optimization() {
             <h1 className="text-3xl font-bold">Portfolio Optimiser</h1>
             <BigChartCard data={indivPortfolioData} alerts={indivPortfolioData.triggeredAlerts} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio} loadingState={optimiserLoading} />
             <OptimiserChangeList data={indivPortfolioData} optimisedData={optimizedData} optimisedFlag={optimizedState} />
+            {/* TODO: Change to ordersCheckoutCard */}
             <OrderExecutionProgressCard data={orders} />
             <div className="flex gap-2 mb-4">
                 {sendOrdersLoading ?     
