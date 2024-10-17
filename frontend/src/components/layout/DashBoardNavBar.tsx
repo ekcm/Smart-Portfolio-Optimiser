@@ -5,7 +5,6 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator } from 
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { delay } from "@/utils/utils";
 
 interface Breadcrumb {
   href: string;
@@ -16,7 +15,7 @@ export default function DashBoardNavBar() {
     // main state of dashboard to display different set of buttons
     const DashBoardNavBarState = useDashBoardNavBarStore((state) => state.mainState);
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
-    const pathname = typeof window !== "undefined" ? usePathname() : "";
+    const pathname = usePathname();
     const [portfolioName, setPortfolioName] = useState<string | null>(null);
     const [financeNewsName, setFinanceNewsName] = useState<string | null>(null);
 
