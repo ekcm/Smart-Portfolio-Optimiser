@@ -101,6 +101,7 @@ export default function Optimization() {
             const optimisedPortfolioData = await getOptimisedPortfolio(portfolioId);
             console.log(optimisedPortfolioData);
             setOptimizedData(optimisedPortfolioData);
+            // TODO: Set orders here with classicorders
             createOrderExecutionProgress(optimisedPortfolioData.orders)
         } catch (error) {
             console.error('Error fetching optimised portfolio data: ', error);
@@ -141,6 +142,7 @@ export default function Optimization() {
             <BigChartCard data={indivPortfolioData} alerts={indivPortfolioData.triggeredAlerts} error={error} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio} loadingState={optimiserLoading} />
             <OptimiserChangeList data={indivPortfolioData} optimisedData={optimizedData} optimisedFlag={optimizedState} />
             {/* TODO: Change to ordersCheckoutCard */}
+            
             <OrderExecutionProgressCard data={orders} />
             <div className="flex gap-2 mb-4">
                 {sendOrdersLoading ?     
