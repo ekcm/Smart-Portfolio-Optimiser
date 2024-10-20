@@ -112,8 +112,60 @@ export default function Optimization() {
     }
 
     const handleDelete = (ticker: string) => {
+        // Find the order to delete based on the ticker
+        const orderToDelete = orders.find(order => order.assetName === ticker);
+        
+        // If no matching order is found, do nothing
+        if (!orderToDelete) return;
+
+        // Update the orders list by filtering out the deleted order
         setOrders((prevOrders) => prevOrders.filter(order => order.assetName !== ticker));
-    }
+
+        // Update the proposed holdings in the optimizedData state
+        setOptimizedData((prevOptimizedData) => {
+            if (!prevOptimizedData) return prevOptimizedData;
+
+            // Check if the stock exists in proposedHoldings
+            const stockExistsInHoldings = prevOptimizedData.proposedHoldings.some(holding => holding.assetName === ticker);
+
+            const updatedProposedHoldings = prevOptimizedData.proposedHoldings.map((holding) => {
+                if (holding.assetName !== ticker) {
+                    return holding;
+                }
+
+                // Adjust the quantity based on orderType (BUY subtracts, SELL adds)
+                const adjustedQuantity = holding.quantity - (orderToDelete.orderType === "BUY" ? orderToDelete.quantity : -orderToDelete.quantity);
+
+                return {
+                    ...holding,
+                    quantity: adjustedQuantity,
+                };
+            });
+
+            // If the stock is not in proposedHoldings, add it with the correct quantity
+            if (!stockExistsInHoldings) {
+                const newHolding = {
+                    orderType: orderToDelete.orderType,
+                    orderDate: new Date(),
+                    assetName: ticker,
+                    quantity: orderToDelete.orderType === "BUY" ? -orderToDelete.quantity : orderToDelete.quantity,
+                    price: orderToDelete.price,  // Assuming you want to set the price from the order
+                    portfolioId: portfolioId,
+                    orderStatus: orderToDelete.orderStatus,
+                    company: orderToDelete.company,
+                    last: orderToDelete.last,
+                };
+
+                updatedProposedHoldings.push(newHolding);
+            }
+
+            // Return the updated optimizedData object with the modified proposedHoldings
+            return {
+                ...prevOptimizedData,
+                proposedHoldings: updatedProposedHoldings,
+            };
+        });
+    };
 
     if (loading) {
         return <Loader />
