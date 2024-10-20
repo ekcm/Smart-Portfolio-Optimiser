@@ -1,13 +1,10 @@
-import { OptimisedPortfolio, PortfolioData, PortfolioHoldingDifference } from "@/lib/types";
+import { ClassicOrder, OptimisedPortfolio, PortfolioData, PortfolioHoldingDifference } from "@/lib/types";
 import OldOrdersCard from "../orderform/orderlist/OldOrdersCard";
-import SecuritiesChart from "../charts/SecuritiesChart";
-import { Card } from "@/components/ui/card";
 import OptimisedOrdersCard from "./OptimisedOrdersCard";
-import OptimisedSecuritiesChart from "../charts/OptimisedSecuritiesChart";
 
 interface OptimiserChangeListProps {
     data: PortfolioData;
-    optimisedData?: OptimisedPortfolio;
+    optimisedData: ClassicOrder[] | undefined;
     optimisedFlag: boolean;
 }
 
@@ -17,7 +14,7 @@ export default function OptimiserChangeList({ data, optimisedData, optimisedFlag
     const holdingDifferences: PortfolioHoldingDifference[] = [];
 
     // Iterate over the proposed holdings to calculate differences
-    optimisedData?.proposedHoldings.forEach(proposedHolding => {
+    optimisedData?.forEach(proposedHolding => {
         // Find the corresponding current holding by ticker
         const currentHolding = data.portfolioHoldings.find(holding => holding.ticker === proposedHolding.assetName);
         
@@ -29,8 +26,8 @@ export default function OptimiserChangeList({ data, optimisedData, optimisedFlag
         if (proposedHolding.quantity > 1) {
             holdingDifferences.push({
                 ticker: proposedHolding.assetName,
-                name: currentHolding ? currentHolding.name : "",
-                last: currentHolding ? currentHolding.last : 0,
+                name: proposedHolding.company,
+                last: proposedHolding.last,
                 position: Number(proposedHolding.quantity.toFixed(0)),
                 difference: Number(difference.toFixed(0)),
                 market: currentHolding ? currentHolding.market : 0,

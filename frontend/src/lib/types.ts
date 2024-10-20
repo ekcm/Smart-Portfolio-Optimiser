@@ -205,8 +205,8 @@ interface Alert {
 
 interface OptimisedPortfolio {
   portfolioId: string,
-  proposedHoldings: OptimiserOrders[],
-  orders: OptimiserOrders[]
+  proposedHoldings: ClassicOrder[],
+  orders: ClassicOrder[]
 }
 interface OptimiserOrders {
   orderType: string;
