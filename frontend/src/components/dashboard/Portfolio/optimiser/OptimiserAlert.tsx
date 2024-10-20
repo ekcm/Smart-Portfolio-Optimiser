@@ -36,9 +36,9 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, error, optimized, lo
     }
 
     return (
-        <Card className="flex flex-col w-5/6 h-5/6 items-center justify-center bg-red-100 gap-4">
-            <div className="grid grid-cols-2 gap-4">
-                <div>
+        <Card className="flex flex-col w-5/6 h-5/6 p-4 items-center justify-center bg-red-100 gap-4">
+            <div className="grid grid-cols-2 gap-4 overflow-y-auto">
+                <div className="max-h-5/6">
                     <h2 className="text-xl font-medium">Breached Alerts:</h2>
                     {breachedAlerts.length === 0 ?
                         <h3 className="text-md text-gray-600">No alerts breached</h3>
@@ -66,7 +66,7 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, error, optimized, lo
                         </>
                     }
                 </div>
-                <div>
+                <div className="max-h-5/6">
                     <h2 className="text-xl font-medium">Useful Alerts:</h2>
                     {usefulAlerts.length === 0 ? 
                         <h3 className="text-md text-gray-600">No useful alerts as of now!</h3>
