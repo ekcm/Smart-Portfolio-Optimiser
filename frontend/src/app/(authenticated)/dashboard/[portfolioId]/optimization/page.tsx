@@ -138,7 +138,7 @@ export default function Optimization() {
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
             <h1 className="text-3xl font-bold">Portfolio Optimiser</h1>
-            <BigChartCard data={indivPortfolioData} alerts={indivPortfolioData.triggeredAlerts} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio} loadingState={optimiserLoading} />
+            <BigChartCard data={indivPortfolioData} alerts={indivPortfolioData.triggeredAlerts} error={error} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio} loadingState={optimiserLoading} />
             <OptimiserChangeList data={indivPortfolioData} optimisedData={optimizedData} optimisedFlag={optimizedState} />
             {/* TODO: Change to ordersCheckoutCard */}
             <OrderExecutionProgressCard data={orders} />
