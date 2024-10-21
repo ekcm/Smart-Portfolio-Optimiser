@@ -40,7 +40,7 @@ export default function OptimiserOrdersCheckoutCard({ data, onDelete }: Optimise
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex">
-                                        <span className="font-medium">{item.quantity} Share{item.quantity > 1 ? 's' : ''}</span>
+                                        <span className="font-medium">{Number(item.quantity.toFixed(0))} Share{item.quantity > 1 ? 's' : ''}</span>
                                         <span>&nbsp;@ {Number(item.price).toFixed(2)}</span>
                                     </div>
                                 </TableCell>
