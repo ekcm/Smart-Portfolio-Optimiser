@@ -2,9 +2,13 @@
 import { Link } from "next-view-transitions";
 import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator } from "../ui/breadcrumb";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { delay } from "@/utils/utils";
+import { Loader2 } from "lucide-react";
 
 interface Breadcrumb {
   href: string;
@@ -18,6 +22,10 @@ export default function DashBoardNavBar() {
     const pathname = usePathname();
     const [portfolioName, setPortfolioName] = useState<string | null>(null);
     const [financeNewsName, setFinanceNewsName] = useState<string | null>(null);
+    const { toast } = useToast();
+
+    // loader
+    const [reportLoading, setReportLoading] = useState<boolean>(false);
 
 
     const pages: Record<string, string> = {
@@ -74,6 +82,49 @@ export default function DashBoardNavBar() {
       });
     };
 
+    const handleGenerateMonthlyReport = async () => {
+        // Generate monthly report
+        console.log("Generate monthly report");
+        setReportLoading(true);
+        try {
+            await delay(1500);
+            console.log("delayed Generate monthly report");
+            toast({
+                title: `Monthly report generated successfully.`,
+                description: `Monthly report for portfolio ${portfolioName} will be downloaded to your device!`,
+            });
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: `There was a problem with your request: ${error}`,
+            });
+        } finally {
+            setReportLoading(false);
+        }
+    }
+
+    const handleGenerateFullReport = async () => {
+        // Generate full report
+        console.log("Generate full report");
+        setReportLoading(true);
+        try {
+            await delay(1500);
+            toast({
+                title: `Full report generated successfully.`,
+                description: `Full report for portfolio ${portfolioName} will be downloaded to your device!`,
+            });
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: `There was a problem with your request: ${error}`,
+            });
+        } finally {
+            setReportLoading(false);
+        }
+    }
+
     useEffect(() => {
         if (pathname) {
         const newBreadcrumbs = generateBreadcrumbs(pathname);
@@ -125,12 +176,36 @@ export default function DashBoardNavBar() {
                         <Link href={`/dashboard/${id}/neworder`}>
                             <Button className="mr-4 bg-red-500">Create New Order</Button>
                         </Link>
-                        <Link href={`/dashboard/${id}/editportfolio`}>
+                        {/* <Link href={`/dashboard/${id}/editportfolio`}>
                             <Button className="mr-4 bg-red-700">Edit Portfolio</Button>
-                        </Link>
+                        </Link> */}
                         <Link href={`/dashboard/${id}/editcash`}>
                             <Button className="mr-4 bg-green-700">Edit Cash</Button>
                         </Link>
+                        {reportLoading ? 
+                            <Button disabled className="w-52">
+                                <span className="flex items-center space-x-2">
+                                    <span>Generating Report</span>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                </span>
+                            </Button>
+                        :
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="bg-gray-700 text-white w-52">
+                                        Generate Portfolio Reports
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem onClick={handleGenerateMonthlyReport} className="w-52">
+                                        Monthly Report
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={handleGenerateFullReport} className="w-52">
+                                        Full Report
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        }
                     </>
                 );
             case "Empty":
