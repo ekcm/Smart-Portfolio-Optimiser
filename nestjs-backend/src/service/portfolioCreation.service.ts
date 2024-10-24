@@ -65,8 +65,8 @@ export class PortfolioCreationService{
     }
     
     async optimisePortfolio( portfolioId: string ): Promise<OptimisedPortfolio> {
-        var proposedHoldings: OrderDto[] = []
-        var proposedOrders: OrderDto[] = []
+        var proposedHoldings: ClassicOrder[] = []
+        var proposedOrders: ClassicOrder[] = []
         const portfolio = await this.portfolioService.getById(portfolioId)
         const tickers = portfolio.assetHoldings.map(assetHolding => assetHolding.ticker)
         const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
@@ -94,6 +94,8 @@ export class PortfolioCreationService{
                     orderType: OrderType.BUY,
                     orderDate: new Date(),
                     assetName: ticker,
+                    company: assetPrice.company,
+                    last: Number(assetPrice.todayClose.toFixed(2)),
                     quantity: (availableFunds * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: portfolio._id.toString(),
@@ -107,7 +109,7 @@ export class PortfolioCreationService{
         const proposedHoldingsMap = proposedHoldings.reduce((map, proposedHolding) => {
             map.set(proposedHolding.assetName, proposedHolding)
             return map
-        }, new Map<string, OrderDto>)
+        }, new Map<string, ClassicOrder>)
 
         const portfolioHoldingsMap = portfolio.assetHoldings.reduce((map, portfolioHolding) => {
             map.set(portfolioHolding.ticker, portfolioHolding)
@@ -125,6 +127,8 @@ export class PortfolioCreationService{
                 proposedOrders.push({
                     orderType: orderType,
                     orderDate: proposed.orderDate,
+                    company: proposed.company,
+                    last: proposed.last,
                     assetName: ticker,
                     quantity: quantity,
                     price: proposed.price,
@@ -137,6 +141,8 @@ export class PortfolioCreationService{
                     orderDate: new Date(),
                     assetName: ticker,
                     quantity: current.quantity,
+                    company: assetPriceMap.get(ticker).company,
+                    last: assetPriceMap.get(ticker).todayClose,
                     price: assetPriceMap.get(ticker).todayClose,
                     portfolioId: portfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING

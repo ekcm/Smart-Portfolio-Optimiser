@@ -137,8 +137,8 @@ interface ClassicOrder extends OrderDto {
 
 interface OptimisedPortfolio {
     portfolioId: string,
-    proposedHoldings: OrderDto[],
-    orders: OrderDto[]
+    proposedHoldings: ClassicOrder[],
+    orders: ClassicOrder[]
 }
 
 export type {
