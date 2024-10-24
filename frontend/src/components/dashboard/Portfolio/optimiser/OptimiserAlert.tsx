@@ -7,16 +7,26 @@ import { Loader2 } from "lucide-react";
 
 interface TriggeredAlertProps {
     data: Alert[];
+    error: string | null;
     optimized: boolean;
     loadingState: boolean;
     onOptimise: () => void;
 }
 
-const OptimiserAlert = memo(function OptimiserAlert({ data, optimized, loadingState, onOptimise }: TriggeredAlertProps) {
+const OptimiserAlert = memo(function OptimiserAlert({ data, error, optimized, loadingState, onOptimise }: TriggeredAlertProps) {
     // Filter data for items with sentimentRating 1 or 2
     const breachedAlerts = data.filter((item) => item.sentimentRating === 1 || item.sentimentRating === 2);
     const usefulAlerts = data.filter((item) => item.sentimentRating === 4 || item.sentimentRating === 5);
     if (optimized) {
+        if (error) {
+            return (
+                <Card className="flex flex-col flex-grow items-center justify-center w-full py-4 px-4 bg-red-100 gap-2">
+                    <h2 className="text-xl font-medium text-center">There was an issue with the optimization, please try again!</h2>
+                    <h3 className="text-md text-gray-600">{error}</h3>
+                    <Button className="bg-red-500 w-1/2 font-medium" onClick={onOptimise}>Optimise Portfolio</Button>
+                </Card>    
+            )
+        }
         return (
             <Card className="flex flex-col flex-grow items-center justify-center w-full py-4 px-4 bg-red-100 gap-2">
                 <h2 className="text-xl font-medium">Portfolio has been optimised</h2>
@@ -26,9 +36,9 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, optimized, loadingSt
     }
 
     return (
-        <Card className="flex flex-col w-5/6 h-5/6 items-center justify-center bg-red-100 gap-4">
-            <div className="grid grid-cols-2 gap-4">
-                <div>
+        <Card className="flex flex-col w-5/6 h-5/6 p-4 items-center justify-center bg-red-100 gap-4">
+            <div className="grid grid-cols-2 gap-4 overflow-y-auto">
+                <div className="max-h-5/6">
                     <h2 className="text-xl font-medium">Breached Alerts:</h2>
                     {breachedAlerts.length === 0 ?
                         <h3 className="text-md text-gray-600">No alerts breached</h3>
@@ -56,7 +66,7 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, optimized, loadingSt
                         </>
                     }
                 </div>
-                <div>
+                <div className="max-h-5/6">
                     <h2 className="text-xl font-medium">Useful Alerts:</h2>
                     {usefulAlerts.length === 0 ? 
                         <h3 className="text-md text-gray-600">No useful alerts as of now!</h3>
