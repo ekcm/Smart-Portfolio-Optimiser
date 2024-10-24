@@ -14,7 +14,7 @@ export class Portfolio extends Document {
   client: string;
 
   @Prop()
-  portfolioName: string;
+  portfolioName: string;m
 
   @Prop({ enum: RiskAppetite })
   riskAppetite: RiskAppetite;
@@ -30,6 +30,9 @@ export class Portfolio extends Document {
 
   @Prop({ type: [String], default: []})
   exclusions: string[]
+
+  @Prop({ type: [String], default: [] })
+  rules: string[];
 }
 
 // missing and transactionsList

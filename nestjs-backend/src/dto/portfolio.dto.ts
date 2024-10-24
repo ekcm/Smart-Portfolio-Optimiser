@@ -34,6 +34,10 @@ export class PortfolioDto {
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  exclusions: string[]
+  exclusions: string[];
 
+  @IsArray()
+  @IsString({ each: true }) 
+  @IsOptional()
+  rules: string[];
 }

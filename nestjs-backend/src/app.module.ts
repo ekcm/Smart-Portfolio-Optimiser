@@ -12,7 +12,6 @@ import { TransactionsModule } from './module/transactions.module';
 import { PortfolioCreationModule } from './module/portfolioCreation.module';
 import { FinanceNewsModule } from './module/financeNews.module';
 import { AlertModule } from './module/alert.module';
-import { PortfolioRuleModule } from './module/portfolioRule.module';
 import { RuleModule } from './module/rule.module'; 
 import { RuleValidatorModule } from './module/ruleValidator.module';
 
@@ -39,7 +38,6 @@ import { RuleValidatorModule } from './module/ruleValidator.module';
     PortfolioCreationModule,
     FinanceNewsModule,
     AlertModule,
-    PortfolioRuleModule,
     RuleModule, 
     RuleValidatorModule,
   ],
