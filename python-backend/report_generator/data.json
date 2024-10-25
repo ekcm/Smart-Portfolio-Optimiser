@@ -15,14 +15,14 @@
             "asset2": 0.25
         },
         "performance_overview": {
-            "to_weisheng": "what the fuck is this"
+            "performance overview data": "some performance overview"
         },
         "sector_allocation": {
             "technology": 0.5,
             "finance": 0.3,
             "cash": 0.2
         },
-        "commentary_and_market_outlook": "some words of wisdom here"
+        "commentary_and_market_outlook": "The portfolio delivered a solid return of +7.5% year-to-date, driven by strong performance in our equity holdings, particularly in technology and consumer discretionary sectors. Apple (AAPL) and Microsoft (MSFT) were standout performers, contributing to over 20% of the portfolio's total gains. The robust growth in these companies reflects the ongoing global demand for cloud services and consumer electronics."
     },
     "trade_execution_summary": {
         "time_period": "sorry I need help with this too",
