@@ -28,7 +28,7 @@ def generate():
     portfolio_report_heading = Paragraph(f"Portfolio report for {data['portfolio_details']['portfolio_name']}", h1_heading_style)
 
     # Porfolio Summary
-    portfolio_summary_heading = Paragraph("Portfolio Summary", h2_heading_style)
+    portfolio_summary_heading = Paragraph("Assets Allocation", h2_heading_style)
     portfolio_summary_data = data['portfolio_summary']
 
     # asset_allocation
