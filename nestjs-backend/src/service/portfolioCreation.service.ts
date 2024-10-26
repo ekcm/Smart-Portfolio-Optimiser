@@ -19,7 +19,7 @@ export class PortfolioCreationService{
 
     constructor(private assetPriceService: AssetPriceService, private portfolioService: PortfolioService, private httpService: HttpService) {}
     
-    async generateOrders(clientName: string, portfolioName: string, riskAppetite: string, cash: number, managerId: string, exclusions: string[]): Promise<ProposedPortfolio> {
+    async generateOrders(clientName: string, portfolioName: string, riskAppetite: string, cash: number, managerId: string, exclusions: string[], rules: string[]): Promise<ProposedPortfolio> {
         const createdPortfolio = await this.portfolioService.create({
             client: clientName,
             portfolioName: portfolioName,
@@ -27,7 +27,8 @@ export class PortfolioCreationService{
             cashAmount: cash,
             assetHoldings: [],
             manager: managerId,
-            exclusions: exclusions
+            exclusions: exclusions,
+            rules: rules
         })
         try {
             const response = await lastValueFrom(
