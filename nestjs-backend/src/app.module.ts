@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AssetModule } from './module/asset.module';
@@ -14,6 +14,11 @@ import { FinanceNewsModule } from './module/financeNews.module';
 import { AlertModule } from './module/alert.module';
 import { RuleModule } from './module/rule.module'; 
 import { RuleValidatorModule } from './module/ruleValidator.module';
+import { AssetPriceTestModule } from './module/assetpricetest.module';
+import { AssetPriceTestService } from './service/assetpricetest.service';
+import { OrderFulfilmentModule } from './module/orderFulfilment.module';
+import { SqsPollingService } from './service/sqsPolling.service';
+import { SqsService } from './service/sqs.service';
 
 @Module({
   imports: [
@@ -40,6 +45,15 @@ import { RuleValidatorModule } from './module/ruleValidator.module';
     AlertModule,
     RuleModule, 
     RuleValidatorModule,
+    AssetPriceTestModule,
+    OrderFulfilmentModule,
   ],
+  providers: [SqsService, SqsPollingService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly assetPriceTestService: AssetPriceTestService) {}
+
+  onModuleInit() {
+    this.assetPriceTestService.startPopulating(); 
+  }
+}

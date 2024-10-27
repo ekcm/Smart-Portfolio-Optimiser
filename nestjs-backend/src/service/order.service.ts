@@ -78,4 +78,16 @@ export class OrderService {
             }, 1000)
         })
     }
+
+    async findPendingOrdersByTicker(ticker: string): Promise<Order[]> {
+        return this.orderModel.find({ assetName: ticker, orderStatus: 'PENDING' }).exec();
+    }
+
+    async updateOrderStatus(order: Order): Promise<Order> {
+        const updatedOrder = await this.orderModel.findByIdAndUpdate(order.id, order, { new: true });
+        if (!updatedOrder) {
+            throw new NotFoundException(`Order #${order.id} not found`);
+        }
+        return updatedOrder;
+    }
 }
