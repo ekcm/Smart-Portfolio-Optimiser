@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 import io
+from datetime import datetime
 
 app = FastAPI()
 
@@ -164,9 +165,12 @@ def generate():
     pdf.build(elements)
 
     pdf_buffer.seek(0)
+
+    current_date = datetime.now().strftime("%d/%m/%y")
+    filename = f"{data['portfolio_details']['portfolio_name']}_{current_date}.pdf"
     
     headers = {
-        'Content-Disposition': 'attachment; filename=output.pdf'
+        'Content-Disposition': f'attachment; filename={filename}'
     }
     return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
 
