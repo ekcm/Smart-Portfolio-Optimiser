@@ -6,7 +6,29 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, 
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.piecharts import Pie
 import json
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import uvicorn
+import io
 
+app = FastAPI()
+
+# Allow all origins
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+@app.get("/")
 def generate():
     # should be replaced with data from api endpoint
     with open("data.json", "r") as f:
@@ -16,6 +38,8 @@ def generate():
 
     # Create the PDF document
     filename = "output.pdf"
+
+    pdf_buffer = io.BytesIO()
     pdf = SimpleDocTemplate(filename, pagesize=A4)
 
     # Set up styles for headings and body text
@@ -96,7 +120,10 @@ def generate():
     # trade execution
     spacer = Spacer(1, 0.2 * inch)
     trade_execution_heading = Paragraph("Trade Execution", h1_heading_style)
-    trade_execution_body = Paragraph("The following are the trade executions for the portfolio.", body_style)
+
+    trade_execution_time_period = data['trade_execution_summary']['time_period']
+    trade_execution_performance = data['trade_execution_summary']['execution_performance']
+    trade_execution_body = Paragraph(f"The following are the trade executions for the portfolio conducted between {trade_execution_time_period}. During this time period, the trades conducted had an execution performance of {trade_execution_performance}", body_style)
 
     # trade execution transactions
     trade_execution_data = data['trade_execution_summary']
@@ -136,5 +163,13 @@ def generate():
     ]
     pdf.build(elements)
 
+    pdf_buffer.seek(0)
+    
+    headers = {
+        'Content-Disposition': 'attachment; filename=output.pdf'
+    }
+    return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
+
+
 if __name__ == "__main__":
-    generate()
+    uvicorn.run("report:app", host='127.0.0.1', port=5002, reload=True)
