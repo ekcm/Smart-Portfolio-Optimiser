@@ -9,6 +9,9 @@ import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { delay } from "@/utils/utils";
 import { Loader2 } from "lucide-react";
+import DateRangePicker from "./DateRangePicker";
+import { addDays, format } from "date-fns";
+import { DateRange } from "react-day-picker";
 
 interface Breadcrumb {
   href: string;
@@ -22,11 +25,14 @@ export default function DashBoardNavBar() {
     const pathname = usePathname();
     const [portfolioName, setPortfolioName] = useState<string | null>(null);
     const [financeNewsName, setFinanceNewsName] = useState<string | null>(null);
+    const [date, setDate] = React.useState<DateRange | undefined>({
+        from: new Date(2022, 0, 20),
+        to: addDays(new Date(2022, 0, 20), 20),
+    })
     const { toast } = useToast();
 
     // loader
     const [reportLoading, setReportLoading] = useState<boolean>(false);
-
 
     const pages: Record<string, string> = {
         dashboard: "Dashboard",
@@ -82,8 +88,8 @@ export default function DashBoardNavBar() {
       });
     };
 
+    // Generate monthly report
     const handleGenerateMonthlyReport = async () => {
-        // Generate monthly report
         console.log("Generate monthly report");
         setReportLoading(true);
         try {
@@ -104,10 +110,15 @@ export default function DashBoardNavBar() {
         }
     }
 
+    // Generate full report
     const handleGenerateFullReport = async () => {
-        // Generate full report
         console.log("Generate full report");
+        console.log(date);
         setReportLoading(true);
+        toast({
+            title: `Your report is being generated!`,
+            description: `Custom report for portfolio ${portfolioName} will be downloaded to your device!`,
+        });
         try {
             await delay(1500);
             toast({
@@ -196,12 +207,13 @@ export default function DashBoardNavBar() {
                                         Generate Portfolio Reports
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem onClick={handleGenerateMonthlyReport} className="w-52">
+                                <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
+                                    <DateRangePicker onGenerateReport={handleGenerateFullReport} />
+                                    <DropdownMenuItem 
+                                        onClick={handleGenerateMonthlyReport} 
+                                        className="bg-green-700 text-white flex items-center justify-center w-52"
+                                    >
                                         Monthly Report
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={handleGenerateFullReport} className="w-52">
-                                        Full Report
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
