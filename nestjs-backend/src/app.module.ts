@@ -12,8 +12,9 @@ import { TransactionsModule } from './module/transactions.module';
 import { PortfolioCreationModule } from './module/portfolioCreation.module';
 import { FinanceNewsModule } from './module/financeNews.module';
 import { AlertModule } from './module/alert.module';
-import { RuleModule } from './module/rule.module'; 
+import { RuleLogModule } from './module/ruleLog.module'; 
 import { RuleValidatorModule } from './module/ruleValidator.module';
+import { RuleModule } from './module/rule.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { RuleValidatorModule } from './module/ruleValidator.module';
     PortfolioCreationModule,
     FinanceNewsModule,
     AlertModule,
-    RuleModule, 
+    RuleModule,
+    RuleLogModule, 
     RuleValidatorModule,
   ],
 })

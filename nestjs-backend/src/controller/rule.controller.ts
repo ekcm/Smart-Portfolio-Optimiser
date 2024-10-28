@@ -1,41 +1,43 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { RuleDto } from "../dto/rule.dto";
-import { Rule } from "../model/rule.model";
-import { RuleService } from "../service/rule.service";
+import { Body, Controller, Param, Patch } from "@nestjs/common";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { RuleService } from "src/service/rule.service";
 
-@ApiTags("Rule Service")
+@ApiTags("RuleService")
 @Controller("rule")
 export class RuleController {
-	constructor(private readonly ruleService: RuleService) {}
+    constructor(private ruleService: RuleService) {}
 
-	@Get()
-	@ApiOperation({ summary: "Get all Rules" })
-	async getAll(): Promise<Rule[]> {
-		return await this.ruleService.getAll();
-	}
+    @Patch("min-cash/:portfolioId")
+    @ApiOperation({ summary: "Update Min cash" })
+    @ApiBody({
+        description: 'Min Cash percentage to be set',
+        examples: {
+            default: {
+                summary: 'Example update min cash',
+                value: {
+                    "percentage": 0.2,
+                }
+            }
+        }
+    })
+    async setMinCashAmount(@Param('portfolioId') portfolioId: string, @Body("percentage") percentage: number) {
+        return await this.ruleService.setMinCashAmount(portfolioId, percentage);
+    }
 
-	@Get('/:id')
-	@ApiOperation({ summary: "Get one Rule by ID" })
-	async getById(@Param('id') id: string): Promise<Rule> {
-		return await this.ruleService.getById(id);
-	}
-
-	@Post()
-	@ApiOperation({ summary: "Create a Rule" })
-	async create(@Body() rulesDto: RuleDto): Promise<Rule> {
-		return await this.ruleService.create(rulesDto);
-	}
-
-	@Put('/:id')
-	@ApiOperation({ summary: "Update a Rule by ID" })
-	async update(@Param('id') id: string, @Body() rulesDto: RuleDto): Promise<Rule> {
-		return await this.ruleService.update(id, rulesDto);
-	}
-
-	@Delete('/:id')
-	@ApiOperation({ summary: "Delete a Rule by ID" })
-	async delete(@Param('id') id: string): Promise<void> {
-		await this.ruleService.delete(id);
-	}
+    @Patch("max-cash/:portfolioId")
+    @ApiOperation({ summary: "Update Max cash" })
+    @ApiBody({
+        description: 'Max Cash percentage to be set',
+        examples: {
+            default: {
+                summary: 'Example update max cash',
+                value: {
+                    "percentage": 0.5,
+                }
+            }
+        }
+    })
+    async setMaxCashAmount(@Param('portfolioId') portfolioId: string, @Body("percentage") percentage: number) {
+        return await this.ruleService.setMaxCashAmount(portfolioId, percentage);
+    }
 }

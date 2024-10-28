@@ -21,6 +21,16 @@ export class PortfolioDto {
   @Type(() => Number)
   cashAmount: number;
 
+  @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  minCashPercentage: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  maxCashPercentage: number;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => AssetHoldingDto)
@@ -39,5 +49,5 @@ export class PortfolioDto {
   @IsArray()
   @IsString({ each: true }) 
   @IsOptional()
-  rules: string[];
+  ruleLogs: string[];
 }

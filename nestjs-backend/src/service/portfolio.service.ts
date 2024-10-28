@@ -41,7 +41,7 @@ export class PortfolioService {
             }, 1000)
         })
     }
-
+    
     async getByManager(manager: string): Promise<Portfolio[]> {
         return new Promise((resolve) => {
             setTimeout(async () => {
@@ -99,17 +99,59 @@ export class PortfolioService {
 
     }
 
-    async getRulesByPortfolioId(portfolioId: string): Promise<string[]> {
+    async updateMinCashPercentage(id: string, percentage: number): Promise<Portfolio> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
-                const portfolio = await this.portfolioModel.findById(portfolioId).exec();
-                if (portfolio) {
-                    resolve(portfolio.rules);
-                } else {
-                    reject(new NotFoundException(`Portfolio with ID ${portfolioId} not found`));
+                const existingPortfolio = await this.portfolioModel.findById(id);
+                if (!existingPortfolio) {
+                    reject(new NotFoundException(`Portfolio #${id} not found`));
                 }
-            }, 1000);
-        });
+
+                const updatedPortfolio = await this.portfolioModel.findByIdAndUpdate(
+                    id,
+                    { minCashPercentage: percentage },
+                    { new: true }
+                );
+
+                resolve(updatedPortfolio);
+            }, 1000)
+        })
+
     }
+
+    async updateMaxCashPercentage(id: string, percentage: number): Promise<Portfolio> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                const existingPortfolio = await this.portfolioModel.findById(id);
+                if (!existingPortfolio) {
+                    reject(new NotFoundException(`Portfolio #${id} not found`));
+                }
+
+                const updatedPortfolio = await this.portfolioModel.findByIdAndUpdate(
+                    id,
+                    { maxCashPercentage: percentage },
+                    { new: true }
+                );
+
+                resolve(updatedPortfolio);
+            }, 1000)
+        })
+
+    }
+
+
+    
+    // async getRulesByPortfolioId(portfolioId: string): Promise<string[]> {
+    //     return new Promise((resolve, reject) => {
+    //         setTimeout(async () => {
+    //             const portfolio = await this.portfolioModel.findById(portfolioId).exec();
+    //             if (portfolio) {
+    //                 resolve(portfolio.rules);
+    //             } else {
+    //                 reject(new NotFoundException(`Portfolio with ID ${portfolioId} not found`));
+    //             }
+    //         }, 1000);
+    //     });
+    // }
     
 }

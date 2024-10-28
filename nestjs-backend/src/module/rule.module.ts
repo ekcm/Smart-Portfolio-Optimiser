@@ -1,15 +1,14 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { RuleController } from '../controller/rule.controller';
-import { RuleService } from '../service/rule.service';
-import { Rule, RuleSchema } from '../model/rule.model';
+import { Module } from "@nestjs/common";
+import { RuleController } from "src/controller/rule.controller";
+import { RuleService } from "src/service/rule.service";
+import { RuleLogModule } from "./ruleLog.module";
+import { PortfolioModule } from "./portfolio.module";
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([{ name: Rule.name, schema: RuleSchema }])
-    ],
+    imports: [RuleLogModule, PortfolioModule],
     controllers: [RuleController],
     providers: [RuleService],
     exports: [RuleService]
 })
-export class RuleModule { }
+
+export class RuleModule {}

@@ -22,6 +22,12 @@ export class Portfolio extends Document {
   @Prop({ required: true, type: Number })
   cashAmount: number;
 
+  @Prop({ required: true, type: Number })
+  minCashPercentage: number;
+
+  @Prop({ required: true, type: Number })
+  maxCashPercentage: number;
+
   @Prop({ type: [{ type: AssetHolding }], default: [] })
   assetHoldings: AssetHolding[]
 
@@ -32,7 +38,7 @@ export class Portfolio extends Document {
   exclusions: string[]
 
   @Prop({ type: [String], default: [] })
-  rules: string[];
+  ruleLogs: string[];
 }
 
 // missing and transactionsList
