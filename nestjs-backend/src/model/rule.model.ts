@@ -1,6 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+export enum RuleType {
+    CASH = 'CASH',
+    RISK = 'RISK'
+}
+
 @Schema({ collection: "Rule"})
 export class Rule extends Document {
     @Prop()
