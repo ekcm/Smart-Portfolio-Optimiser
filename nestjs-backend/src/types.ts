@@ -1,6 +1,7 @@
 import { AlertDto } from "./dto/alert.dto";
 import { OrderDto } from "./dto/order.dto";
 import { PortfolioDto } from "./dto/portfolio.dto";
+import { RuleDto } from "./dto/rule.dto";
 import { Portfolio } from "./model/portfolio.model";
 import { Order } from "src/model/order.model";
 
@@ -141,10 +142,25 @@ interface OptimisedPortfolio {
     orders: ClassicOrder[]
 }
 
+enum LimitType {
+    MIN = 'MIN',
+    MAX = 'MAX'
+}
+
+interface CashRule extends RuleDto {
+    limit: LimitType,
+    percentage: number
+}
+
+interface RiskRule extends RuleDto {
+    stocks: number,
+    bonds: number
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio
+    OptimisedPortfolio, CashRule, LimitType
 };
