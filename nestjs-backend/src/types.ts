@@ -162,5 +162,5 @@ export type {
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, CashRule, LimitType
+    OptimisedPortfolio, CashRule, LimitType, RiskRule
 };

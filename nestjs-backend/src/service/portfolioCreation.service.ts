@@ -28,9 +28,7 @@ export class PortfolioCreationService{
             assetHoldings: [],
             manager: managerId,
             exclusions: exclusions,
-            minCashPercentage: 0,
-            maxCashPercentage: 100,
-            ruleLogs: []
+            rules: []
         })
         try {
             const response = await lastValueFrom(
