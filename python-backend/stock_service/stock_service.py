@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Optional
 
-load_dotenv(dotenv_path="../../.env")
+load_dotenv(dotenv_path=".env")
 uri = os.getenv("MONGO_URI")
 
 app = FastAPI()
@@ -202,17 +202,21 @@ def insert_all_date_range():
         aug_date = datetime(2024, 8, i)
         dates.append(aug_date)
 
-    today = datetime.now()
-    today_date = today.day
-    for i in range(1, today_date):
+    # today = datetime.now()
+    # today_date = today.day
+    for i in range(1, 30):
         sep_date = datetime(2024, 9, i)
         dates.append(sep_date)
 
+    for i in range(1, 30):
+        oct_date = datetime(2024, 10, i)
+        dates.append(oct_date)
+
     try:
         for date in dates:
-            print(date)
             stock_date = StockDate(date=date)
             result = insert_all(stock_date)
+            print(f"{date} is being inserted")
             if "error" in result:
                 errors.append({"date": date, "error": result["error"]})
     except Exception as e:  
@@ -225,14 +229,36 @@ def delete_data():
     deletes all data from the AssetPrice collection in the MongoDB database
     '''
     try:
-        with MongoClient(uri) as client:
+        with MongoClient(uri, connectTimeoutMS=60000, socketTimeoutMS=60000) as client:
+            client.admin.command("ping")
             database = client.get_database("FYP-Test-DB")
             assetPrice = database.get_collection("AssetPrice")
-            assetPrice.delete_many({})
+            result = assetPrice.delete_many({})
+            print(f"{result.deleted_count} documents deleted")
             return {"data": "All data was deleted successfully!"}
     except Exception as e:
         return {"error": str(e)}
 
+@app.delete("/delete_data_by_date")
+def delete_data_by_date():
+    '''
+    Deletes all data from the AssetPrice collection in the MongoDB database for a specific date.
+    '''
+    target_date = datetime(2024, 10, 29)  # Specify the date you want to delete
+
+    try:
+        with MongoClient(uri, connectTimeoutMS=60000, socketTimeoutMS=60000) as client:
+            database = client.get_database("FYP-Test-DB")
+            assetPrice = database.get_collection("AssetPrice")
+            
+            # Use the $eq operator to match the exact date
+            result = assetPrice.delete_many({"date": target_date})
+            
+            return {
+                "data": f"Deleted {result.deleted_count} documents for the date {target_date.strftime('%Y-%m-%d')}."
+            }
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
