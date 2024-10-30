@@ -7,14 +7,26 @@ export class RuleDto{
     type: RuleType;
 
     @IsNotEmpty()
-    @IsNumber()
-    threshold: number;
-
-    @IsNotEmpty()
     @IsString()
     name: string;
 
     @IsNotEmpty()
     @IsString()
     description: string;
+}
+
+export class CashRuleDto extends RuleDto {
+    @IsNotEmpty()
+    @IsNumber()
+    percentage: number;
+}
+
+export class RiskRuleDto extends RuleDto {
+    @IsNotEmpty()
+    @IsNumber()
+    stocks: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    bonds: number;
 }
