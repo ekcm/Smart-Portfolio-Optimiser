@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AssetPriceTestDto } from '../dto/assetpricetest.dto';  
-import { AssetPriceTest } from '../model/assetpricetest.model';  
+import { AssetPriceDto } from '../dto/assetprice.dto';  
+import { AssetPrice } from '../model/assetprice.model';  
 import { SqsService } from './sqs.service';  
 
 @Injectable()
-export class AssetPriceTestService {
+export class AssetPriceTestService {  
   constructor(
-    @InjectModel('AssetPriceUpdates') private readonly assetPriceTestModel: Model<AssetPriceTest>, 
+    @InjectModel('AssetPrice') private readonly assetPriceModel: Model<AssetPrice>,  
     private readonly sqsService: SqsService, 
   ) {}
 
-  async create(assetPriceTestDto: AssetPriceTestDto): Promise<AssetPriceTest> {
-    const newAssetPrice = new this.assetPriceTestModel(assetPriceTestDto);
+  async create(assetPriceDto: AssetPriceDto): Promise<AssetPrice> {  
+    const newAssetPrice = new this.assetPriceModel(assetPriceDto); 
     const result = await newAssetPrice.save();
 
     await this.sqsService.sendMessage(JSON.stringify(result));
@@ -23,17 +23,17 @@ export class AssetPriceTestService {
 
   startPopulating() {
     setInterval(async () => {
-      const randomAssetPrice: AssetPriceTestDto = {
+      const randomAssetPrice: AssetPriceDto = {  
         ticker: 'AAPL',  
         company: 'Apple',
         sector: 'Information Technology',
-        todayClose: 5,  
-        yesterdayClose: 226.21,
+        todayClose: 180,  
+        yesterdayClose: 231.41,
         date: new Date(),  
       };
 
       await this.create(randomAssetPrice);
       console.log('Inserted new record and triggered SQS:', randomAssetPrice);
-    }, 120000);  
+    }, 300000);  
   }
 }

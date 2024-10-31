@@ -19,6 +19,7 @@ import { AssetPriceTestService } from './service/assetpricetest.service';
 import { OrderFulfilmentModule } from './module/orderFulfilment.module';
 import { SqsPollingService } from './service/sqsPolling.service';
 import { SqsService } from './service/sqs.service';
+import { PortfolioGateway } from './websocket/portfolio.gateway';
 
 @Module({
   imports: [
@@ -28,7 +29,6 @@ import { SqsService } from './service/sqs.service';
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGO_URI,
-        // directConnection: true,
         retryWrites: false,
       }),
     }),
@@ -48,7 +48,7 @@ import { SqsService } from './service/sqs.service';
     AssetPriceTestModule,
     OrderFulfilmentModule,
   ],
-  providers: [SqsService, SqsPollingService],
+  providers: [SqsService, SqsPollingService, AssetPriceTestService, PortfolioGateway],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly assetPriceTestService: AssetPriceTestService) {}

@@ -3,12 +3,14 @@ import { OrderService } from './order.service';
 import { PortfolioService } from './portfolio.service';
 import { Order, OrderStatus } from '../model/order.model';
 import { CalculatorUtility } from 'src/utilities/calculatorUtility';
+import { PortfolioGateway } from 'src/websocket/portfolio.gateway'; 
 
 @Injectable()
 export class OrderFulfilmentService {
   constructor(
     private readonly orderService: OrderService,
     private readonly portfolioService: PortfolioService,
+    private readonly portfolioGateway: PortfolioGateway,
   ) {}
 
   async handlePriceUpdate(message: any) {
@@ -24,9 +26,11 @@ export class OrderFulfilmentService {
       } else if (order.orderType === 'BUY' && order.price >= updatedPrice) {
         this.fillBuyOrder(order, portfolio, updatedPrice);
       }
-      
+
       await this.orderService.updateOrderStatus(order);
       await this.portfolioService.update(portfolio.id, portfolio);
+
+      this.portfolioGateway.broadcastPortfolioUpdate(portfolio.id);
     }
   }
 
@@ -40,7 +44,7 @@ export class OrderFulfilmentService {
       if (assetHolding.quantity === 0) {
         portfolio.assetHoldings = portfolio.assetHoldings.filter(holding => holding.ticker !== order.assetName);
       }
-      
+
       this.updatePortfolioMetrics(portfolio, assetHolding, updatedPrice);
     }
   }
@@ -49,7 +53,7 @@ export class OrderFulfilmentService {
     if (portfolio.cashAmount >= order.price * order.quantity) {
       order.price = updatedPrice;
       order.orderStatus = OrderStatus.FILLED;
-      portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, 'assetType');  
+      portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, 'assetType');
       portfolio.cashAmount -= order.price * order.quantity;
 
       const assetHolding = portfolio.assetHoldings.find(holding => holding.ticker === order.assetName);
@@ -77,13 +81,13 @@ export class OrderFulfilmentService {
     const totalShares = assetHolding.quantity;
     const cost = assetHolding.cost;
     const assetValue = portfolio.assetHoldings.reduce((total, holding) => {
-      const holdingPrice = updatedPrice; 
+      const holdingPrice = updatedPrice;
       return total + CalculatorUtility.calculateMarketValue(holdingPrice, holding.quantity);
     }, 0);
 
     assetHolding.totalPL = CalculatorUtility.totalPL(totalShares, cost, updatedPrice);
     assetHolding.totalPLPercentage = CalculatorUtility.totalPLPercentage(cost, updatedPrice);
-    assetHolding.dailyPL = CalculatorUtility.dailyPL(totalShares, updatedPrice, assetHolding.last); 
+    assetHolding.dailyPL = CalculatorUtility.dailyPL(totalShares, updatedPrice, assetHolding.last);
     assetHolding.dailyPLPercentage = CalculatorUtility.dailyPLPercentage(updatedPrice, assetHolding.last);
     assetHolding.positionsRatio = CalculatorUtility.calculatePositionsRatio(updatedPrice, totalShares, assetValue);
   }
