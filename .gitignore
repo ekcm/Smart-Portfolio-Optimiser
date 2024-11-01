@@ -1,14 +1,14 @@
 /Lib/site-packages
-/python-backend/venv
 .env
-/python-backend/__pycache__
 /Scripts
 pyvenv.cfg
-/python-backend/.ipynb_checkpoints
+.ipynb_checkpoints
 /python-backend/reports
 .DS_Store
-/python-backend/finance_news/__pycache__
-/python-backend/stock_service/__pycache__
-optimiser_service/venv
-/optimiser_service/__pycache__
 venv
+
+# Lambda
+__pycache__
+quic
+/lambda/test-service/layer/create_layer
+/lambda/test-service/layer/python
