@@ -10,5 +10,5 @@ venv
 # Lambda
 __pycache__
 quic
-/lambda/test-service/layer/create_layer
-/lambda/test-service/layer/python
+create_layer/
+python/
