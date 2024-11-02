@@ -34,35 +34,35 @@ app.add_middleware(
 )
 
 dow_list_info = {
-    # "AAPL":["Apple", "Information Technology"],
-    # "AMGN":["Amgen", "Biopharmaceutical"],
-    # "AXP": ["American Express", "Financial Services"],
-    # "BA": ["Boeing", "Aerospace and defense"],
-    # "CAT": ["Caterpillar", "Construction and mining"],
-    # "CRM": ["Salesforce", "Information Technology"],
-    # "CSCO": ["Cisco", "Information Technology"],
-    # "CVX": ["Chevron", "Petroleum Industry"],
-    # "DIS": ["Disney", "Broadcasting and Entertainment"],
-    # "DOW": ["Dow", "Chemical Industry"],
-    # "GS": ["Goldman Sachs", "Financial Services"],
-    # "HD": ["Home Depot", "Home Improvement"],
-    # "HON": ["Honeywell", "Conglomerate"],
-    # "IBM": ["IBM", "Information Technology"],
-    # "INTC": ["Intel", "Semiconductor Industry"],
-    # "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
-    # "JPM": ["JPMorgan Chase", "Financial Services"],
-    # "KO": ["Coca-Cola", "Drink Industry"],
-    # "MCD": ["Mcdonalds", "Food Industry"],
-    # "MMM": ["3M", "Conglomerate"],
-    # "MRK": ["Merck", "Pharmaceutical Industry"],
-    # "MSFT": ["Microsoft", "Information Technology"],
-    # "NKE": ["Nike", "Clothing Industry"],
-    # "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
-    # "TRV": ["Travelers", "Insurance"],
-    # "UNH": ["UnitedHealth Group", "Managed health care"],
-    # "V": ["Visa", "Financial Services"],
-    # "VZ": ["Verizon", "Telecommunications Industry"],
-    # "WBA": ["Walgreens Boots Alliance", "Retailing"],
+    "AAPL":["Apple", "Information Technology"],
+    "AMGN":["Amgen", "Biopharmaceutical"],
+    "AXP": ["American Express", "Financial Services"],
+    "BA": ["Boeing", "Aerospace and defense"],
+    "CAT": ["Caterpillar", "Construction and mining"],
+    "CRM": ["Salesforce", "Information Technology"],
+    "CSCO": ["Cisco", "Information Technology"],
+    "CVX": ["Chevron", "Petroleum Industry"],
+    "DIS": ["Disney", "Broadcasting and Entertainment"],
+    "DOW": ["Dow", "Chemical Industry"],
+    "GS": ["Goldman Sachs", "Financial Services"],
+    "HD": ["Home Depot", "Home Improvement"],
+    "HON": ["Honeywell", "Conglomerate"],
+    "IBM": ["IBM", "Information Technology"],
+    "INTC": ["Intel", "Semiconductor Industry"],
+    "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
+    "JPM": ["JPMorgan Chase", "Financial Services"],
+    "KO": ["Coca-Cola", "Drink Industry"],
+    "MCD": ["Mcdonalds", "Food Industry"],
+    "MMM": ["3M", "Conglomerate"],
+    "MRK": ["Merck", "Pharmaceutical Industry"],
+    "MSFT": ["Microsoft", "Information Technology"],
+    "NKE": ["Nike", "Clothing Industry"],
+    "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
+    "TRV": ["Travelers", "Insurance"],
+    "UNH": ["UnitedHealth Group", "Managed health care"],
+    "V": ["Visa", "Financial Services"],
+    "VZ": ["Verizon", "Telecommunications Industry"],
+    "WBA": ["Walgreens Boots Alliance", "Retailing"],
     "WMT": ["Walmart", "Retailing"]
 }
 
@@ -241,7 +241,7 @@ def insert_all_date_range():
     errors = []
     dates = []
 
-    for i in range(1, 2):
+    for i in range(1, 31):
         july_date = datetime(2024, 7, i)
         dates.append(july_date)
 
@@ -291,7 +291,8 @@ def delete_data_by_date():
     '''
     Deletes all data from the AssetPrice collection in the MongoDB database for a specific date.
     '''
-    target_date = datetime(2024, 10, 29)  # Specify the date you want to delete
+    target_date = datetime(2024, 7, 1)  # Specify the date to delete in YYYY-MM-DD format
+    end_of_day = target_date + timedelta(hours=23, minutes=59, seconds=59)
 
     try:
         with MongoClient(uri, connectTimeoutMS=60000, socketTimeoutMS=60000) as client:
@@ -299,7 +300,8 @@ def delete_data_by_date():
             assetPrice = database.get_collection("AssetPrice")
             
             # Use the $eq operator to match the exact date
-            result = assetPrice.delete_many({"date": target_date})
+            # result = assetPrice.delete_many({"date": target_date})
+            result = assetPrice.delete_many({"date": {"$gte": target_date, "$lt": end_of_day}})
             
             return {
                 "data": f"Deleted {result.deleted_count} documents for the date {target_date.strftime('%Y-%m-%d')}."
