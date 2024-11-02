@@ -180,6 +180,14 @@ def insert_all(stock_date: StockDate):
         stock_info = get_stock_info(stock, stock_date.date)
         stock_list.append(stock_info)
 
+        if stock_info is None:
+            print(f"error: NoneType occurred on {stock_date.date}")
+            return {"error": f"NoneType occurred on {stock_date.date}"}
+
+        if "error" in stock_info:
+            print("error: ", stock_info["error"])
+            return {"error": stock_info["error"]}
+
         # stock_info only has one hour, but we want an additional 6 hours
         current_stock_date = stock_info["date"]
         original_todayClose = stock_info["todayClose"]
@@ -216,9 +224,9 @@ def insert_all(stock_date: StockDate):
 
             stock_list.append(new_stock_info)
             
-        print(stock_list)
+        # print(stock_list)
         for new_stock_info in stock_list:
-            print(new_stock_info)
+            # print(new_stock_info)
             try:
                 if "error" in new_stock_info:
                     print("error: ", new_stock_info["error"], "date: ", new_stock_info.date)
@@ -241,7 +249,7 @@ def insert_all_date_range():
     errors = []
     dates = []
 
-    for i in range(1, 31):
+    for i in range(1, 32):
         july_date = datetime(2024, 7, i)
         dates.append(july_date)
 
@@ -262,8 +270,8 @@ def insert_all_date_range():
     try:
         for date in dates:
             stock_date = StockDate(date=date)
-            result = insert_all(stock_date)
             print(f"{date} is being inserted")
+            result = insert_all(stock_date)
             if "error" in result:
                 errors.append({"date": date, "error": result["error"]})
     except Exception as e:  
@@ -291,7 +299,7 @@ def delete_data_by_date():
     '''
     Deletes all data from the AssetPrice collection in the MongoDB database for a specific date.
     '''
-    target_date = datetime(2024, 7, 1)  # Specify the date to delete in YYYY-MM-DD format
+    target_date = datetime(2024, 7, 4)  # Specify the date to delete in YYYY-MM-DD format
     end_of_day = target_date + timedelta(hours=23, minutes=59, seconds=59)
 
     try:
