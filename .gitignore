@@ -6,6 +6,7 @@ pyvenv.cfg
 /python-backend/reports
 .DS_Store
 venv
+.pyc
 
 # Lambda
 __pycache__

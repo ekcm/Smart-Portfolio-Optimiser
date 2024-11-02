@@ -13,6 +13,7 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Optional
+import random
 
 load_dotenv(dotenv_path=".env")
 uri = os.getenv("MONGO_URI")
@@ -33,35 +34,35 @@ app.add_middleware(
 )
 
 dow_list_info = {
-    "AAPL":["Apple", "Information Technology"],
-    "AMGN":["Amgen", "Biopharmaceutical"],
-    "AXP": ["American Express", "Financial Services"],
-    "BA": ["Boeing", "Aerospace and defense"],
-    "CAT": ["Caterpillar", "Construction and mining"],
-    "CRM": ["Salesforce", "Information Technology"],
-    "CSCO": ["Cisco", "Information Technology"],
-    "CVX": ["Chevron", "Petroleum Industry"],
-    "DIS": ["Disney", "Broadcasting and Entertainment"],
-    "DOW": ["Dow", "Chemical Industry"],
-    "GS": ["Goldman Sachs", "Financial Services"],
-    "HD": ["Home Depot", "Home Improvement"],
-    "HON": ["Honeywell", "Conglomerate"],
-    "IBM": ["IBM", "Information Technology"],
-    "INTC": ["Intel", "Semiconductor Industry"],
-    "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
-    "JPM": ["JPMorgan Chase", "Financial Services"],
-    "KO": ["Coca-Cola", "Drink Industry"],
-    "MCD": ["Mcdonalds", "Food Industry"],
-    "MMM": ["3M", "Conglomerate"],
-    "MRK": ["Merck", "Pharmaceutical Industry"],
-    "MSFT": ["Microsoft", "Information Technology"],
-    "NKE": ["Nike", "Clothing Industry"],
-    "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
-    "TRV": ["Travelers", "Insurance"],
-    "UNH": ["UnitedHealth Group", "Managed health care"],
-    "V": ["Visa", "Financial Services"],
-    "VZ": ["Verizon", "Telecommunications Industry"],
-    "WBA": ["Walgreens Boots Alliance", "Retailing"],
+    # "AAPL":["Apple", "Information Technology"],
+    # "AMGN":["Amgen", "Biopharmaceutical"],
+    # "AXP": ["American Express", "Financial Services"],
+    # "BA": ["Boeing", "Aerospace and defense"],
+    # "CAT": ["Caterpillar", "Construction and mining"],
+    # "CRM": ["Salesforce", "Information Technology"],
+    # "CSCO": ["Cisco", "Information Technology"],
+    # "CVX": ["Chevron", "Petroleum Industry"],
+    # "DIS": ["Disney", "Broadcasting and Entertainment"],
+    # "DOW": ["Dow", "Chemical Industry"],
+    # "GS": ["Goldman Sachs", "Financial Services"],
+    # "HD": ["Home Depot", "Home Improvement"],
+    # "HON": ["Honeywell", "Conglomerate"],
+    # "IBM": ["IBM", "Information Technology"],
+    # "INTC": ["Intel", "Semiconductor Industry"],
+    # "JNJ": ["Johnson & Johnson", "Pharmaceutical Industry"],
+    # "JPM": ["JPMorgan Chase", "Financial Services"],
+    # "KO": ["Coca-Cola", "Drink Industry"],
+    # "MCD": ["Mcdonalds", "Food Industry"],
+    # "MMM": ["3M", "Conglomerate"],
+    # "MRK": ["Merck", "Pharmaceutical Industry"],
+    # "MSFT": ["Microsoft", "Information Technology"],
+    # "NKE": ["Nike", "Clothing Industry"],
+    # "PG": ["Procter & Gamble", "Fast-moving consumer goods"],
+    # "TRV": ["Travelers", "Insurance"],
+    # "UNH": ["UnitedHealth Group", "Managed health care"],
+    # "V": ["Visa", "Financial Services"],
+    # "VZ": ["Verizon", "Telecommunications Industry"],
+    # "WBA": ["Walgreens Boots Alliance", "Retailing"],
     "WMT": ["Walmart", "Retailing"]
 }
 
@@ -174,19 +175,61 @@ def insert_all(stock_date: StockDate):
     '''
     
     for stock in dow_list_info.keys():
-        stock_info = get_stock_info(stock, stock_date.date)
 
-        try:
-            if "error" in stock_info:
-                print("error: ", stock_info["error"], "date: ", stock_info.date)
-                pass
-            else:
-                with MongoClient(uri) as client:
-                    database = client.get_database("FYP-Test-DB")
-                    assetPrice = database.get_collection("AssetPrice")
-                    assetPrice.insert_one(stock_info)
-        except Exception as e:
-            return {"error": str(e)}
+        stock_list = []
+        stock_info = get_stock_info(stock, stock_date.date)
+        stock_list.append(stock_info)
+
+        # stock_info only has one hour, but we want an additional 6 hours
+        current_stock_date = stock_info["date"]
+        original_todayClose = stock_info["todayClose"]
+        current_todayClose = stock_info["todayClose"]
+        current_yesterdayClose = stock_info["yesterdayClose"]
+
+        last_day = 7
+
+        for i in range(1, last_day):
+            new_stock_date = current_stock_date + timedelta(hours=i)
+
+            # randomize todayClose
+            new_YesterdayClose = current_todayClose
+            current_todayClose = new_YesterdayClose * (1+random.uniform(-0.05, 0.05))
+
+            new_stock_info = {
+                "ticker": stock_info["ticker"],
+                "company": stock_info["company"],
+                "sector": stock_info["sector"],
+                "todayClose": current_todayClose,
+                "yesterdayClose": new_YesterdayClose,
+                "date": new_stock_date
+            }   
+
+            if last_day-1 == i:
+                new_stock_info = {
+                    "ticker": stock_info["ticker"],
+                    "company": stock_info["company"],
+                    "sector": stock_info["sector"],
+                    "todayClose": original_todayClose,
+                    "yesterdayClose": new_YesterdayClose,
+                    "date": new_stock_date
+                }   
+
+            stock_list.append(new_stock_info)
+            
+        print(stock_list)
+        for new_stock_info in stock_list:
+            print(new_stock_info)
+            try:
+                if "error" in new_stock_info:
+                    print("error: ", new_stock_info["error"], "date: ", new_stock_info.date)
+                    pass
+                else:
+                    with MongoClient(uri) as client:
+                        database = client.get_database("FYP-Test-DB")
+                        assetPrice = database.get_collection("AssetPrice")
+                        assetPrice.insert_one(new_stock_info)
+            except Exception as e:
+                return {"error": str(e)}
 
     return {"data": "All stocks were added successfully!"}
 
@@ -198,19 +241,23 @@ def insert_all_date_range():
     errors = []
     dates = []
 
-    for i in range(1,30):
-        aug_date = datetime(2024, 8, i)
-        dates.append(aug_date)
+    for i in range(1, 2):
+        july_date = datetime(2024, 7, i)
+        dates.append(july_date)
+
+    # for i in range(1,30):
+    #     aug_date = datetime(2024, 8, i)
+    #     dates.append(aug_date)
 
     # today = datetime.now()
     # today_date = today.day
-    for i in range(1, 30):
-        sep_date = datetime(2024, 9, i)
-        dates.append(sep_date)
+    # for i in range(1, 30):
+    #     sep_date = datetime(2024, 9, i)
+    #     dates.append(sep_date)
 
-    for i in range(1, 30):
-        oct_date = datetime(2024, 10, i)
-        dates.append(oct_date)
+    # for i in range(1, 30):
+    #     oct_date = datetime(2024, 10, i)
+    #     dates.append(oct_date)
 
     try:
         for date in dates:
