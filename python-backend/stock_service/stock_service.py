@@ -317,6 +317,110 @@ def delete_data_by_date():
     except Exception as e:
         return {"error": str(e)}
 
+def insert_all_json(stock_date: StockDate):
+    ''' 
+    generates a JSON file with stock data for a specific date
+    '''
+
+    stock_list = []
+    for stock in dow_list_info.keys():
+        print(f"Inserting {stock} on {stock_date.date}")
+
+        # stock_list = []
+        stock_info = get_stock_info(stock, stock_date.date)
+
+        if stock_info is None:
+            print(f"error: NoneType occurred on {stock_date.date}")
+            return {"error": f"NoneType occurred on {stock_date.date}"}
+        
+        if "error" in stock_info:
+            print("error: ", stock_info["error"])
+            return {"error": stock_info["error"]}
+
+        first_entry_stock_info = {
+            "ticker": stock_info["ticker"],
+            "company": stock_info["company"],
+            "sector": stock_info["sector"],
+            "todayClose": float(stock_info["todayClose"]),
+            "yesterdayClose": float(stock_info["yesterdayClose"]),
+            "date": stock_info["date"].isoformat()
+        }
+        stock_list.append(first_entry_stock_info)
+
+        # stock_info only has one hour, but we want an additional 6 hours
+        current_stock_date = stock_info["date"]
+        original_todayClose = stock_info["todayClose"]
+        current_todayClose = stock_info["todayClose"]
+        current_yesterdayClose = stock_info["yesterdayClose"]
+
+        last_day = 7
+
+        for i in range(1, last_day):
+            new_stock_date = current_stock_date + timedelta(hours=i)
+        
+            # randomize todayClose
+            new_YesterdayClose = current_todayClose
+            current_todayClose = new_YesterdayClose * (1+random.uniform(-0.05, 0.05))
+
+            new_stock_info = {
+                "ticker": stock_info["ticker"],
+                "company": stock_info["company"],
+                "sector": stock_info["sector"],
+                "todayClose": float(current_todayClose),
+                "yesterdayClose": float(new_YesterdayClose),
+                "date": new_stock_date.isoformat()
+            }
+
+            if last_day-1 == i:
+                new_stock_info = {
+                    "ticker": stock_info["ticker"],
+                    "company": stock_info["company"],
+                    "sector": stock_info["sector"],
+                    "todayClose": float(original_todayClose),
+                    "yesterdayClose": float(new_YesterdayClose),
+                    "date": new_stock_date.isoformat()
+                }
+
+            stock_list.append(new_stock_info)
+
+    return stock_list
+
+
+@app.post("/generate_json")
+def generate_json():
+    '''
+    Generates a JSON file with stock data for a specific date.
+    '''
+    errors = []
+    dates = []
+    
+    for i in range(1, 32):
+        july_date = datetime(2024, 7, i)
+        dates.append(july_date)
+
+    json_data = {}
+
+    try:
+        for date in dates:
+            stock_date = StockDate(date=date)
+            print(f"{date} is being inserted")
+
+            result = insert_all_json(stock_date)
+            if "error" in result:
+                pass
+            else:
+                json_data[date.isoformat()] = result
+
+            if "error" in result:
+                errors.append({"date": date, "error": result["error"]})
+                
+    except Exception as e:
+        return {"error": str(e)}
+
+    with open("stock_data.json", "w") as f:
+        json.dump(json_data, f, indent=4)
+    return {"data": "All stocks were added successfully!", "errors": errors}
+
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)
 
