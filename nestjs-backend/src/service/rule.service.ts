@@ -1,30 +1,56 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Portfolio } from 'src/model/portfolio.model';
-import { PortfolioService } from './portfolio.service';
-import { RuleLogService } from './ruleLog.service';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Rule, RuleType } from 'src/model/rule.model';
+import { CashRuleDto, RiskRuleDto } from 'src/dto/rule.dto';
+import { PortfolioService } from 'src/service/portfolio.service';
+import { RuleLogService } from 'src/service/ruleLog.service';
 
 @Injectable()
 export class RuleService {
-    constructor(private portfolioService: PortfolioService, private ruleLogService: RuleLogService) {}
+    constructor(
+        @InjectModel(Rule.name) private ruleModel: Model<Rule>,
+        private portfolioService: PortfolioService,
+        private ruleLogService: RuleLogService
+    ) {}
 
-    async setMinCashAmount(portfolioId: string, percentage: number): Promise<Portfolio> {
-        const portfolio = await this.portfolioService.getById(portfolioId);
-        if (!portfolio) {
-            throw new NotFoundException(`Portfolio #${portfolioId} not found`);
+    async findAll(): Promise<Rule[]> {
+        return this.ruleModel.find().exec();
+    }
+
+    async findById(id: string): Promise<Rule> {
+        const rule = await this.ruleModel.findById(id).exec();
+        if (!rule) {
+            throw new NotFoundException(`Rule with ID ${id} not found`);
         }
+        return rule;
+    }
 
+    async createRule(dto: CashRuleDto | RiskRuleDto): Promise<Rule> {
+        const rule = new this.ruleModel({
+            ...dto
+        });
+        return rule.save();
+    }
+
+    async updateRule(id: string, dto: CashRuleDto | RiskRuleDto): Promise<Rule> {
+        const rule = await this.findById(id);
         
-        return this.portfolioService.updateMinCashPercentage(portfolioId, percentage);
-    }
-
-    async setMaxCashAmount(portfolioId: string, percentage: number): Promise<Portfolio> {
-        const portfolio = await this.portfolioService.getById(portfolioId);
-        if (!portfolio) {
-            throw new NotFoundException(`Portfolio #${portfolioId} not found`);
+        if ((rule as any).__type !== dto.__type) {
+            throw new BadRequestException('Cannot change rule type');
         }
 
-        return this.portfolioService.updateMaxCashPercentage(portfolioId, percentage);
+        const updatedRule = await this.ruleModel
+            .findByIdAndUpdate(id, dto, { new: true })
+            .exec();
+            
+        return updatedRule;
     }
 
-
+    async deleteRule(id: string): Promise<void> {
+        const result = await this.ruleModel.deleteOne({ _id: id }).exec();
+        if (result.deletedCount === 0) {
+            throw new NotFoundException(`Rule with ID ${id} not found`);
+        }
+    }
 }

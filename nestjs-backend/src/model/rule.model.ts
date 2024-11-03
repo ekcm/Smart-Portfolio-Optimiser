@@ -7,11 +7,17 @@ export enum RuleType {
     RISK = 'RISK'
 }
 
-@Schema({ collection: "Rule", discriminatorKey: 'type' })
-export class Rule extends Document {
-    @Prop({ type: String, enum: RuleType, required: true })
-    type: RuleType;
+// Interface to define the base shape of a rule
+export interface IRule {
+    name: string;
+    description: string;
+}
 
+@Schema({ 
+    collection: "Rule", 
+    discriminatorKey: '__type'  // Using __type as discriminator
+})
+export class Rule extends Document implements IRule {
     @Prop({ required: true })
     name: string;
 

@@ -1,10 +1,10 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { RuleType } from "src/model/rule.model";
 
-export class RuleDto{
+export class RuleDto {
     @IsNotEmpty()
     @IsEnum(RuleType)
-    type: RuleType;
+    __type: RuleType;  // Match the discriminator key
 
     @IsNotEmpty()
     @IsString()
