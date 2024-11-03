@@ -20,7 +20,7 @@ export default function SentimentRatingCustomBadge({ amount }: CustomBadgeProps)
 
     return (
         <Badge className={`${badgeClasses} ${colorClass}`}>
-            Sentiment Rating: {amount}
+            <span className="text-sm">Sentiment Rating: {amount}</span>
         </Badge>
     );
 }

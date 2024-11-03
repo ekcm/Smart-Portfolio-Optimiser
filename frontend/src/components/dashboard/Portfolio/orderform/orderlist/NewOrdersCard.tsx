@@ -10,8 +10,9 @@ export default function NewOrdersCard({ data } : NewOrdersCardProps) {
     const getCellClass = (value: number) => value > 0 ? 'text-green-700 font-semibold' : value < 0 ? 'text-red-700 font-semibold' : '';
 
     return (
-        <Card className="flex flex-col w-full p-4 gap-2">
+        <Card className="flex flex-col w-full p-4 gap-2 h-80 overflow-y-auto">
             <h2 className="text-xl font-medium">Portfolio Holdings</h2>
+            <div className="max-h-80 overflow-y-auto">
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -45,6 +46,7 @@ export default function NewOrdersCard({ data } : NewOrdersCardProps) {
                     ))}
                 </TableBody>
             </Table>          
+            </div>
         </Card>
     )
 }

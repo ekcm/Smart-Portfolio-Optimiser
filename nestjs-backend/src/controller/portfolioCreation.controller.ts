@@ -17,9 +17,17 @@ export class PortfolioCreationController {
         description: 'Array of the tickers of excluded assets',
         example: ['AAPL']
     })
-    async generateOrders(@Query('clientName') clientName: string, @Query('portfolioName') portfolioName: string, @Query('riskAppetite') riskAppetite: string, @Query('cash') cash: number, @Query('managerId') managerId: string, @Query('exclusions') exclusions: string[] = []): Promise<ProposedPortfolio>{
+    @ApiQuery({
+        name: 'rules',
+        required: false,
+        type: [String],
+        description: 'Array of rules to apply during portfolio generation',
+        example: ['RULE1', 'RULE2']
+    })
+    async generateOrders(@Query('clientName') clientName: string, @Query('portfolioName') portfolioName: string, @Query('riskAppetite') riskAppetite: string, @Query('cash') cash: number, @Query('managerId') managerId: string, @Query('exclusions') exclusions: string[] = [], @Query('rules') rules: string[] = []): Promise<ProposedPortfolio>{
         const exclusionsArray = Array.isArray(exclusions) ? exclusions : [exclusions];
-        return await this.portfolioCreationService.generateOrders(clientName, portfolioName, riskAppetite, cash, managerId, exclusionsArray);
+        const rulesArray = Array.isArray(rules) ? rules : [rules];
+        return await this.portfolioCreationService.generateOrders(clientName, portfolioName, riskAppetite, cash, managerId, exclusionsArray, rulesArray);
     }
     
     @Get(":portfolioId")

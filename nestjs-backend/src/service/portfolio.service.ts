@@ -99,5 +99,17 @@ export class PortfolioService {
 
     }
 
-
+    async getRulesByPortfolioId(portfolioId: string): Promise<string[]> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                const portfolio = await this.portfolioModel.findById(portfolioId).exec();
+                if (portfolio) {
+                    resolve(portfolio.rules);
+                } else {
+                    reject(new NotFoundException(`Portfolio with ID ${portfolioId} not found`));
+                }
+            }, 1000);
+        });
+    }
+    
 }

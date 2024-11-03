@@ -13,8 +13,9 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Optional
+import random
 
-load_dotenv(dotenv_path="../../.env")
+load_dotenv(dotenv_path=".env")
 uri = os.getenv("MONGO_URI")
 
 app = FastAPI()
@@ -174,19 +175,69 @@ def insert_all(stock_date: StockDate):
     '''
     
     for stock in dow_list_info.keys():
-        stock_info = get_stock_info(stock, stock_date.date)
 
-        try:
-            if "error" in stock_info:
-                print("error: ", stock_info["error"], "date: ", stock_info.date)
-                pass
-            else:
-                with MongoClient(uri) as client:
-                    database = client.get_database("FYP-Test-DB")
-                    assetPrice = database.get_collection("AssetPrice")
-                    assetPrice.insert_one(stock_info)
-        except Exception as e:
-            return {"error": str(e)}
+        stock_list = []
+        stock_info = get_stock_info(stock, stock_date.date)
+        stock_list.append(stock_info)
+
+        if stock_info is None:
+            print(f"error: NoneType occurred on {stock_date.date}")
+            return {"error": f"NoneType occurred on {stock_date.date}"}
+
+        if "error" in stock_info:
+            print("error: ", stock_info["error"])
+            return {"error": stock_info["error"]}
+
+        # stock_info only has one hour, but we want an additional 6 hours
+        current_stock_date = stock_info["date"]
+        original_todayClose = stock_info["todayClose"]
+        current_todayClose = stock_info["todayClose"]
+        current_yesterdayClose = stock_info["yesterdayClose"]
+
+        last_day = 7
+
+        for i in range(1, last_day):
+            new_stock_date = current_stock_date + timedelta(hours=i)
+
+            # randomize todayClose
+            new_YesterdayClose = current_todayClose
+            current_todayClose = new_YesterdayClose * (1+random.uniform(-0.05, 0.05))
+
+            new_stock_info = {
+                "ticker": stock_info["ticker"],
+                "company": stock_info["company"],
+                "sector": stock_info["sector"],
+                "todayClose": current_todayClose,
+                "yesterdayClose": new_YesterdayClose,
+                "date": new_stock_date
+            }   
+
+            if last_day-1 == i:
+                new_stock_info = {
+                    "ticker": stock_info["ticker"],
+                    "company": stock_info["company"],
+                    "sector": stock_info["sector"],
+                    "todayClose": original_todayClose,
+                    "yesterdayClose": new_YesterdayClose,
+                    "date": new_stock_date
+                }   
+
+            stock_list.append(new_stock_info)
+            
+        # print(stock_list)
+        for new_stock_info in stock_list:
+            # print(new_stock_info)
+            try:
+                if "error" in new_stock_info:
+                    print("error: ", new_stock_info["error"], "date: ", new_stock_info.date)
+                    pass
+                else:
+                    with MongoClient(uri) as client:
+                        database = client.get_database("FYP-Test-DB")
+                        assetPrice = database.get_collection("AssetPrice")
+                        assetPrice.insert_one(new_stock_info)
+            except Exception as e:
+                return {"error": str(e)}
 
     return {"data": "All stocks were added successfully!"}
 
@@ -198,20 +249,28 @@ def insert_all_date_range():
     errors = []
     dates = []
 
-    for i in range(1,30):
-        aug_date = datetime(2024, 8, i)
-        dates.append(aug_date)
+    for i in range(1, 32):
+        july_date = datetime(2024, 7, i)
+        dates.append(july_date)
 
-    today = datetime.now()
-    today_date = today.day
-    for i in range(1, today_date):
-        sep_date = datetime(2024, 9, i)
-        dates.append(sep_date)
+    # for i in range(1,30):
+    #     aug_date = datetime(2024, 8, i)
+    #     dates.append(aug_date)
+
+    # today = datetime.now()
+    # today_date = today.day
+    # for i in range(1, 30):
+    #     sep_date = datetime(2024, 9, i)
+    #     dates.append(sep_date)
+
+    # for i in range(1, 30):
+    #     oct_date = datetime(2024, 10, i)
+    #     dates.append(oct_date)
 
     try:
         for date in dates:
-            print(date)
             stock_date = StockDate(date=date)
+            print(f"{date} is being inserted")
             result = insert_all(stock_date)
             if "error" in result:
                 errors.append({"date": date, "error": result["error"]})
@@ -225,14 +284,38 @@ def delete_data():
     deletes all data from the AssetPrice collection in the MongoDB database
     '''
     try:
-        with MongoClient(uri) as client:
+        with MongoClient(uri, connectTimeoutMS=60000, socketTimeoutMS=60000) as client:
+            client.admin.command("ping")
             database = client.get_database("FYP-Test-DB")
             assetPrice = database.get_collection("AssetPrice")
-            assetPrice.delete_many({})
+            result = assetPrice.delete_many({})
+            print(f"{result.deleted_count} documents deleted")
             return {"data": "All data was deleted successfully!"}
     except Exception as e:
         return {"error": str(e)}
 
+@app.delete("/delete_data_by_date")
+def delete_data_by_date():
+    '''
+    Deletes all data from the AssetPrice collection in the MongoDB database for a specific date.
+    '''
+    target_date = datetime(2024, 7, 4)  # Specify the date to delete in YYYY-MM-DD format
+    end_of_day = target_date + timedelta(hours=23, minutes=59, seconds=59)
+
+    try:
+        with MongoClient(uri, connectTimeoutMS=60000, socketTimeoutMS=60000) as client:
+            database = client.get_database("FYP-Test-DB")
+            assetPrice = database.get_collection("AssetPrice")
+            
+            # Use the $eq operator to match the exact date
+            # result = assetPrice.delete_many({"date": target_date})
+            result = assetPrice.delete_many({"date": {"$gte": target_date, "$lt": end_of_day}})
+            
+            return {
+                "data": f"Deleted {result.deleted_count} documents for the date {target_date.strftime('%Y-%m-%d')}."
+            }
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run("stock_service:app", host='127.0.0.1', port=5001, reload=True)

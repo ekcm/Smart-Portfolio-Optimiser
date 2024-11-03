@@ -12,6 +12,8 @@ import { TransactionsModule } from './module/transactions.module';
 import { PortfolioCreationModule } from './module/portfolioCreation.module';
 import { FinanceNewsModule } from './module/financeNews.module';
 import { AlertModule } from './module/alert.module';
+import { RuleModule } from './module/rule.module'; 
+import { RuleValidatorModule } from './module/ruleValidator.module';
 
 @Module({
   imports: [
@@ -35,7 +37,9 @@ import { AlertModule } from './module/alert.module';
     TransactionsModule,
     PortfolioCreationModule,
     FinanceNewsModule,
-    AlertModule
+    AlertModule,
+    RuleModule, 
+    RuleValidatorModule,
   ],
 })
 export class AppModule {}
