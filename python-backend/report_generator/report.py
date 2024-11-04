@@ -41,7 +41,7 @@ def generate():
     filename = "output.pdf"
 
     pdf_buffer = io.BytesIO()
-    pdf = SimpleDocTemplate(filename, pagesize=A4)
+    pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4)
 
     # Set up styles for headings and body text
     styles = getSampleStyleSheet()

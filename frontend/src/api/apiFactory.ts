@@ -1,4 +1,5 @@
 export const BASE_SERVER_URL = process.env.NEXT_PUBLIC_BASE_SERVER_URL || "http://localhost:8000";
+export const REPORT_SERVER_URL = process.env.NEXT_PUBLIC_REPORT_SERVER_URL || "http://localhost:5002";
 
 export const CORE_API_PATH = process.env.NEXT_PUBLIC_CORE_API_PATH || "/core";
 export const ASSET_API_PATH = process.env.NEXT_PUBLIC_ASSET_API_PATH || "/asset";

@@ -1,6 +1,6 @@
 import { CreatePortfolioForm, PortfolioData } from '@/lib/types';
 import axios from 'axios'
-import { BASE_SERVER_URL, CORE_API_PATH, PORTFOLIO_API_PATH, PORTFOLIO_GENERATION_API_PATH } from './apiFactory';
+import { BASE_SERVER_URL, REPORT_SERVER_URL, CORE_API_PATH, PORTFOLIO_API_PATH, PORTFOLIO_GENERATION_API_PATH } from './apiFactory';
 
 const baseCorePortfolioUrl = BASE_SERVER_URL + CORE_API_PATH + PORTFOLIO_API_PATH;
 const basePortfolioUrl = BASE_SERVER_URL + PORTFOLIO_API_PATH;
@@ -88,5 +88,34 @@ export const getOptimisedPortfolio = async (portfolioId : string) => {
     } catch (error) {
         console.error('Error optimising portfolio: ' + error);
         throw error;
+    }
+}
+
+// REPORT GENERATION
+// TODO: Add current month as params
+export const getMonthlyPortfolioReport = async(portfolioId: string) => {
+    try {
+        const api = `${REPORT_SERVER_URL}/`;
+        const response = await axios.get(api, {
+            responseType: 'blob' // Set response type to blob to handle the file
+        });
+
+        // Create a blob from the response data
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+
+        // Create an anchor element and trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `Portfolio_Report_${portfolioId}.pdf`);
+        
+        // Append to the DOM, trigger the download, and clean up
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Error generating portfolio report: ' + error);
+        throw error;       
     }
 }

@@ -12,6 +12,7 @@ import { Loader2 } from "lucide-react";
 import DateRangePicker from "./DateRangePicker";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { getMonthlyPortfolioReport } from "@/api/portfolio";
 
 interface Breadcrumb {
   href: string;
@@ -90,10 +91,17 @@ export default function DashBoardNavBar() {
 
     // Generate monthly report
     const handleGenerateMonthlyReport = async () => {
+        const pathParts = pathname.split('/').filter(Boolean);
+        const portfolioId: string = pathParts[1];
         console.log("Generate monthly report");
         setReportLoading(true);
+        toast({
+            title: `Your report is being generated!`,
+            description: `Custom report for portfolio ${portfolioName} will be downloaded to your device!`,
+        });
         try {
             await delay(1500);
+            await getMonthlyPortfolioReport(portfolioId);
             console.log("delayed Generate monthly report");
             toast({
                 title: `Monthly report generated successfully.`,
@@ -110,9 +118,9 @@ export default function DashBoardNavBar() {
         }
     }
 
-    // Generate full report
-    const handleGenerateFullReport = async () => {
-        console.log("Generate full report");
+    // Generate ranged report
+    const handleGenerateRangeReport = async () => {
+        console.log("Generate range report");
         console.log(date);
         setReportLoading(true);
         toast({
@@ -123,7 +131,7 @@ export default function DashBoardNavBar() {
             await delay(1500);
             toast({
                 title: `Full report generated successfully.`,
-                description: `Full report for portfolio ${portfolioName} will be downloaded to your device!`,
+                description: `Custom report for portfolio ${portfolioName} will be downloaded to your device!`,
             });
         } catch (error) {
             toast({
@@ -208,7 +216,7 @@ export default function DashBoardNavBar() {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
-                                    <DateRangePicker onGenerateReport={handleGenerateFullReport} />
+                                    <DateRangePicker onGenerateReport={handleGenerateRangeReport} />
                                     <DropdownMenuItem 
                                         onClick={handleGenerateMonthlyReport} 
                                         className="bg-green-700 text-white flex items-center justify-center w-52"
