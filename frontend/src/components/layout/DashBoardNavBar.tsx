@@ -93,6 +93,7 @@ export default function DashBoardNavBar() {
     const handleGenerateMonthlyReport = async () => {
         const pathParts = pathname.split('/').filter(Boolean);
         const portfolioId: string = pathParts[1];
+        const portfolioName = getPortfolioName();
         console.log("Generate monthly report");
         setReportLoading(true);
         toast({
@@ -101,7 +102,7 @@ export default function DashBoardNavBar() {
         });
         try {
             await delay(1500);
-            await getMonthlyPortfolioReport(portfolioId);
+            await getMonthlyPortfolioReport(portfolioId, portfolioName);
             console.log("delayed Generate monthly report");
             toast({
                 title: `Monthly report generated successfully.`,
