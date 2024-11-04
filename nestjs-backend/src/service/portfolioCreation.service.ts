@@ -4,12 +4,13 @@ import { OrderDto } from 'src/dto/order.dto';
 import { Order, OrderType } from 'src/model/order.model';
 import { PortfolioService } from './portfolio.service';
 import { OrderStatus } from '../model/order.model';
-import { ClassicOrder, OptimisedPortfolio, ProposedPortfolio } from 'src/types';
+import { ClassicOrder, OptimisedPortfolio, PortfolioRules, ProposedPortfolio } from 'src/types';
 import { RiskAppetite } from 'src/model/portfolio.model';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { AssetPrice } from 'src/model/assetprice.model';
 import { AssetHolding } from 'src/model/assetholding.model';
+import { RuleHandlerService } from './ruleHandler.service';
 
 @Injectable()
 export class PortfolioCreationService{
@@ -17,9 +18,9 @@ export class PortfolioCreationService{
     private CASH_PERCENTAGE = 0.1
     private OPTIMIZER_URL=process.env.OPTIMIZER_URL
 
-    constructor(private assetPriceService: AssetPriceService, private portfolioService: PortfolioService, private httpService: HttpService) {}
+    constructor(private assetPriceService: AssetPriceService, private portfolioService: PortfolioService, private httpService: HttpService, private ruleHandlerService: RuleHandlerService) {}
     
-    async generateOrders(clientName: string, portfolioName: string, riskAppetite: string, cash: number, managerId: string, exclusions: string[], rules: string[]): Promise<ProposedPortfolio> {
+    async generateOrders(clientName: string, portfolioName: string, riskAppetite: string, cash: number, managerId: string, exclusions: string[], minCash: number, maxCash: number): Promise<ProposedPortfolio> {
         const createdPortfolio = await this.portfolioService.create({
             client: clientName,
             portfolioName: portfolioName,
@@ -28,7 +29,7 @@ export class PortfolioCreationService{
             assetHoldings: [],
             manager: managerId,
             exclusions: exclusions,
-            rules: []
+            rules: await this.ruleHandlerService.presetRules(RiskAppetite[riskAppetite], minCash, maxCash)
         })
         try {
             const response = await lastValueFrom(

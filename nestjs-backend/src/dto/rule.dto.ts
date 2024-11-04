@@ -24,9 +24,6 @@ export class CashRuleDto extends RuleDto {
 export class RiskRuleDto extends RuleDto {
     @IsNotEmpty()
     @IsNumber()
-    stocks: number;
+    stockComposition: number;
 
-    @IsNotEmpty()
-    @IsNumber()
-    bonds: number;
 }

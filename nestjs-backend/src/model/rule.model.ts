@@ -34,10 +34,7 @@ export class CashRule extends Rule {
 @Schema()
 export class RiskRule extends Rule {
     @Prop({ required: true })
-    stocks: number;
-
-    @Prop({ required: true })
-    bonds: number;
+    stockComposition: number;
 }
 
 export const RuleSchema = SchemaFactory.createForClass(Rule);

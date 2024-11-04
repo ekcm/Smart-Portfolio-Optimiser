@@ -15,6 +15,7 @@ import { AlertModule } from './module/alert.module';
 import { RuleLogModule } from './module/ruleLog.module'; 
 import { RuleValidatorModule } from './module/ruleValidator.module';
 import { RuleModule } from './module/rule.module';
+import { RuleHandlerModule } from './module/ruleHandler.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { RuleModule } from './module/rule.module';
     FinanceNewsModule,
     AlertModule,
     RuleModule,
+    RuleHandlerModule,
     RuleLogModule, 
     RuleValidatorModule,
   ],

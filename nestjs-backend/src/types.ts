@@ -144,22 +144,22 @@ interface OptimisedPortfolio {
 }
 
 
-interface MinCashRule extends CashRuleDto {
-    type: RuleType.MIN_CASH;
-}
+// interface MinCashRule extends CashRuleDto {
+//     type: RuleType.MIN_CASH;
+// }
 
-interface MaxCashRule extends CashRuleDto {
-    type: RuleType.MAX_CASH;
-}
+// interface MaxCashRule extends CashRuleDto {
+//     type: RuleType.MAX_CASH;
+// }
 
-interface RiskRule extends RiskRuleDto {
-    type: RuleType.RISK;
-}
+// interface RiskRule extends RiskRuleDto {
+//     type: RuleType.RISK;
+// }
 
 interface PortfolioRules {
-    minCashRule: MinCashRule | null,
-    maxCashRule: MaxCashRule | null,
-    riskRule: RiskRule | null
+    minCashRule: CashRuleDto | null,
+    maxCashRule: CashRuleDto | null,
+    riskRule: RiskRuleDto | null
 }
 
 export type {
@@ -167,5 +167,5 @@ export type {
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, MinCashRule, MaxCashRule, RiskRule, PortfolioRules
+    OptimisedPortfolio, PortfolioRules
 };
