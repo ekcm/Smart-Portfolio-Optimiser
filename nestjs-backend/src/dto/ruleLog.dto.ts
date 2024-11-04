@@ -1,11 +1,20 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { RuleType } from 'src/model/rule.model';
 
 export class RuleLogDto  {
 
     @IsNotEmpty()
     @IsString()
     description: string;
+
+    @IsNotEmpty()
+    @IsString()
+    portfolioId: string | null;
+
+    @IsNotEmpty()
+    @IsEnum(RuleType)
+    ruleType: RuleType;
 
     @IsNotEmpty()
     @IsDate()

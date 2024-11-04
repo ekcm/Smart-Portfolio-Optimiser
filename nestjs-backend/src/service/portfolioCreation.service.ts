@@ -31,6 +31,7 @@ export class PortfolioCreationService{
             exclusions: exclusions,
             rules: await this.ruleHandlerService.presetRules(RiskAppetite[riskAppetite], minCash, maxCash)
         })
+        await this.ruleHandlerService.initialLog(createdPortfolio.rules, createdPortfolio._id.toString())
         try {
             const response = await lastValueFrom(
                 this.httpService.get(this.OPTIMIZER_URL, {

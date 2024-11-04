@@ -5,7 +5,7 @@ import { RuleLog } from "../model/ruleLog.model";
 import { RuleLogService } from "../service/ruleLog.service";
 
 @ApiTags("Rule Log Service")
-@Controller("rule log")
+@Controller("ruleLog")
 export class RuleLogController {
 	constructor(private readonly ruleLogService: RuleLogService) {}
 
