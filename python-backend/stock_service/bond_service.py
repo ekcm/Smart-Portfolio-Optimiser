@@ -96,5 +96,61 @@ def get_bond_info(bond, date: Optional[datetime] = None):
         return {"error": str(e)}
         pass
 
+@app.post("/insert_all")
+def insert_all(bond_date: BondDate):
+
+    for bond in bond_list_info.keys():
+
+        bond_list = []
+        bond_info = get_bond_info(bond, bond_date.date)
+        bond_list.append(bond_info)
+
+        if bond_info is None:
+            print(f"error: NoneType occurred on {bond_date.date}")
+            return {f"error: NoneType occurred on {bond_date.date}"}
+
+        if "error" in bond_info:
+            print(f"error: {bond_info['error']}")
+            return {f"error: {bond_info['error']}"}
+
+        try:
+            with MongoClient(uri) as client:
+                database = client.get_database("FYP-Test-DB")
+                assetPrice = database.get_collection("AssetPrice")
+                assetPrice.insert_one(bond_info)
+        except Exception as e:
+            return {"error": str(e)}
+            pass
+    
+    return {"message": "Data inserted successfully"}
+
+@app.post("/insert_all_date_range")
+def insert_all_date_range():
+    errors = []
+    dates = []
+
+    for i in range(1, 32):
+        aug_date = datetime(2024, 8, i)
+        dates.append(aug_date)
+
+    for i in range(1, 31):
+        sep_date = datetime(2024, 9, i)
+        dates.append(sep_date)
+
+    for i in range(1, 32):
+        oct_date = datetime(2024, 10, i)
+        dates.append(oct_date)
+
+    try:
+        for date in dates:
+            bond_date = BondDate(date=date)
+            print(f"{date} is being inserted")
+            result = insert_all(bond_date)
+            if "error" in result:
+                errors.append({"date": date, "error": result["error"]})
+    except Exception as e:
+        return {"error": str(e)}
+    return {"data": "All bonds were added successfully", "errors": errors}
+
 if __name__ == "__main__":
     uvicorn.run("bond_service:app", host='127.0.0.1', port=5005, reload=True)
