@@ -20,6 +20,7 @@ import { OrderFulfilmentModule } from './module/orderFulfilment.module';
 import { SqsPollingService } from './service/sqsPolling.service';
 import { SqsService } from './service/sqs.service';
 import { PortfolioGateway } from './websocket/portfolio.gateway';
+import { AssetPriceChangeService } from './service/assetpricechange.service';
 
 @Module({
   imports: [
@@ -48,7 +49,7 @@ import { PortfolioGateway } from './websocket/portfolio.gateway';
     AssetPriceTestModule,
     OrderFulfilmentModule,
   ],
-  providers: [SqsService, SqsPollingService, AssetPriceTestService, PortfolioGateway],
+  providers: [SqsService, SqsPollingService, AssetPriceTestService, PortfolioGateway, AssetPriceChangeService,],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly assetPriceTestService: AssetPriceTestService) {}
