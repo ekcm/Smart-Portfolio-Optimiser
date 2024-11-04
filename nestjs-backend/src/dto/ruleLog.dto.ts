@@ -5,16 +5,7 @@ export class RuleLogDto  {
 
     @IsNotEmpty()
     @IsString()
-    name: string;
-
-    @IsNotEmpty()
-    @IsString()
     description: string;
-
-    @IsNotEmpty()
-    @IsNumber()
-    @Type(() => Number)
-    version: number;
 
     @IsNotEmpty()
     @IsDate()

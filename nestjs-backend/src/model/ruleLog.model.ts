@@ -5,20 +5,13 @@ import { Document } from 'mongoose';
 export class RuleLog extends Document {
 
     @Prop()
-    name: string;
-
-    @Prop()
     description: string;
 
-    @Prop({ required: true, type: Number })
-    version: number;
-    
     @Prop({ required: true, type: Date })
     timestamp: Date;
 
     @Prop()
     changeMessage: string;
 }
-
 
 export const RuleLogSchema = SchemaFactory.createForClass(RuleLog);

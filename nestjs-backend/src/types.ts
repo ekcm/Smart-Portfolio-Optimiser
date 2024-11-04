@@ -156,10 +156,16 @@ interface RiskRule extends RiskRuleDto {
     type: RuleType.RISK;
 }
 
+interface PortfolioRules {
+    minCashRule: MinCashRule | null,
+    maxCashRule: MaxCashRule | null,
+    riskRule: RiskRule | null
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, MinCashRule, MaxCashRule, RiskRule
+    OptimisedPortfolio, MinCashRule, MaxCashRule, RiskRule, PortfolioRules
 };

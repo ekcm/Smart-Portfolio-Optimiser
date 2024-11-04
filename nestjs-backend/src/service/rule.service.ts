@@ -1,18 +1,14 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Rule, RuleType } from 'src/model/rule.model';
 import { CashRuleDto, RiskRuleDto } from 'src/dto/rule.dto';
-import { PortfolioService } from 'src/service/portfolio.service';
-import { RuleLogService } from 'src/service/ruleLog.service';
+import { Rule } from 'src/model/rule.model';
 
 @Injectable()
 export class RuleService {
     constructor(
         @InjectModel(Rule.name) private ruleModel: Model<Rule>,
-        private portfolioService: PortfolioService,
-        private ruleLogService: RuleLogService
-    ) {}
+    ) { }
 
     async findAll(): Promise<Rule[]> {
         return this.ruleModel.find().exec();
@@ -35,7 +31,7 @@ export class RuleService {
 
     async updateRule(id: string, dto: CashRuleDto | RiskRuleDto): Promise<Rule> {
         const rule = await this.findById(id);
-        
+
         if ((rule as any).__type !== dto.__type) {
             throw new BadRequestException('Cannot change rule type');
         }
@@ -43,7 +39,7 @@ export class RuleService {
         const updatedRule = await this.ruleModel
             .findByIdAndUpdate(id, dto, { new: true })
             .exec();
-            
+
         return updatedRule;
     }
 

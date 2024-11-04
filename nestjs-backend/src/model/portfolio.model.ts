@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 import { AssetHolding } from "./assetholding.model";
+import { PortfolioRules } from "src/types";
 
 export enum RiskAppetite {
   LOW = 'LOW',
@@ -31,8 +32,8 @@ export class Portfolio extends Document {
   @Prop({ type: [String], default: []})
   exclusions: string[]
 
-  @Prop({ type: [String], default: [] })
-  rules: string[];
+  @Prop({ required: true, type: Object })
+  rules: PortfolioRules;
 }
 
 // missing and transactionsList
