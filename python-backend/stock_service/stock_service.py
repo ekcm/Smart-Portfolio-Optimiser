@@ -1,6 +1,5 @@
 from yahoo_fin.stock_info import get_data
-from datetime import date
-from datetime import timedelta, datetime
+from datetime import date, timedelta, datetime
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
