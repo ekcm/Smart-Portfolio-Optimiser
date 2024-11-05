@@ -1,6 +1,5 @@
 from yahoo_fin.stock_info import get_data
-from datetime import date
-from datetime import timedelta, datetime
+from datetime import date, timedelta, datetime
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
@@ -394,8 +393,8 @@ def generate_json():
     errors = []
     dates = []
     
-    for i in range(1, 32):
-        july_date = datetime(2024, 7, i)
+    for i in range(1, 2):
+        july_date = datetime(2024, 11, i)
         dates.append(july_date)
 
     json_data = {}
