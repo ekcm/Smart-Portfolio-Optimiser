@@ -1,10 +1,11 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody, ApiProperty } from '@nestjs/swagger';
 import { RuleHandlerService } from 'src/service/ruleHandler.service';
 import { RiskAppetite } from 'src/model/portfolio.model';
 import { IsEnum, IsNumber, Min, Max } from 'class-validator';
-import { CashRuleDto, RiskRuleDto } from 'src/dto/rule.dto';
-import { PortfolioRules } from 'src/types';
+import { CashRuleDto, RiskRuleDto, RuleType } from 'src/dto/rule.dto';
+import { PortfolioRules, UpdateRuleDto } from 'src/types';
+import { RuleLog } from 'src/model/ruleLog.model';
 
 // DTO for request validation
 export class PresetRulesDto {
@@ -54,7 +55,7 @@ export class PortfolioRulesResponse {
 @Controller('rules')
 @ApiTags('Portfolio Rules')
 export class RuleHandlerController {
-    constructor(private readonly ruleHandlerService: RuleHandlerService) {}
+    constructor(private readonly ruleHandlerService: RuleHandlerService) { }
 
     @Post('preset')
     @ApiOperation({
@@ -77,11 +78,9 @@ export class RuleHandlerController {
         );
     }
 
-    @Post('initial-log/:portfolioId')
-    async createInitialLog(
-        @Param('portfolioId') portfolioId: string,
-        @Body('rules') rules: PortfolioRules
-    ): Promise<void> {
-        await this.ruleHandlerService.initialLog(rules, portfolioId);
+    @Put('update/:portfolioId')
+    async updateRules(@Param('portfolioId') portfolioId: string, @Body() updateRuleDto: UpdateRuleDto): Promise<RuleLog> {
+        return this.ruleHandlerService.updateRules(portfolioId, updateRuleDto);
     }
+
 }

@@ -4,7 +4,7 @@ import { PortfolioDto } from "./dto/portfolio.dto";
 import { CashRuleDto, RiskRuleDto, RuleDto } from "./dto/rule.dto";
 import { Portfolio } from "./model/portfolio.model";
 import { Order } from "src/model/order.model";
-import { RuleType } from "./model/rule.model";
+import { RuleType } from "src/dto/rule.dto";
 
 interface DashboardCard {
     portfolioId: string,
@@ -162,10 +162,16 @@ interface PortfolioRules {
     riskRule: RiskRuleDto | null
 }
 
+interface UpdateRuleDto {
+    ruleType: RuleType;
+    rule: any;
+    changeMessage: string;
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, PortfolioRules
+    OptimisedPortfolio, PortfolioRules, UpdateRuleDto
 };

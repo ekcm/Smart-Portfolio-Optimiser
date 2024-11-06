@@ -1,5 +1,11 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { RuleType } from "src/model/rule.model";
+
+export enum RuleType {
+    MIN_CASH = 'MIN_CASH',
+    MAX_CASH = 'MAX_CASH',
+    RISK = 'RISK',
+    EXCLUSIONS = 'EXCLUSIONS'
+}
 
 export class RuleDto {
     @IsNotEmpty()

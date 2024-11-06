@@ -1,15 +1,14 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { AssetPriceService } from './assetprice.service';
-import { OrderDto } from 'src/dto/order.dto';
-import { Order, OrderType } from 'src/model/order.model';
-import { PortfolioService } from './portfolio.service';
-import { OrderStatus } from '../model/order.model';
-import { ClassicOrder, OptimisedPortfolio, PortfolioRules, ProposedPortfolio } from 'src/types';
-import { RiskAppetite } from 'src/model/portfolio.model';
 import { HttpService } from '@nestjs/axios';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
-import { AssetPrice } from 'src/model/assetprice.model';
 import { AssetHolding } from 'src/model/assetholding.model';
+import { AssetPrice } from 'src/model/assetprice.model';
+import { OrderType } from 'src/model/order.model';
+import { RiskAppetite } from 'src/model/portfolio.model';
+import { ClassicOrder, OptimisedPortfolio, ProposedPortfolio } from 'src/types';
+import { OrderStatus } from '../model/order.model';
+import { AssetPriceService } from './assetprice.service';
+import { PortfolioService } from './portfolio.service';
 import { RuleHandlerService } from './ruleHandler.service';
 
 @Injectable()
@@ -31,7 +30,7 @@ export class PortfolioCreationService{
             exclusions: exclusions,
             rules: await this.ruleHandlerService.presetRules(RiskAppetite[riskAppetite], minCash, maxCash)
         })
-        await this.ruleHandlerService.initialLog(createdPortfolio.rules, createdPortfolio._id.toString())
+        await this.ruleHandlerService.initialLog(createdPortfolio.exclusions, createdPortfolio.rules, createdPortfolio._id.toString(), managerId)
         try {
             const response = await lastValueFrom(
                 this.httpService.get(this.OPTIMIZER_URL, {

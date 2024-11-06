@@ -14,7 +14,7 @@ import { FinanceNewsModule } from './module/financeNews.module';
 import { AlertModule } from './module/alert.module';
 import { RuleLogModule } from './module/ruleLog.module'; 
 import { RuleValidatorModule } from './module/ruleValidator.module';
-import { RuleModule } from './module/rule.module';
+// import { RuleModule } from './module/rule.module';
 import { RuleHandlerModule } from './module/ruleHandler.module';
 
 @Module({
@@ -40,7 +40,6 @@ import { RuleHandlerModule } from './module/ruleHandler.module';
     PortfolioCreationModule,
     FinanceNewsModule,
     AlertModule,
-    RuleModule,
     RuleHandlerModule,
     RuleLogModule, 
     RuleValidatorModule,
