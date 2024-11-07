@@ -9,7 +9,6 @@ export default function EditClientPortfolio() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
     const pathname = usePathname();
     const portfolioId = pathname.split("/")[2];
-    // TODO: Pull data from backend for exclusions list of portfolio
 
     useEffect(() => {
         setDashBoardNavBarState("Empty");

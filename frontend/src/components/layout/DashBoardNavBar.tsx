@@ -196,9 +196,9 @@ export default function DashBoardNavBar() {
                         <Link href={`/dashboard/${id}/neworder`}>
                             <Button className="mr-4 bg-red-500">Create New Order</Button>
                         </Link>
-                        {/* <Link href={`/dashboard/${id}/editportfolio`}>
-                            <Button className="mr-4 bg-red-700">Edit Portfolio</Button>
-                        </Link> */}
+                        <Link href={`/dashboard/${id}/editportfolio`}>
+                            <Button className="mr-4 bg-yellow-500">Edit Portfolio Rules</Button>
+                        </Link>
                         <Link href={`/dashboard/${id}/editcash`}>
                             <Button className="mr-4 bg-green-700">Edit Cash</Button>
                         </Link>

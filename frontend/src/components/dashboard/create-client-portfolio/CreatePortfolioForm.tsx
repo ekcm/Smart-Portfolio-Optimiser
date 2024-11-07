@@ -100,6 +100,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       newErrors.portfolioName = "Portfolio name must be at least 2 characters.";
     if (!riskAppetite) newErrors.riskAppetite = "Select a valid risk appetite.";
     if (cashAmount === 0) newErrors.cashAmount = "Cash amount must be at least 0";
+    // TODO: Add validation for minCash & maxCash
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -116,6 +117,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       minCash,
       maxCash
     };
+    console.log(formData);
 
     try {
       // Call createPortfolio function and pass formData as the parameter

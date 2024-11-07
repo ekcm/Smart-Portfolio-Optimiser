@@ -1,5 +1,5 @@
 import { CreatePortfolioForm, PortfolioData } from '@/lib/types';
-import axios from 'axios'
+import axios from 'axios';
 import { BASE_SERVER_URL, REPORT_SERVER_URL, CORE_API_PATH, PORTFOLIO_API_PATH, PORTFOLIO_GENERATION_API_PATH } from './apiFactory';
 import { getFormattedReportDate } from '@/utils/utils';
 
