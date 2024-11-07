@@ -17,6 +17,7 @@ export class PortfolioBreakdownService{
         var securities = new Map<string, number>()
         var assetHoldings = portfolio.assetHoldings
         var total = 0
+        var totalAssets = 0
 
         const tickers = assetHoldings.map(assetHolding => assetHolding.ticker)
         const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
@@ -60,6 +61,7 @@ export class PortfolioBreakdownService{
             }
 
             total += value
+            totalAssets += value
         }
 
         industries.forEach((value, industry) => {
@@ -73,10 +75,11 @@ export class PortfolioBreakdownService{
         const geographiesArray = Array.from(geographies, ([key, value]) => ({[key]: value}))
 
         securities.forEach((value, security) => {
-            securities.set(security, CalculatorUtility.precisionRound(value / total * 100, 2))
+            securities.set(security, CalculatorUtility.precisionRound(value / totalAssets * 100, 2))
         });
         const securitiesArray = Array.from(securities, ([key, value]) => ({[key]: value}))
-
+        const cashAmount = portfolio.cashAmount
+        securitiesArray.push({"CASH": CalculatorUtility.precisionRound(cashAmount / totalAssets * 100, 2)})
 
         return {
             securities: securitiesArray,

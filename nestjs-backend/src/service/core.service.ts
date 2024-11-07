@@ -48,12 +48,16 @@ export class CoreService {
         const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId);
         const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
 
+        const totalValue = portfolioCalculations.totalValue
+        const cashValue =  portfolioBreakdown.securities[0]["CASH"] || portfolioBreakdown.securities[1]["CASH"] || portfolioBreakdown.securities[2]["CASH"] || 0 
         return {
             portfolioId: portfolioId,
             clientName: portfolio.client,
             portfolioName: portfolio.portfolioName,
             portfolioAnalysis: {
-                totalAssets: portfolioCalculations.totalValue,
+                totalAssets: totalValue,
+                cashAmount: portfolio.cashAmount,
+                securitiesValue: (1 - (cashValue / 100)) * totalValue,
                 dailyPL: portfolioCalculations.dailyPL,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 totalPL: portfolioCalculations.totalPL,
