@@ -66,6 +66,7 @@ interface PortfolioData {
     portfolioName: string;
     portfolioAnalysis: PortfolioAnalysis;
     triggeredAlerts: AlertDto[];
+    breachedRules: BreachedRule[];
     portfolioBreakdown: PortfolioBreakdown;
     portfolioHoldings: PortfolioHoldings[];
     orderExecutionProgress: OrderExecutionProgress[];
@@ -168,10 +169,16 @@ interface UpdateRuleDto {
     changeMessage: string;
 }
 
+interface BreachedRule {
+    ruleType: RuleType;
+    breachMessage: string;
+    recommendation: string;
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, PortfolioRules, UpdateRuleDto
+    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule
 };
