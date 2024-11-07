@@ -17,12 +17,12 @@ export class PortfolioBreakdownService{
         var securities = new Map<string, number>()
         var assetHoldings = portfolio.assetHoldings
         var total = 0
+
         var totalAssets = portfolio.cashAmount
 
         const tickers = assetHoldings.map(assetHolding => assetHolding.ticker)
         const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
         const assets = await this.assetService.getAllFrom(tickers)
-        console.log(assets)
 
         const assetPriceMap = assetPrices.reduce((map, assetPrice) => {
             map.set(assetPrice.ticker, assetPrice)
@@ -78,6 +78,7 @@ export class PortfolioBreakdownService{
             securities.set(security, CalculatorUtility.precisionRound(value / totalAssets * 100, 2))
         });
         const securitiesArray = Array.from(securities, ([key, value]) => ({[key]: value}))
+
         securitiesArray.push({"CASH": CalculatorUtility.precisionRound(portfolio.cashAmount / totalAssets * 100, 2)})
 
         return {
