@@ -29,17 +29,73 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-@app.get("/")
-def generate():
+@app.get("/trade_executions")
+def generate_trade_executions():
+    with open("data.json", "r") as f:
+        data = json.load(f)
+
+        pie_chart_fillColors = [colors.blue, colors.green, colors.red, colors.orange, colors.purple, colors.yellow, colors.pink, colors.cyan, colors.brown, colors.grey]
+
+        pdf_buffer = io.BytesIO()
+        pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4)
+
+        # Set up styles for headings and body text
+        styles = getSampleStyleSheet()
+        h1_heading_style = styles['Heading1']
+        h2_heading_style = styles['Heading2']
+        body_style = styles['BodyText']
+
+        trade_execution_heading = Paragraph("Trade Execution", h1_heading_style)
+
+        trade_execution_time_period = data['trade_execution_summary']['time_period']
+        trade_execution_performance = data['trade_execution_summary']['execution_performance']
+        trade_execution_body = Paragraph(f"The following are the trade executions for the portfolio conducted between {trade_execution_time_period}. During this time period, the trades conducted had an execution performance of {trade_execution_performance}", body_style)
+
+        # trade execution transactions
+        trade_execution_data = data['trade_execution_summary']
+        trade_execution_transactions = trade_execution_data['transactions']
+
+        trade_execution_table_data = [["ID", "Asset Name", "Direction", "Quantity", "Price"]]
+        for i in range(len(trade_execution_transactions)):
+            trade_execution_table_data.append([i+1, trade_execution_transactions[i]['asset'], trade_execution_transactions[i]['direction'], trade_execution_transactions[i]['quantity'], trade_execution_transactions[i]['strike_price']])
+
+        trade_execution_table = Table(trade_execution_table_data)
+        trade_execution_table.hAlign = 'LEFT'
+        trade_execution_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.red),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
+
+        elements = [
+            trade_execution_heading,
+            trade_execution_body,
+            trade_execution_table
+        ]
+        pdf.build(elements)
+
+        pdf_buffer.seek(0)
+
+        current_date = datetime.now().strftime("%d/%m/%y")
+        filename = f"{data['portfolio_details']['portfolio_name']}_trade_executions_{current_date}.pdf"
+        
+        headers = {
+            'Content-Disposition': f'attachment; filename={filename}'
+        }
+        return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
+
+@app.get("/report")
+def generate_report():
     # should be replaced with data from api endpoint
     with open("data.json", "r") as f:
         data = json.load(f)
 
     pie_chart_fillColors = [colors.blue, colors.green, colors.red, colors.orange, colors.purple, colors.yellow, colors.pink, colors.cyan, colors.brown, colors.grey]
-
-    # Create the PDF document
-    filename = "output.pdf"
-
     pdf_buffer = io.BytesIO()
     pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4)
 
@@ -118,35 +174,6 @@ def generate():
     commentary_data = portfolio_summary_data["commentary_and_market_outlook"]
     commentary = Paragraph(commentary_data, body_style)
 
-    # trade execution
-    spacer = Spacer(1, 0.2 * inch)
-    trade_execution_heading = Paragraph("Trade Execution", h1_heading_style)
-
-    trade_execution_time_period = data['trade_execution_summary']['time_period']
-    trade_execution_performance = data['trade_execution_summary']['execution_performance']
-    trade_execution_body = Paragraph(f"The following are the trade executions for the portfolio conducted between {trade_execution_time_period}. During this time period, the trades conducted had an execution performance of {trade_execution_performance}", body_style)
-
-    # trade execution transactions
-    trade_execution_data = data['trade_execution_summary']
-    trade_execution_transactions = trade_execution_data['transactions']
-
-    trade_execution_table_data = [["ID", "Asset Name", "Direction", "Quantity", "Price"]]
-    for i in range(len(trade_execution_transactions)):
-        trade_execution_table_data.append([i+1, trade_execution_transactions[i]['asset'], trade_execution_transactions[i]['direction'], trade_execution_transactions[i]['quantity'], trade_execution_transactions[i]['strike_price']])
-
-    trade_execution_table = Table(trade_execution_table_data)
-    trade_execution_table.hAlign = 'LEFT'
-    trade_execution_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.red),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
     elements = [
         portfolio_report_heading,
         portfolio_summary_heading,
@@ -157,10 +184,6 @@ def generate():
         sector_allocation_drawing,
         commentary_heading,
         commentary,
-        spacer,
-        trade_execution_heading,
-        trade_execution_body,
-        trade_execution_table
     ]
     pdf.build(elements)
 
