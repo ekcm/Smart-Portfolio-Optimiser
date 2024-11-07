@@ -51,13 +51,16 @@ export class PortfolioService {
         })
     }
 
-    async update(id: string, portfolioDto: PortfolioDto): Promise<Portfolio> {
+    async update(id: string, portfolioDto: Partial<PortfolioDto>): Promise<Portfolio> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 const existingPortfolio = await this.portfolioModel.findByIdAndUpdate(
                     id,
-                    portfolioDto,
-                    { new: true }
+                    {   $set: portfolioDto  },
+                    {
+                        new: true,
+                        runValidators: true
+                    }
                 );
                 if (!existingPortfolio) {
                     reject(new NotFoundException('Portfolio #${id} not found'));
@@ -99,17 +102,21 @@ export class PortfolioService {
 
     }
 
-    async getRulesByPortfolioId(portfolioId: string): Promise<string[]> {
-        return new Promise((resolve, reject) => {
-            setTimeout(async () => {
-                const portfolio = await this.portfolioModel.findById(portfolioId).exec();
-                if (portfolio) {
-                    resolve(portfolio.rules);
-                } else {
-                    reject(new NotFoundException(`Portfolio with ID ${portfolioId} not found`));
-                }
-            }, 1000);
-        });
-    }
-    
+
+
+
+
+    // async getRulesByPortfolioId(portfolioId: string): Promise<string[]> {
+    //     return new Promise((resolve, reject) => {
+    //         setTimeout(async () => {
+    //             const portfolio = await this.portfolioModel.findById(portfolioId).exec();
+    //             if (portfolio) {
+    //                 resolve(portfolio.rules);
+    //             } else {
+    //                 reject(new NotFoundException(`Portfolio with ID ${portfolioId} not found`));
+    //             }
+    //         }, 1000);
+    //     });
+    // }
+
 }

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
-import { PortfolioBreakdown } from "src/types";
+import { CalculatedPortfolio, PortfolioBreakdown } from "src/types";
 import { CalculatorUtility } from '../utilities/calculatorUtility';
 import { AssetPrice } from "src/model/assetprice.model";
 import { Asset } from "src/model/asset.model";
@@ -17,12 +17,12 @@ export class PortfolioBreakdownService{
         var securities = new Map<string, number>()
         var assetHoldings = portfolio.assetHoldings
         var total = 0
-        var totalAssets = 0
+
+        var totalAssets = portfolio.cashAmount
 
         const tickers = assetHoldings.map(assetHolding => assetHolding.ticker)
         const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
         const assets = await this.assetService.getAllFrom(tickers)
-        console.log(assets)
 
         const assetPriceMap = assetPrices.reduce((map, assetPrice) => {
             map.set(assetPrice.ticker, assetPrice)
@@ -78,8 +78,8 @@ export class PortfolioBreakdownService{
             securities.set(security, CalculatorUtility.precisionRound(value / totalAssets * 100, 2))
         });
         const securitiesArray = Array.from(securities, ([key, value]) => ({[key]: value}))
-        const cashAmount = portfolio.cashAmount
-        securitiesArray.push({"CASH": CalculatorUtility.precisionRound(cashAmount / totalAssets * 100, 2)})
+
+        securitiesArray.push({"CASH": CalculatorUtility.precisionRound(portfolio.cashAmount / totalAssets * 100, 2)})
 
         return {
             securities: securitiesArray,
@@ -87,4 +87,5 @@ export class PortfolioBreakdownService{
             geography: geographiesArray,
         }
     }
+
 }
