@@ -1,4 +1,5 @@
 import { AlertDto } from "./dto/alert.dto";
+import { AssetHoldingDto } from "./dto/assetholding.dto";
 import { OrderDto } from "./dto/order.dto";
 import { PortfolioDto } from "./dto/portfolio.dto";
 import { Portfolio } from "./model/portfolio.model";
@@ -141,10 +142,14 @@ interface OptimisedPortfolio {
     orders: ClassicOrder[]
 }
 
+interface PortfolioReport extends PortfolioBreakdown {
+    assets: AssetHoldingDto[]
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio
+    OptimisedPortfolio, PortfolioReport
 };

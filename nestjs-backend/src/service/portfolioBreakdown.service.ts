@@ -2,14 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
-import { PortfolioBreakdown } from "src/types";
+import { PortfolioBreakdown, PortfolioReport } from "src/types";
 import { CalculatorUtility } from '../utilities/calculatorUtility';
 import { AssetPrice } from "src/model/assetprice.model";
 import { Asset } from "src/model/asset.model";
+import { PortfolioService } from "./portfolio.service";
 
 @Injectable()
 export class PortfolioBreakdownService{
-    constructor(private assetPriceService: AssetPriceService, private assetService: AssetService) { }
+    constructor(private assetPriceService: AssetPriceService, private assetService: AssetService, private portfolioService: PortfolioService) { }
 
     async loadPortfolio(portfolio: Portfolio): Promise<PortfolioBreakdown> {
         var industries = new Map<string, number>()
@@ -82,6 +83,17 @@ export class PortfolioBreakdownService{
             securities: securitiesArray,
             industry: industriesArray,
             geography: geographiesArray,
+        }
+    }
+
+    async loadReport(portfolioId: string): Promise<PortfolioReport> {
+        const portfolio = await this.portfolioService.getById(portfolioId);
+        const portfolioBreakdown : PortfolioBreakdown = await this.loadPortfolio(portfolio);
+        return {
+            securities: portfolioBreakdown.securities,
+            geography: portfolioBreakdown.geography,
+            industry: portfolioBreakdown.industry,
+            assets: portfolio.assetHoldings
         }
     }
 }
