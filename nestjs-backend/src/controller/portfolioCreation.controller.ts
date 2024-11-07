@@ -17,7 +17,7 @@ export class PortfolioCreationController {
         description: 'Array of the tickers of excluded assets',
         example: ['AAPL']
     })
-    async generateOrders(@Query('clientName') clientName: string, @Query('portfolioName') portfolioName: string, @Query('riskAppetite') riskAppetite: string, @Query('cash') cash: number, @Query('managerId') managerId: string, @Query('exclusions') exclusions: string[] = [], @Query('minCash') minCash: number, @Query('minCash') maxCash: number): Promise<ProposedPortfolio> {
+    async generateOrders(@Query('clientName') clientName: string, @Query('portfolioName') portfolioName: string, @Query('riskAppetite') riskAppetite: string, @Query('cash') cash: number, @Query('managerId') managerId: string, @Query('exclusions') exclusions: string[] = [], @Query('minCash') minCash: number, @Query('maxCash') maxCash: number): Promise<ProposedPortfolio> {
         const exclusionsArray = Array.isArray(exclusions) ? exclusions : [exclusions];
         return await this.portfolioCreationService.generateOrders(clientName, portfolioName, riskAppetite, cash, managerId, exclusionsArray, minCash, maxCash);
     }
