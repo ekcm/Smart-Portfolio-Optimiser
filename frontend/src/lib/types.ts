@@ -23,6 +23,8 @@ interface FinanceNewsItem {
 
 interface PortfolioAnalysis {
   totalAssets: number;
+  cashAmount: number;
+  securitiesValue: number;
   dailyPL: number;
   dailyPLPercentage: number;
   totalPL: number;
