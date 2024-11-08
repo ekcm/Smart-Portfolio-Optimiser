@@ -175,6 +175,7 @@ interface BreachedRule {
     ruleType: RuleType;
     breachMessage: string;
     recommendation: string;
+    news?: AlertDto[];
 }
 
 export type {

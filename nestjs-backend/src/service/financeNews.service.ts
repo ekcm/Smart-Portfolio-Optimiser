@@ -84,6 +84,36 @@ export class FinanceNewsService {
             }, 1000)
         })
     }
+    async getLatestByTickersSentiment(tickers: string[], sentiment: number): Promise<FinanceNews[]> {
+        return new Promise((resolve) =>  {
+            setTimeout(async () => {
+                const news = await this.financeNewsModel.aggregate([
+                    {
+                        $match: {
+                            ticker: { $in: tickers },
+                            sentimentRating: sentiment,
+                        },
+                    },
+                    {
+                        $sort: {
+                            date: -1,
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: "$ticker",
+                            latestNews: { $first: "$$ROOT"},
+                        },
+                    },
+                    {
+                        $replaceRoot: { newRoot: "$latestNews"}
+                    }
+                ]).exec()
+                
+                resolve(news)
+            }, 1000)
+        })
+    }
 
 
 
