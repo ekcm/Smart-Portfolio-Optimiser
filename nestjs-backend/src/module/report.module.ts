@@ -4,11 +4,12 @@ import { AssetService } from 'src/service/asset.service';
 import { AssetPriceService } from 'src/service/assetprice.service';
 import { PortfolioService } from 'src/service/portfolio.service';
 import { PortfolioBreakdownService } from 'src/service/portfolioBreakdown.service';
+import { ReportService } from 'src/service/report.service';
 
 @Module({
-    imports: [AssetPriceService, AssetService, PortfolioService],
+    imports: [PortfolioService, PortfolioBreakdownService],
     controllers: [ReportController],
-    providers: [PortfolioBreakdownService],
-    exports: [PortfolioBreakdownService]
+    providers: [ReportService],
+    exports: [ReportService]
 })
 export class RuleModule { }

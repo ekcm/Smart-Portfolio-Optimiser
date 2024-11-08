@@ -1,9 +1,7 @@
 import { AlertDto } from "./dto/alert.dto";
-import { AssetHoldingDto } from "./dto/assetholding.dto";
 import { OrderDto } from "./dto/order.dto";
-import { PortfolioDto } from "./dto/portfolio.dto";
+import { AssetHolding } from "./model/assetholding.model";
 import { Portfolio } from "./model/portfolio.model";
-import { Order } from "src/model/order.model";
 
 interface DashboardCard {
     portfolioId: string,
@@ -142,8 +140,22 @@ interface OptimisedPortfolio {
     orders: ClassicOrder[]
 }
 
-interface PortfolioReport extends PortfolioBreakdown {
-    assets: AssetHoldingDto[]
+interface PortfolioReport {
+    portfolioDetails: PortfolioDetails,
+    portfolioSummary: PortfolioSummary
+}
+
+interface PortfolioDetails{
+    portfolioName: string,
+    portfolioClient: string
+}
+
+interface PortfolioSummary{
+    assetsAllocation: Map<string, AssetHolding>,
+    topHoldings: Map<string, number>,
+    overview: string,
+    sectorAllocation: Map<string, number>,
+    commentary: string
 }
 
 export type {
@@ -151,5 +163,5 @@ export type {
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, PortfolioReport
+    OptimisedPortfolio, PortfolioReport, PortfolioDetails, PortfolioSummary
 };

@@ -10,7 +10,7 @@ import { PortfolioService } from "./portfolio.service";
 
 @Injectable()
 export class PortfolioBreakdownService{
-    constructor(private assetPriceService: AssetPriceService, private assetService: AssetService, private portfolioService: PortfolioService) { }
+    constructor(private assetPriceService: AssetPriceService, private assetService: AssetService) { }
 
     async loadPortfolio(portfolio: Portfolio): Promise<PortfolioBreakdown> {
         var industries = new Map<string, number>()
@@ -83,17 +83,6 @@ export class PortfolioBreakdownService{
             securities: securitiesArray,
             industry: industriesArray,
             geography: geographiesArray,
-        }
-    }
-
-    async loadReport(portfolioId: string): Promise<PortfolioReport> {
-        const portfolio = await this.portfolioService.getById(portfolioId);
-        const portfolioBreakdown : PortfolioBreakdown = await this.loadPortfolio(portfolio);
-        return {
-            securities: portfolioBreakdown.securities,
-            geography: portfolioBreakdown.geography,
-            industry: portfolioBreakdown.industry,
-            assets: portfolio.assetHoldings
         }
     }
 }
