@@ -22,7 +22,7 @@ export class ReportService{
         );
         const assetHoldingArray = portfolio.assetHoldings
         const sortedSecurities = securitiesArray.sort(([, a], [, b]) => b - a);
-        const top3Securities = sortedSecurities.slice(0,3)
+        const top3Securities = sortedSecurities.slice(0, Math.max(3, sortedSecurities.length))
         industryArray.forEach(obj => {
             for (const key in obj) {
                 const value = obj[key];
