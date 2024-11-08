@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
-import { PortfolioBreakdown, PortfolioReport } from "src/types";
+import { CalculatedPortfolio, PortfolioBreakdown } from "src/types";
 import { CalculatorUtility } from '../utilities/calculatorUtility';
 import { AssetPrice } from "src/model/assetprice.model";
 import { Asset } from "src/model/asset.model";
@@ -19,10 +19,11 @@ export class PortfolioBreakdownService{
         var assetHoldings = portfolio.assetHoldings
         var total = 0
 
+        var totalAssets = portfolio.cashAmount
+
         const tickers = assetHoldings.map(assetHolding => assetHolding.ticker)
         const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
         const assets = await this.assetService.getAllFrom(tickers)
-        console.log(assets)
 
         const assetPriceMap = assetPrices.reduce((map, assetPrice) => {
             map.set(assetPrice.ticker, assetPrice)
@@ -61,6 +62,7 @@ export class PortfolioBreakdownService{
             }
 
             total += value
+            totalAssets += value
         }
 
         industries.forEach((value, industry) => {
@@ -74,10 +76,11 @@ export class PortfolioBreakdownService{
         const geographiesArray = Array.from(geographies, ([key, value]) => ({[key]: value}))
 
         securities.forEach((value, security) => {
-            securities.set(security, CalculatorUtility.precisionRound(value / total * 100, 2))
+            securities.set(security, CalculatorUtility.precisionRound(value / totalAssets * 100, 2))
         });
         const securitiesArray = Array.from(securities, ([key, value]) => ({[key]: value}))
 
+        securitiesArray.push({"CASH": CalculatorUtility.precisionRound(portfolio.cashAmount / totalAssets * 100, 2)})
 
         return {
             securities: securitiesArray,
@@ -85,4 +88,5 @@ export class PortfolioBreakdownService{
             geography: geographiesArray,
         }
     }
+
 }

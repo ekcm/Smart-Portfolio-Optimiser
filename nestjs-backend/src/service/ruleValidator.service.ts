@@ -1,33 +1,48 @@
 import { Injectable } from "@nestjs/common";
+import { RuleType } from "src/dto/rule.dto";
+import { BreachedRule, CalculatedPortfolio, PortfolioBreakdown, PortfolioRules } from "src/types";
+import { RuleValidatorUtility } from "src/utilities/ruleValidatorUtility";
 
 @Injectable()
 export class RuleValidatorService {
 
-    async checkPortfolio(body: any): Promise<any> {
-        return { status: "Portfolio rules checked" };
+    constructor() { }
+
+    async checkPortfolio(rules: PortfolioRules, cash: number, calculatedPortfolio: CalculatedPortfolio, portfolioBreakdown: PortfolioBreakdown) : Promise<BreachedRule[]> {
+        
+        const breachedRules: BreachedRule[] = []
+
+        const totalValue = calculatedPortfolio.totalValue
+
+        if (RuleValidatorUtility.checkMinCash(rules.minCashRule.percentage, totalValue, cash) === false) {
+            breachedRules.push({
+                ruleType: RuleType.MIN_CASH,
+                breachMessage: `Cash is below ${rules.minCashRule.percentage}% of the portfolio value`,
+                recommendation: ``
+            })
+        }
+
+        if (RuleValidatorUtility.checkMaxCash(rules.maxCashRule.percentage, totalValue, cash) === false) {
+            breachedRules.push({
+                ruleType: RuleType.MAX_CASH,
+                breachMessage: `Cash is above ${rules.maxCashRule.percentage}% of the portfolio value`,
+                recommendation: ``
+            })
+        }
+
+        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, totalValue, portfolioBreakdown.securities["STOCK"]) === false) {
+            breachedRules.push({
+                ruleType: RuleType.RISK,
+                breachMessage: `Stocks are above ${rules.riskRule.stockComposition}% of the portfolio value`,
+                recommendation: ``
+            })
+        }
+
+        
+
+
+        return breachedRules
     }
 
-    async checkAddStock(body: any): Promise<any> {
-        return { status: "Add stock rules checked" };
-    }
-
-    async checkOptimisePortfolio(body: any): Promise<any> {
-        return { status: "Optimisation rules checked" };
-    }
-
-    async checkStockUpdate(body: any): Promise<any> {
-        return { status: "Stock update rules checked" };
-    }
-
-    async checkHomeDashboard(body: any): Promise<any> {
-        return { status: "Home dashboard rules checked" };
-    }
-
-    async checkAddCash(body: any): Promise<any> {
-        return { status: "Add cash rules checked" };
-    }
-
-    async checkModifyPortfolio(body: any): Promise<any> {
-        return { status: "Modify portfolio rules checked" };
-    }
+    
 }

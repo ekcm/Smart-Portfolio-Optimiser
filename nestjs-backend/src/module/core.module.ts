@@ -9,9 +9,10 @@ import { OrderExecutionsModule } from "./orderExecutions.module";
 import { AlertModule } from "./alert.module";
 import { FinanceNewsModule } from "./financeNews.module";
 import { AssetModule } from "./asset.module";
+import { RuleValidatorModule } from "./ruleValidator.module";
 
 @Module({
-    imports: [PortfolioCalculatorModule, PortfolioModule, PortfolioBreakdownModule, PortfolioHoldingsModule, OrderExecutionsModule, AlertModule, FinanceNewsModule, AssetModule],
+    imports: [PortfolioCalculatorModule, PortfolioModule, PortfolioBreakdownModule, PortfolioHoldingsModule, OrderExecutionsModule, AlertModule, FinanceNewsModule, AssetModule, RuleValidatorModule],
     controllers: [CoreController],
     providers: [CoreService],
     exports: [CoreService],

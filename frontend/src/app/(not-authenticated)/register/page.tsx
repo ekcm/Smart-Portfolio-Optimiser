@@ -8,7 +8,7 @@ import { Button } from "../../../components/ui/button";
 
 import Image from "next/image";
 
-import ubsLogo from "../../../../public/ubs-logo.png";
+import ubsLogo from "../../../../public/pct.png";
 import { Link } from "next-view-transitions";
 
 export default function Register() {
