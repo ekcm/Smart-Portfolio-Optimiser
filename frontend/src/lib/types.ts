@@ -231,11 +231,17 @@ interface UpdateRule {
     changeMessage: string;
 }
 
-enum RuleType {
+export enum RuleType {
     MIN_CASH = 'MIN_CASH',
     MAX_CASH = 'MAX_CASH',
     RISK = 'RISK',
     EXCLUSIONS = 'EXCLUSIONS'
+}
+
+interface UpdateRule {
+    ruleType: RuleType;
+    rule: any;
+    changeMessage: string;
 }
 
 export type {

@@ -1,11 +1,12 @@
-import { CreatePortfolioForm, PortfolioData } from '@/lib/types';
+import { CreatePortfolioForm, PortfolioData, RuleType } from '@/lib/types';
 import axios from 'axios';
-import { BASE_SERVER_URL, REPORT_SERVER_URL, CORE_API_PATH, PORTFOLIO_API_PATH, PORTFOLIO_GENERATION_API_PATH } from './apiFactory';
+import { BASE_SERVER_URL, REPORT_SERVER_URL, CORE_API_PATH, PORTFOLIO_API_PATH, PORTFOLIO_GENERATION_API_PATH, RULES_API_PATH } from './apiFactory';
 import { getFormattedReportDate } from '@/utils/utils';
 
 const baseCorePortfolioUrl = BASE_SERVER_URL + CORE_API_PATH + PORTFOLIO_API_PATH;
 const basePortfolioUrl = BASE_SERVER_URL + PORTFOLIO_API_PATH;
 const generatePortfolioUrl = BASE_SERVER_URL + PORTFOLIO_GENERATION_API_PATH;
+const portfolioRulesUrl = BASE_SERVER_URL + RULES_API_PATH;
 export const viewPortfolio = async (portfolioId : string) : Promise<PortfolioData> => {
     try {
         const api = `${baseCorePortfolioUrl}/${portfolioId}`;
@@ -85,6 +86,21 @@ export const getOptimisedPortfolio = async (portfolioId : string) => {
     try {
         const api = `${generatePortfolioUrl}/${portfolioId}`;
         const response = await axios.get(api);
+        return response.data;
+    } catch (error) {
+        console.error('Error optimising portfolio: ' + error);
+        throw error;
+    }
+}
+
+export const updatePortfolioRule = async(portfolioId: string, rule: any, ruleType: RuleType, changeMessage: string) => {
+    try {
+        const api = `${portfolioRulesUrl}/update/${portfolioId}`;
+        const response = await axios.put(api,{
+            ruleType: ruleType,
+            rule: rule,
+            changeMessage: changeMessage
+        });
         return response.data;
     } catch (error) {
         console.error('Error optimising portfolio: ' + error);
