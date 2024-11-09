@@ -10,10 +10,13 @@ import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioHoldingsService } from './portfolioHoldings.service';
 import { RuleValidatorService } from './ruleValidator.service';
+import { RuleLogService } from "./ruleLog.service";
+import { RuleLog } from "src/model/ruleLog.model";
+import { RuleLogDto } from "src/dto/ruleLog.dto";
 
 @Injectable()
 export class CoreService {
-    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService, private alertService: AlertService, private financeNewsService: FinanceNewsService, private assetService: AssetService, private ruleValidatorService: RuleValidatorService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService, private alertService: AlertService, private financeNewsService: FinanceNewsService, private assetService: AssetService, private ruleValidatorService: RuleValidatorService, private ruleLogService: RuleLogService) { }
 
 
     async loadHomepage(managerId: string): Promise<DashboardCard[]> {
@@ -96,7 +99,6 @@ export class CoreService {
 
         return financeNewsCards
     }
-
     async loadNewsArticle(newsId: string): Promise<NewsArticle> {
         const news = await this.financeNewsService.getById(newsId)
         const asset = await this.assetService.getByTicker(news.ticker)
@@ -129,10 +131,7 @@ export class CoreService {
                 }
                 insights.push(insight)
             }
-
-        }
-
-        
+        }        
         return {
             id: newsId,
             company: asset.name,
@@ -142,5 +141,9 @@ export class CoreService {
             insights: insights,
             references: news.references
         }
+    }
+
+    async loadRuleLogs(portfolioId: string): Promise<RuleLogDto[]> {
+        return await this.ruleLogService.getAllByPortfolioId(portfolioId) as RuleLogDto[]
     }
 }

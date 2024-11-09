@@ -140,7 +140,7 @@ async updateRules(portfolioId: string, updateRuleDto: UpdateRuleDto): Promise<Ru
 
         case "EXCLUSIONS":
             const exclusions = rule as string[];
-            logDescription = `Excluded assets: ${exclusions}`;
+            logDescription = exclusions.length > 0 ? `Excluded assets: ${exclusions}` : "No exclusions";
             updateData = {
                 exclusions
             };
