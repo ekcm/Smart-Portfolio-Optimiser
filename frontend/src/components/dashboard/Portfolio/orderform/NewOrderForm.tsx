@@ -11,7 +11,6 @@ import { getPortfolio } from "@/api/portfolio";
 import Loader from "@/components/loader/Loader";
 import Error from "@/components/error/Error";
 import { v4 as uuidv4 } from 'uuid';
-import { date } from "zod";
 import { viewIndivLatestNews } from "@/api/financenews";
 
 interface NewOrderFormProps {
@@ -151,6 +150,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 portfolioAssets={portfolioAssets}
                 assetsData={allAssets}
                 triggeredAlerts={triggeredAlerts}
+                breachedRules={data.breachedRules}
                 addTransaction={addTransaction} 
             />
             <div className="flex gap-4">
