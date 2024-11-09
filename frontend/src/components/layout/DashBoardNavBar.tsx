@@ -9,6 +9,10 @@ import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { delay } from "@/utils/utils";
 import { Loader2 } from "lucide-react";
+import DateRangePicker from "./DateRangePicker";
+import { addDays, format, startOfMonth, endOfMonth } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { getMonthlyPortfolioReport, getOrdersHistoryReport } from "@/api/portfolio";
 
 interface Breadcrumb {
   href: string;
@@ -19,14 +23,19 @@ export default function DashBoardNavBar() {
     // main state of dashboard to display different set of buttons
     const DashBoardNavBarState = useDashBoardNavBarStore((state) => state.mainState);
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
-    const pathname = usePathname();
     const [portfolioName, setPortfolioName] = useState<string | null>(null);
     const [financeNewsName, setFinanceNewsName] = useState<string | null>(null);
+    const [date, setDate] = useState<DateRange | undefined>({
+        from: startOfMonth(new Date()),
+        to: endOfMonth(new Date()),
+    })
+    const pathname = usePathname();
+    const pathParts = pathname.split('/').filter(Boolean);
+    const portfolioId: string = pathParts[1];
     const { toast } = useToast();
 
     // loader
     const [reportLoading, setReportLoading] = useState<boolean>(false);
-
 
     const pages: Record<string, string> = {
         dashboard: "Dashboard",
@@ -82,12 +91,18 @@ export default function DashBoardNavBar() {
       });
     };
 
+    // Generate monthly report
     const handleGenerateMonthlyReport = async () => {
-        // Generate monthly report
+        const portfolioName = getPortfolioName();
         console.log("Generate monthly report");
         setReportLoading(true);
+        toast({
+            title: `Your report is being generated!`,
+            description: `Custom report for portfolio ${portfolioName} will be downloaded to your device!`,
+        });
         try {
             await delay(1500);
+            await getMonthlyPortfolioReport(portfolioId, portfolioName);
             console.log("delayed Generate monthly report");
             toast({
                 title: `Monthly report generated successfully.`,
@@ -104,15 +119,21 @@ export default function DashBoardNavBar() {
         }
     }
 
-    const handleGenerateFullReport = async () => {
-        // Generate full report
-        console.log("Generate full report");
+    // Generate ranged report
+    const handleGenerateOrdersExecutionReport = async () => {
+        console.log("Generate range report");
+        console.log(date);
         setReportLoading(true);
+        toast({
+            title: `Your report is being generated!`,
+            description: `Custom report for portfolio ${portfolioName} will be downloaded to your device!`,
+        });
         try {
             await delay(1500);
+            await getOrdersHistoryReport(portfolioId, portfolioName, date?.from, date?.to);
             toast({
                 title: `Full report generated successfully.`,
-                description: `Full report for portfolio ${portfolioName} will be downloaded to your device!`,
+                description: `Orders History report for portfolio ${portfolioName} will be downloaded to your device!`,
             });
         } catch (error) {
             toast({
@@ -176,9 +197,9 @@ export default function DashBoardNavBar() {
                         <Link href={`/dashboard/${id}/neworder`}>
                             <Button className="mr-4 bg-red-500">Create New Order</Button>
                         </Link>
-                        {/* <Link href={`/dashboard/${id}/editportfolio`}>
-                            <Button className="mr-4 bg-red-700">Edit Portfolio</Button>
-                        </Link> */}
+                        <Link href={`/dashboard/${id}/editportfolio`}>
+                            <Button className="mr-4 bg-yellow-500">Edit Portfolio Rules</Button>
+                        </Link>
                         <Link href={`/dashboard/${id}/editcash`}>
                             <Button className="mr-4 bg-green-700">Edit Cash</Button>
                         </Link>
@@ -196,12 +217,13 @@ export default function DashBoardNavBar() {
                                         Generate Portfolio Reports
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem onClick={handleGenerateMonthlyReport} className="w-52">
+                                <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
+                                    <DateRangePicker date={date} setDate={setDate} onGenerateReport={handleGenerateOrdersExecutionReport} />
+                                    <DropdownMenuItem 
+                                        onClick={handleGenerateMonthlyReport} 
+                                        className="bg-green-700 text-white flex items-center justify-center w-52"
+                                    >
                                         Monthly Report
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={handleGenerateFullReport} className="w-52">
-                                        Full Report
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

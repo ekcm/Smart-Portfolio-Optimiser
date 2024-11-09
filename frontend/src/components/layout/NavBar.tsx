@@ -2,7 +2,7 @@ import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { useState } from "react";
 import { usePathname } from 'next/navigation';
-import ubsLogo from "../../../public/ubs-logo.png";
+import ubsLogo from "../../../public/pct.png";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 

@@ -1,18 +1,22 @@
 import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
-import { DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from "src/types";
+import { DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from 'src/types';
+import { AlertService } from "./alert.service";
+import { AssetService } from "./asset.service";
+import { FinanceNewsService } from "./financeNews.service";
+import { OrderExecutionsService } from './orderExecutions.service';
 import { PortfolioService } from "./portfolio.service";
 import { PortfolioBreakdownService } from './portfolioBreakdown.service';
 import { PortfolioCalculatorService } from "./portfolioCalculator.service";
 import { PortfolioHoldingsService } from './portfolioHoldings.service';
-import { OrderExecutionsService } from './orderExecutions.service';
-import { AlertService } from "./alert.service";
-import { FinanceNewsService } from "./financeNews.service";
-import { AssetService } from "./asset.service";
+import { RuleValidatorService } from './ruleValidator.service';
+import { RuleLogService } from "./ruleLog.service";
+import { RuleLog } from "src/model/ruleLog.model";
+import { RuleLogDto } from "src/dto/ruleLog.dto";
 
 @Injectable()
 export class CoreService {
-    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService, private alertService: AlertService, private financeNewsService: FinanceNewsService, private assetService: AssetService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioCalculatorService: PortfolioCalculatorService, private portfolioBreakdownService: PortfolioBreakdownService, private portfolioHoldingsService: PortfolioHoldingsService, private orderExecutionsService: OrderExecutionsService, private alertService: AlertService, private financeNewsService: FinanceNewsService, private assetService: AssetService, private ruleValidatorService: RuleValidatorService, private ruleLogService: RuleLogService) { }
 
 
     async loadHomepage(managerId: string): Promise<DashboardCard[]> {
@@ -21,8 +25,8 @@ export class CoreService {
 
         for (const portfolio of portfolios) {
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
-            const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
-
+            const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
+            const isBreached = await this.ruleValidatorService.checkBreached(portfolio.rules, portfolio.cashAmount, portfolioCalculations, portfolioBreakdown)
             portfolioCards.push({
                 portfolioId: portfolio._id.toString(),
                 clientName: portfolio.client,
@@ -34,7 +38,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 rateOfReturn: 100,
-                alertsPresent: alerts.length > 0,
+                alertsPresent: isBreached,
             });
         }
         return portfolioCards
@@ -48,12 +52,18 @@ export class CoreService {
         const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId);
         const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
 
+        const totalValue = portfolioCalculations.totalValue
+        const cashValue =  portfolioBreakdown.securities[0]["CASH"] || portfolioBreakdown.securities[1]["CASH"] || portfolioBreakdown.securities[2]["CASH"] || 0 
+        const breachedRules = await this.ruleValidatorService.checkPortfolio(portfolio.rules, portfolio.cashAmount, portfolioCalculations, portfolioBreakdown, portfolio.exclusions, portfolio.assetHoldings)
+
         return {
             portfolioId: portfolioId,
             clientName: portfolio.client,
             portfolioName: portfolio.portfolioName,
             portfolioAnalysis: {
-                totalAssets: portfolioCalculations.totalValue,
+                totalAssets: totalValue,
+                cashAmount: portfolio.cashAmount,
+                securitiesValue: (1 - (cashValue / 100)) * totalValue,
                 dailyPL: portfolioCalculations.dailyPL,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 totalPL: portfolioCalculations.totalPL,
@@ -61,6 +71,7 @@ export class CoreService {
                 annualizedRoR: 100
             },
             triggeredAlerts: alerts,
+            breachedRules: breachedRules,
             portfolioBreakdown: portfolioBreakdown,
             portfolioHoldings: portfolioHoldings,
             orderExecutionProgress: orderExecutions
@@ -88,7 +99,6 @@ export class CoreService {
 
         return financeNewsCards
     }
-
     async loadNewsArticle(newsId: string): Promise<NewsArticle> {
         const news = await this.financeNewsService.getById(newsId)
         const asset = await this.assetService.getByTicker(news.ticker)
@@ -121,10 +131,7 @@ export class CoreService {
                 }
                 insights.push(insight)
             }
-
-        }
-
-        
+        }        
         return {
             id: newsId,
             company: asset.name,
@@ -134,5 +141,9 @@ export class CoreService {
             insights: insights,
             references: news.references
         }
+    }
+
+    async loadRuleLogs(portfolioId: string): Promise<RuleLogDto[]> {
+        return await this.ruleLogService.getAllByPortfolioId(portfolioId) as RuleLogDto[]
     }
 }

@@ -1,8 +1,11 @@
 import { AlertDto } from "./dto/alert.dto";
 import { OrderDto } from "./dto/order.dto";
 import { PortfolioDto } from "./dto/portfolio.dto";
+import { CashRuleDto, RiskRuleDto, RuleDto } from "./dto/rule.dto";
 import { Portfolio } from "./model/portfolio.model";
 import { Order } from "src/model/order.model";
+import { RuleType } from "src/dto/rule.dto";
+import { RuleLogDto } from "./dto/ruleLog.dto";
 
 interface DashboardCard {
     portfolioId: string,
@@ -29,6 +32,8 @@ interface FinanceNewsItem {
 
 interface PortfolioAnalysis {
     totalAssets: number;
+    cashAmount: number;
+    securitiesValue: number;
     dailyPL: number;
     dailyPLPercentage: number;
     totalPL: number;
@@ -64,6 +69,7 @@ interface PortfolioData {
     portfolioName: string;
     portfolioAnalysis: PortfolioAnalysis;
     triggeredAlerts: AlertDto[];
+    breachedRules: BreachedRule[];
     portfolioBreakdown: PortfolioBreakdown;
     portfolioHoldings: PortfolioHoldings[];
     orderExecutionProgress: OrderExecutionProgress[];
@@ -141,10 +147,43 @@ interface OptimisedPortfolio {
     orders: ClassicOrder[]
 }
 
+
+// interface MinCashRule extends CashRuleDto {
+//     type: RuleType.MIN_CASH;
+// }
+
+// interface MaxCashRule extends CashRuleDto {
+//     type: RuleType.MAX_CASH;
+// }
+
+// interface RiskRule extends RiskRuleDto {
+//     type: RuleType.RISK;
+// }
+
+interface PortfolioRules {
+    minCashRule: CashRuleDto | null,
+    maxCashRule: CashRuleDto | null,
+    riskRule: RiskRuleDto | null
+}
+
+interface UpdateRuleDto {
+    ruleType: RuleType;
+    rule: any;
+    changeMessage: string;
+}
+
+interface BreachedRule {
+    ruleType: RuleType;
+    breachMessage: string;
+    recommendation: string;
+    news?: AlertDto[];
+}
+
+
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio
+    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule
 };

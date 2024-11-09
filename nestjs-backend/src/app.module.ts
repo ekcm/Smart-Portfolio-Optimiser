@@ -12,7 +12,7 @@ import { TransactionsModule } from './module/transactions.module';
 import { PortfolioCreationModule } from './module/portfolioCreation.module';
 import { FinanceNewsModule } from './module/financeNews.module';
 import { AlertModule } from './module/alert.module';
-import { RuleModule } from './module/rule.module'; 
+import { RuleLogModule } from './module/ruleLog.module'; 
 import { RuleValidatorModule } from './module/ruleValidator.module';
 import { AssetPriceTestModule } from './module/assetpricetest.module';
 import { AssetPriceTestService } from './service/assetpricetest.service';
@@ -21,6 +21,8 @@ import { SqsPollingService } from './service/sqsPolling.service';
 import { SqsService } from './service/sqs.service';
 import { PortfolioGateway } from './websocket/portfolio.gateway';
 import { AssetPriceChangeService } from './service/assetpricechange.service';
+// import { RuleModule } from './module/rule.module';
+import { RuleHandlerModule } from './module/ruleHandler.module';
 
 @Module({
   imports: [
@@ -44,7 +46,8 @@ import { AssetPriceChangeService } from './service/assetpricechange.service';
     PortfolioCreationModule,
     FinanceNewsModule,
     AlertModule,
-    RuleModule, 
+    RuleHandlerModule,
+    RuleLogModule, 
     RuleValidatorModule,
     AssetPriceTestModule,
     OrderFulfilmentModule,

@@ -23,6 +23,8 @@ interface FinanceNewsItem {
 
 interface PortfolioAnalysis {
   totalAssets: number;
+  cashAmount: number;
+  securitiesValue: number;
   dailyPL: number;
   dailyPLPercentage: number;
   totalPL: number;
@@ -224,6 +226,26 @@ interface ClassicOrder extends OptimiserOrders {
   last: number;
 }
 
+// rules types
+interface UpdateRule {
+    ruleType: RuleType;
+    rule: any;
+    changeMessage: string;
+}
+
+export enum RuleType {
+    MIN_CASH = 'MIN_CASH',
+    MAX_CASH = 'MAX_CASH',
+    RISK = 'RISK',
+    EXCLUSIONS = 'EXCLUSIONS'
+}
+
+interface UpdateRule {
+    ruleType: RuleType;
+    rule: any;
+    changeMessage: string;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -247,6 +269,8 @@ export type {
     OptimisedPortfolio,
     OptimiserOrders,
     ClassicOrder,
+    // rules
+    UpdateRule,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,

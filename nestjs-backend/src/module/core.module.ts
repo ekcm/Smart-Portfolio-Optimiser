@@ -9,9 +9,12 @@ import { OrderExecutionsModule } from "./orderExecutions.module";
 import { AlertModule } from "./alert.module";
 import { FinanceNewsModule } from "./financeNews.module";
 import { AssetModule } from "./asset.module";
+import { RuleValidatorModule } from "./ruleValidator.module";
+import { RuleLogController } from "src/controller/ruleLog.controller";
+import { RuleLogModule } from "./ruleLog.module";
 
 @Module({
-    imports: [PortfolioCalculatorModule, PortfolioModule, PortfolioBreakdownModule, PortfolioHoldingsModule, OrderExecutionsModule, AlertModule, FinanceNewsModule, AssetModule],
+    imports: [PortfolioCalculatorModule, PortfolioModule, PortfolioBreakdownModule, PortfolioHoldingsModule, OrderExecutionsModule, AlertModule, FinanceNewsModule, AssetModule, RuleValidatorModule, RuleLogModule],
     controllers: [CoreController],
     providers: [CoreService],
     exports: [CoreService],
