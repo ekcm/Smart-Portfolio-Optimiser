@@ -60,8 +60,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         { value: RuleType.MIN_CASH, label: "Minimum Cash" },
         { value: RuleType.MAX_CASH, label: "Maximum Cash" },
         { value: RuleType.RISK, label: "Risk Level" },
-        // { value: RuleType.EXCLUSIONS, label: "Exclusions List" },
-        // Add other RuleType mappings as needed
+        { value: RuleType.EXCLUSIONS, label: "Exclusions List" },
     ];
 
     const riskAppetites = {
@@ -83,7 +82,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
             setMinCash(portfolioData.rules.minCashRule.percentage);
             setMaxCash(portfolioData.rules.maxCashRule.percentage);
             setRiskAppetite(portfolioData.riskAppetite);
-            console.log(portfolioData);
+            setExclusions(portfolioData.exclusions[0].split(","));
         } catch (error) {
             console.error("Error fetching portfolio data: ", error);
             setLoadPortfolioError("Failed to fetch portfolio data");
@@ -134,6 +133,8 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
             ruleValue = minCash;
         } else if (selectedRule === RuleType.MAX_CASH) {
             ruleValue = maxCash;
+        } else if (selectedRule === RuleType.EXCLUSIONS) {
+            ruleValue = exclusions.join(",");
         }
         setIsUpdateLoading(true);
         setEditPortfolioState(true);
