@@ -1,7 +1,7 @@
 import { CreatePortfolioForm, PortfolioData, RuleType } from '@/lib/types';
 import axios from 'axios';
 import { BASE_SERVER_URL, REPORT_SERVER_URL, CORE_API_PATH, PORTFOLIO_API_PATH, PORTFOLIO_GENERATION_API_PATH, RULES_API_PATH } from './apiFactory';
-import { getFormattedReportDate } from '@/utils/utils';
+import { getFormattedReportDate, getMonthYearString } from '@/utils/utils';
 
 const baseCorePortfolioUrl = BASE_SERVER_URL + CORE_API_PATH + PORTFOLIO_API_PATH;
 const basePortfolioUrl = BASE_SERVER_URL + PORTFOLIO_API_PATH;
@@ -111,7 +111,7 @@ export const updatePortfolioRule = async(portfolioId: string, rule: any, ruleTyp
 // REPORT GENERATION
 export const getMonthlyPortfolioReport = async(portfolioId: string, portfolioName: string | null) => {
     try {
-        const api = `${REPORT_SERVER_URL}/report`;
+        const api = `${REPORT_SERVER_URL}/report?portfolioId=${portfolioId}`;
         const response = await axios.get(api, {
             responseType: 'blob' // Set response type to blob to handle the file
         });
@@ -138,9 +138,11 @@ export const getMonthlyPortfolioReport = async(portfolioId: string, portfolioNam
 }
 
 // TODO: Add current month as params
-export const getOrdersHistoryReport = async(portfolioId: string,  portfolioName: string | null) => {
+export const getOrdersHistoryReport = async(portfolioId: string,  portfolioName: string | null, startDate: Date | undefined, endDate: Date | undefined) => {
     try {
-        const api = `${REPORT_SERVER_URL}/trade_executions`;
+        const start = getMonthYearString(startDate);
+        const end = getMonthYearString(endDate);
+        const api = `${REPORT_SERVER_URL}/trade_executions?portfolioId=${portfolioId}&startDate=${start}&endDate=${end}`;
         const response = await axios.get(api, {
             responseType: 'blob' // Set response type to blob to handle the file
         });

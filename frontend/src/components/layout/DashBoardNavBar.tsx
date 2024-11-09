@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { delay } from "@/utils/utils";
 import { Loader2 } from "lucide-react";
 import DateRangePicker from "./DateRangePicker";
-import { addDays, format } from "date-fns";
+import { addDays, format, startOfMonth, endOfMonth } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { getMonthlyPortfolioReport, getOrdersHistoryReport } from "@/api/portfolio";
 
@@ -25,9 +25,9 @@ export default function DashBoardNavBar() {
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
     const [portfolioName, setPortfolioName] = useState<string | null>(null);
     const [financeNewsName, setFinanceNewsName] = useState<string | null>(null);
-    const [date, setDate] = React.useState<DateRange | undefined>({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
+    const [date, setDate] = useState<DateRange | undefined>({
+        from: startOfMonth(new Date()),
+        to: endOfMonth(new Date()),
     })
     const pathname = usePathname();
     const pathParts = pathname.split('/').filter(Boolean);
@@ -130,7 +130,7 @@ export default function DashBoardNavBar() {
         });
         try {
             await delay(1500);
-            await getOrdersHistoryReport(portfolioId, portfolioName);
+            await getOrdersHistoryReport(portfolioId, portfolioName, date?.from, date?.to);
             toast({
                 title: `Full report generated successfully.`,
                 description: `Orders History report for portfolio ${portfolioName} will be downloaded to your device!`,
@@ -218,7 +218,7 @@ export default function DashBoardNavBar() {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
-                                    <DateRangePicker onGenerateReport={handleGenerateOrdersExecutionReport} />
+                                    <DateRangePicker date={date} setDate={setDate} onGenerateReport={handleGenerateOrdersExecutionReport} />
                                     <DropdownMenuItem 
                                         onClick={handleGenerateMonthlyReport} 
                                         className="bg-green-700 text-white flex items-center justify-center w-52"
