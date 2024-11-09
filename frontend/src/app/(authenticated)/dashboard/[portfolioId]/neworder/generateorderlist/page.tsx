@@ -57,7 +57,12 @@ export default function GenerateOrderList() {
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
             <h1 className="text-3xl font-bold">Confirm New Orders</h1>
-            <OrderList data={indivPortfolioData} newOrders={orders} triggeredAlerts={indivPortfolioData.triggeredAlerts} />
+            <OrderList 
+                data={indivPortfolioData} 
+                newOrders={orders} 
+                triggeredAlerts={indivPortfolioData.triggeredAlerts} 
+                breachedRules={indivPortfolioData.breachedRules}
+            />
         </main>
     )
 }

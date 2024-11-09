@@ -95,6 +95,7 @@ interface PortfolioData {
   portfolioName: string;
   clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
+  breachedRules: BreachedRule[];
   triggeredAlerts: Alert[];
   portfolioBreakdown: PortfolioBreakdown;
   portfolioHoldings: PortfolioHoldings[];
@@ -240,6 +241,13 @@ export enum RuleType {
     EXCLUSIONS = 'EXCLUSIONS'
 }
 
+interface BreachedRule {
+    ruleType: RuleType;
+    breachMessage: string;
+    recommendation: string;
+    news?: Alert[];
+}
+
 interface UpdateRule {
     ruleType: RuleType;
     rule: any;
@@ -271,6 +279,7 @@ export type {
     ClassicOrder,
     // rules
     UpdateRule,
+    BreachedRule,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,
