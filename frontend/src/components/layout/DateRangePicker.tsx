@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { addDays, format } from "date-fns";
+import React, { useState } from "react";
+import { addDays, format, startOfMonth, endOfMonth } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
@@ -22,9 +22,9 @@ export default function DateRangePicker({
     className,
     onGenerateReport
 }: DateRangePickerProps) {
-    const [date, setDate] = React.useState<DateRange | undefined>({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
+    const [date, setDate] = useState<DateRange | undefined>({
+        from: startOfMonth(new Date()),
+        to: endOfMonth(new Date()),
     })
   return (
     <div className={cn("grid gap-2", className)}>
@@ -38,7 +38,7 @@ export default function DateRangePicker({
               !date && "text-muted-foreground"
             )}
           >
-            Custom Date
+            Orders History
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="center">
@@ -74,7 +74,7 @@ export default function DateRangePicker({
                     onSelect={setDate}
                     numberOfMonths={2}
                 />
-                <Button className="bg-green-700 m-12" onClick={onGenerateReport}>Generate Custom Report</Button>
+                <Button className="bg-green-700 m-12" onClick={onGenerateReport}>Generate Orders History Report</Button>
             </div>
         </PopoverContent>
       </Popover>

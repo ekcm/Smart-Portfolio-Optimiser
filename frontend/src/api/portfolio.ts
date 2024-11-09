@@ -109,10 +109,9 @@ export const updatePortfolioRule = async(portfolioId: string, rule: any, ruleTyp
 }
 
 // REPORT GENERATION
-// TODO: Add current month as params
 export const getMonthlyPortfolioReport = async(portfolioId: string, portfolioName: string | null) => {
     try {
-        const api = `${REPORT_SERVER_URL}/`;
+        const api = `${REPORT_SERVER_URL}/report`;
         const response = await axios.get(api, {
             responseType: 'blob' // Set response type to blob to handle the file
         });
@@ -134,6 +133,35 @@ export const getMonthlyPortfolioReport = async(portfolioId: string, portfolioNam
         window.URL.revokeObjectURL(url);
     } catch (error) {
         console.error('Error generating portfolio report: ' + error);
-        throw error;       
+        throw error;
     }
 }
+
+// TODO: Add current month as params
+export const getOrdersHistoryReport = async(portfolioId: string,  portfolioName: string | null) => {
+    try {
+        const api = `${REPORT_SERVER_URL}/trade_executions`;
+        const response = await axios.get(api, {
+            responseType: 'blob' // Set response type to blob to handle the file
+        });
+        
+        const date = getFormattedReportDate();
+
+        const filename = `${portfolioName}_orders_history_${date}`;
+        // Create a blob from the response data and download
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        
+        // Append to the DOM, trigger the download, and clean up
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);      
+    } catch (error) {
+        console.error('Error generating portfolio report: ' + error);
+        throw error;
+    }
+} 

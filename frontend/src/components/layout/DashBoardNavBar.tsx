@@ -12,7 +12,7 @@ import { Loader2 } from "lucide-react";
 import DateRangePicker from "./DateRangePicker";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
-import { getMonthlyPortfolioReport } from "@/api/portfolio";
+import { getMonthlyPortfolioReport, getOrdersHistoryReport } from "@/api/portfolio";
 
 interface Breadcrumb {
   href: string;
@@ -23,13 +23,15 @@ export default function DashBoardNavBar() {
     // main state of dashboard to display different set of buttons
     const DashBoardNavBarState = useDashBoardNavBarStore((state) => state.mainState);
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
-    const pathname = usePathname();
     const [portfolioName, setPortfolioName] = useState<string | null>(null);
     const [financeNewsName, setFinanceNewsName] = useState<string | null>(null);
     const [date, setDate] = React.useState<DateRange | undefined>({
         from: new Date(2022, 0, 20),
         to: addDays(new Date(2022, 0, 20), 20),
     })
+    const pathname = usePathname();
+    const pathParts = pathname.split('/').filter(Boolean);
+    const portfolioId: string = pathParts[1];
     const { toast } = useToast();
 
     // loader
@@ -91,8 +93,6 @@ export default function DashBoardNavBar() {
 
     // Generate monthly report
     const handleGenerateMonthlyReport = async () => {
-        const pathParts = pathname.split('/').filter(Boolean);
-        const portfolioId: string = pathParts[1];
         const portfolioName = getPortfolioName();
         console.log("Generate monthly report");
         setReportLoading(true);
@@ -120,7 +120,7 @@ export default function DashBoardNavBar() {
     }
 
     // Generate ranged report
-    const handleGenerateRangeReport = async () => {
+    const handleGenerateOrdersExecutionReport = async () => {
         console.log("Generate range report");
         console.log(date);
         setReportLoading(true);
@@ -130,9 +130,10 @@ export default function DashBoardNavBar() {
         });
         try {
             await delay(1500);
+            await getOrdersHistoryReport(portfolioId, portfolioName);
             toast({
                 title: `Full report generated successfully.`,
-                description: `Custom report for portfolio ${portfolioName} will be downloaded to your device!`,
+                description: `Orders History report for portfolio ${portfolioName} will be downloaded to your device!`,
             });
         } catch (error) {
             toast({
@@ -217,7 +218,7 @@ export default function DashBoardNavBar() {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
-                                    <DateRangePicker onGenerateReport={handleGenerateRangeReport} />
+                                    <DateRangePicker onGenerateReport={handleGenerateOrdersExecutionReport} />
                                     <DropdownMenuItem 
                                         onClick={handleGenerateMonthlyReport} 
                                         className="bg-green-700 text-white flex items-center justify-center w-52"
