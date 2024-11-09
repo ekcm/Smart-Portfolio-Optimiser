@@ -26,7 +26,7 @@ export class CoreService {
         for (const portfolio of portfolios) {
             const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
             const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
-            const breachedRules = await this.ruleValidatorService.checkPortfolio(portfolio.rules, portfolio.cashAmount, portfolioCalculations, portfolioBreakdown)
+            const isBreached = await this.ruleValidatorService.checkBreached(portfolio.rules, portfolio.cashAmount, portfolioCalculations, portfolioBreakdown)
             portfolioCards.push({
                 portfolioId: portfolio._id.toString(),
                 clientName: portfolio.client,
@@ -38,7 +38,7 @@ export class CoreService {
                 totalPLPercentage: portfolioCalculations.totalPLPercentage,
                 dailyPLPercentage: portfolioCalculations.dailyPLPercentage,
                 rateOfReturn: 100,
-                alertsPresent: breachedRules.length > 0,
+                alertsPresent: isBreached,
             });
         }
         return portfolioCards
@@ -54,7 +54,7 @@ export class CoreService {
 
         const totalValue = portfolioCalculations.totalValue
         const cashValue =  portfolioBreakdown.securities[0]["CASH"] || portfolioBreakdown.securities[1]["CASH"] || portfolioBreakdown.securities[2]["CASH"] || 0 
-        const breachedRules = await this.ruleValidatorService.checkPortfolio(portfolio.rules, portfolio.cashAmount, portfolioCalculations, portfolioBreakdown)
+        const breachedRules = await this.ruleValidatorService.checkPortfolio(portfolio.rules, portfolio.cashAmount, portfolioCalculations, portfolioBreakdown, portfolio.exclusions, portfolio.assetHoldings)
 
         return {
             portfolioId: portfolioId,
