@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AssetModule } from './module/asset.module';
@@ -51,10 +51,6 @@ import { AssetPriceChangeService } from './service/assetpricechange.service';
   ],
   providers: [SqsService, SqsPollingService, AssetPriceTestService, PortfolioGateway, AssetPriceChangeService,],
 })
-export class AppModule implements OnModuleInit {
+export class AppModule {
   constructor(private readonly assetPriceTestService: AssetPriceTestService) {}
-
-  onModuleInit() {
-    this.assetPriceTestService.startPopulating(); 
-  }
 }

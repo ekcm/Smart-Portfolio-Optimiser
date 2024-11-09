@@ -31,6 +31,6 @@ export class SqsPollingService implements OnModuleInit, OnModuleDestroy {
         await this.sqsService.deleteMessage(message.ReceiptHandle);
         console.log('Message processed and deleted from SQS.');
       }
-    }, 15000); 
+    }, 30000); 
   }
 }

@@ -13,6 +13,7 @@ import { Asset, AssetSchema } from '../model/asset.model';
 import { AssetPrice, AssetPriceSchema } from '../model/assetprice.model';
 import { AssetPriceModule } from './assetprice.module'; 
 import { PortfolioGateway } from '../websocket/portfolio.gateway';
+import { AssetPriceTestModule } from './assetpricetest.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PortfolioGateway } from '../websocket/portfolio.gateway';
       { name: AssetPrice.name, schema: AssetPriceSchema },
     ]),
     AssetPriceModule, 
+    AssetPriceTestModule,
   ],
   providers: [
     OrderFulfilmentService,

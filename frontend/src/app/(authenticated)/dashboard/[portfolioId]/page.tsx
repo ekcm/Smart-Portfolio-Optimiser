@@ -40,6 +40,9 @@ export default function Portfolio() {
             socket.on("portfolioUpdate", async () => {
                 console.log("Portfolio update received, refreshing data...");
                 await getIndividualPortfolio(); 
+
+                socket.emit("acknowledgeBatch");
+                console.log("Acknowledgment sent for portfolio update");
             });
 
             socket.on("connect_error", () => {

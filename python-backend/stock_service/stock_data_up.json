@@ -1,0 +1,1694 @@
+{
+    "2024-11-01T00:00:00": [
+        {
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 225.91000366210938,
+            "yesterdayClose": 230.10000610351562,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 219.62902969159862,
+            "yesterdayClose": 225.91000366210938,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 219.58084687992437,
+            "yesterdayClose": 219.62902969159862,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 218.3063787623106,
+            "yesterdayClose": 219.58084687992437,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 209.71424759142278,
+            "yesterdayClose": 218.3063787623106,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 210.0839095760239,
+            "yesterdayClose": 209.71424759142278,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 225.91000366210938,
+            "yesterdayClose": 210.0839095760239,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "AMGN",
+            "company": "Amgen",
+            "sector": "Biopharmaceutical",
+            "todayClose": 320.1600036621094,
+            "yesterdayClose": 315.5400085449219,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "AMGN",
+            "company": "Amgen",
+            "sector": "Biopharmaceutical",
+            "todayClose": 324.7335202195883,
+            "yesterdayClose": 320.1600036621094,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "AMGN",
+            "company": "Amgen",
+            "sector": "Biopharmaceutical",
+            "todayClose": 335.97640200102296,
+            "yesterdayClose": 324.7335202195883,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "AMGN",
+            "company": "Amgen",
+            "sector": "Biopharmaceutical",
+            "todayClose": 345.35053142854065,
+            "yesterdayClose": 335.97640200102296,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "AMGN",
+            "company": "Amgen",
+            "sector": "Biopharmaceutical",
+            "todayClose": 344.00360364546583,
+            "yesterdayClose": 345.35053142854065,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "AMGN",
+            "company": "Amgen",
+            "sector": "Biopharmaceutical",
+            "todayClose": 342.3158327880407,
+            "yesterdayClose": 344.00360364546583,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "AMGN",
+            "company": "Amgen",
+            "sector": "Biopharmaceutical",
+            "todayClose": 320.1600036621094,
+            "yesterdayClose": 342.3158327880407,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "AXP",
+            "company": "American Express",
+            "sector": "Financial Services",
+            "todayClose": 270.0799865722656,
+            "yesterdayClose": 274.0799865722656,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "AXP",
+            "company": "American Express",
+            "sector": "Financial Services",
+            "todayClose": 274.95252387135275,
+            "yesterdayClose": 270.0799865722656,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "AXP",
+            "company": "American Express",
+            "sector": "Financial Services",
+            "todayClose": 270.8002948736715,
+            "yesterdayClose": 274.95252387135275,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "AXP",
+            "company": "American Express",
+            "sector": "Financial Services",
+            "todayClose": 278.3253542453723,
+            "yesterdayClose": 270.8002948736715,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "AXP",
+            "company": "American Express",
+            "sector": "Financial Services",
+            "todayClose": 270.8287185239575,
+            "yesterdayClose": 278.3253542453723,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "AXP",
+            "company": "American Express",
+            "sector": "Financial Services",
+            "todayClose": 269.8382556490499,
+            "yesterdayClose": 270.8287185239575,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "AXP",
+            "company": "American Express",
+            "sector": "Financial Services",
+            "todayClose": 270.0799865722656,
+            "yesterdayClose": 269.8382556490499,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "BA",
+            "company": "Boeing",
+            "sector": "Aerospace and defense",
+            "todayClose": 149.30999755859375,
+            "yesterdayClose": 154.2899932861328,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "BA",
+            "company": "Boeing",
+            "sector": "Aerospace and defense",
+            "todayClose": 142.75588029809606,
+            "yesterdayClose": 149.30999755859375,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "BA",
+            "company": "Boeing",
+            "sector": "Aerospace and defense",
+            "todayClose": 146.19933506421341,
+            "yesterdayClose": 142.75588029809606,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "BA",
+            "company": "Boeing",
+            "sector": "Aerospace and defense",
+            "todayClose": 148.84324062332945,
+            "yesterdayClose": 146.19933506421341,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "BA",
+            "company": "Boeing",
+            "sector": "Aerospace and defense",
+            "todayClose": 142.5742610245818,
+            "yesterdayClose": 148.84324062332945,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "BA",
+            "company": "Boeing",
+            "sector": "Aerospace and defense",
+            "todayClose": 139.27997678125092,
+            "yesterdayClose": 142.5742610245818,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "BA",
+            "company": "Boeing",
+            "sector": "Aerospace and defense",
+            "todayClose": 149.30999755859375,
+            "yesterdayClose": 139.27997678125092,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "CAT",
+            "company": "Caterpillar",
+            "sector": "Construction and mining",
+            "todayClose": 376.20001220703125,
+            "yesterdayClose": 379.239990234375,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "CAT",
+            "company": "Caterpillar",
+            "sector": "Construction and mining",
+            "todayClose": 364.69923263197006,
+            "yesterdayClose": 376.20001220703125,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "CAT",
+            "company": "Caterpillar",
+            "sector": "Construction and mining",
+            "todayClose": 363.48821767736644,
+            "yesterdayClose": 364.69923263197006,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "CAT",
+            "company": "Caterpillar",
+            "sector": "Construction and mining",
+            "todayClose": 367.6748130255758,
+            "yesterdayClose": 363.48821767736644,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "CAT",
+            "company": "Caterpillar",
+            "sector": "Construction and mining",
+            "todayClose": 365.4099130710829,
+            "yesterdayClose": 367.6748130255758,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "CAT",
+            "company": "Caterpillar",
+            "sector": "Construction and mining",
+            "todayClose": 383.2047424632528,
+            "yesterdayClose": 365.4099130710829,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "CAT",
+            "company": "Caterpillar",
+            "sector": "Construction and mining",
+            "todayClose": 376.20001220703125,
+            "yesterdayClose": 383.2047424632528,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "CRM",
+            "company": "Salesforce",
+            "sector": "Information Technology",
+            "todayClose": 291.3699951171875,
+            "yesterdayClose": 296.3999938964844,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "CRM",
+            "company": "Salesforce",
+            "sector": "Information Technology",
+            "todayClose": 278.6413026353411,
+            "yesterdayClose": 291.3699951171875,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "CRM",
+            "company": "Salesforce",
+            "sector": "Information Technology",
+            "todayClose": 279.658060564726,
+            "yesterdayClose": 278.6413026353411,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "CRM",
+            "company": "Salesforce",
+            "sector": "Information Technology",
+            "todayClose": 277.8703414347532,
+            "yesterdayClose": 279.658060564726,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "CRM",
+            "company": "Salesforce",
+            "sector": "Information Technology",
+            "todayClose": 281.37517260634087,
+            "yesterdayClose": 277.8703414347532,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "CRM",
+            "company": "Salesforce",
+            "sector": "Information Technology",
+            "todayClose": 280.15946211826946,
+            "yesterdayClose": 281.37517260634087,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "CRM",
+            "company": "Salesforce",
+            "sector": "Information Technology",
+            "todayClose": 291.3699951171875,
+            "yesterdayClose": 280.15946211826946,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "CSCO",
+            "company": "Cisco",
+            "sector": "Information Technology",
+            "todayClose": 54.77000045776367,
+            "yesterdayClose": 55.59000015258789,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "CSCO",
+            "company": "Cisco",
+            "sector": "Information Technology",
+            "todayClose": 56.09284664821818,
+            "yesterdayClose": 54.77000045776367,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "CSCO",
+            "company": "Cisco",
+            "sector": "Information Technology",
+            "todayClose": 53.71167119954994,
+            "yesterdayClose": 56.09284664821818,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "CSCO",
+            "company": "Cisco",
+            "sector": "Information Technology",
+            "todayClose": 56.33913854461779,
+            "yesterdayClose": 53.71167119954994,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "CSCO",
+            "company": "Cisco",
+            "sector": "Information Technology",
+            "todayClose": 54.2171982215672,
+            "yesterdayClose": 56.33913854461779,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "CSCO",
+            "company": "Cisco",
+            "sector": "Information Technology",
+            "todayClose": 51.63873297577134,
+            "yesterdayClose": 54.2171982215672,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "CSCO",
+            "company": "Cisco",
+            "sector": "Information Technology",
+            "todayClose": 54.77000045776367,
+            "yesterdayClose": 51.63873297577134,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "CVX",
+            "company": "Chevron",
+            "sector": "Petroleum Industry",
+            "todayClose": 148.82000732421875,
+            "yesterdayClose": 148.0500030517578,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "CVX",
+            "company": "Chevron",
+            "sector": "Petroleum Industry",
+            "todayClose": 142.34819087146596,
+            "yesterdayClose": 148.82000732421875,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "CVX",
+            "company": "Chevron",
+            "sector": "Petroleum Industry",
+            "todayClose": 143.1217766983205,
+            "yesterdayClose": 142.34819087146596,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "CVX",
+            "company": "Chevron",
+            "sector": "Petroleum Industry",
+            "todayClose": 142.40652632684467,
+            "yesterdayClose": 143.1217766983205,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "CVX",
+            "company": "Chevron",
+            "sector": "Petroleum Industry",
+            "todayClose": 145.93585309939814,
+            "yesterdayClose": 142.40652632684467,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "CVX",
+            "company": "Chevron",
+            "sector": "Petroleum Industry",
+            "todayClose": 143.53132953352716,
+            "yesterdayClose": 145.93585309939814,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "CVX",
+            "company": "Chevron",
+            "sector": "Petroleum Industry",
+            "todayClose": 148.82000732421875,
+            "yesterdayClose": 143.53132953352716,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "DIS",
+            "company": "Disney",
+            "sector": "Broadcasting and Entertainment",
+            "todayClose": 96.19999694824219,
+            "yesterdayClose": 95.08000183105469,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "DIS",
+            "company": "Disney",
+            "sector": "Broadcasting and Entertainment",
+            "todayClose": 96.49866703266552,
+            "yesterdayClose": 96.19999694824219,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "DIS",
+            "company": "Disney",
+            "sector": "Broadcasting and Entertainment",
+            "todayClose": 98.10326665131448,
+            "yesterdayClose": 96.49866703266552,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "DIS",
+            "company": "Disney",
+            "sector": "Broadcasting and Entertainment",
+            "todayClose": 101.55027198874902,
+            "yesterdayClose": 98.10326665131448,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "DIS",
+            "company": "Disney",
+            "sector": "Broadcasting and Entertainment",
+            "todayClose": 104.03630745190924,
+            "yesterdayClose": 101.55027198874902,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "DIS",
+            "company": "Disney",
+            "sector": "Broadcasting and Entertainment",
+            "todayClose": 100.1474662675958,
+            "yesterdayClose": 104.03630745190924,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "DIS",
+            "company": "Disney",
+            "sector": "Broadcasting and Entertainment",
+            "todayClose": 96.19999694824219,
+            "yesterdayClose": 100.1474662675958,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "DOW",
+            "company": "Dow",
+            "sector": "Chemical Industry",
+            "todayClose": 49.380001068115234,
+            "yesterdayClose": 49.34000015258789,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "DOW",
+            "company": "Dow",
+            "sector": "Chemical Industry",
+            "todayClose": 50.196271451258205,
+            "yesterdayClose": 49.380001068115234,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "DOW",
+            "company": "Dow",
+            "sector": "Chemical Industry",
+            "todayClose": 48.778563811756335,
+            "yesterdayClose": 50.196271451258205,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "DOW",
+            "company": "Dow",
+            "sector": "Chemical Industry",
+            "todayClose": 46.86891121237276,
+            "yesterdayClose": 48.778563811756335,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "DOW",
+            "company": "Dow",
+            "sector": "Chemical Industry",
+            "todayClose": 48.92561723960197,
+            "yesterdayClose": 46.86891121237276,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "DOW",
+            "company": "Dow",
+            "sector": "Chemical Industry",
+            "todayClose": 50.6733775193421,
+            "yesterdayClose": 48.92561723960197,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "DOW",
+            "company": "Dow",
+            "sector": "Chemical Industry",
+            "todayClose": 49.380001068115234,
+            "yesterdayClose": 50.6733775193421,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "GS",
+            "company": "Goldman Sachs",
+            "sector": "Financial Services",
+            "todayClose": 517.7899780273438,
+            "yesterdayClose": 524.4000244140625,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "GS",
+            "company": "Goldman Sachs",
+            "sector": "Financial Services",
+            "todayClose": 510.1145020057457,
+            "yesterdayClose": 517.7899780273438,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "GS",
+            "company": "Goldman Sachs",
+            "sector": "Financial Services",
+            "todayClose": 535.341634631719,
+            "yesterdayClose": 510.1145020057457,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "GS",
+            "company": "Goldman Sachs",
+            "sector": "Financial Services",
+            "todayClose": 543.3121730476878,
+            "yesterdayClose": 535.341634631719,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "GS",
+            "company": "Goldman Sachs",
+            "sector": "Financial Services",
+            "todayClose": 533.948450371666,
+            "yesterdayClose": 543.3121730476878,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "GS",
+            "company": "Goldman Sachs",
+            "sector": "Financial Services",
+            "todayClose": 553.7671820628275,
+            "yesterdayClose": 533.948450371666,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "GS",
+            "company": "Goldman Sachs",
+            "sector": "Financial Services",
+            "todayClose": 517.7899780273438,
+            "yesterdayClose": 553.7671820628275,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "HD",
+            "company": "Home Depot",
+            "sector": "Home Improvement",
+            "todayClose": 393.75,
+            "yesterdayClose": 392.5199890136719,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "HD",
+            "company": "Home Depot",
+            "sector": "Home Improvement",
+            "todayClose": 378.76395284595657,
+            "yesterdayClose": 393.75,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "HD",
+            "company": "Home Depot",
+            "sector": "Home Improvement",
+            "todayClose": 372.9355529156405,
+            "yesterdayClose": 378.76395284595657,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "HD",
+            "company": "Home Depot",
+            "sector": "Home Improvement",
+            "todayClose": 368.50220168519974,
+            "yesterdayClose": 372.9355529156405,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "HD",
+            "company": "Home Depot",
+            "sector": "Home Improvement",
+            "todayClose": 383.45580007935376,
+            "yesterdayClose": 368.50220168519974,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "HD",
+            "company": "Home Depot",
+            "sector": "Home Improvement",
+            "todayClose": 394.12042030546377,
+            "yesterdayClose": 383.45580007935376,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "HD",
+            "company": "Home Depot",
+            "sector": "Home Improvement",
+            "todayClose": 393.75,
+            "yesterdayClose": 394.12042030546377,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "HON",
+            "company": "Honeywell",
+            "sector": "Conglomerate",
+            "todayClose": 205.67999267578125,
+            "yesterdayClose": 204.1999969482422,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "HON",
+            "company": "Honeywell",
+            "sector": "Conglomerate",
+            "todayClose": 213.18501018455254,
+            "yesterdayClose": 205.67999267578125,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "HON",
+            "company": "Honeywell",
+            "sector": "Conglomerate",
+            "todayClose": 214.9103453759265,
+            "yesterdayClose": 213.18501018455254,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "HON",
+            "company": "Honeywell",
+            "sector": "Conglomerate",
+            "todayClose": 211.49554436380666,
+            "yesterdayClose": 214.9103453759265,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "HON",
+            "company": "Honeywell",
+            "sector": "Conglomerate",
+            "todayClose": 208.40794313190204,
+            "yesterdayClose": 211.49554436380666,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "HON",
+            "company": "Honeywell",
+            "sector": "Conglomerate",
+            "todayClose": 199.5620111746972,
+            "yesterdayClose": 208.40794313190204,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "HON",
+            "company": "Honeywell",
+            "sector": "Conglomerate",
+            "todayClose": 205.67999267578125,
+            "yesterdayClose": 199.5620111746972,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "IBM",
+            "company": "IBM",
+            "sector": "Information Technology",
+            "todayClose": 206.72000122070312,
+            "yesterdayClose": 204.89999389648438,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "IBM",
+            "company": "IBM",
+            "sector": "Information Technology",
+            "todayClose": 203.80312019752023,
+            "yesterdayClose": 206.72000122070312,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "IBM",
+            "company": "IBM",
+            "sector": "Information Technology",
+            "todayClose": 199.1429319942359,
+            "yesterdayClose": 203.80312019752023,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "IBM",
+            "company": "IBM",
+            "sector": "Information Technology",
+            "todayClose": 189.38791913370594,
+            "yesterdayClose": 199.1429319942359,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "IBM",
+            "company": "IBM",
+            "sector": "Information Technology",
+            "todayClose": 193.00973937160177,
+            "yesterdayClose": 189.38791913370594,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "IBM",
+            "company": "IBM",
+            "sector": "Information Technology",
+            "todayClose": 192.1078404106579,
+            "yesterdayClose": 193.00973937160177,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "IBM",
+            "company": "IBM",
+            "sector": "Information Technology",
+            "todayClose": 206.72000122070312,
+            "yesterdayClose": 192.1078404106579,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "INTC",
+            "company": "Intel",
+            "sector": "Semiconductor Industry",
+            "todayClose": 21.520000457763672,
+            "yesterdayClose": 22.299999237060547,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "INTC",
+            "company": "Intel",
+            "sector": "Semiconductor Industry",
+            "todayClose": 21.97445507153864,
+            "yesterdayClose": 21.520000457763672,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "INTC",
+            "company": "Intel",
+            "sector": "Semiconductor Industry",
+            "todayClose": 20.930418180266443,
+            "yesterdayClose": 21.97445507153864,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "INTC",
+            "company": "Intel",
+            "sector": "Semiconductor Industry",
+            "todayClose": 20.694901049121352,
+            "yesterdayClose": 20.930418180266443,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "INTC",
+            "company": "Intel",
+            "sector": "Semiconductor Industry",
+            "todayClose": 19.669638577722704,
+            "yesterdayClose": 20.694901049121352,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "INTC",
+            "company": "Intel",
+            "sector": "Semiconductor Industry",
+            "todayClose": 19.143157831549573,
+            "yesterdayClose": 19.669638577722704,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "INTC",
+            "company": "Intel",
+            "sector": "Semiconductor Industry",
+            "todayClose": 21.520000457763672,
+            "yesterdayClose": 19.143157831549573,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "JNJ",
+            "company": "Johnson & Johnson",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 159.86000061035156,
+            "yesterdayClose": 160.61000061035156,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "JNJ",
+            "company": "Johnson & Johnson",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 166.63914855643017,
+            "yesterdayClose": 159.86000061035156,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "JNJ",
+            "company": "Johnson & Johnson",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 174.93025677082284,
+            "yesterdayClose": 166.63914855643017,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "JNJ",
+            "company": "Johnson & Johnson",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 180.77998581845063,
+            "yesterdayClose": 174.93025677082284,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "JNJ",
+            "company": "Johnson & Johnson",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 172.3721911709265,
+            "yesterdayClose": 180.77998581845063,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "JNJ",
+            "company": "Johnson & Johnson",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 166.40440888679967,
+            "yesterdayClose": 172.3721911709265,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "JNJ",
+            "company": "Johnson & Johnson",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 159.86000061035156,
+            "yesterdayClose": 166.40440888679967,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "JPM",
+            "company": "JPMorgan Chase",
+            "sector": "Financial Services",
+            "todayClose": 221.9199981689453,
+            "yesterdayClose": 224.41000366210938,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "JPM",
+            "company": "JPMorgan Chase",
+            "sector": "Financial Services",
+            "todayClose": 220.67762917150554,
+            "yesterdayClose": 221.9199981689453,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "JPM",
+            "company": "JPMorgan Chase",
+            "sector": "Financial Services",
+            "todayClose": 226.21741268477768,
+            "yesterdayClose": 220.67762917150554,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "JPM",
+            "company": "JPMorgan Chase",
+            "sector": "Financial Services",
+            "todayClose": 229.69725887918204,
+            "yesterdayClose": 226.21741268477768,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "JPM",
+            "company": "JPMorgan Chase",
+            "sector": "Financial Services",
+            "todayClose": 232.60276558752741,
+            "yesterdayClose": 229.69725887918204,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "JPM",
+            "company": "JPMorgan Chase",
+            "sector": "Financial Services",
+            "todayClose": 241.9508559680284,
+            "yesterdayClose": 232.60276558752741,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "JPM",
+            "company": "JPMorgan Chase",
+            "sector": "Financial Services",
+            "todayClose": 221.9199981689453,
+            "yesterdayClose": 241.9508559680284,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "KO",
+            "company": "Coca-Cola",
+            "sector": "Drink Industry",
+            "todayClose": 65.30999755859375,
+            "yesterdayClose": 65.91999816894531,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "KO",
+            "company": "Coca-Cola",
+            "sector": "Drink Industry",
+            "todayClose": 68.22316019286816,
+            "yesterdayClose": 65.30999755859375,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "KO",
+            "company": "Coca-Cola",
+            "sector": "Drink Industry",
+            "todayClose": 64.92910954135237,
+            "yesterdayClose": 68.22316019286816,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "KO",
+            "company": "Coca-Cola",
+            "sector": "Drink Industry",
+            "todayClose": 65.41536575500383,
+            "yesterdayClose": 64.92910954135237,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "KO",
+            "company": "Coca-Cola",
+            "sector": "Drink Industry",
+            "todayClose": 63.73421499877596,
+            "yesterdayClose": 65.41536575500383,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "KO",
+            "company": "Coca-Cola",
+            "sector": "Drink Industry",
+            "todayClose": 64.12469835998338,
+            "yesterdayClose": 63.73421499877596,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "KO",
+            "company": "Coca-Cola",
+            "sector": "Drink Industry",
+            "todayClose": 65.30999755859375,
+            "yesterdayClose": 64.12469835998338,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "MCD",
+            "company": "Mcdonalds",
+            "sector": "Food Industry",
+            "todayClose": 292.1099853515625,
+            "yesterdayClose": 291.5199890136719,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "MCD",
+            "company": "Mcdonalds",
+            "sector": "Food Industry",
+            "todayClose": 304.81882285481765,
+            "yesterdayClose": 292.1099853515625,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "MCD",
+            "company": "Mcdonalds",
+            "sector": "Food Industry",
+            "todayClose": 310.2405995531529,
+            "yesterdayClose": 304.81882285481765,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "MCD",
+            "company": "Mcdonalds",
+            "sector": "Food Industry",
+            "todayClose": 296.8663249742847,
+            "yesterdayClose": 310.2405995531529,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "MCD",
+            "company": "Mcdonalds",
+            "sector": "Food Industry",
+            "todayClose": 286.16060846056433,
+            "yesterdayClose": 296.8663249742847,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "MCD",
+            "company": "Mcdonalds",
+            "sector": "Food Industry",
+            "todayClose": 286.90290076996075,
+            "yesterdayClose": 286.16060846056433,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "MCD",
+            "company": "Mcdonalds",
+            "sector": "Food Industry",
+            "todayClose": 292.1099853515625,
+            "yesterdayClose": 286.90290076996075,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "MMM",
+            "company": "3M",
+            "sector": "Conglomerate",
+            "todayClose": 128.47000122070312,
+            "yesterdayClose": 127.55999755859375,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "MMM",
+            "company": "3M",
+            "sector": "Conglomerate",
+            "todayClose": 124.29869980454228,
+            "yesterdayClose": 128.47000122070312,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "MMM",
+            "company": "3M",
+            "sector": "Conglomerate",
+            "todayClose": 130.20015039287134,
+            "yesterdayClose": 124.29869980454228,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "MMM",
+            "company": "3M",
+            "sector": "Conglomerate",
+            "todayClose": 127.34360087924516,
+            "yesterdayClose": 130.20015039287134,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "MMM",
+            "company": "3M",
+            "sector": "Conglomerate",
+            "todayClose": 123.3894063527181,
+            "yesterdayClose": 127.34360087924516,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "MMM",
+            "company": "3M",
+            "sector": "Conglomerate",
+            "todayClose": 126.25414930977348,
+            "yesterdayClose": 123.3894063527181,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "MMM",
+            "company": "3M",
+            "sector": "Conglomerate",
+            "todayClose": 128.47000122070312,
+            "yesterdayClose": 126.25414930977348,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "MRK",
+            "company": "Merck",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 102.31999969482422,
+            "yesterdayClose": 104.83000183105469,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "MRK",
+            "company": "Merck",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 106.58236520725058,
+            "yesterdayClose": 102.31999969482422,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "MRK",
+            "company": "Merck",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 111.07041441971997,
+            "yesterdayClose": 106.58236520725058,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "MRK",
+            "company": "Merck",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 106.05100590270904,
+            "yesterdayClose": 111.07041441971997,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "MRK",
+            "company": "Merck",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 110.87748189775341,
+            "yesterdayClose": 106.05100590270904,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "MRK",
+            "company": "Merck",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 112.37944361022461,
+            "yesterdayClose": 110.87748189775341,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "MRK",
+            "company": "Merck",
+            "sector": "Pharmaceutical Industry",
+            "todayClose": 102.31999969482422,
+            "yesterdayClose": 112.37944361022461,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "MSFT",
+            "company": "Microsoft",
+            "sector": "Information Technology",
+            "todayClose": 406.3500061035156,
+            "yesterdayClose": 432.5299987792969,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "MSFT",
+            "company": "Microsoft",
+            "sector": "Information Technology",
+            "todayClose": 420.50430033079834,
+            "yesterdayClose": 406.3500061035156,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "MSFT",
+            "company": "Microsoft",
+            "sector": "Information Technology",
+            "todayClose": 404.68297465123146,
+            "yesterdayClose": 420.50430033079834,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "MSFT",
+            "company": "Microsoft",
+            "sector": "Information Technology",
+            "todayClose": 411.7223401412585,
+            "yesterdayClose": 404.68297465123146,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "MSFT",
+            "company": "Microsoft",
+            "sector": "Information Technology",
+            "todayClose": 403.26815436824893,
+            "yesterdayClose": 411.7223401412585,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "MSFT",
+            "company": "Microsoft",
+            "sector": "Information Technology",
+            "todayClose": 415.4120966878881,
+            "yesterdayClose": 403.26815436824893,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "MSFT",
+            "company": "Microsoft",
+            "sector": "Information Technology",
+            "todayClose": 406.3500061035156,
+            "yesterdayClose": 415.4120966878881,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "NKE",
+            "company": "Nike",
+            "sector": "Clothing Industry",
+            "todayClose": 77.12999725341797,
+            "yesterdayClose": 76.44999694824219,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "NKE",
+            "company": "Nike",
+            "sector": "Clothing Industry",
+            "todayClose": 76.18709440548459,
+            "yesterdayClose": 77.12999725341797,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "NKE",
+            "company": "Nike",
+            "sector": "Clothing Industry",
+            "todayClose": 79.92514346979524,
+            "yesterdayClose": 76.18709440548459,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "NKE",
+            "company": "Nike",
+            "sector": "Clothing Industry",
+            "todayClose": 76.1704871905369,
+            "yesterdayClose": 79.92514346979524,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "NKE",
+            "company": "Nike",
+            "sector": "Clothing Industry",
+            "todayClose": 73.23593804384893,
+            "yesterdayClose": 76.1704871905369,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "NKE",
+            "company": "Nike",
+            "sector": "Clothing Industry",
+            "todayClose": 74.0550116812246,
+            "yesterdayClose": 73.23593804384893,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "NKE",
+            "company": "Nike",
+            "sector": "Clothing Industry",
+            "todayClose": 77.12999725341797,
+            "yesterdayClose": 74.0550116812246,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "PG",
+            "company": "Procter & Gamble",
+            "sector": "Fast-moving consumer goods",
+            "todayClose": 165.17999267578125,
+            "yesterdayClose": 166.16000366210938,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "PG",
+            "company": "Procter & Gamble",
+            "sector": "Fast-moving consumer goods",
+            "todayClose": 173.32444385903727,
+            "yesterdayClose": 165.17999267578125,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "PG",
+            "company": "Procter & Gamble",
+            "sector": "Fast-moving consumer goods",
+            "todayClose": 177.96475978579093,
+            "yesterdayClose": 173.32444385903727,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "PG",
+            "company": "Procter & Gamble",
+            "sector": "Fast-moving consumer goods",
+            "todayClose": 174.9215644578115,
+            "yesterdayClose": 177.96475978579093,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "PG",
+            "company": "Procter & Gamble",
+            "sector": "Fast-moving consumer goods",
+            "todayClose": 177.84239820999656,
+            "yesterdayClose": 174.9215644578115,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "PG",
+            "company": "Procter & Gamble",
+            "sector": "Fast-moving consumer goods",
+            "todayClose": 171.14685336136205,
+            "yesterdayClose": 177.84239820999656,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "PG",
+            "company": "Procter & Gamble",
+            "sector": "Fast-moving consumer goods",
+            "todayClose": 165.17999267578125,
+            "yesterdayClose": 171.14685336136205,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "TRV",
+            "company": "Travelers",
+            "sector": "Insurance",
+            "todayClose": 245.94000244140625,
+            "yesterdayClose": 250.08999633789062,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "TRV",
+            "company": "Travelers",
+            "sector": "Insurance",
+            "todayClose": 245.57662441329387,
+            "yesterdayClose": 245.94000244140625,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "TRV",
+            "company": "Travelers",
+            "sector": "Insurance",
+            "todayClose": 248.768783442509,
+            "yesterdayClose": 245.57662441329387,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "TRV",
+            "company": "Travelers",
+            "sector": "Insurance",
+            "todayClose": 257.7144228288247,
+            "yesterdayClose": 248.768783442509,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "TRV",
+            "company": "Travelers",
+            "sector": "Insurance",
+            "todayClose": 259.4571955246349,
+            "yesterdayClose": 257.7144228288247,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "TRV",
+            "company": "Travelers",
+            "sector": "Insurance",
+            "todayClose": 264.3704798308275,
+            "yesterdayClose": 259.4571955246349,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "TRV",
+            "company": "Travelers",
+            "sector": "Insurance",
+            "todayClose": 245.94000244140625,
+            "yesterdayClose": 264.3704798308275,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "UNH",
+            "company": "UnitedHealth Group",
+            "sector": "Managed health care",
+            "todayClose": 564.5,
+            "yesterdayClose": 562.9600219726562,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "UNH",
+            "company": "UnitedHealth Group",
+            "sector": "Managed health care",
+            "todayClose": 587.2807826379484,
+            "yesterdayClose": 564.5,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "UNH",
+            "company": "UnitedHealth Group",
+            "sector": "Managed health care",
+            "todayClose": 559.95354972812,
+            "yesterdayClose": 587.2807826379484,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "UNH",
+            "company": "UnitedHealth Group",
+            "sector": "Managed health care",
+            "todayClose": 545.5666503749273,
+            "yesterdayClose": 559.95354972812,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "UNH",
+            "company": "UnitedHealth Group",
+            "sector": "Managed health care",
+            "todayClose": 545.2032488153877,
+            "yesterdayClose": 545.5666503749273,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "UNH",
+            "company": "UnitedHealth Group",
+            "sector": "Managed health care",
+            "todayClose": 550.3358450266478,
+            "yesterdayClose": 545.2032488153877,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "UNH",
+            "company": "UnitedHealth Group",
+            "sector": "Managed health care",
+            "todayClose": 564.5,
+            "yesterdayClose": 550.3358450266478,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "V",
+            "company": "Visa",
+            "sector": "Financial Services",
+            "todayClose": 289.8500061035156,
+            "yesterdayClose": 290.1600036621094,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "V",
+            "company": "Visa",
+            "sector": "Financial Services",
+            "todayClose": 298.3458685993753,
+            "yesterdayClose": 289.8500061035156,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "V",
+            "company": "Visa",
+            "sector": "Financial Services",
+            "todayClose": 290.8571736159519,
+            "yesterdayClose": 298.3458685993753,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "V",
+            "company": "Visa",
+            "sector": "Financial Services",
+            "todayClose": 285.4741091851301,
+            "yesterdayClose": 290.8571736159519,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "V",
+            "company": "Visa",
+            "sector": "Financial Services",
+            "todayClose": 289.1014125278082,
+            "yesterdayClose": 285.4741091851301,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "V",
+            "company": "Visa",
+            "sector": "Financial Services",
+            "todayClose": 302.0641305362531,
+            "yesterdayClose": 289.1014125278082,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "V",
+            "company": "Visa",
+            "sector": "Financial Services",
+            "todayClose": 289.8500061035156,
+            "yesterdayClose": 302.0641305362531,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "VZ",
+            "company": "Verizon",
+            "sector": "Telecommunications Industry",
+            "todayClose": 42.130001068115234,
+            "yesterdayClose": 41.279998779296875,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "VZ",
+            "company": "Verizon",
+            "sector": "Telecommunications Industry",
+            "todayClose": 41.804524493821376,
+            "yesterdayClose": 42.130001068115234,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "VZ",
+            "company": "Verizon",
+            "sector": "Telecommunications Industry",
+            "todayClose": 43.42054233133317,
+            "yesterdayClose": 41.804524493821376,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "VZ",
+            "company": "Verizon",
+            "sector": "Telecommunications Industry",
+            "todayClose": 44.2909312700812,
+            "yesterdayClose": 43.42054233133317,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "VZ",
+            "company": "Verizon",
+            "sector": "Telecommunications Industry",
+            "todayClose": 42.34764489493791,
+            "yesterdayClose": 44.2909312700812,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "VZ",
+            "company": "Verizon",
+            "sector": "Telecommunications Industry",
+            "todayClose": 43.38945745944262,
+            "yesterdayClose": 42.34764489493791,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "VZ",
+            "company": "Verizon",
+            "sector": "Telecommunications Industry",
+            "todayClose": 42.130001068115234,
+            "yesterdayClose": 43.38945745944262,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "WBA",
+            "company": "Walgreens Boots Alliance",
+            "sector": "Retailing",
+            "todayClose": 9.460000038146973,
+            "yesterdayClose": 9.239999771118164,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "WBA",
+            "company": "Walgreens Boots Alliance",
+            "sector": "Retailing",
+            "todayClose": 9.636651151598791,
+            "yesterdayClose": 9.460000038146973,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "WBA",
+            "company": "Walgreens Boots Alliance",
+            "sector": "Retailing",
+            "todayClose": 10.073772472713184,
+            "yesterdayClose": 9.636651151598791,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "WBA",
+            "company": "Walgreens Boots Alliance",
+            "sector": "Retailing",
+            "todayClose": 10.530111981595823,
+            "yesterdayClose": 10.073772472713184,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "WBA",
+            "company": "Walgreens Boots Alliance",
+            "sector": "Retailing",
+            "todayClose": 10.613702349029497,
+            "yesterdayClose": 10.530111981595823,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "WBA",
+            "company": "Walgreens Boots Alliance",
+            "sector": "Retailing",
+            "todayClose": 10.195206149708843,
+            "yesterdayClose": 10.613702349029497,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "WBA",
+            "company": "Walgreens Boots Alliance",
+            "sector": "Retailing",
+            "todayClose": 9.460000038146973,
+            "yesterdayClose": 10.195206149708843,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 81.94999694824219,
+            "yesterdayClose": 81.38999938964844,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 81.54503492654739,
+            "yesterdayClose": 81.94999694824219,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 77.60850420280997,
+            "yesterdayClose": 81.54503492654739,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 76.57023039750452,
+            "yesterdayClose": 77.60850420280997,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 76.1866892593336,
+            "yesterdayClose": 76.57023039750452,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 78.60435188984786,
+            "yesterdayClose": 76.1866892593336,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 81.94999694824219,
+            "yesterdayClose": 78.60435188984786,
+            "date": "2024-11-01T06:00:00"
+        }
+    ],
+    "2024-11-02T00:00:00": [
+        {
+            "ticker": "WMT",
+            "company": "Walmart",
+            "sector": "Retailing",
+            "todayClose": 81.94999694824219,
+            "yesterdayClose": 78.60435188984786,
+            "date": "2024-11-02T00:00:00"
+        }
+    ]
+}

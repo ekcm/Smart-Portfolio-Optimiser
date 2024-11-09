@@ -14,23 +14,32 @@ export class OrderFulfilmentService {
   ) {}
 
   async handlePriceUpdate(message: any) {
-    const { ticker, todayClose: updatedPrice } = JSON.parse(message.Body);
+    const priceUpdates = JSON.parse(message.Body);
+    const updatedPortfolios = new Set<string>(); 
+    for (const update of priceUpdates) {
+      const { ticker, todayClose: updatedPrice } = update;
 
-    const pendingOrders = await this.orderService.findPendingOrdersByTicker(ticker);
+      const pendingOrders = await this.orderService.findPendingOrdersByTicker(ticker);
 
-    for (const order of pendingOrders) {
-      const portfolio = await this.portfolioService.getById(order.portfolioId);
+      for (const order of pendingOrders) {
+        const portfolio = await this.portfolioService.getById(order.portfolioId);
 
-      if (order.orderType === 'SELL' && order.price <= updatedPrice) {
-        this.fillSellOrder(order, portfolio, updatedPrice);
-      } else if (order.orderType === 'BUY' && order.price >= updatedPrice) {
-        this.fillBuyOrder(order, portfolio, updatedPrice);
+        if (order.orderType === 'SELL' && order.price <= updatedPrice) {
+          this.fillSellOrder(order, portfolio, updatedPrice);
+        } else if (order.orderType === 'BUY' && order.price >= updatedPrice) {
+          this.fillBuyOrder(order, portfolio, updatedPrice);
+        }
+
+        await this.orderService.updateOrderStatus(order);
+        await this.portfolioService.update(portfolio.id, portfolio);
+
+        updatedPortfolios.add(portfolio.id); 
       }
+    }
 
-      await this.orderService.updateOrderStatus(order);
-      await this.portfolioService.update(portfolio.id, portfolio);
-
-      this.portfolioGateway.broadcastPortfolioUpdate(portfolio.id);
+    for (const portfolioId of updatedPortfolios) {
+      console.log(portfolioId);
+      this.portfolioGateway.broadcastPortfolioUpdate(portfolioId);
     }
   }
 
