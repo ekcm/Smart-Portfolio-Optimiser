@@ -5,6 +5,7 @@ import { CashRuleDto, RiskRuleDto, RuleDto } from "./dto/rule.dto";
 import { Portfolio } from "./model/portfolio.model";
 import { Order } from "src/model/order.model";
 import { RuleType } from "src/dto/rule.dto";
+import { RuleLogDto } from "./dto/ruleLog.dto";
 
 interface DashboardCard {
     portfolioId: string,
@@ -176,6 +177,7 @@ interface BreachedRule {
     breachMessage: string;
     recommendation: string;
 }
+
 
 export type {
     DashboardCard, FinanceNewsItem,

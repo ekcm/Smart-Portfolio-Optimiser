@@ -81,4 +81,13 @@ export class RuleLogService {
             }, 1000);
         });
     }
+
+    async getAllByPortfolioId(portfolioId: string): Promise<RuleLog[]> {
+        return new Promise((resolve) => {
+            setTimeout(async () => {
+                const ruleLogs = await this.ruleLogModel.find({ portfolioId }).exec();
+                resolve(ruleLogs);
+            }, 1000);
+        });
+    }
 }
