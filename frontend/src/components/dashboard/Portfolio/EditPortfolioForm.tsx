@@ -15,11 +15,10 @@ import { fetchAllAssets } from "@/api/asset";
 import { Asset } from "@/lib/types";
 
 type ErrorState = {
-  clientName?: string;
-  portfolioName?: string;
-  riskAppetite?: string;
-  cashAmount?: string;
-  reason?: string;
+    riskAppetite?: string;
+    reason?: string;
+    minCash?: string;
+    maxCash?: string;
 };
 
 interface EditPortfolioFormProps {
@@ -126,6 +125,10 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         const newErrors: ErrorState = {};
         // validation
         if (!reason) newErrors.reason = "No reason stated.";
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         let ruleValue;
         if (selectedRule === RuleType.RISK) {
             ruleValue = riskAppetite;
@@ -220,7 +223,11 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                             type="number"
                             disabled={editPortfolioState}
                             value={minCash}
-                            onChange={(e) => setMinCash(parseFloat(e.target.value))}
+                            onChange={(e) => {
+                                // Prevent user from leaving it blank (empty string)
+                                if (e.target.value === "" || isNaN(Number(e.target.value))) return;
+                                setMinCash(parseFloat(e.target.value));
+                            }}   
                         />
                     </Label>
                 )}
@@ -238,7 +245,11 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                             type="number"
                             disabled={editPortfolioState}
                             value={maxCash}
-                            onChange={(e) => setMaxCash(parseFloat(e.target.value))}
+                            onChange={(e) => {
+                                // Prevent user from leaving it blank (empty string)
+                                if (e.target.value === "" || isNaN(Number(e.target.value))) return;
+                                setMaxCash(parseFloat(e.target.value));
+                            }}
                         />
                     </Label>
                 )}

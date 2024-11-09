@@ -24,6 +24,8 @@ type ErrorState = {
   portfolioName?: string;
   riskAppetite?: string;
   cashAmount?: string;
+  minCash?: string;
+  maxCash?: string;
 };
 
 interface CreatePortfolioFormProps {
@@ -100,7 +102,6 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       newErrors.portfolioName = "Portfolio name must be at least 2 characters.";
     if (!riskAppetite) newErrors.riskAppetite = "Select a valid risk appetite.";
     if (cashAmount === 0) newErrors.cashAmount = "Cash amount must be at least 0";
-    // TODO: Add validation for minCash & maxCash
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -202,7 +203,11 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
             type="number"
             disabled={createPortfolioState}
             value={minCash}
-            onChange={(e) => setMinCash(parseFloat(e.target.value))}
+            onChange={(e) => {
+                // Prevent user from leaving it blank (empty string)
+              if (e.target.value === "" || isNaN(Number(e.target.value))) return;
+              setMinCash(parseFloat(e.target.value));
+            }}          
           />
         </Label>
 
@@ -212,7 +217,11 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
             type="number"
             disabled={createPortfolioState}
             value={maxCash}
-            onChange={(e) => setMaxCash(parseFloat(e.target.value))}
+            onChange={(e) => {
+              // Prevent user from leaving it blank (empty string)
+              if (e.target.value === "" || isNaN(Number(e.target.value))) return;
+              setMaxCash(parseFloat(e.target.value));
+            }}
           />
         </Label>
 
