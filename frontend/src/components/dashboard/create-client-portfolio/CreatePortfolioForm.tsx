@@ -43,6 +43,8 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
   const [riskAppetite, setRiskAppetite] = useState("");
   const [cashAmount, setCashAmount] = useState<number>(0);
   const [exclusions, setExclusions] = useState<string[]>([]);
+  const [minCash, setMinCash] = useState<number>(0);
+  const [maxCash, setMaxCash] = useState<number>(20);
   const [errors, setErrors] = useState<ErrorState>({});
   const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
 
@@ -98,6 +100,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       newErrors.portfolioName = "Portfolio name must be at least 2 characters.";
     if (!riskAppetite) newErrors.riskAppetite = "Select a valid risk appetite.";
     if (cashAmount === 0) newErrors.cashAmount = "Cash amount must be at least 0";
+    // TODO: Add validation for minCash & maxCash
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -111,7 +114,10 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       cash: cashAmount,
       managerId,
       exclusions,
+      minCash,
+      maxCash
     };
+    console.log(formData);
 
     try {
       // Call createPortfolio function and pass formData as the parameter
@@ -126,7 +132,7 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       setCreatePortfolioState(true);
     }
 
-    console.log("Form data submitted:", formData);
+    // console.log("Form data submitted:", formData);
   };
 
   return (
@@ -188,6 +194,25 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
             disabled={createPortfolioState}
             value={cashAmount}
             onChange={(e) => setCashAmount(parseFloat(e.target.value))}
+          />
+        </Label>
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Minimum Cash Amount (%):
+          <Input
+            type="number"
+            disabled={createPortfolioState}
+            value={minCash}
+            onChange={(e) => setMinCash(parseFloat(e.target.value))}
+          />
+        </Label>
+
+        <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
+          Maximum Cash Amount (%):
+          <Input
+            type="number"
+            disabled={createPortfolioState}
+            value={maxCash}
+            onChange={(e) => setMaxCash(parseFloat(e.target.value))}
           />
         </Label>
 
