@@ -3,10 +3,12 @@ import { PortfolioService } from "./portfolio.service"
 import { PortfolioBreakdownService } from "./portfolioBreakdown.service"
 import { PortfolioReport } from "src/types"
 import { AssetHolding } from "src/model/assetholding.model";
+import { Order } from "src/model/order.model";
+import { OrderService } from "./order.service";
 
 @Injectable()
 export class ReportService{
-    constructor(private portfolioService: PortfolioService, private portfolioBreakdownService: PortfolioBreakdownService) { }
+    constructor(private portfolioService: PortfolioService, private portfolioBreakdownService: PortfolioBreakdownService, private orderService: OrderService) { }
 
     async generateReport(portfolioId: string): Promise<PortfolioReport> {
         var assetsAllocation = new Map<string, AssetHolding>();
@@ -67,5 +69,9 @@ export class ReportService{
             portfolioDetails: portfolioDetails
         }
         return summary
+    }
+
+    async generateOrderExecution(portfolioId: string, startDate: Date, endDate: Date): Promise<Order[]> {
+        return await this.orderService.getByIdAndDateRange(portfolioId, startDate, endDate)
     }
 }
