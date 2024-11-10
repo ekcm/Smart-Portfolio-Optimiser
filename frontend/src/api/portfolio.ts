@@ -111,7 +111,7 @@ export const updatePortfolioRule = async(portfolioId: string, rule: any, ruleTyp
 // REPORT GENERATION
 export const getMonthlyPortfolioReport = async(portfolioId: string, portfolioName: string | null) => {
     try {
-        const api = `${REPORT_SERVER_URL}/report?portfolioId=${portfolioId}`;
+        const api = `${REPORT_SERVER_URL}/report?id=${portfolioId}`;
         const response = await axios.get(api, {
             responseType: 'blob' // Set response type to blob to handle the file
         });
@@ -142,7 +142,7 @@ export const getOrdersHistoryReport = async(portfolioId: string,  portfolioName:
     try {
         const start = getMonthYearString(startDate);
         const end = getMonthYearString(endDate);
-        const api = `${REPORT_SERVER_URL}/trade_executions?portfolioId=${portfolioId}&startDate=${start}&endDate=${end}`;
+        const api = `${REPORT_SERVER_URL}/trade_executions?id=${portfolioId}&startDate=${start}&endDate=${end}`;
         const response = await axios.get(api, {
             responseType: 'blob' // Set response type to blob to handle the file
         });

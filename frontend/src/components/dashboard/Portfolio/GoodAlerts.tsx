@@ -27,7 +27,7 @@ const GoodAlerts = memo(function GoodAlerts({ type, data }: GoodAlertsProps) {
     return (
         <Card className="flex flex-col flex-grow w-full pt-4 pb-2 px-4 bg-red-100 gap-4">
                 <div>
-                    <h2 className="text-xl font-medium">Ticker Alerts:</h2>
+                    <h2 className="text-xl font-medium">Relevant News:</h2>
                     {goodAlerts.length === 0 ? 
                         <h3 className="text-md text-gray-600">No ticker alerts with low sentiment ratings!</h3>
                     :
