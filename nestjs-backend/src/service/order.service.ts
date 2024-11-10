@@ -90,4 +90,16 @@ export class OrderService {
         }
         return updatedOrder;
     }
+    
+    async getByIdAndDateRange(portfolioId: string, startDate: Date, endDate: Date): Promise<Order[]> {
+        return new Promise((resolve) => {
+            setTimeout(async () => {
+                const orders = await this.orderModel.find({
+                    portfolioId: portfolioId,
+                    orderDate: { $gte: startDate, $lte: endDate }
+                }).exec();
+                resolve(orders)
+            }, 1000)
+        })
+    }
 }

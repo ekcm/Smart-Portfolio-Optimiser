@@ -5,6 +5,7 @@ import { CashRuleDto, RiskRuleDto, RuleDto } from "./dto/rule.dto";
 import { Portfolio } from "./model/portfolio.model";
 import { Order } from "src/model/order.model";
 import { RuleType } from "src/dto/rule.dto";
+import { AssetHolding } from "./model/assetholding.model";
 import { RuleLogDto } from "./dto/ruleLog.dto";
 
 interface DashboardCard {
@@ -179,11 +180,28 @@ interface BreachedRule {
     news?: AlertDto[];
 }
 
+interface PortfolioReport {
+    portfolioDetails: PortfolioDetails,
+    portfolioSummary: PortfolioSummary
+}
+
+interface PortfolioDetails{
+    portfolioName: string,
+    portfolioClient: string
+}
+
+interface PortfolioSummary {
+    assetsAllocation: Record<string, AssetHolding>;
+    topHoldings: Record<string, number>;
+    overview: string;
+    sectorAllocation: Record<string, number>;
+    commentary: string;
+}
 
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule
+    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary
 };

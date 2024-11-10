@@ -13,6 +13,8 @@ from pydantic import BaseModel
 import uvicorn
 import io
 from datetime import datetime
+import requests
+import os
 
 app = FastAPI()
 
@@ -84,18 +86,30 @@ def generate_trade_executions():
         current_date = datetime.now().strftime("%d/%m/%y")
         filename = f"{data['portfolio_details']['portfolio_name']}_trade_executions_{current_date}.pdf"
         
+        directory = os.path.dirname(filename)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        with open(filename, "wb") as output_pdf:
+            output_pdf.write(pdf_buffer.read())
+
         headers = {
             'Content-Disposition': f'attachment; filename={filename}'
         }
         return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
 
 @app.get("/report")
-def generate_report():
-    # should be replaced with data from api endpoint
-    with open("data.json", "r") as f:
-        data = json.load(f)
+def generate_report(id: str):
+    url = f"http://localhost:8000/report/{id}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        # print(data)
+    except requests.exceptions.HTTPError as e:
+        return {"error": f"HTTP error occurred: {e}"}
 
-    pie_chart_fillColors = [colors.blue, colors.green, colors.red, colors.orange, colors.purple, colors.yellow, colors.pink, colors.cyan, colors.brown, colors.grey]
+    pie_chart_fillColors = [colors.blue, colors.green, colors.red, colors.orange, colors.purple, colors.yellow, colors.pink, colors.cyan, colors.brown, colors.grey, colors.beige, colors.black, colors.whitesmoke, colors.lightgrey, colors.darkgrey]
     pdf_buffer = io.BytesIO()
     pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4)
 
@@ -105,20 +119,24 @@ def generate_report():
     h2_heading_style = styles['Heading2']
     body_style = styles['BodyText']
 
-    # print(data['portfolio_details']['portfolio_name'])
-    portfolio_report_heading = Paragraph(f"Portfolio report for {data['portfolio_details']['portfolio_name']}", h1_heading_style)
-
-    # Porfolio Summary
+    # print(data['portfolioDetails']['portfolioName'])
+    portfolio_report_heading = Paragraph(f"Portfolio report for {data['portfolioDetails']['portfolioName']}", h1_heading_style)
+    
+    # Portfolio Summary
     portfolio_summary_heading = Paragraph("Assets Allocation", h2_heading_style)
-    portfolio_summary_data = data['portfolio_summary']
+    portfolio_summary_data = data['portfolioSummary']
 
-    # asset_allocation
-    assets_allocation_data = portfolio_summary_data['assets_allocation']
+    # Asset Allocation
+    assets_allocation_data = portfolio_summary_data['assetsAllocation']
     assets_name_list = list(assets_allocation_data.keys())
     assets_allocation_list = list(assets_allocation_data.values())
-    assets_allocation_summary_data = [["ID", "Asset Name", "Asset Allocation"]]
-    for i in range(len(assets_name_list)):
-        assets_allocation_summary_data.append([i+1, list(assets_name_list)[i], list(assets_allocation_list)[i]])
+
+    assets_allocation_summary_data = [["ID", "Asset Ticker", "Cost", "Quantity", "Asset Type"]]
+
+    count = 1
+    for asset in assets_allocation_data.values():
+        assets_allocation_summary_data.append([count, asset['ticker'], round(asset['cost'],2), asset['quantity'], asset['assetType']])
+        count += 1
 
     assets_allocation_table = Table(assets_allocation_summary_data)
     assets_allocation_table.hAlign = 'LEFT'
@@ -133,14 +151,14 @@ def generate_report():
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ]))
 
-    # top holdings by weight
+    # Top Holdings
     top_holdings_by_weight_heading = Paragraph("Top Holdings by Weight", h2_heading_style)
-    top_holdings_by_weight_data = portfolio_summary_data['top_holdings_by_weight']
+    top_holdings_data = portfolio_summary_data['topHoldings']
 
     top_holdings_drawing = Drawing(400, 200)
     top_holdings_by_weight_pie_chart = Pie()
-    top_holdings_by_weight_pie_chart.data = list(top_holdings_by_weight_data.values())
-    top_holdings_by_weight_pie_chart.labels = list(top_holdings_by_weight_data.keys())
+    top_holdings_by_weight_pie_chart.data = list(top_holdings_data.values())
+    top_holdings_by_weight_pie_chart.labels = list(top_holdings_data.keys())
     top_holdings_by_weight_pie_chart.x = 50
     top_holdings_by_weight_pie_chart.y = 50
     top_holdings_by_weight_pie_chart.width = 150
@@ -151,10 +169,11 @@ def generate_report():
     top_holdings_drawing.hAlign = 'LEFT'
     top_holdings_drawing.add(top_holdings_by_weight_pie_chart)
 
-    # sector allocation
+    # Sector Allocation
     sector_allocation_heading = Paragraph("Sector Allocation", h2_heading_style)
-    sector_allocation_data = portfolio_summary_data['sector_allocation']
+    sector_allocation_data = portfolio_summary_data['sectorAllocation']
 
+    print(sector_allocation_data)
     sector_allocation_drawing = Drawing(400, 200)
     sector_allocation_pie_chart = Pie()
     sector_allocation_pie_chart.data = list(sector_allocation_data.values())
@@ -169,11 +188,6 @@ def generate_report():
     sector_allocation_drawing.hAlign = 'LEFT'
     sector_allocation_drawing.add(sector_allocation_pie_chart)
 
-    # commentary and market outlook
-    commentary_heading = Paragraph("Commentary and Market Outlook", h2_heading_style)
-    commentary_data = portfolio_summary_data["commentary_and_market_outlook"]
-    commentary = Paragraph(commentary_data, body_style)
-
     elements = [
         portfolio_report_heading,
         portfolio_summary_heading,
@@ -182,21 +196,25 @@ def generate_report():
         top_holdings_drawing,
         sector_allocation_heading,
         sector_allocation_drawing,
-        commentary_heading,
-        commentary,
     ]
-    pdf.build(elements)
 
+    pdf.build(elements)
     pdf_buffer.seek(0)
 
     current_date = datetime.now().strftime("%d/%m/%y")
-    filename = f"{data['portfolio_details']['portfolio_name']}_{current_date}.pdf"
+    filename = f"{data['portfolioDetails']['portfolioName']}_{current_date}.pdf"
     
+    # directory = os.path.dirname(filename)
+    # if not os.path.exists(directory):
+    #     os.makedirs(directory)
+
+    # with open(filename, "wb") as output_pdf:
+    #     output_pdf.write(pdf_buffer.read())
+
     headers = {
         'Content-Disposition': f'attachment; filename={filename}'
     }
     return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
-
 
 if __name__ == "__main__":
     uvicorn.run("report:app", host='127.0.0.1', port=5002, reload=True)

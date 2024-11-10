@@ -17,22 +17,34 @@ export class RuleValidatorService {
         const totalValue = calculatedPortfolio.totalValue
 
         if (RuleValidatorUtility.checkMinCash(rules.minCashRule.percentage, totalValue, cash) === false) {
-
+            const recommendedTickers = await this.alertService.getSellRecommendation(assetHoldings)
+            let recommendation: string;
+            if (recommendedTickers.length > 0) {
+                recommendation = `Run portfolio optimiser. Alternatively, here are some recommended divestments:` 
+            } else {
+                recommendation = `Run portfolio optimiser.` 
+            }
             breachedRules.push({
                 ruleType: RuleType.MIN_CASH,
                 breachMessage: `Cash is below ${rules.minCashRule.percentage}% of the portfolio value`,
-                recommendation: `Run portfolio optimiser. Alternatively, here are some recommended divestments:`,
-                news: await this.alertService.getSellRecommendation(assetHoldings)
+                recommendation: recommendation,
+                news: recommendedTickers
             })
         }
 
         if (RuleValidatorUtility.checkMaxCash(rules.maxCashRule.percentage, totalValue, cash) === false) {
-
+            const recommendedTickers = await this.alertService.getBuyRecommendation(exclusions, assetHoldings)
+            let recommendation: string;
+            if (recommendedTickers.length > 0) {
+                recommendation = `Run portfolio optimiser. Alternatively, here are some recommended investments:` 
+            } else {
+                recommendation = `Run portfolio optimiser.` 
+            }
             breachedRules.push({
                 ruleType: RuleType.MAX_CASH,
                 breachMessage: `Cash is above ${rules.maxCashRule.percentage}% of the portfolio value`,
-                recommendation: `Run portfolio optimiser. Alternatively, here are some recommended investments:`,
-                news: await this.alertService.getBuyRecommendation(exclusions, assetHoldings)
+                recommendation: recommendation,
+                news: recommendedTickers
             })
         }
 

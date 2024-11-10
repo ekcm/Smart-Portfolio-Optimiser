@@ -23,6 +23,7 @@ import { PortfolioGateway } from './websocket/portfolio.gateway';
 import { AssetPriceChangeService } from './service/assetpricechange.service';
 // import { RuleModule } from './module/rule.module';
 import { RuleHandlerModule } from './module/ruleHandler.module';
+import { ReportModule } from './module/report.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { RuleHandlerModule } from './module/ruleHandler.module';
     RuleValidatorModule,
     AssetPriceTestModule,
     OrderFulfilmentModule,
+    ReportModule,
   ],
   providers: [SqsService, SqsPollingService, AssetPriceTestService, PortfolioGateway, AssetPriceChangeService,],
 })
