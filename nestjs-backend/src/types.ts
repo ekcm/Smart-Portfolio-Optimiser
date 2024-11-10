@@ -190,12 +190,12 @@ interface PortfolioDetails{
     portfolioClient: string
 }
 
-interface PortfolioSummary{
-    assetsAllocation: Map<string, AssetHolding>,
-    topHoldings: Map<string, number>,
-    overview: string,
-    sectorAllocation: Map<string, number>,
-    commentary: string
+interface PortfolioSummary {
+    assetsAllocation: Record<string, AssetHolding>;
+    topHoldings: Record<string, number>;
+    overview: string;
+    sectorAllocation: Record<string, number>;
+    commentary: string;
 }
 
 export type {
