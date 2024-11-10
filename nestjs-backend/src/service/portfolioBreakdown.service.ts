@@ -6,6 +6,7 @@ import { CalculatedPortfolio, PortfolioBreakdown } from "src/types";
 import { CalculatorUtility } from '../utilities/calculatorUtility';
 import { AssetPrice } from "src/model/assetprice.model";
 import { Asset } from "src/model/asset.model";
+import { PortfolioService } from "./portfolio.service";
 
 @Injectable()
 export class PortfolioBreakdownService{
