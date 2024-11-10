@@ -61,7 +61,6 @@ const TriggeredAlert = memo(function TriggeredAlert({ type, data, breachedRules 
                                             <span>RECOMMENDATION: {rule.recommendation}</span>
                                             {rule.news && rule.news.length > 0 && (
                                                 <div className="mt-2">
-                                                    <h4 className="font-semibold">Related News:</h4>
                                                     <ul className="list-disc pl-5">
                                                         {rule.news.map((newsItem, newsIndex) => (
                                                             <li key={newsIndex} className="text-gray-600">
