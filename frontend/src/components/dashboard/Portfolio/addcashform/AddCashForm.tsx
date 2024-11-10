@@ -16,9 +16,6 @@ interface AddCashFormProps {
 }
 
 export default function EditCashForm({ isLoading, cashBalance, onAddCash } : AddCashFormProps) {
-    // TODO: Add error handling for invalid input
-    // TODO: Add form input for updating cash
-    // TODO: Add onSubmit function to form that calls onAddCash on parent component
     const router = useTransitionRouter();
 
     const [amount, setAmount] = useState(0);

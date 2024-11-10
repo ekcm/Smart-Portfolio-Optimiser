@@ -6,6 +6,7 @@ import { Portfolio } from "./model/portfolio.model";
 import { Order } from "src/model/order.model";
 import { RuleType } from "src/dto/rule.dto";
 import { AssetHolding } from "./model/assetholding.model";
+import { RuleLogDto } from "./dto/ruleLog.dto";
 
 interface DashboardCard {
     portfolioId: string,
@@ -176,6 +177,7 @@ interface BreachedRule {
     ruleType: RuleType;
     breachMessage: string;
     recommendation: string;
+    news?: AlertDto[];
 }
 
 interface PortfolioReport {

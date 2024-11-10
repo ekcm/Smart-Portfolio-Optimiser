@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { RuleLogDto } from "src/dto/ruleLog.dto";
 import { CoreService } from "src/service/core.service";
 import { DashboardCard, FinanceNewsCard, NewsArticle, PortfolioData } from "src/types"
 
@@ -30,6 +31,12 @@ export class CoreController {
     @ApiOperation({ summary: "News by id for individaul article page" })
     async loadFinanceNewsById(@Param('id') id: string): Promise<NewsArticle> {
         return await this.coreService.loadNewsArticle(id);
+    }
+
+    @Get("ruleLogs/:portfolioId")
+    @ApiOperation({ summary: "Get all Rule Logs by portfolioId" })
+    async loadRuleLogs(@Param('portfolioId') portfolioId: string): Promise<RuleLogDto[]> {
+        return await this.coreService.loadRuleLogs(portfolioId);
     }
 
 }

@@ -95,6 +95,7 @@ interface PortfolioData {
   portfolioName: string;
   clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
+  breachedRules: BreachedRule[];
   triggeredAlerts: Alert[];
   portfolioBreakdown: PortfolioBreakdown;
   portfolioHoldings: PortfolioHoldings[];
@@ -226,6 +227,33 @@ interface ClassicOrder extends OptimiserOrders {
   last: number;
 }
 
+// rules types
+interface UpdateRule {
+    ruleType: RuleType;
+    rule: any;
+    changeMessage: string;
+}
+
+export enum RuleType {
+    MIN_CASH = 'MIN_CASH',
+    MAX_CASH = 'MAX_CASH',
+    RISK = 'RISK',
+    EXCLUSIONS = 'EXCLUSIONS'
+}
+
+interface BreachedRule {
+    ruleType: RuleType;
+    breachMessage: string;
+    recommendation: string;
+    news?: Alert[];
+}
+
+interface UpdateRule {
+    ruleType: RuleType;
+    rule: any;
+    changeMessage: string;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -249,6 +277,9 @@ export type {
     OptimisedPortfolio,
     OptimiserOrders,
     ClassicOrder,
+    // rules
+    UpdateRule,
+    BreachedRule,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,
