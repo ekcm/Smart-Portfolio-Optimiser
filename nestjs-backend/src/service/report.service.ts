@@ -50,11 +50,11 @@ export class ReportService{
         })
 
         const portfolioSummary = {
-            assetsAllocation: assetsAllocation,
-            topHoldings: topHoldings,
+            assetsAllocation: Object.fromEntries(assetsAllocation),
+            topHoldings: Object.fromEntries(topHoldings),
             overview: "placeholder",
-            sectorAllocation: sectorAllocation,
-            commentary: "palceholder"
+            sectorAllocation: Object.fromEntries(sectorAllocation),
+            commentary: "placeholder",
         }
 
         const portfolioDetails = {
@@ -62,9 +62,10 @@ export class ReportService{
             portfolioClient: portfolio.client
         }
 
-        return {
-            portfolioDetails: portfolioDetails,
-            portfolioSummary: portfolioSummary
+        const summary = {
+            portfolioSummary: portfolioSummary,
+            portfolioDetails: portfolioDetails
         }
+        return summary
     }
 }

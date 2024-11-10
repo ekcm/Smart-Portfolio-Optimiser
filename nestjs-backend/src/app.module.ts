@@ -16,6 +16,7 @@ import { RuleLogModule } from './module/ruleLog.module';
 import { RuleValidatorModule } from './module/ruleValidator.module';
 // import { RuleModule } from './module/rule.module';
 import { RuleHandlerModule } from './module/ruleHandler.module';
+import { ReportModule } from './module/report.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { RuleHandlerModule } from './module/ruleHandler.module';
     RuleHandlerModule,
     RuleLogModule, 
     RuleValidatorModule,
+    ReportModule,
   ],
 })
 export class AppModule {}
