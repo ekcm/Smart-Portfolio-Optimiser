@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { fetchAllAssets } from "@/api/asset";
-import { Asset } from "@/lib/types";
+import { Asset, RuleType } from "@/lib/types";
 
 type ErrorState = {
     riskAppetite?: string;
@@ -23,13 +23,6 @@ type ErrorState = {
 
 interface EditPortfolioFormProps {
     portfolioId: string;
-}
-
-enum RuleType {
-    MIN_CASH = 'MIN_CASH',
-    MAX_CASH = 'MAX_CASH',
-    RISK = 'RISK',
-    EXCLUSIONS = 'EXCLUSIONS'
 }
 
 export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProps) {
