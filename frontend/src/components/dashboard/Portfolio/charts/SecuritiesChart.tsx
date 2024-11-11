@@ -20,7 +20,7 @@ const chartConfig = {
         label: "Stock",
         color: "hsl(var(--chart-2))",
     },
-    bonds: {
+    bond: {
         label: "Bonds",
         color: "hsl(var(--chart-1))",
     },
