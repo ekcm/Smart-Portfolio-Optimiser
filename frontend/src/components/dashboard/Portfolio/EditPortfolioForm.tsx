@@ -117,6 +117,10 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         e.preventDefault();
         const newErrors: ErrorState = {};
         // validation
+        if (minCash >= maxCash) {
+            newErrors.maxCash = "Maximum cash (%) cannot be less than minimum cash (%)!";
+            newErrors.minCash = "Maximum cash (%) cannot be less than minimum cash (%)!";
+        }
         if (!reason) newErrors.reason = "No reason stated.";
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -222,6 +226,9 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                                 setMinCash(parseFloat(e.target.value));
                             }}   
                         />
+                        {errors.minCash && (
+                            <span className="text-red-500">{errors.minCash}</span>
+                        )}
                     </Label>
                 )}
                 {selectedRule === RuleType.MAX_CASH && (
@@ -244,6 +251,9 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                                 setMaxCash(parseFloat(e.target.value));
                             }}
                         />
+                        {errors.maxCash && (
+                            <span className="text-red-500">{errors.maxCash}</span>
+                        )}
                     </Label>
                 )}
                 {selectedRule !== "" && 
