@@ -24,7 +24,7 @@ export default function GenerateOrderList() {
 
     useEffect(() => {
         if (portfolioId) {
-            getIndividualPortfolio();
+            getIndividualPortfolio(portfolioId);
         }
     }, [portfolioId]); 
 
@@ -33,7 +33,7 @@ export default function GenerateOrderList() {
         orders = JSON.parse(ordersParam);
     }
 
-    const getIndividualPortfolio = async () => {
+    const getIndividualPortfolio = async (portfolioId: string) => {
         try {
             const portfolioData = await viewPortfolio(portfolioId);
             setIndividualPortfolio(portfolioData);
