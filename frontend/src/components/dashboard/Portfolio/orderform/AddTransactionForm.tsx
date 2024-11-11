@@ -70,7 +70,7 @@ export default function AddTransactionForm({
         if (formData.orderType === "Sell") {
             setShowWarningPosition(formData.position === maxQuantity);
         }
-    }, [totalCost, buyingPower, formData.orderType, formData.position])
+    }, [totalCost, buyingPower, formData.orderType, formData.position, maxQuantity])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

@@ -136,6 +136,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         } else if (selectedRule === RuleType.EXCLUSIONS) {
             ruleValue = exclusions.join(",");
         }
+        setErrors({});
         setIsUpdateLoading(true);
         setEditPortfolioState(true);
         try {

@@ -148,10 +148,10 @@ export default function DashBoardNavBar() {
 
     useEffect(() => {
         if (pathname) {
-        const newBreadcrumbs = generateBreadcrumbs(pathname);
-        setBreadcrumbs(newBreadcrumbs);
+            const newBreadcrumbs = generateBreadcrumbs(pathname);
+            setBreadcrumbs(newBreadcrumbs);
         }
-    }, [pathname, portfolioName, financeNewsName]);
+    }, [breadcrumbs, pathname, portfolioName, financeNewsName]);
 
   // Custom hook to check for localStorage changes
     useEffect(() => {
