@@ -62,7 +62,11 @@ dow_list_info = {
     "V": ["Visa", "Financial Services"],
     "VZ": ["Verizon", "Telecommunications Industry"],
     "WBA": ["Walgreens Boots Alliance", "Retailing"],
-    "WMT": ["Walmart", "Retailing"]
+    "WMT": ["Walmart", "Retailing"],
+    "^TNX": ["CBOE Interest Rate 10 Year", "Government Bonds"],
+    "^IRX": ["13 Week Treasury Bill", "Government Bonds"],
+    "^FVX": ["Treasury Yield 5 Years", "Government Bonds"],
+    "^TYX": ["Treasury Yield 30 Years", "Government Bonds"],
 }
 
 class StockItem(BaseModel):
@@ -187,54 +191,54 @@ def insert_all(stock_date: StockDate):
             print("error: ", stock_info["error"])
             return {"error": stock_info["error"]}
 
-        # stock_info only has one hour, but we want an additional 6 hours
-        current_stock_date = stock_info["date"]
-        original_todayClose = stock_info["todayClose"]
-        current_todayClose = stock_info["todayClose"]
-        current_yesterdayClose = stock_info["yesterdayClose"]
+        # # stock_info only has one hour, but we want an additional 6 hours
+        # current_stock_date = stock_info["date"]
+        # original_todayClose = stock_info["todayClose"]
+        # current_todayClose = stock_info["todayClose"]
+        # current_yesterdayClose = stock_info["yesterdayClose"]
 
-        last_day = 7
+        # last_day = 7
 
-        for i in range(1, last_day):
-            new_stock_date = current_stock_date + timedelta(hours=i)
+        # for i in range(1, last_day):
+        #     new_stock_date = current_stock_date + timedelta(hours=i)
 
-            # randomize todayClose
-            new_YesterdayClose = current_todayClose
-            current_todayClose = new_YesterdayClose * (1+random.uniform(-0.05, 0.05))
+        #     # randomize todayClose
+        #     new_YesterdayClose = current_todayClose
+        #     current_todayClose = new_YesterdayClose * (1+random.uniform(-0.05, 0.05))
 
-            new_stock_info = {
-                "ticker": stock_info["ticker"],
-                "company": stock_info["company"],
-                "sector": stock_info["sector"],
-                "todayClose": current_todayClose,
-                "yesterdayClose": new_YesterdayClose,
-                "date": new_stock_date
-            }   
+        #     new_stock_info = {
+        #         "ticker": stock_info["ticker"],
+        #         "company": stock_info["company"],
+        #         "sector": stock_info["sector"],
+        #         "todayClose": current_todayClose,
+        #         "yesterdayClose": new_YesterdayClose,
+        #         "date": new_stock_date
+        #     }   
 
-            if last_day-1 == i:
-                new_stock_info = {
-                    "ticker": stock_info["ticker"],
-                    "company": stock_info["company"],
-                    "sector": stock_info["sector"],
-                    "todayClose": original_todayClose,
-                    "yesterdayClose": new_YesterdayClose,
-                    "date": new_stock_date
-                }   
+        #     if last_day-1 == i:
+        #         new_stock_info = {
+        #             "ticker": stock_info["ticker"],
+        #             "company": stock_info["company"],
+        #             "sector": stock_info["sector"],
+        #             "todayClose": original_todayClose,
+        #             "yesterdayClose": new_YesterdayClose,
+        #             "date": new_stock_date
+        #         }   
 
-            stock_list.append(new_stock_info)
+        #     stock_list.append(new_stock_info)
             
         # print(stock_list)
-        for new_stock_info in stock_list:
+        for stock_info in stock_list:
             # print(new_stock_info)
             try:
-                if "error" in new_stock_info:
-                    print("error: ", new_stock_info["error"], "date: ", new_stock_info.date)
+                if "error" in stock_info:
+                    print("error: ", stock_info["error"], "date: ", stock_info.date)
                     pass
                 else:
                     with MongoClient(uri) as client:
                         database = client.get_database("FYP-Test-DB")
                         assetPrice = database.get_collection("AssetPrice")
-                        assetPrice.insert_one(new_stock_info)
+                        assetPrice.insert_one(stock_info)
             except Exception as e:
                 return {"error": str(e)}
 
@@ -249,22 +253,44 @@ def insert_all_date_range():
     dates = []
 
     for i in range(1, 32):
+        jan_date = datetime(2024, 1, i)
+        dates.append(jan_date)
+
+    for i in range(1, 30):
+        feb_date = datetime(2024, 2, i)
+        dates.append(feb_date)
+
+    for i in range(1, 32):
+        mar_date = datetime(2024, 3, i)
+        dates.append(mar_date)
+
+    for i in range(1, 31):
+        apr_date = datetime(2024, 4, i)
+        dates.append(apr_date)
+
+    for i in range(1, 32):
+        may_date = datetime(2024, 5, i)
+        dates.append(may_date)
+
+    for i in range(1, 31):
+        jun_date = datetime(2024, 6, i)
+        dates.append(jun_date)
+
+    for i in range(1, 32):
         july_date = datetime(2024, 7, i)
         dates.append(july_date)
 
-    # for i in range(1,30):
-    #     aug_date = datetime(2024, 8, i)
-    #     dates.append(aug_date)
+    for i in range(1,32):
+        aug_date = datetime(2024, 8, i)
+        dates.append(aug_date)
 
-    # today = datetime.now()
-    # today_date = today.day
-    # for i in range(1, 30):
-    #     sep_date = datetime(2024, 9, i)
-    #     dates.append(sep_date)
+    for i in range(1, 31):
+        sep_date = datetime(2024, 9, i)
+        dates.append(sep_date)
 
-    # for i in range(1, 30):
-    #     oct_date = datetime(2024, 10, i)
-    #     dates.append(oct_date)
+    for i in range(1, 32):
+        oct_date = datetime(2024, 10, i)
+        dates.append(oct_date)
 
     try:
         for date in dates:
