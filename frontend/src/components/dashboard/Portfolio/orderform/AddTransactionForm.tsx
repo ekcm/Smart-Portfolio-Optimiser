@@ -40,7 +40,7 @@ export default function AddTransactionForm({
     cashBalance, 
     buyingPower, 
     portfolioAssets, 
-    assetsData, 
+    assetsData,
     formData, 
     setFormData, 
     onSubmit, 
@@ -152,14 +152,24 @@ export default function AddTransactionForm({
 
     // conditionally display portfolioAssets or assetsData
     const getAssetOptions = () => {
+        let chosenAssets;
+        let chosenPortfolioAssets;
+        // filter assets bacsed on stock/bonds
+        if (formData.type === "Stock") {
+            chosenAssets = assetsData?.filter(asset => asset.type === "STOCK");
+            chosenPortfolioAssets = portfolioAssets.filter(asset => asset.type === "STOCK");
+        } else {
+            chosenAssets = assetsData?.filter(asset => asset.type === "BOND");
+            chosenPortfolioAssets = portfolioAssets.filter(asset => asset.type === "BOND");
+        }
         if (formData.orderType === "Buy") {
-            return assetsData?.map((asset, index) => (
+            return chosenAssets?.map((asset, index) => (
                 <SelectItem key={index} value={asset.ticker}>
                     {asset.name}
                 </SelectItem>
             ))
         } else {
-            return portfolioAssets.map((asset, index) => (
+            return chosenPortfolioAssets.map((asset, index) => (
                 <SelectItem key={index} value={asset.ticker}>
                     {asset.name}
                 </SelectItem>
@@ -201,7 +211,7 @@ export default function AddTransactionForm({
                     </SelectContent>
                 </Select>
             </div>
-            {/* <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center">
                 <Label className="w-40 text-md font-light">
                     Security Type:
                 </Label>
@@ -217,7 +227,7 @@ export default function AddTransactionForm({
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-            </div> */}
+            </div>
             <div className="flex gap-4 items-center">
                 <Label className="w-40 text-md font-light">
                     Security Name:

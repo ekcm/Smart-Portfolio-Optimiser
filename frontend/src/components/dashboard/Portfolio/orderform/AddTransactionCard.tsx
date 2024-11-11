@@ -17,9 +17,9 @@ interface AddTransactionCardProps {
     addTransaction: (data: AddTransactionDataType) => void;
 }
 
-export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, portfolioAssets, assetsData,breachedRules, triggeredAlerts, addTransaction }: AddTransactionCardProps) {
+export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, portfolioAssets, assetsData, breachedRules, triggeredAlerts, addTransaction }: AddTransactionCardProps) {
     const initialFormData = {
-        type: "",
+        type: "Stock",
         ticker: "",
         cost: 0,
         position: 0,

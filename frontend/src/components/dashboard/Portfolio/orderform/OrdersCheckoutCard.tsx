@@ -21,6 +21,7 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
                     <TableHeader>
                         <TableRow>
                             <TableHead>Symbol | Ticker</TableHead>
+                            <TableHead>Asset Type</TableHead>
                             <TableHead>Position | Price</TableHead>
                             <TableHead>Current Price</TableHead>
                             <TableHead>Total Cost</TableHead>
@@ -36,6 +37,9 @@ export default function OrdersCheckoutCard({ data, onDelete }: OrdersCheckoutCar
                                         <span>{item.name}</span>
                                         <span className="text-xs text-gray-500">{item.ticker}</span>
                                     </div>
+                                </TableCell>
+                                <TableCell className="font-medium">
+                                    <span>{item.type}</span>
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex">
