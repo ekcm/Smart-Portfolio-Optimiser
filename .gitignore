@@ -14,3 +14,7 @@ __pycache__
 quic
 create_layer/
 python/
+
+# Python
+__pycache__/
+*.pyc
