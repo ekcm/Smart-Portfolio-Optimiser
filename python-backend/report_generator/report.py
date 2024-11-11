@@ -41,14 +41,32 @@ def generate_trade_executions(id: str, startDate: str, endDate: str):
         
         # Create PDF
         pdf_buffer = io.BytesIO()
-        pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4)
+        pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4, rightMargin=50, leftMargin=50, topMargin=50, bottomMargin=50)
+        
+        # Set up styles for headings and body text
         styles = getSampleStyleSheet()
+        h1_heading_style = styles['Heading1']
+        h1_heading_style.fontSize = 24
+        h1_heading_style.spaceAfter = 30
+        h1_heading_style.textColor = colors.black
+        h1_heading_style.alignment = 1  # Center alignment
+
+        h2_heading_style = styles['Heading2']
+        h2_heading_style.fontSize = 18
+        h2_heading_style.spaceBefore = 20
+        h2_heading_style.spaceAfter = 20
+        h2_heading_style.textColor = colors.black
+
+        body_style = styles['BodyText']
+        body_style.fontSize = 12
+        body_style.leading = 16
+        body_style.textColor = colors.black
         
         # Create elements for the PDF
         elements = []
         
         # Add heading
-        heading = Paragraph(f"Trade Executions Report ({startDate} to {endDate})", styles['Heading1'])
+        heading = Paragraph(f"Trade Executions Report ({startDate} to {endDate})", h1_heading_style)
         elements.append(heading)
         elements.append(Spacer(1, 20))
         
@@ -63,21 +81,25 @@ def generate_trade_executions(id: str, startDate: str, endDate: str):
                 trade.get('orderType', ''),
                 trade.get('assetName', ''),
                 trade.get('quantity', ''),
-                round(trade.get('price', ''), 2),
+                f"${round(trade.get('price', 0), 2):,.2f}",
                 trade.get('orderStatus', '')
             ])
         
         # Create and style the table
-        trade_table = Table(table_data)
+        trade_table = Table(table_data, colWidths=[60, 80, 100, 80, 100, 80])
+        trade_table.hAlign = 'CENTER'
         trade_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.red),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('FONTSIZE', (0, 0), (-1, 0), 12),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#ECF0F1')),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F8F9F9')]),
+            ('PADDING', (0, 0), (-1, -1), 8),
         ]))
         
         elements.append(trade_table)
@@ -105,22 +127,38 @@ def generate_report(id: str):
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
-        # print(data)
     except requests.exceptions.HTTPError as e:
         return {"error": f"HTTP error occurred: {e}"}
 
-    pie_chart_fillColors = [colors.blue, colors.green, colors.red, colors.orange, colors.purple, colors.yellow, colors.pink, colors.cyan, colors.brown, colors.grey, colors.beige, colors.black, colors.whitesmoke, colors.lightgrey, colors.darkgrey]
+    pie_chart_fillColors = [colors.HexColor('#2E86C1'), colors.HexColor('#28B463'), colors.HexColor('#E74C3C'), 
+                           colors.HexColor('#F39C12'), colors.HexColor('#8E44AD'), colors.HexColor('#F1C40F'),
+                           colors.HexColor('#E67E22'), colors.HexColor('#16A085'), colors.HexColor('#95A5A6'),
+                           colors.HexColor('#34495E'), colors.HexColor('#D35400'), colors.HexColor('#2ECC71'),
+                           colors.HexColor('#E74C3C'), colors.HexColor('#9B59B6'), colors.HexColor('#1ABC9C')]
+    
     pdf_buffer = io.BytesIO()
-    pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4)
+    pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4, rightMargin=50, leftMargin=50, topMargin=50, bottomMargin=50)
 
     # Set up styles for headings and body text
     styles = getSampleStyleSheet()
     h1_heading_style = styles['Heading1']
-    h2_heading_style = styles['Heading2']
-    body_style = styles['BodyText']
+    h1_heading_style.fontSize = 24
+    h1_heading_style.spaceAfter = 30
+    h1_heading_style.textColor = colors.black
+    h1_heading_style.alignment = 1  # Center alignment
 
-    # print(data['portfolioDetails']['portfolioName'])
-    portfolio_report_heading = Paragraph(f"Portfolio report for {data['portfolioDetails']['portfolioName']}", h1_heading_style)
+    h2_heading_style = styles['Heading2']
+    h2_heading_style.fontSize = 18
+    h2_heading_style.spaceBefore = 20
+    h2_heading_style.spaceAfter = 20
+    h2_heading_style.textColor = colors.black
+
+    body_style = styles['BodyText']
+    body_style.fontSize = 12
+    body_style.leading = 16
+    body_style.textColor = colors.black
+
+    portfolio_report_heading = Paragraph(f"Portfolio Report for {data['portfolioDetails']['portfolioName']}", h1_heading_style)
     
     # Portfolio Summary
     portfolio_summary_heading = Paragraph("Assets Allocation", h2_heading_style)
@@ -135,65 +173,74 @@ def generate_report(id: str):
 
     count = 1
     for asset in assets_allocation_data.values():
-        assets_allocation_summary_data.append([count, asset['ticker'], round(asset['cost'],2), asset['quantity'], asset['assetType']])
+        assets_allocation_summary_data.append([count, asset['ticker'], f"${round(asset['cost'],2):,.2f}", asset['quantity'], asset['assetType']])
         count += 1
 
-    assets_allocation_table = Table(assets_allocation_summary_data)
-    assets_allocation_table.hAlign = 'LEFT'
+    assets_allocation_table = Table(assets_allocation_summary_data, colWidths=[40, 80, 100, 80, 100])
+    assets_allocation_table.hAlign = 'CENTER'
     assets_allocation_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.red),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),  # Set text color to black for data rows
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 12),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#ECF0F1')),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F8F9F9')]),
+        ('PADDING', (0, 0), (-1, -1), 8),
     ]))
 
     # Top Holdings
     top_holdings_by_weight_heading = Paragraph("Top Holdings by Weight", h2_heading_style)
     top_holdings_data = portfolio_summary_data['topHoldings']
 
-    top_holdings_drawing = Drawing(400, 200)
+    top_holdings_drawing = Drawing(500, 250)
     top_holdings_by_weight_pie_chart = Pie()
     top_holdings_by_weight_pie_chart.data = list(top_holdings_data.values())
-    top_holdings_by_weight_pie_chart.labels = list(top_holdings_data.keys())
-    top_holdings_by_weight_pie_chart.x = 50
-    top_holdings_by_weight_pie_chart.y = 50
-    top_holdings_by_weight_pie_chart.width = 150
-    top_holdings_by_weight_pie_chart.height = 150
+    top_holdings_by_weight_pie_chart.labels = [f"{k} ({v:.1f}%)" for k, v in top_holdings_data.items()]
+    top_holdings_by_weight_pie_chart.x = 150
+    top_holdings_by_weight_pie_chart.y = 0
+    top_holdings_by_weight_pie_chart.width = 200
+    top_holdings_by_weight_pie_chart.height = 200
+    top_holdings_by_weight_pie_chart.sideLabels = True
+    top_holdings_by_weight_pie_chart.simpleLabels = False
 
     for i in range(len(top_holdings_by_weight_pie_chart.data)):
         top_holdings_by_weight_pie_chart.slices[i].fillColor = pie_chart_fillColors[i]
-    top_holdings_drawing.hAlign = 'LEFT'
+    top_holdings_drawing.hAlign = 'CENTER'
     top_holdings_drawing.add(top_holdings_by_weight_pie_chart)
 
     # Sector Allocation
     sector_allocation_heading = Paragraph("Sector Allocation", h2_heading_style)
     sector_allocation_data = portfolio_summary_data['sectorAllocation']
 
-    print(sector_allocation_data)
-    sector_allocation_drawing = Drawing(400, 200)
+    sector_allocation_drawing = Drawing(500, 250)
     sector_allocation_pie_chart = Pie()
     sector_allocation_pie_chart.data = list(sector_allocation_data.values())
-    sector_allocation_pie_chart.labels = list(sector_allocation_data.keys())
-    sector_allocation_pie_chart.x = 50
-    sector_allocation_pie_chart.y = 50
-    sector_allocation_pie_chart.width = 150
-    sector_allocation_pie_chart.height = 150
+    sector_allocation_pie_chart.labels = [f"{k} ({v:.1f}%)" for k, v in sector_allocation_data.items()]
+    sector_allocation_pie_chart.x = 150
+    sector_allocation_pie_chart.y = 0
+    sector_allocation_pie_chart.width = 200
+    sector_allocation_pie_chart.height = 200
+    sector_allocation_pie_chart.sideLabels = True
+    sector_allocation_pie_chart.simpleLabels = False
 
     for i in range(len(sector_allocation_pie_chart.data)):
         sector_allocation_pie_chart.slices[i].fillColor = pie_chart_fillColors[i]
-    sector_allocation_drawing.hAlign = 'LEFT'
+    sector_allocation_drawing.hAlign = 'CENTER'
     sector_allocation_drawing.add(sector_allocation_pie_chart)
 
     elements = [
         portfolio_report_heading,
+        Spacer(1, 20),
         portfolio_summary_heading,
         assets_allocation_table,
+        Spacer(1, 30),
         top_holdings_by_weight_heading,
         top_holdings_drawing,
+        Spacer(1, 20),
         sector_allocation_heading,
         sector_allocation_drawing,
     ]
@@ -201,15 +248,8 @@ def generate_report(id: str):
     pdf.build(elements)
     pdf_buffer.seek(0)
 
-    current_date = datetime.now().strftime("%d/%m/%y")
+    current_date = datetime.now().strftime("%d_%m_%y")
     filename = f"{data['portfolioDetails']['portfolioName']}_{current_date}.pdf"
-    
-    # directory = os.path.dirname(filename)
-    # if not os.path.exists(directory):
-    #     os.makedirs(directory)
-
-    # with open(filename, "wb") as output_pdf:
-    #     output_pdf.write(pdf_buffer.read())
 
     headers = {
         'Content-Disposition': f'attachment; filename={filename}'
