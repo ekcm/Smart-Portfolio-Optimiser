@@ -25,11 +25,11 @@ export default function Portfolio() {
 
     useEffect(() => {
         if (portfolioId) {
-            getIndividualPortfolio();
+            getIndividualPortfolio(portfolioId);
         }
     }, [portfolioId]);
 
-    const getIndividualPortfolio = async () => {
+    const getIndividualPortfolio = async (portfolioId: string) => {
         try {
             const portfolioData = await viewPortfolio(portfolioId);
             setIndividualPortfolio(portfolioData);

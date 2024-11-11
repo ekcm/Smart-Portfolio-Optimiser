@@ -102,6 +102,10 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       newErrors.portfolioName = "Portfolio name must be at least 2 characters.";
     if (!riskAppetite) newErrors.riskAppetite = "Select a valid risk appetite.";
     if (cashAmount === 0) newErrors.cashAmount = "Cash amount must be at least 0";
+    if (minCash >= maxCash) {
+      newErrors.maxCash = "Maximum cash (%) cannot be less than minimum cash (%)!";
+      newErrors.minCash = "Maximum cash (%) cannot be less than minimum cash (%)!";
+    }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -207,8 +211,11 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
                 // Prevent user from leaving it blank (empty string)
               if (e.target.value === "" || isNaN(Number(e.target.value))) return;
               setMinCash(parseFloat(e.target.value));
-            }}          
+            }}
           />
+          {errors.minCash && (
+            <span className="text-red-500">{errors.minCash}</span>
+          )}
         </Label>
 
         <Label className="flex flex-col space-x-2 whitespace-nowrap text-md gap-2">
@@ -223,6 +230,9 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
               setMaxCash(parseFloat(e.target.value));
             }}
           />
+          {errors.maxCash && (
+            <span className="text-red-500">{errors.maxCash}</span>
+          )}
         </Label>
 
         {/* Exclusions using Select */}

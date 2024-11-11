@@ -39,12 +39,12 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
 
     useEffect(() => {
         getAllAssets();
-        getCashBalance();
-    }, []);
+        getCashBalance(data.portfolioId);
+    }, [data.portfolioId]);
 
-    const getCashBalance = async () => {
+    const getCashBalance = async (portfolioId: string) => {
         try {
-            const getPortfolioData = await getPortfolio(data.portfolioId);
+            const getPortfolioData = await getPortfolio(portfolioId);
             setCashBalance(getPortfolioData.cashAmount);
             setBuyingPower(getPortfolioData.cashAmount);
         } catch (error) {
