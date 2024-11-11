@@ -32,38 +32,44 @@ app.add_middleware(
 )
 
 @app.get("/trade_executions")
-def generate_trade_executions():
-    with open("data.json", "r") as f:
-        data = json.load(f)
-
-        pie_chart_fillColors = [colors.blue, colors.green, colors.red, colors.orange, colors.purple, colors.yellow, colors.pink, colors.cyan, colors.brown, colors.grey]
-
+def generate_trade_executions(id: str, startDate: str, endDate: str):
+    url = f"http://localhost:8000/report/order/date?id={id}&startDate={startDate}&endDate={endDate}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        
+        # Create PDF
         pdf_buffer = io.BytesIO()
         pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4)
-
-        # Set up styles for headings and body text
         styles = getSampleStyleSheet()
-        h1_heading_style = styles['Heading1']
-        h2_heading_style = styles['Heading2']
-        body_style = styles['BodyText']
-
-        trade_execution_heading = Paragraph("Trade Execution", h1_heading_style)
-
-        trade_execution_time_period = data['trade_execution_summary']['time_period']
-        trade_execution_performance = data['trade_execution_summary']['execution_performance']
-        trade_execution_body = Paragraph(f"The following are the trade executions for the portfolio conducted between {trade_execution_time_period}. During this time period, the trades conducted had an execution performance of {trade_execution_performance}", body_style)
-
-        # trade execution transactions
-        trade_execution_data = data['trade_execution_summary']
-        trade_execution_transactions = trade_execution_data['transactions']
-
-        trade_execution_table_data = [["ID", "Asset Name", "Direction", "Quantity", "Price"]]
-        for i in range(len(trade_execution_transactions)):
-            trade_execution_table_data.append([i+1, trade_execution_transactions[i]['asset'], trade_execution_transactions[i]['direction'], trade_execution_transactions[i]['quantity'], trade_execution_transactions[i]['strike_price']])
-
-        trade_execution_table = Table(trade_execution_table_data)
-        trade_execution_table.hAlign = 'LEFT'
-        trade_execution_table.setStyle(TableStyle([
+        
+        # Create elements for the PDF
+        elements = []
+        
+        # Add heading
+        heading = Paragraph(f"Trade Executions Report ({startDate} to {endDate})", styles['Heading1'])
+        elements.append(heading)
+        elements.append(Spacer(1, 20))
+        
+        # Create table data
+        table_data = [["Date", "Order Type", "Asset", "Quantity", "Price", "Order Status"]]
+        # Sort trades by orderDate
+        sorted_trades = sorted(data, key=lambda x: x.get('orderDate', '') if x.get('orderDate') else '')
+        
+        for trade in sorted_trades:
+            table_data.append([
+                datetime.strptime(trade.get('orderDate', ''), '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%d/%m/%y') if trade.get('orderDate') else '',
+                trade.get('orderType', ''),
+                trade.get('assetName', ''),
+                trade.get('quantity', ''),
+                round(trade.get('price', ''), 2),
+                trade.get('orderStatus', '')
+            ])
+        
+        # Create and style the table
+        trade_table = Table(table_data)
+        trade_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.red),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -73,30 +79,24 @@ def generate_trade_executions():
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ]))
-
-        elements = [
-            trade_execution_heading,
-            trade_execution_body,
-            trade_execution_table
-        ]
-        pdf.build(elements)
-
-        pdf_buffer.seek(0)
-
-        current_date = datetime.now().strftime("%d/%m/%y")
-        filename = f"{data['portfolio_details']['portfolio_name']}_trade_executions_{current_date}.pdf"
         
-        directory = os.path.dirname(filename)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-        with open(filename, "wb") as output_pdf:
-            output_pdf.write(pdf_buffer.read())
-
+        elements.append(trade_table)
+        
+        # Build PDF
+        pdf.build(elements)
+        pdf_buffer.seek(0)
+        
+        # Generate filename
+        current_date = datetime.now().strftime("%d_%m_%y")
+        filename = f"trade_executions_{current_date}.pdf"
+        
         headers = {
             'Content-Disposition': f'attachment; filename={filename}'
         }
         return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
+        
+    except requests.exceptions.HTTPError as e:
+        return {"error": f"HTTP error occurred: {e}"}
 
 @app.get("/report")
 def generate_report(id: str):
