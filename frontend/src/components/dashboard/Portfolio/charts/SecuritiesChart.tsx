@@ -47,7 +47,7 @@ export default function SecuritiesChart({ data }: SecuritiesChartProps) {
     return (
         <ChartContainer
             config={chartConfig}
-            className="mx-auto w-full aspect-square pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+            className="mx-auto w-full max-h-[400px] aspect-square pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
             <PieChart>
                 <ChartTooltip content={<CustomTooltip />} />
@@ -57,7 +57,7 @@ export default function SecuritiesChart({ data }: SecuritiesChartProps) {
                     labelLine={false}
                     label={CustomLabel}
                     nameKey="securityType"
-                    outerRadius={80}
+                    outerRadius={120}
                 />
                 <ChartLegend
                     content={<ChartLegendContent nameKey="securityType" />}
