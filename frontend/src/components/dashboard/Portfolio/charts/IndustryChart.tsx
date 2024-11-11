@@ -15,20 +15,22 @@ interface IndustryChartProps {
     data: { [key: string]: number | undefined }[];
 }
 
+const COLOR_COUNT = 5;
+
 export default function IndustryChart({ data }: IndustryChartProps) {
     const chartData = data.map((item, index) => {
         const [key, value] = Object.entries(item)[0];
         return {
             industry: key.toLowerCase(),
             industryValue: value,
-            fill: `hsl(var(--chart-${index + 1}))`,
+            fill: `hsl(var(--chart-${(index % COLOR_COUNT) + 1}))`,
         };
     });
 
     const chartConfig = chartData.reduce((config, item, index) => {
         config[item.industry] = {
             label: item.industry.charAt(0).toUpperCase() + item.industry.slice(1),
-            color: `hsl(var(--chart-${index + 1}))`,
+            color: `hsl(var(--chart-${(index % COLOR_COUNT) + 1}))`,
         };
         return config;
     }, { industry: { label: "Industry" } } as ChartConfig);
@@ -36,7 +38,7 @@ export default function IndustryChart({ data }: IndustryChartProps) {
     return (
         <ChartContainer
             config={chartConfig}
-            className="mx-auto w-full aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+            className="mx-auto w-full aspect-square pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
             <PieChart>
                 <ChartTooltip content={<CustomTooltip />} />
@@ -45,11 +47,12 @@ export default function IndustryChart({ data }: IndustryChartProps) {
                     dataKey="industryValue" 
                     labelLine={false}
                     label={CustomLabel} 
-                    nameKey="industry" 
+                    nameKey="industry"
+                    outerRadius={80}
                 />
                 <ChartLegend
                     content={<ChartLegendContent nameKey="industry" />}
-                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+                    className="-translate-y-2 flex-wrap gap-y-0 [&>*]:basis-1/4 [&>*]:justify-center"
                 />
             </PieChart>
         </ChartContainer>
