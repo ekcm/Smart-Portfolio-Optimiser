@@ -13,6 +13,7 @@ import { io, Socket } from "socket.io-client";
 
 export default function Portfolio() {
     const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
+    const DashBoardNavBarState = useDashBoardNavBarStore((state) => state.mainState);
     const pathname = usePathname();
     const portfolioId = pathname.split("/")[2];
     const [indivPortfolioData, setIndividualPortfolio] = useState<PortfolioData | null>(null);
@@ -23,7 +24,7 @@ export default function Portfolio() {
 
     useEffect(() => {
         setDashBoardNavBarState("Portfolio");
-    }, [setDashBoardNavBarState]);
+    }, [DashBoardNavBarState]);
 
     useEffect(() => {
         if (portfolioId) {

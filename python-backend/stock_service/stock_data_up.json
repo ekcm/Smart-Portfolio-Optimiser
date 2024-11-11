@@ -1679,15 +1679,31 @@
             "todayClose": 81.94999694824219,
             "yesterdayClose": 78.60435188984786,
             "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "^FVX",
+            "company": "Treasury Yield 5 Years",
+            "sector": "Government Bonds",
+            "todayClose": 5.0,
+            "yesterdayClose": 4.126999855041504,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "^FVX",
+            "company": "Treasury Yield 5 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.3,
+            "yesterdayClose": 5.0,
+            "date": "2024-11-01T01:00:00"
         }
     ],
     "2024-11-02T00:00:00": [
         {
-            "ticker": "WMT",
-            "company": "Walmart",
-            "sector": "Retailing",
-            "todayClose": 81.94999694824219,
-            "yesterdayClose": 78.60435188984786,
+            "ticker": "AAPL",
+            "company": "Apple",
+            "sector": "Information Technology",
+            "todayClose": 250,
+            "yesterdayClose": 225.91000366210938,
             "date": "2024-11-02T00:00:00"
         }
     ]
