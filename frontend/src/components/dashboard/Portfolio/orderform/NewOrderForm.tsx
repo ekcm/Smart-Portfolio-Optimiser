@@ -19,7 +19,6 @@ interface NewOrderFormProps {
 }
 
 export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
-    console.log(data);
     // loaders
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -27,7 +26,6 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const [orders, setOrders] = useState<AssetsItem[]>([]);
     const [triggeredAlerts, setTriggeredAlerts] = useState<Alert[]>(data.triggeredAlerts);
     const [assetsLoading, setAssetsLoading] = useState(true);
-    const [portfolioAssets, setPortfolioAssets] = useState<PortfolioHoldings[]>(data.portfolioHoldings);
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
     const [assetError, setAssetError] = useState<string | null>(null);
     const [cashBalance, setCashBalance] = useState<number>(0);
@@ -52,6 +50,18 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
             setError("Failed to load portfolios");
         } finally {
             setLoading(false);
+        }
+    }
+
+    const getAllAssets = async () => {
+        try {
+            const assets = await fetchAllAssets();
+            setAllAssets(assets);
+        } catch (error) {
+            console.error("Error fetching assets: ", error);
+            setAssetError("Failed to load assets");
+        } finally {
+            setAssetsLoading(false);
         }
     }
 
@@ -106,30 +116,12 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
         }
     }
 
-    const generateOrders = () => {
-        // TODO: take orders and push it into backend
-    }
-
     const deleteOrder = (id: string, orderType: string, totalCost: number) => {
         setOrders((prevOrders) => prevOrders.filter(order => order.id !== id));
         if (orderType === "Buy") {
             setBuyingPower((prevBalance) => prevBalance + totalCost);
         }
     }
-
-    const getAllAssets = async () => {
-        try {
-            const data = await fetchAllAssets();
-            setAllAssets(data);
-        } catch (error) {
-            console.error("Error fetching assets: ", error);
-            setAssetError("Failed to load assets");
-        } finally {
-            setAssetsLoading(false);
-        }
-    };
-
-
 
     if (loading) {
         return (
@@ -147,7 +139,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 portfolioId={data.portfolioId} 
                 cashBalance={cashBalance} 
                 buyingPower={buyingPower} 
-                portfolioAssets={portfolioAssets}
+                portfolioAssets={data.portfolioHoldings}
                 assetsData={allAssets}
                 triggeredAlerts={triggeredAlerts}
                 breachedRules={data.breachedRules}
