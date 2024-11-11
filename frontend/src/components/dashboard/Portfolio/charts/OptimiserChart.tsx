@@ -20,7 +20,7 @@ const chartConfig = {
         label: "Stocks",
         color: "hsl(var(--chart-1))",
     },
-    bonds: {
+    bond: {
         label: "Bonds",
         color: "hsl(var(--chart-2))",
     },
@@ -43,6 +43,7 @@ export default function OptimiserChart({ data } : OptimiserChartProps) {
         fill: `var(--color-${key.toLowerCase()})`,
     };
   });
+  console.log(chartData);
 
   return (
     <div>
