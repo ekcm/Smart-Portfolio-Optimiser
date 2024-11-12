@@ -6,12 +6,14 @@ import { getRuleLogs } from "@/api/portfolio";
 import { usePathname } from "next/navigation";
 import Loader from "@/components/loader/Loader";
 import { RuleLog } from "@/lib/types";
+import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 
 export default function Rulelog() {
     const pathname = usePathname();
     const portfolioId = pathname.split("/")[2];
 
-    // TODO: Add rulelog type
+    const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);
+
     const [logs, setLogs] = useState<RuleLog[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -21,6 +23,10 @@ export default function Rulelog() {
             getLogs(portfolioId);
         }
     }, [portfolioId]);
+
+    useEffect(() => {
+        setDashBoardNavBarState("Empty");
+    }); 
 
     const getLogs = async (portfolioId: string) => {
         try {
@@ -43,7 +49,7 @@ export default function Rulelog() {
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
             <div className="space-y-4">
                 {logs.map((rule, index) => (
-                    <RuleCard rule={rule}/>
+                    <RuleCard key={index} rule={rule}/>
                 ))}
             </div>
         </main>

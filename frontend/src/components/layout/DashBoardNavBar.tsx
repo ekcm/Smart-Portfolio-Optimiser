@@ -46,6 +46,7 @@ export default function DashBoardNavBar() {
         generateorderlist: "Generate Order List",
         editportfolio: "Edit Portfolio",
         editcash: "Edit Cash",
+        rulelog: "Rule Logs",
     }
 
     const getPortfolioName = () => {
