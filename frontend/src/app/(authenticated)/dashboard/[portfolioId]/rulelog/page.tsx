@@ -25,13 +25,14 @@ export default function Rulelog() {
     }, [portfolioId]);
 
     useEffect(() => {
-        setDashBoardNavBarState("Empty");
+        setDashBoardNavBarState("Rulelogger");
     }); 
 
     const getLogs = async (portfolioId: string) => {
         try {
             const ruleLogsData = await getRuleLogs(portfolioId);
-            setLogs(ruleLogsData);
+            const sortedLogs = ruleLogsData.sort((a: { timestamp: Date; }, b: { timestamp: Date; }) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+            setLogs(sortedLogs);
         } catch (error) {
             console.error("Error fetching rule logs: ", error);
             setError("Error fetching rule logs");

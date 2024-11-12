@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 type DashBoardNavBarState = {
-    mainState: "Main" | "Empty" | "Portfolio";
-    setMainState: (state: "Main" | "Empty" | "Portfolio") => void;
+    mainState: "Main" | "Empty" | "Portfolio" | "Rulelogger";
+    setMainState: (state: "Main" | "Empty" | "Portfolio" | "Rulelogger") => void;
 }
 
 export const useDashBoardNavBarStore = create<DashBoardNavBarState>((set) => ({
