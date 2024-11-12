@@ -254,6 +254,15 @@ interface UpdateRule {
     changeMessage: string;
 }
 
+interface RuleLog {
+  description: string;
+  managerId: string;
+  portfolioId: string;
+  ruleType: RuleType;
+  timestamp: Date;
+  changeMessage: string;
+}
+
 export type {
     PortfolioItem,
     FinanceNewsItem,
@@ -280,6 +289,7 @@ export type {
     // rules
     UpdateRule,
     BreachedRule,
+    RuleLog,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,
