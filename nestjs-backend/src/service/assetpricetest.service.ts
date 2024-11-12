@@ -32,7 +32,7 @@ export class AssetPriceTestService implements OnModuleInit {
 
       setTimeout(async () => {
         await this.processNextBatch();  // Start processing after delay
-      }, 30000);
+      }, 120000);
 
     } catch (error) {
       console.error('Failed to load JSON data:', error);

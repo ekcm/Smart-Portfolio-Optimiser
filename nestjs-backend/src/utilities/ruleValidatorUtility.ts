@@ -9,7 +9,9 @@ export class RuleValidatorUtility {
     }
 
     public static checkRiskComposition(percentage: number, total: number, stocks: number) : boolean {
-        return stocks <= (total * (percentage + 5 / 100)) //including leeway of 5%
+        console.log(total);
+        console.log(stocks);
+        return stocks <= percentage + 5 //including leeway of 5%
     }
     
 }

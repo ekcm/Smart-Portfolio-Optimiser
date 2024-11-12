@@ -15,7 +15,7 @@ export class RuleValidatorService {
         const breachedRules: BreachedRule[] = []
 
         const totalValue = calculatedPortfolio.totalValue
-
+        console.log(portfolioBreakdown)
         if (RuleValidatorUtility.checkMinCash(rules.minCashRule.percentage, totalValue, cash) === false) {
             const recommendedTickers = await this.alertService.getSellRecommendation(assetHoldings)
             let recommendation: string;
@@ -48,7 +48,7 @@ export class RuleValidatorService {
             })
         }
 
-        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, totalValue, portfolioBreakdown.securities["STOCK"]) === false) {
+        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, totalValue, portfolioBreakdown.securities[0]["STOCK"] || 0) === false) {
             breachedRules.push({
                 ruleType: RuleType.RISK,
                 breachMessage: `Stocks are above ${rules.riskRule.stockComposition}% of the portfolio value`,

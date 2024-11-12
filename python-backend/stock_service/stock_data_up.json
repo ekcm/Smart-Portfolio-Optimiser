@@ -1684,7 +1684,7 @@
             "ticker": "^FVX",
             "company": "Treasury Yield 5 Years",
             "sector": "Government Bonds",
-            "todayClose": 5.0,
+            "todayClose": 10,
             "yesterdayClose": 4.126999855041504,
             "date": "2024-11-01T00:00:00"
         },
