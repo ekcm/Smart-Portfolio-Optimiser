@@ -1,10 +1,10 @@
-import { CreatePortfolioForm, PortfolioData, RuleType } from '@/lib/types';
+import { apiAssetHolding, CreatePortfolioForm, PortfolioData, RuleType } from '@/lib/types';
 import axios from 'axios';
 import { BASE_SERVER_URL, REPORT_SERVER_URL, CORE_API_PATH, PORTFOLIO_API_PATH, PORTFOLIO_GENERATION_API_PATH, RULES_API_PATH } from './apiFactory';
 import { getFormattedReportDate, getMonthYearString } from '@/utils/utils';
 
 const baseCorePortfolioUrl = BASE_SERVER_URL + CORE_API_PATH + PORTFOLIO_API_PATH;
-const baseCoreRuleLogsUrl = BASE_SERVER_URL + CORE_API_PATH;
+const baseCoreUrl = BASE_SERVER_URL + CORE_API_PATH;
 const basePortfolioUrl = BASE_SERVER_URL + PORTFOLIO_API_PATH;
 const generatePortfolioUrl = BASE_SERVER_URL + PORTFOLIO_GENERATION_API_PATH;
 const portfolioRulesUrl = BASE_SERVER_URL + RULES_API_PATH;
@@ -64,7 +64,6 @@ export const updatePortfolioCash = async(portfolioId: string, amount: number, ed
             "cash amount" : amount,
             "type" : editType
         });
-        console.log('Portfolio cash updated successfully:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error updating cash balance: ' + error);
@@ -110,10 +109,24 @@ export const updatePortfolioRule = async(portfolioId: string, rule: any, ruleTyp
     }
 }
 
+export const getIntermediatePortfolioValidation = async (portfolioId: string, intermediateAssetHoldings: apiAssetHolding[], intermediateCashAmount: number) => {
+    try {
+        const api = `${baseCoreUrl}/portfolio/validate/${portfolioId}`;
+        const response = await axios.post(api, {
+            intermediateAssetHoldings,
+            intermediateCashAmount
+        })
+        return response.data;
+    } catch (error) {
+        console.error('Error validating intermediate portfolio: ' + error);
+        throw error;
+    }
+}
+
 // Rule Log
 export const getRuleLogs = async(portfolioId: string) => {
     try {
-        const api = `${baseCoreRuleLogsUrl}/ruleLogs/${portfolioId}`;
+        const api = `${baseCoreUrl}/ruleLogs/${portfolioId}`;
         const response = await axios.get(api);
         return response.data;
     } catch (error) {

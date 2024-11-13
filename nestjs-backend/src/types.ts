@@ -103,8 +103,12 @@ interface CalculatedPortfolio {
 interface PortfolioValue {
     portfolioValue: number;
 }
+
+interface intermediateAssetHolding extends AssetHolding {
+    orderType: string;
+}
 interface ValidateIntermediatePortfolio {
-    intermediateAssetHoldings: AssetHolding[];
+    intermediateAssetHoldings: intermediateAssetHolding[];
     intermediateCashAmount: number;
 }
 
@@ -213,7 +217,7 @@ interface PortfolioSummary {
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
-    PortfolioBreakdown, Securities, PortfolioData, PortfolioHoldings, CalculatedPortfolio, PortfolioValue, ValidateIntermediatePortfolio,
+    PortfolioBreakdown, Securities, PortfolioData, PortfolioHoldings, CalculatedPortfolio, intermediateAssetHolding, PortfolioValue, ValidateIntermediatePortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
     OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary
 };

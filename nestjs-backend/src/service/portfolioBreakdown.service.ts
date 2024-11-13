@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
-import { CalculatedPortfolio, PortfolioBreakdown, Securities } from "src/types";
+import { CalculatedPortfolio, intermediateAssetHolding, PortfolioBreakdown, Securities } from "src/types";
 import { CalculatorUtility } from '../utilities/calculatorUtility';
 import { AssetPrice } from "src/model/assetprice.model";
 import { Asset } from "src/model/asset.model";
@@ -90,13 +90,42 @@ export class PortfolioBreakdownService{
         }
     }
     
-    async loadIntermediateSecurities(portfolio: Portfolio, newAssetHoldings: AssetHolding[], cashAmount: number): Promise<Securities[]>{
+    async loadIntermediateSecurities(portfolio: Portfolio, newAssetHoldings: intermediateAssetHolding[], cashAmount: number): Promise<Securities[]>{
         var securities = new Map<string, number>()
         // Combine asset holdings from the portfolio and the new asset holdings
-        const combinedAssetHoldings: AssetHolding[] = [
-            ...portfolio.assetHoldings,
-            ...newAssetHoldings
-        ];
+        let combinedAssetHoldings: AssetHolding[] = [...portfolio.assetHoldings];
+
+        for (const newHolding of newAssetHoldings) {
+            const existingHoldingIndex = combinedAssetHoldings.findIndex(
+                (holding) => holding.ticker === newHolding.ticker
+            );
+
+            if (newHolding.orderType === "Buy") {
+                // If orderType === "Buy", add to the existing holding or add a new holding if not found
+                if (existingHoldingIndex !== -1) {
+                    combinedAssetHoldings[existingHoldingIndex].quantity += newHolding.quantity;
+                } else {
+                    combinedAssetHoldings.push({
+                        ticker: newHolding.ticker,
+                        cost: newHolding.cost,
+                        quantity: newHolding.quantity,
+                        assetType: newHolding.assetType
+                    });
+                }
+            } else if (newHolding.orderType === "Sell") {
+                // If orderType === "Sell", subtract from the existing holding
+                if (existingHoldingIndex !== -1) {
+                    combinedAssetHoldings[existingHoldingIndex].quantity -= newHolding.quantity;
+                    // If the quantity is zero, remove it from the holdings
+                    if (combinedAssetHoldings[existingHoldingIndex].quantity <= 0) {
+                        combinedAssetHoldings.splice(existingHoldingIndex, 1);
+                    }
+                } else {
+                    console.error(`Attempted to sell asset ${newHolding.ticker} that is not in the portfolio.`);
+                }
+            }
+        }
+
         const tickers = combinedAssetHoldings.map(assetHolding => assetHolding.ticker)
         const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
         const assets = await this.assetService.getAllFrom(tickers)

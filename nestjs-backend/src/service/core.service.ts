@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
-import { BreachedRule, DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from 'src/types';
+import { BreachedRule, DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, intermediateAssetHolding, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from 'src/types';
 import { AlertService } from "./alert.service";
 import { AssetService } from "./asset.service";
 import { FinanceNewsService } from "./financeNews.service";
@@ -13,7 +13,6 @@ import { RuleValidatorService } from './ruleValidator.service';
 import { RuleLogService } from "./ruleLog.service";
 import { RuleLog } from "src/model/ruleLog.model";
 import { RuleLogDto } from "src/dto/ruleLog.dto";
-import { AssetHolding } from "src/model/assetholding.model";
 
 @Injectable()
 export class CoreService {
@@ -79,11 +78,11 @@ export class CoreService {
         }
     }
 
-    async validateIntermediatePortfolioRules(portfolioId: string, intermediateAssetHoldings: AssetHolding[], intermediateCashAmount: number): Promise<BreachedRule[]> {
+    async validateIntermediatePortfolioRules(portfolioId: string, intermediateAssetHoldings: intermediateAssetHolding[], intermediateCashAmount: number): Promise<BreachedRule[]> {
         const portfolio = await this.portfolioService.getById(portfolioId)
         const portfolioSecurities = await this.portfolioBreakdownService.loadIntermediateSecurities(portfolio, intermediateAssetHoldings, intermediateCashAmount)
         const portfolioValue = await this.portfolioCalculatorService.CalculateIntermediatePortfolioValue(portfolio.assetHoldings, intermediateAssetHoldings, intermediateCashAmount)
-        const breachedRules = await this.ruleValidatorService.checkPortfolio(portfolio.rules, portfolio.cashAmount, portfolioValue, portfolioSecurities, portfolio.exclusions, portfolio.assetHoldings)
+        const breachedRules = await this.ruleValidatorService.checkPortfolio(portfolio.rules, intermediateCashAmount, portfolioValue, portfolioSecurities, portfolio.exclusions, portfolio.assetHoldings)
         return breachedRules
     }
 
