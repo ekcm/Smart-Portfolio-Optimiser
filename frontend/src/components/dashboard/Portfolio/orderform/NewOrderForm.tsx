@@ -154,10 +154,6 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     }
 
     const deleteOrder = async(id: string, orderType: string, totalCost: number) => {
-        // setOrders((prevOrders) => prevOrders.filter(order => order.id !== id));
-        // if (orderType === "Buy") {
-        //     setBuyingPower((prevBalance) => prevBalance + totalCost);
-        // }
         // Remove the order from the orders list
         setOrders((prevOrders) => prevOrders.filter(order => order.id !== id));
 
@@ -170,7 +166,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
 
             // Update the intermediate asset holdings
             updatedHoldings = updatedHoldings.map((holding) => {
-                if (holding.ticker === id) {  // Make sure you're using the correct identifier
+                if (holding.ticker === id) { 
                     holding.quantity -= totalCost;  // Decrease the quantity of the asset by the amount sold
                     // If the quantity is now 0 or negative, remove that holding
                     if (holding.quantity <= 0) {
@@ -202,7 +198,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
             const newRules = await getIntermediatePortfolioValidation(data.portfolioId, updatedHoldings, buyingPower);
             setBreachedRules(newRules);
         }
-        // Now set the updated holdings to the state after all modifications
+        // Set the updated holdings to the state after all modifications
         setIntermediateAssetHoldings(updatedHoldings);
     }
 
