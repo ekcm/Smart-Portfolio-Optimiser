@@ -41,7 +41,8 @@ export default function AllNews() {
     const getFinanceNews = async() => {
         try {
             const data = await viewAllNews();
-            setFinanceNews(data);
+            const sortedNews = data.sort((a: { date: Date; }, b: { date: Date; }) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            setFinanceNews(sortedNews);
         } catch (error) {
             console.error("Error fetching finance news: ", error);
             setError("Failed to load finance news");
