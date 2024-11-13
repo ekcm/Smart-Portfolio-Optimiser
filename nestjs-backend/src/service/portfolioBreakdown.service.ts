@@ -2,11 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { AssetPriceService } from "./assetprice.service";
 import { Portfolio } from "src/model/portfolio.model";
-import { CalculatedPortfolio, PortfolioBreakdown } from "src/types";
+import { CalculatedPortfolio, PortfolioBreakdown, Securities } from "src/types";
 import { CalculatorUtility } from '../utilities/calculatorUtility';
 import { AssetPrice } from "src/model/assetprice.model";
 import { Asset } from "src/model/asset.model";
 import { PortfolioService } from "./portfolio.service";
+import { AssetHolding } from "src/model/assetholding.model";
 
 @Injectable()
 export class PortfolioBreakdownService{
@@ -87,6 +88,51 @@ export class PortfolioBreakdownService{
             industry: industriesArray,
             geography: geographiesArray,
         }
+    }
+    
+    async loadIntermediateSecurities(portfolio: Portfolio, newAssetHoldings: AssetHolding[], cashAmount: number): Promise<Securities[]>{
+        var securities = new Map<string, number>()
+        // Combine asset holdings from the portfolio and the new asset holdings
+        const combinedAssetHoldings: AssetHolding[] = [
+            ...portfolio.assetHoldings,
+            ...newAssetHoldings
+        ];
+        const tickers = combinedAssetHoldings.map(assetHolding => assetHolding.ticker)
+        const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
+        const assets = await this.assetService.getAllFrom(tickers)
+        var total = 0
+
+        var totalAssets = cashAmount
+        const assetPriceMap = assetPrices.reduce((map, assetPrice) => {
+            map.set(assetPrice.ticker, assetPrice)
+            return map
+        }, new Map<string, AssetPrice>)
+
+        const assetMap = assets.reduce((map, asset) => {
+            map.set(asset.ticker, asset)
+            return map
+        }, new Map<string, Asset>)
+
+        for (var assetHolding of combinedAssetHoldings) {
+            const asset = assetMap.get(assetHolding.ticker)
+            const assetPrice = assetPriceMap.get(assetHolding.ticker)
+            const assetType = asset.type
+            const value = assetHolding.quantity * assetPrice.todayClose
+
+            if (securities.has(assetType)) {
+                securities.set(assetType, securities.get(assetType) + value)
+            } else {
+                securities.set(assetType, value)
+            }
+
+            total += value
+            totalAssets += value
+        }
+
+        const securitiesArray = Array.from(securities, ([key, value]) => ({[key]: value}))
+
+        securitiesArray.push({"CASH": CalculatorUtility.precisionRound(cashAmount / totalAssets * 100, 2)})
+        return securitiesArray
     }
 
 }

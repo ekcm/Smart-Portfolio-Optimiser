@@ -2,7 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
 import { AssetPriceService } from "./assetprice.service";
 import { CalculatorUtility } from "src/utilities/calculatorUtility";
-import { CalculatedPortfolio } from "src/types";
+import { CalculatedPortfolio, PortfolioValue } from "src/types";
+import { AssetHolding } from "src/model/assetholding.model";
 
 @Injectable()
 export class PortfolioCalculatorService {
@@ -50,5 +51,28 @@ export class PortfolioCalculatorService {
             totalValue: totalValue
         }
         
+    }
+
+    async CalculateIntermediatePortfolioValue(portfolioAssetHoldings: AssetHolding[], newAssetHoldings: AssetHolding[], intermediateCashAmount: number): Promise<number> {
+        var valueStart: number = 0;
+        var valueYesterday: number = 0;
+        var valueToday: number = 0;
+        var totalValue: number;
+
+        const combinedAssetHoldings: AssetHolding[] = [
+            ...portfolioAssetHoldings,
+            ...newAssetHoldings
+        ];
+        for (var assetHolding of combinedAssetHoldings) {
+            const assetPrice =  await this.assetPriceService.getByTickerLatest(assetHolding.ticker)
+            const quantity = assetHolding.quantity
+            valueStart += assetHolding.cost * quantity
+            valueYesterday += assetPrice.yesterdayClose * quantity
+            valueToday += assetPrice.todayClose * quantity
+        }
+
+        totalValue = CalculatorUtility.precisionRound(valueToday + intermediateCashAmount, 2)
+        
+        return totalValue
     }
 }
