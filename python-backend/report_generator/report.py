@@ -15,6 +15,12 @@ import io
 from datetime import datetime
 import requests
 import os
+from pymongo import MongoClient
+from datetime import datetime, timezone
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path="../.env")
+uri = os.getenv("MONGO_URI")
 
 app = FastAPI()
 
@@ -30,6 +36,26 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
+
+def get_latest_market_commentary():
+    try:
+        client = MongoClient(uri)
+        database = client.get_database("FYP-Test-DB")
+        collection = database.get_collection("MarketCommentary")
+
+        # Get the latest document by date
+        latest_commentary = collection.find_one(
+            {},
+            sort=[('date', -1)]  # Sort by date in descending order
+        )
+        
+        if latest_commentary:
+            # Convert MongoDB ObjectId to string for JSON serialization
+            latest_commentary['_id'] = str(latest_commentary['_id'])
+            return latest_commentary
+        return None
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.get("/trade_executions")
 def generate_trade_executions(id: str, startDate: str, endDate: str):
@@ -255,6 +281,11 @@ def generate_report(id: str):
     sector_allocation_drawing.hAlign = 'CENTER'
     sector_allocation_drawing.add(sector_allocation_pie_chart)
 
+    market_commentary = get_latest_market_commentary()
+    if market_commentary:
+        market_commentary_heading = Paragraph("Market Commentary", h2_heading_style)
+        market_commentary_paragraph = Paragraph(market_commentary['market_commentary'], body_style)
+
     elements = [
         portfolio_report_heading,
         Spacer(1, 20),
@@ -266,6 +297,9 @@ def generate_report(id: str):
         Spacer(1, 20),
         sector_allocation_heading,
         sector_allocation_drawing,
+        Spacer(1, 20),
+        market_commentary_heading,
+        market_commentary_paragraph
     ]
 
     pdf.build(elements)
