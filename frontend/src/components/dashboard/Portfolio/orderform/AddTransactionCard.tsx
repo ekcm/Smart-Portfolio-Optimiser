@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import TriggeredAlert from "../TriggeredAlert";
 import AddTransactionForm from "./AddTransactionForm";
 import { useState } from "react";
-import { AddTransactionDataType, Alert, Asset, BreachedRule, PortfolioHoldings } from "@/lib/types";
+import { AddTransactionDataType, Alert, Asset, PortfolioHoldings, RuleReport } from "@/lib/types";
 
 interface AddTransactionCardProps {
     portfolioId: string;
@@ -13,11 +13,11 @@ interface AddTransactionCardProps {
     // all stocks + their respective market price
     assetsData: Asset[] | undefined;
     triggeredAlerts: Alert[];
-    breachedRules: BreachedRule[];
+    ruleReport: RuleReport;
     addTransaction: (data: AddTransactionDataType) => void;
 }
 
-export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, portfolioAssets, assetsData, breachedRules, triggeredAlerts, addTransaction }: AddTransactionCardProps) {
+export default function AddTransactionCard({ portfolioId, buyingPower, cashBalance, portfolioAssets, assetsData, ruleReport, triggeredAlerts, addTransaction }: AddTransactionCardProps) {
     const initialFormData = {
         type: "Stock",
         ticker: "",
@@ -55,7 +55,7 @@ export default function AddTransactionCard({ portfolioId, buyingPower, cashBalan
                     />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <TriggeredAlert type="orderForm" data={triggeredAlerts} breachedRules={breachedRules} />
+                    <TriggeredAlert type="orderForm" data={triggeredAlerts} ruleReport={ruleReport} />
                 </div>
             </div>
         </Card>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AddTransactionDataType, Alert, apiAssetHolding, Asset, AssetsItem, BreachedRule, intermediateAssetHoldings, PortfolioData, PortfolioHoldings } from "@/lib/types";
+import { AddTransactionDataType, Alert, Asset, AssetsItem, intermediateAssetHoldings, PortfolioData, RuleReport } from "@/lib/types";
 import PortfolioBreakdownCard from "../PortfolioBreakdownCard";
 import AddTransactionCard from "./AddTransactionCard";
 import OrdersCheckoutCard from "./OrdersCheckoutCard";
@@ -28,7 +28,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
     const [triggeredAlerts, setTriggeredAlerts] = useState<Alert[]>(data.triggeredAlerts);
     const [assetsLoading, setAssetsLoading] = useState(true);
     const [allAssets, setAllAssets] = useState<Asset[] | undefined>([]);
-    const [breachedRules, setBreachedRules] = useState<BreachedRule[]>(data.breachedRules);
+    const [breachedRules, setBreachedRules] = useState<RuleReport>(data.breachedRules);
     const [assetError, setAssetError] = useState<string | null>(null);
     const [cashBalance, setCashBalance] = useState<number>(0);
     const [buyingPower, setBuyingPower] = useState<number>(0);
@@ -221,7 +221,7 @@ export default function NewOrderForm({ data, prevOrders }: NewOrderFormProps) {
                 portfolioAssets={data.portfolioHoldings}
                 assetsData={allAssets}
                 triggeredAlerts={triggeredAlerts}
-                breachedRules={breachedRules}
+                ruleReport={breachedRules}
                 addTransaction={addTransaction} 
             />
             <div className="flex gap-4">
