@@ -20,11 +20,15 @@ export class RuleHandlerService {
 
     async presetRules(riskAppetite: RiskAppetite, minCash: number, maxCash: number): Promise<PortfolioRules> {
 
+        const percentage = this.riskMap.get(riskAppetite)[1];
+        const securitiesValue = 95
+        const threshold = ( percentage / securitiesValue ) * 100;
+
         const riskRuleDto: RiskRuleDto = {
             __type: RuleType.RISK,
             name: `${this.riskMap.get(riskAppetite)[0]} Risk Rule`,
-            description: `Stock composition cannot exceed ${this.riskMap.get(riskAppetite)[1]}%`,
-            stockComposition: this.riskMap.get(riskAppetite)[1]
+            description: `Stock composition cannot exceed ${percentage}% of securities`,
+            stockComposition: threshold
         }
 
         const minCashRuleDto: CashRuleDto = {
@@ -121,11 +125,16 @@ async updateRules(portfolioId: string, updateRuleDto: UpdateRuleDto): Promise<Ru
 
         case "RISK":
             const riskAppetite = rule as RiskAppetite;
+
+            const percentageRisk = this.riskMap.get(riskAppetite)[1];
+            const securitiesValue = 95
+            const threshold = ( percentageRisk / securitiesValue ) * 100;
+
             const riskRule = {
                 __type: ruleType,
                 name: `${this.riskMap.get(riskAppetite)[0]} Risk Rule`,
-                description: `Stock composition cannot exceed ${this.riskMap.get(riskAppetite)[1]}%`,
-                stockComposition: this.riskMap.get(riskAppetite)[1]
+                description: `Stock composition cannot exceed ${percentageRisk}% of securities.`,
+                stockComposition: threshold
             };
             logDescription = riskRule.description;
             
