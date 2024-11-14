@@ -55,7 +55,7 @@ export class PortfolioCreationService{
                     assetName: ticker,
                     company: assetPrice.company,
                     last: Number(assetPrice.todayClose.toFixed(2)),
-                    quantity: availableCash * createdPortfolio.rules.riskRule.stockComposition/(100 - (createdPortfolio.rules.minCashRule.percentage + createdPortfolio.rules.maxCashRule.percentage)/2 ) *weights[ticker] / assetPrice.todayClose,
+                    quantity: availableCash * createdPortfolio.rules.riskRule.stockComposition/100 * (100 - (createdPortfolio.rules.minCashRule.percentage + createdPortfolio.rules.maxCashRule.percentage)/2 ) / 100 *weights[ticker] / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: createdPortfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING
@@ -81,7 +81,7 @@ export class PortfolioCreationService{
                     assetName: ticker,
                     company: assetPrice.company,
                     last: Number(assetPrice.todayClose.toFixed(2)),
-                    quantity: availableCash * (100 - createdPortfolio.rules.riskRule.stockComposition) / (100 - (createdPortfolio.rules.minCashRule.percentage + createdPortfolio.rules.maxCashRule.percentage)/2 ) * weights[ticker] / assetPrice.todayClose,
+                    quantity: availableCash * (100 - createdPortfolio.rules.riskRule.stockComposition) / 100 * (100 - (createdPortfolio.rules.minCashRule.percentage + createdPortfolio.rules.maxCashRule.percentage)/2 ) / 100 * weights[ticker] / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: createdPortfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING
@@ -143,7 +143,7 @@ export class PortfolioCreationService{
                     assetName: ticker,
                     company: assetPrice.company,
                     last: Number(assetPrice.todayClose.toFixed(2)),
-                    quantity: (availableFunds * stockComposition/ (100 - ( minCash + maxCash ) / 2)* stockWeights[ticker]) / assetPrice.todayClose,
+                    quantity: (availableFunds * stockComposition /100 * (100 - ( minCash + maxCash ) / 2)* stockWeights[ticker]) / 100 / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: portfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING
@@ -170,7 +170,7 @@ export class PortfolioCreationService{
                     assetName: ticker,
                     company: assetPrice.company,
                     last: Number(assetPrice.todayClose.toFixed(2)),
-                    quantity: (availableFunds * (100-stockComposition)/(100 - ( minCash + maxCash ) / 2) * bondWeights[ticker]) / assetPrice.todayClose,
+                    quantity: (availableFunds * (100-stockComposition) / 100 * (100 - ( minCash + maxCash ) / 2) / 100 * bondWeights[ticker]) / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: portfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING
