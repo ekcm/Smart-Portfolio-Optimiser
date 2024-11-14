@@ -15,6 +15,13 @@ import io
 from datetime import datetime
 import requests
 import os
+from pymongo import MongoClient
+from datetime import datetime, timezone
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv(dotenv_path="../.env")
+uri = os.getenv("MONGO_URI")
 
 app = FastAPI()
 
@@ -30,6 +37,46 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
+
+def get_latest_market_commentary():
+    try:
+        client = MongoClient(uri)
+        database = client.get_database("FYP-Test-DB")
+        collection = database.get_collection("MarketCommentary")
+
+        # Get the latest document by date
+        latest_commentary = collection.find_one(
+            {},
+            sort=[('date', -1)]  # Sort by date in descending order
+        )
+        
+        if latest_commentary:
+            # Convert MongoDB ObjectId to string for JSON serialization
+            latest_commentary['_id'] = str(latest_commentary['_id'])
+            return latest_commentary
+        return None
+    except Exception as e:
+        return {"error": str(e)}
+    
+def generate_positions_summary(assets_allocation_data):
+    client = OpenAI()
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": 
+            '''
+            You are a financial analyst. 
+            You are given a list of assets and their allocation in a portfolio.
+            You are to highlight any significant changes in the portfolio.
+            Use less than 100 words.
+            ''' 
+            },
+            {"role": "user", "content": f"Assets Allocation: {assets_allocation_data}"}
+        ],
+        temperature=0,
+    )
+    return response.choices[0].message.content
 
 @app.get("/trade_executions")
 def generate_trade_executions(id: str, startDate: str, endDate: str):
@@ -169,12 +216,35 @@ def generate_report(id: str):
     assets_name_list = list(assets_allocation_data.keys())
     assets_allocation_list = list(assets_allocation_data.values())
 
-    assets_allocation_summary_data = [["ID", "Asset Ticker", "Cost", "Quantity", "Asset Type"]]
+    assets_allocation_summary_data = [["ID", "Asset Ticker", "Cost", "Last", "Quantity", "Asset Type", "Weight"]]
 
-    count = 1
-    for asset in assets_allocation_data.values():
-        assets_allocation_summary_data.append([count, asset['ticker'], f"${round(asset['cost'],2):,.2f}", asset['quantity'], asset['assetType']])
-        count += 1
+    # Convert dictionary values to list and sort by positionRatio (weight) in descending order
+    sorted_assets = sorted(assets_allocation_data.values(), key=lambda x: x['positionRatio'], reverse=True)
+    
+    # Process top 10 assets
+    for i, asset in enumerate(sorted_assets[:10], 1):
+        assets_allocation_summary_data.append([
+            i, 
+            asset['ticker'], 
+            f"${round(asset['cost'],2):,.2f}", 
+            f"${round(asset['last'],2):,.2f}", 
+            asset['quantity'], 
+            asset['assetType'], 
+            f"{round(asset['positionRatio']*100,2)}%"
+        ])
+    
+    # Calculate and add "Others" if there are more than 10 assets
+    if len(sorted_assets) > 10:
+        others_ratio = sum(asset['positionRatio'] for asset in sorted_assets[10:])
+        assets_allocation_summary_data.append([
+            11, 
+            "Others", 
+            "—", 
+            "—", 
+            "—", 
+            "—", 
+            f"{round(others_ratio*100,2)}%"
+        ])
 
     assets_allocation_table = Table(assets_allocation_summary_data, colWidths=[40, 80, 100, 80, 100])
     assets_allocation_table.hAlign = 'CENTER'
@@ -191,6 +261,8 @@ def generate_report(id: str):
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F8F9F9')]),
         ('PADDING', (0, 0), (-1, -1), 8),
     ]))
+    positions_summary = generate_positions_summary(assets_allocation_data)
+    positions_summary_paragraph = Paragraph(positions_summary, body_style)
 
     # Top Holdings
     top_holdings_by_weight_heading = Paragraph("Top Holdings by Weight", h2_heading_style)
@@ -199,7 +271,7 @@ def generate_report(id: str):
     top_holdings_drawing = Drawing(500, 250)
     top_holdings_by_weight_pie_chart = Pie()
     top_holdings_by_weight_pie_chart.data = list(top_holdings_data.values())
-    top_holdings_by_weight_pie_chart.labels = [f"{k} ({v:.1f}%)" for k, v in top_holdings_data.items()]
+    top_holdings_by_weight_pie_chart.labels = [f"{k} ({v*100:.2f}%)" for k, v in top_holdings_data.items()]
     top_holdings_by_weight_pie_chart.x = 150
     top_holdings_by_weight_pie_chart.y = 0
     top_holdings_by_weight_pie_chart.width = 200
@@ -232,17 +304,26 @@ def generate_report(id: str):
     sector_allocation_drawing.hAlign = 'CENTER'
     sector_allocation_drawing.add(sector_allocation_pie_chart)
 
+    market_commentary = get_latest_market_commentary()
+    if market_commentary:
+        market_commentary_heading = Paragraph("Market Commentary", h2_heading_style)
+        market_commentary_paragraph = Paragraph(market_commentary['market_commentary'], body_style)
+
     elements = [
         portfolio_report_heading,
         Spacer(1, 20),
         portfolio_summary_heading,
         assets_allocation_table,
+        positions_summary_paragraph,
         Spacer(1, 30),
         top_holdings_by_weight_heading,
         top_holdings_drawing,
         Spacer(1, 20),
         sector_allocation_heading,
         sector_allocation_drawing,
+        Spacer(1, 20),
+        market_commentary_heading,
+        market_commentary_paragraph
     ]
 
     pdf.build(elements)
