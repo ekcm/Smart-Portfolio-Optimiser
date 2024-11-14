@@ -66,7 +66,7 @@ const OptimiserAlert = memo(function OptimiserAlert({ data, ruleReport, error, o
                         </ul>
                         <div className="flex flex-col">
                             <div className="space-x-2">
-                                <span className="text-red-600">RECOMMENDATION:</span>
+                                <span className="text-red-600 font-medium">RECOMMENDATION:</span>
                                 <span>{ruleReport.recommendation}</span>
                             </div>
                             {ruleReport.news && (
