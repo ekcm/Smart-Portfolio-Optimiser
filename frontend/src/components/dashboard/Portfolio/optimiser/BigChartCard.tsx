@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import OptimiserChart from "../charts/OptimiserChart";
-import { Alert, PortfolioData } from "@/lib/types";
+import { PortfolioData } from "@/lib/types";
 import OptimiserAlert from "./OptimiserAlert";
 
 interface BigChartCardProps {
@@ -19,7 +19,7 @@ export default function BigChartCard({ data, error, optimisedFlag, loadingState,
                     <OptimiserChart data={data.portfolioBreakdown.securities} />
                 </div>
                 <div className="col-span-1 flex items-center justify-center">
-                    <OptimiserAlert data={data.triggeredAlerts} breachedRules={data.breachedRules} error={error} optimized={optimisedFlag} onOptimise={onOptimisePortfolio} loadingState={loadingState} />
+                    <OptimiserAlert data={data.triggeredAlerts} ruleReport={data.breachedRules} error={error} optimized={optimisedFlag} onOptimise={onOptimisePortfolio} loadingState={loadingState} />
                 </div>
             </div>
         </Card>

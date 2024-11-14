@@ -43,7 +43,6 @@ export default function OptimiserChart({ data } : OptimiserChartProps) {
         fill: `var(--color-${key.toLowerCase()})`,
     };
   });
-  console.log(chartData);
 
   return (
     <div>

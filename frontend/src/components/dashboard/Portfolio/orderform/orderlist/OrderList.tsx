@@ -1,4 +1,4 @@
-import { Alert, AssetsItem, BreachedRule, CreateOrderItem, PortfolioData, PortfolioHoldings, PortfolioHoldingsDifference } from "@/lib/types";
+import { Alert, AssetsItem, CreateOrderItem, PortfolioData, PortfolioHoldings, PortfolioHoldingsDifference, RuleReport } from "@/lib/types";
 import ChangeList from "./ChangeList";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,10 +15,10 @@ interface OrderListProps {
     data: PortfolioData;
     newOrders: AssetsItem[];
     triggeredAlerts: Alert[];
-    breachedRules: BreachedRule[];
+    ruleReport: RuleReport;
 }
 
-export default function OrderList({ data, newOrders, triggeredAlerts, breachedRules } : OrderListProps) {
+export default function OrderList({ data, newOrders, triggeredAlerts, ruleReport } : OrderListProps) {
     const router = useTransitionRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const { toast } = useToast();
@@ -113,7 +113,7 @@ export default function OrderList({ data, newOrders, triggeredAlerts, breachedRu
         <div className="flex flex-col justify-center gap-4 pb-8">
             <div className="grid grid-cols-2">
                 <SecuritiesChart data={data.portfolioBreakdown.securities} />
-                <TriggeredAlert type="orderForm" data={triggeredAlerts} breachedRules={breachedRules} />
+                <TriggeredAlert type="orderForm" data={triggeredAlerts} ruleReport={ruleReport} />
             </div>
             <h1 className="text-3xl font-semibold">Changes</h1>
             <ChangeList oldOrders={data.portfolioHoldings} newOrders={finalOrders} />

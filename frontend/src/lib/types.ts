@@ -247,8 +247,6 @@ export enum RuleType {
 interface BreachedRule {
     ruleType: RuleType;
     breachMessage: string;
-    recommendation: string;
-    news?: Alert[];
 }
 
 interface UpdateRule {
@@ -300,6 +298,7 @@ export type {
     UpdateRule,
     BreachedRule,
     RuleLog,
+    RuleReport,
     intermediateAssetHoldings,
     // API CALL TYPES
     apiAssetHolding,
