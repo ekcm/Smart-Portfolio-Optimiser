@@ -32,7 +32,8 @@ export class PortfolioCreationService{
             rules: await this.ruleHandlerService.presetRules(RiskAppetite[riskAppetite], minCash, maxCash)
         })
         await this.ruleHandlerService.initialLog(createdPortfolio.exclusions, createdPortfolio.rules, createdPortfolio._id.toString(), managerId)
-        const availableCash = createdPortfolio.cashAmount * (100 - (createdPortfolio.rules.minCashRule.percentage + createdPortfolio.rules.maxCashRule.percentage)/2 ) / 100
+        const percentageCash = ((minCash + maxCash) / 2 )/ 100
+        const availableCash = createdPortfolio.cashAmount * (1 - percentageCash)
         const allowedStocks = await this.assetService.getAllStockExcept(exclusions)
         const stockTickers = allowedStocks.map(asset => asset.ticker)
         const allowedBonds = await this.assetService.getAllBondsExcept(exclusions)
@@ -55,7 +56,7 @@ export class PortfolioCreationService{
                     assetName: ticker,
                     company: assetPrice.company,
                     last: Number(assetPrice.todayClose.toFixed(2)),
-                    quantity: availableCash * createdPortfolio.rules.riskRule.stockComposition / 100 * weights[ticker] / assetPrice.todayClose,
+                    quantity: availableCash * (createdPortfolio.rules.riskRule.stockComposition / 100 ) * weights[ticker] / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: createdPortfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING
@@ -81,7 +82,7 @@ export class PortfolioCreationService{
                     assetName: ticker,
                     company: assetPrice.company,
                     last: Number(assetPrice.todayClose.toFixed(2)),
-                    quantity: availableCash * (100 - createdPortfolio.rules.riskRule.stockComposition) / 100 * weights[ticker] / assetPrice.todayClose,
+                    quantity: availableCash * ((100 - createdPortfolio.rules.riskRule.stockComposition) / 100) * weights[ticker] / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: createdPortfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING
