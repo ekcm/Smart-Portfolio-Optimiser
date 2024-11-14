@@ -11,8 +11,8 @@ export class RuleValidatorService {
 
     constructor(private alertService: AlertService) { }
 
-    async checkPortfolio(rules: PortfolioRules, cash: number, portfolioValue: number, portfolioSecurities: Securities[], exclusions: string[], assetHoldings: AssetHolding[]) : Promise<RuleReport> {
-        
+    async checkPortfolio(rules: PortfolioRules, cash: number, portfolioValue: number, portfolioSecurities: Securities[], exclusions: string[], assetHoldings: AssetHolding[]): Promise<RuleReport> {
+
         const breachedRules: BreachedRule[] = []
         const status: { minCash: boolean, maxCash: boolean, risk: boolean } = { minCash: false, maxCash: false, risk: false }
         const totalValue = portfolioValue
@@ -34,7 +34,7 @@ export class RuleValidatorService {
         }
 
 
-        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, portfolioSecurities[0]["STOCK"]||0, rules.minCashRule.percentage, rules.maxCashRule.percentage) === false) {
+        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, portfolioSecurities[0]["STOCK"] || 0, rules.minCashRule.percentage, rules.maxCashRule.percentage) === false) {
 
             breachedRules.push({
                 ruleType: RuleType.RISK,
@@ -42,7 +42,7 @@ export class RuleValidatorService {
             })
             status.risk = true
         }
-        
+
         let recommendation: string = "Run portfolio optimiser."
         let buy: AlertDto[]
         let sell: AlertDto[]
@@ -50,16 +50,22 @@ export class RuleValidatorService {
         if (status.risk) {
             if (status.minCash) {
                 sell = await this.alertService.getSellRecommendation(assetHoldings, "stock")
-                recommendation += " Alternatively, here are some recommended stocks to sell."
+                if (sell.length > 0) {
+                    recommendation += " Alternatively, here are some recommended stocks to sell."
+                }
             }
-            else if (status.maxCash) { 
+            else if (status.maxCash) {
                 buy = await this.alertService.getBuyRecommendation(exclusions, assetHoldings, "buy")
-                recommendation += " Alternatively, here are some recommended bonds to buy."
+                if (buy.length > 0) {
+                    recommendation += " Alternatively, here are some recommended stocks to buy."
+                }
             }
             else {
                 sell = await this.alertService.getSellRecommendation(assetHoldings, "stock")
                 buy = await this.alertService.getBuyRecommendation(exclusions, assetHoldings, "buy")
-                recommendation += " Alternatively, here are some recommended securities to rebalance the portfolio."
+                if (sell.length > 0 || buy.length > 0) {
+                    recommendation += " Alternatively, here are some recommended securities to rebalance the portfolio."
+                }
             }
         }
         else {
@@ -67,13 +73,19 @@ export class RuleValidatorService {
                 const sellS = await this.alertService.getSellRecommendation(assetHoldings, "stock")
                 const sellB = await this.alertService.getSellRecommendation(assetHoldings, "bonds")
                 sell = sellS.concat(sellB)
-                recommendation += " Alternatively, here are some recommended securities to sell."
+                if (sell.length > 0) {
+                    recommendation += " Alternatively, here are some recommended securities to sell."
+                }
+
             }
-            else if (status.maxCash) { 
+            else if (status.maxCash) {
                 const buyS = await this.alertService.getBuyRecommendation(exclusions, assetHoldings, "stock")
                 const buyB = await this.alertService.getBuyRecommendation(exclusions, assetHoldings, "bonds")
                 buy = buyS.concat(buyB)
-                recommendation += " Alternatively, here are some recommended securities to buy."
+                if (buy.length > 0) {
+                    recommendation += " Alternatively, here are some recommended securities to buy."
+                }
+
             }
         }
 
@@ -84,7 +96,7 @@ export class RuleValidatorService {
         }
     }
 
-    async checkBreached(rules: PortfolioRules, cash: number, calculatedPortfolio: CalculatedPortfolio, portfolioBreakdown: PortfolioBreakdown) : Promise<boolean> {
+    async checkBreached(rules: PortfolioRules, cash: number, calculatedPortfolio: CalculatedPortfolio, portfolioBreakdown: PortfolioBreakdown): Promise<boolean> {
 
         const totalValue = calculatedPortfolio.totalValue
 
@@ -96,12 +108,12 @@ export class RuleValidatorService {
             return true;
         }
 
-        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, portfolioBreakdown.securities[0]["STOCK"]||0, rules.minCashRule.percentage, rules.maxCashRule.percentage) === false) {
+        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, portfolioBreakdown.securities[0]["STOCK"] || 0, rules.minCashRule.percentage, rules.maxCashRule.percentage) === false) {
             return true;
         }
 
         return false
     }
 
-    
+
 }
