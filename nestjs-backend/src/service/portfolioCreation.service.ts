@@ -69,6 +69,19 @@ export class PortfolioCreationService{
         var proposedHoldings: ClassicOrder[] = []
         var proposedOrders: ClassicOrder[] = []
         const portfolio = await this.portfolioService.getById(portfolioId)
+        const portfolioRules = portfolio.rules
+        const minCash = portfolioRules.minCashRule.percentage
+        const maxCash = portfolioRules.maxCashRule.percentage
+        const stockTickers = []
+        const bondTickers = []
+        const stockComposition = portfolioRules.riskRule.stockComposition
+        portfolio.assetHoldings.forEach(assetHolding => {
+            if (assetHolding.assetType == "BOND") {
+                bondTickers.push(assetHolding.ticker)
+            } else {
+                stockTickers.push(assetHolding.ticker)
+            }
+        });
         const tickers = portfolio.assetHoldings.map(assetHolding => assetHolding.ticker)
         const assetPrices = await this.assetPriceService.getLatestFrom(tickers)
         const assetPriceMap = assetPrices.reduce((map, assetPrice) => {
@@ -80,16 +93,17 @@ export class PortfolioCreationService{
         portfolio.assetHoldings.forEach(holding => {
            availableFunds += holding.quantity * assetPriceMap.get(holding.ticker).todayClose 
         })
+        availableFunds *= (100 - ( minCash + maxCash ) / 2) / 100
         try {
             const response = await lastValueFrom(
                 this.httpService.get(this.OPTIMIZER_URL + "/include", {
                     params: {
-                        inclusions: tickers
+                        inclusions: stockTickers
                     }
                 },
             ))
-            const weights = response.data
-            for (let ticker in weights) {
+            const stockWeights = response.data
+            for (let ticker in stockWeights) {
                 const assetPrice = assetPriceMap.get(ticker)
                 proposedHoldings.push({
                     orderType: OrderType.BUY,
@@ -97,7 +111,34 @@ export class PortfolioCreationService{
                     assetName: ticker,
                     company: assetPrice.company,
                     last: Number(assetPrice.todayClose.toFixed(2)),
-                    quantity: (availableFunds * (1 - this.CASH_PERCENTAGE) * weights[ticker]) / assetPrice.todayClose,
+                    quantity: (availableFunds * stockComposition/100 * stockWeights[ticker]) / assetPrice.todayClose,
+                    price: assetPrice.todayClose,
+                    portfolioId: portfolio._id.toString(),
+                    orderStatus: OrderStatus.PENDING
+                })
+            }
+        } catch (error) {
+            throw new InternalServerErrorException('Optimizer service error')
+        }
+
+        try {
+            const response = await lastValueFrom(
+                this.httpService.get(this.OPTIMIZER_URL + "/include", {
+                    params: {
+                        inclusions: bondTickers
+                    }
+                },
+            ))
+            const bondWeights = response.data
+            for (let ticker in bondWeights) {
+                const assetPrice = assetPriceMap.get(ticker)
+                proposedHoldings.push({
+                    orderType: OrderType.BUY,
+                    orderDate: new Date(),
+                    assetName: ticker,
+                    company: assetPrice.company,
+                    last: Number(assetPrice.todayClose.toFixed(2)),
+                    quantity: (availableFunds * (100-stockComposition)/100 * bondWeights[ticker]) / assetPrice.todayClose,
                     price: assetPrice.todayClose,
                     portfolioId: portfolio._id.toString(),
                     orderStatus: OrderStatus.PENDING
