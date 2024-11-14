@@ -133,6 +133,9 @@ interface Asset {
   industry: string;
 }
 
+interface intermediateAssetHoldings extends apiAssetHolding {
+  orderType: string;
+}
 
 // API CALL TYPES
 // Define the interface for the asset holdings
@@ -290,6 +293,7 @@ export type {
     UpdateRule,
     BreachedRule,
     RuleLog,
+    intermediateAssetHoldings,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,

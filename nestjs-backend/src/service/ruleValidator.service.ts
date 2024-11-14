@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { RuleType } from "src/dto/rule.dto";
-import { BreachedRule, CalculatedPortfolio, PortfolioBreakdown, PortfolioRules } from "src/types";
+import { BreachedRule, CalculatedPortfolio, PortfolioBreakdown, PortfolioRules, Securities } from "src/types";
 import { RuleValidatorUtility } from "src/utilities/ruleValidatorUtility";
 import { AlertService } from "./alert.service";
 import { AssetHolding } from "src/model/assetholding.model";
@@ -10,11 +10,11 @@ export class RuleValidatorService {
 
     constructor(private alertService: AlertService) { }
 
-    async checkPortfolio(rules: PortfolioRules, cash: number, calculatedPortfolio: CalculatedPortfolio, portfolioBreakdown: PortfolioBreakdown, exclusions: string[], assetHoldings: AssetHolding[]) : Promise<BreachedRule[]> {
+    async checkPortfolio(rules: PortfolioRules, cash: number, portfolioValue: number, portfolioSecurities: Securities[], exclusions: string[], assetHoldings: AssetHolding[]) : Promise<BreachedRule[]> {
         
         const breachedRules: BreachedRule[] = []
 
-        const totalValue = calculatedPortfolio.totalValue
+        const totalValue = portfolioValue
 
         if (RuleValidatorUtility.checkMinCash(rules.minCashRule.percentage, totalValue, cash) === false) {
             const recommendedTickers = await this.alertService.getSellRecommendation(assetHoldings)
@@ -48,7 +48,7 @@ export class RuleValidatorService {
             })
         }
 
-        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, totalValue, portfolioBreakdown.securities["STOCK"]) === false) {
+        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, totalValue, portfolioSecurities["STOCK"]) === false) {
             breachedRules.push({
                 ruleType: RuleType.RISK,
                 breachMessage: `Stocks are above ${rules.riskRule.stockComposition}% of the portfolio value`,

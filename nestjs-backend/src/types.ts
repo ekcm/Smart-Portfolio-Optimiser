@@ -48,6 +48,10 @@ interface PortfolioBreakdown {
     securities: { [key: string]: number | undefined }[];
 };
 
+interface Securities {
+    [key: string]: number | undefined;
+}
+
 interface PortfolioHoldings {
     name: string;
     ticker: string;
@@ -94,6 +98,18 @@ interface CalculatedPortfolio {
     dailyPLPercentage: number,
     totalPLPercentage: number,
     totalValue: number
+}
+
+interface PortfolioValue {
+    portfolioValue: number;
+}
+
+interface intermediateAssetHolding extends AssetHolding {
+    orderType: string;
+}
+interface ValidateIntermediatePortfolio {
+    intermediateAssetHoldings: intermediateAssetHolding[];
+    intermediateCashAmount: number;
 }
 
 interface ProposedPortfolio {
@@ -201,7 +217,7 @@ interface PortfolioSummary {
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
-    PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
+    PortfolioBreakdown, Securities, PortfolioData, PortfolioHoldings, CalculatedPortfolio, intermediateAssetHolding, PortfolioValue, ValidateIntermediatePortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
     OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary
 };
