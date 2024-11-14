@@ -169,12 +169,35 @@ def generate_report(id: str):
     assets_name_list = list(assets_allocation_data.keys())
     assets_allocation_list = list(assets_allocation_data.values())
 
-    assets_allocation_summary_data = [["ID", "Asset Ticker", "Cost", "Quantity", "Asset Type"]]
+    assets_allocation_summary_data = [["ID", "Asset Ticker", "Cost", "Last", "Quantity", "Asset Type", "Weight"]]
 
-    count = 1
-    for asset in assets_allocation_data.values():
-        assets_allocation_summary_data.append([count, asset['ticker'], f"${round(asset['cost'],2):,.2f}", asset['quantity'], asset['assetType']])
-        count += 1
+    # Convert dictionary values to list and sort by positionRatio (weight) in descending order
+    sorted_assets = sorted(assets_allocation_data.values(), key=lambda x: x['positionRatio'], reverse=True)
+    
+    # Process top 10 assets
+    for i, asset in enumerate(sorted_assets[:10], 1):
+        assets_allocation_summary_data.append([
+            i, 
+            asset['ticker'], 
+            f"${round(asset['cost'],2):,.2f}", 
+            f"${round(asset['last'],2):,.2f}", 
+            asset['quantity'], 
+            asset['assetType'], 
+            f"{round(asset['positionRatio']*100,2)}%"
+        ])
+    
+    # Calculate and add "Others" if there are more than 10 assets
+    if len(sorted_assets) > 10:
+        others_ratio = sum(asset['positionRatio'] for asset in sorted_assets[10:])
+        assets_allocation_summary_data.append([
+            11, 
+            "Others", 
+            "—", 
+            "—", 
+            "—", 
+            "—", 
+            f"{round(others_ratio*100,2)}%"
+        ])
 
     assets_allocation_table = Table(assets_allocation_summary_data, colWidths=[40, 80, 100, 80, 100])
     assets_allocation_table.hAlign = 'CENTER'
@@ -199,7 +222,7 @@ def generate_report(id: str):
     top_holdings_drawing = Drawing(500, 250)
     top_holdings_by_weight_pie_chart = Pie()
     top_holdings_by_weight_pie_chart.data = list(top_holdings_data.values())
-    top_holdings_by_weight_pie_chart.labels = [f"{k} ({v:.1f}%)" for k, v in top_holdings_data.items()]
+    top_holdings_by_weight_pie_chart.labels = [f"{k} ({v*100:.2f}%)" for k, v in top_holdings_data.items()]
     top_holdings_by_weight_pie_chart.x = 150
     top_holdings_by_weight_pie_chart.y = 0
     top_holdings_by_weight_pie_chart.width = 200
