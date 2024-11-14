@@ -31,7 +31,7 @@ export class ReportService{
             Object.entries(obj).filter(([key, value]) => value !== undefined) as [string, number][]
         );
         const assetHoldingArray = portfolio.assetHoldings
-        var totalValue = portfolio.cashAmount
+        var totalValue = 0
         assetHoldingArray.forEach(assetHolding => {
             totalValue += assetHolding.quantity * assetPriceMap.get(assetHolding.ticker).todayClose    
         });
