@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { RuleLogDto } from "src/dto/ruleLog.dto";
 import { CoreService } from "src/service/core.service";
-import { BreachedRule, DashboardCard, FinanceNewsCard, NewsArticle, PortfolioData, ValidateIntermediatePortfolio } from "src/types"
+import { BreachedRule, DashboardCard, FinanceNewsCard, NewsArticle, PortfolioData, RuleReport, ValidateIntermediatePortfolio } from "src/types"
 
 @ApiTags("Core Service")
 @Controller("core")
@@ -44,7 +44,7 @@ export class CoreController {
     async validateIntermediatePortfolio(
         @Param('portfolioId') portfolioId: string,
         @Body() validateDto: ValidateIntermediatePortfolio
-    ): Promise<BreachedRule[]> {
+    ): Promise<RuleReport> {
         const { intermediateAssetHoldings, intermediateCashAmount } = validateDto;
         return await this.coreService.validateIntermediatePortfolioRules(portfolioId, intermediateAssetHoldings, intermediateCashAmount);
     }

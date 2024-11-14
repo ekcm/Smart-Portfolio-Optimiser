@@ -90,6 +90,28 @@ export class AssetService {
             }, 1000)
         })
     }
+    async getAllStocksFrom(tickers: string[]): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            setTimeout(async() => {
+                const assets = await this.assetModel.find({
+                    type: AssetType.STOCK,
+                    ticker: {$in: tickers},
+                }).exec();
+                resolve(assets);
+            }, 1000)
+        })
+    }
+    async getAllBondsFrom(tickers: string[]): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            setTimeout(async() => {
+                const assets = await this.assetModel.find({
+                    type: AssetType.BOND,
+                    ticker: {$in: tickers},
+                }).exec();
+                resolve(assets);
+            }, 1000)
+        })
+    }
     
     async getAllStockExcept(exclusions: string[]): Promise<Asset[]> {
         return new Promise((resolve) => {

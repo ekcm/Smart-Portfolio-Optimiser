@@ -8,8 +8,8 @@ export class RuleValidatorUtility {
         return cash <= (total * (percentage / 100))
     }
 
-    public static checkRiskComposition(percentage: number, total: number, stocks: number) : boolean {
-        return stocks <= (total * (percentage + 5 / 100)) //including leeway of 5%
+    public static checkRiskComposition(percentage: number, stocks: number) : boolean {
+        return stocks <= percentage + 5 //including leeway of 5%
     }
     
 }
