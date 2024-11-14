@@ -95,7 +95,7 @@ interface PortfolioData {
   portfolioName: string;
   clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
-  breachedRules: BreachedRule[];
+  breachedRules: RuleReport;
   triggeredAlerts: Alert[];
   portfolioBreakdown: PortfolioBreakdown;
   portfolioHoldings: PortfolioHoldings[];
@@ -256,6 +256,13 @@ interface UpdateRule {
     rule: any;
     changeMessage: string;
 }
+
+interface RuleReport {
+  breachedRules: BreachedRule[];
+  recommendation: string;
+  news?: {buy?: Alert[], sell?: Alert[]};
+}
+
 
 interface RuleLog {
   description: string;
