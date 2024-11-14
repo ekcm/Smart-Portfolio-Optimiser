@@ -121,7 +121,7 @@ export class PortfolioCreationService{
             return map
         }, new Map<string, AssetPrice>)
 
-        var availableFunds = 0
+        var availableFunds = portfolio.cashAmount
         portfolio.assetHoldings.forEach(holding => {
            availableFunds += holding.quantity * assetPriceMap.get(holding.ticker).todayClose 
         })
