@@ -11,7 +11,6 @@ import { usePathname } from "next/navigation";
 import { ClassicOrder, CreateOrderItem, OptimisedPortfolio, OptimiserOrders, OrderExecutionProgress, PortfolioData } from "@/lib/types";
 import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
 import Loader from "@/components/loader/Loader";
-import OrderExecutionProgressCard from "@/components/dashboard/Portfolio/OrderExecutionProgressCard";
 import { createOrdersTransaction } from "@/api/transaction";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";

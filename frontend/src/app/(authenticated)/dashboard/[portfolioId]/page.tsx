@@ -28,7 +28,7 @@ export default function Portfolio() {
 
     useEffect(() => {
         if (portfolioId) {
-            getIndividualPortfolio();
+            getIndividualPortfolio(portfolioId);
 
             socket.connect();
 
@@ -40,7 +40,7 @@ export default function Portfolio() {
 
             socket.on("portfolioUpdate", async () => {
                 console.log("Portfolio update received, refreshing data...");
-                await getIndividualPortfolio(); 
+                await getIndividualPortfolio(portfolioId); 
 
                 socket.emit("acknowledgeBatch");
                 console.log("Acknowledgment sent for portfolio update");
@@ -62,7 +62,7 @@ export default function Portfolio() {
         }
     }, [portfolioId, socket]);
 
-    const getIndividualPortfolio = async () => {
+    const getIndividualPortfolio = async (portfolioId: string) => {
         try {
             const portfolioData = await viewPortfolio(portfolioId);
             setIndividualPortfolio(portfolioData);

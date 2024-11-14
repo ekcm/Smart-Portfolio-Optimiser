@@ -46,6 +46,7 @@ export default function DashBoardNavBar() {
         generateorderlist: "Generate Order List",
         editportfolio: "Edit Portfolio",
         editcash: "Edit Cash",
+        rulelog: "Rule Logs",
     }
 
     const getPortfolioName = () => {
@@ -148,8 +149,8 @@ export default function DashBoardNavBar() {
 
     useEffect(() => {
         if (pathname) {
-        const newBreadcrumbs = generateBreadcrumbs(pathname);
-        setBreadcrumbs(newBreadcrumbs);
+            const newBreadcrumbs = generateBreadcrumbs(pathname);
+            setBreadcrumbs(newBreadcrumbs);
         }
     }, [pathname, portfolioName, financeNewsName]);
 
@@ -203,6 +204,9 @@ export default function DashBoardNavBar() {
                         <Link href={`/dashboard/${id}/editcash`}>
                             <Button className="mr-4 bg-green-700">Edit Cash</Button>
                         </Link>
+                        <Link href={`/dashboard/${id}/rulelog`}>
+                            <Button className="mr-4 bg-orange-400">Rule Logs</Button>
+                        </Link>
                         {reportLoading ? 
                             <Button disabled className="w-52">
                                 <span className="flex items-center space-x-2">
@@ -230,6 +234,14 @@ export default function DashBoardNavBar() {
                         }
                     </>
                 );
+            case "Rulelogger":
+                return (
+                    <>
+                        <Link href={`/dashboard/${id}/editportfolio`}>
+                            <Button className="mr-4 bg-red-500">Edit Portfolio Rules</Button>
+                        </Link>
+                    </>
+                )
             case "Empty":
                 return <></>;
             default:

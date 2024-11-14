@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { fetchAllAssets } from "@/api/asset";
 import { Asset, RuleType } from "@/lib/types";
+import { riskAppetites, ruleTypes } from "@/utils/constants";
 
 type ErrorState = {
     riskAppetite?: string;
@@ -46,20 +47,6 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
     const [isUpdateLoading, setIsUpdateLoading] = useState(false);
     const [assetsLoading, setAssetsLoading] = useState<boolean>(true);
     const [assetError, setAssetError] = useState<string | null>(null);
-
-
-    const ruleTypes = [
-        { value: RuleType.MIN_CASH, label: "Minimum Cash" },
-        { value: RuleType.MAX_CASH, label: "Maximum Cash" },
-        { value: RuleType.RISK, label: "Risk Level" },
-        { value: RuleType.EXCLUSIONS, label: "Exclusions List" },
-    ];
-
-    const riskAppetites = {
-        LOW: "Low",
-        MEDIUM: "Medium",
-        HIGH: "High",
-    };
 
     useEffect(() => {
         if (portfolioId) {
@@ -117,6 +104,10 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         e.preventDefault();
         const newErrors: ErrorState = {};
         // validation
+        if (minCash >= maxCash) {
+            newErrors.maxCash = "Maximum cash (%) cannot be less than minimum cash (%)!";
+            newErrors.minCash = "Maximum cash (%) cannot be less than minimum cash (%)!";
+        }
         if (!reason) newErrors.reason = "No reason stated.";
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -132,6 +123,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         } else if (selectedRule === RuleType.EXCLUSIONS) {
             ruleValue = exclusions.join(",");
         }
+        setErrors({});
         setIsUpdateLoading(true);
         setEditPortfolioState(true);
         try {
@@ -222,6 +214,9 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                                 setMinCash(parseFloat(e.target.value));
                             }}   
                         />
+                        {errors.minCash && (
+                            <span className="text-red-500">{errors.minCash}</span>
+                        )}
                     </Label>
                 )}
                 {selectedRule === RuleType.MAX_CASH && (
@@ -244,6 +239,9 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                                 setMaxCash(parseFloat(e.target.value));
                             }}
                         />
+                        {errors.maxCash && (
+                            <span className="text-red-500">{errors.maxCash}</span>
+                        )}
                     </Label>
                 )}
                 {selectedRule !== "" && 

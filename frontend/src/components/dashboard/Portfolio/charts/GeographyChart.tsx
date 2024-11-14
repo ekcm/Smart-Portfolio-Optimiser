@@ -36,7 +36,7 @@ export default function GeographyChart({ data }: GeographyChartProps) {
     return (
         <ChartContainer
             config={chartConfig}
-            className="mx-auto w-full aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+            className="mx-auto w-full max-h-[400px] aspect-square pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
             <PieChart>
                 <ChartTooltip content={<CustomTooltip />} />
@@ -46,10 +46,11 @@ export default function GeographyChart({ data }: GeographyChartProps) {
                     labelLine={false}
                     label={CustomLabel} 
                     nameKey="country"
+                    outerRadius={120}
                 />
                 <ChartLegend
                     content={<ChartLegendContent nameKey="country" />}
-                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+                    className="-translate-y-2 flex-wrap gap-y-0 [&>*]:basis-1/4 [&>*]:justify-center"
                 />
             </PieChart>
         </ChartContainer>

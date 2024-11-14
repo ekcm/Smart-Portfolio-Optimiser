@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, BreachedRule, RuleType } from "@/lib/types";
 import SentimentRatingCustomBadge from "@/components/financenews/SentimentRatingCustomBadge";
 import { Loader2 } from "lucide-react";
+import { ruleTypes } from "@/utils/constants";
 
 interface TriggeredAlertProps {
     data: Alert[];
@@ -16,12 +17,6 @@ interface TriggeredAlertProps {
 
 const OptimiserAlert = memo(function OptimiserAlert({ data, breachedRules, error, optimized, loadingState, onOptimise }: TriggeredAlertProps) {
     // Filter data for items with sentimentRating 1 or 2
-    const ruleTypes = [
-        { value: RuleType.MIN_CASH, label: "Minimum Cash" },
-        { value: RuleType.MAX_CASH, label: "Maximum Cash" },
-        { value: RuleType.RISK, label: "Risk Level" },
-        { value: RuleType.EXCLUSIONS, label: "Exclusions List" },
-    ];
     const breachedAlerts = data.filter((item) => item.sentimentRating === 1 || item.sentimentRating === 2);
     const usefulAlerts = data.filter((item) => item.sentimentRating === 4 || item.sentimentRating === 5);
     if (optimized) {

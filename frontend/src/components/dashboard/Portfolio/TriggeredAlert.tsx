@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Card } from "@/components/ui/card";
 import { Alert, BreachedRule, RuleType } from "@/lib/types";
 import SentimentRatingCustomBadge from "@/components/financenews/SentimentRatingCustomBadge";
+import { ruleTypes } from "@/utils/constants";
 
 
 interface TriggeredAlertProps {
@@ -11,13 +12,6 @@ interface TriggeredAlertProps {
 }
 
 const TriggeredAlert = memo(function TriggeredAlert({ type, data, breachedRules }: TriggeredAlertProps) {
-    const ruleTypes = [
-        { value: RuleType.MIN_CASH, label: "Minimum Cash" },
-        { value: RuleType.MAX_CASH, label: "Maximum Cash" },
-        { value: RuleType.RISK, label: "Risk Level" },
-        { value: RuleType.EXCLUSIONS, label: "Exclusions List" },
-    ];
-
     if (data.length === 0) {
         if (type === "dashboard") {
             return <></>;
