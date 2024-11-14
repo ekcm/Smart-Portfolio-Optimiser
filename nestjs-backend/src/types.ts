@@ -213,11 +213,16 @@ interface PortfolioDetails{
 }
 
 interface PortfolioSummary {
-    assetsAllocation: Record<string, AssetHolding>;
+    assetsAllocation: Record<string, AssetHoldingReport>;
     topHoldings: Record<string, number>;
     overview: string;
     sectorAllocation: Record<string, number>;
     commentary: string;
+}
+
+interface AssetHoldingReport extends AssetHolding{
+    last: number,
+    positionRatio: number
 }
 
 export type {
@@ -225,5 +230,5 @@ export type {
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, Securities, PortfolioData, PortfolioHoldings, CalculatedPortfolio, intermediateAssetHolding, PortfolioValue, ValidateIntermediatePortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary, RuleReport
+    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary, RuleReport, AssetHoldingReport
 };
