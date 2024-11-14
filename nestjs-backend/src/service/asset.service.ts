@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, set } from 'mongoose';
 import { AssetDto } from '../dto/asset.dto';
-import { Asset } from '../model/asset.model';
+import { Asset, AssetType } from '../model/asset.model';
 
 
 @Injectable()
@@ -91,4 +91,27 @@ export class AssetService {
         })
     }
     
+    async getAllStockExcept(exclusions: string[]): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            setTimeout(async() => {
+                const assets = await this.assetModel.find({
+                    type: AssetType.STOCK,
+                    ticker: {$nin: exclusions},
+                }).exec();
+                resolve(assets)
+            }, 1000)   
+        })
+    }
+
+    async getAllBondsExcept(exclusions: string[]): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            setTimeout(async() => {
+                const assets = await this.assetModel.find({
+                    type: AssetType.BOND,
+                    ticker: {$nin: exclusions},
+                }).exec();
+                resolve(assets)
+            }, 1000)   
+        })
+    }
 }
