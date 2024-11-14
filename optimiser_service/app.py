@@ -34,7 +34,7 @@ def optimise():
     S = CovarianceShrinkage(pivot_df).ledoit_wolf()
 
     ef = EfficientFrontier(mu, S)
-    weights = ef.max_sharpe()
+    weights = ef.max_sharpe(risk_free_rate=0)
 
     cleaned_weights = ef.clean_weights()
 
@@ -60,7 +60,7 @@ def optimise_portfolio():
     S = CovarianceShrinkage(pivot_df).ledoit_wolf()
 
     ef = EfficientFrontier(mu, S)
-    weights = ef.max_sharpe()
+    weights = ef.max_sharpe(risk_free_rate=0)
 
     cleaned_weights = ef.clean_weights()
 
