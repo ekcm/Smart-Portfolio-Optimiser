@@ -6,6 +6,7 @@ import { OrderDto } from '../dto/order.dto';
 import { Order, OrderStatus } from "src/model/order.model";
 import { AssetHolding } from "src/model/assetholding.model";
 import { AssetService } from "./asset.service";
+import { CalculatorUtility } from '../utilities/calculatorUtility';
 
 @Injectable()
 export class TransactionService {
@@ -26,7 +27,7 @@ export class TransactionService {
 
             const assetPrice = await this.assetPriceService.getLatest(order.assetName);
             
-            if (order.price <= assetPrice.todayClose) { 
+            if (order.price <= CalculatorUtility.precisionRound(assetPrice.todayClose,2)) { 
                 order.price = assetPrice.todayClose; 
                 portfolio.cashAmount += order.price * order.quantity; 
                 assetHolding.quantity -= order.quantity;
@@ -47,7 +48,7 @@ export class TransactionService {
     
             const assetPrice = await this.assetPriceService.getLatest(order.assetName)
             const asset = await this.assetService.getByTicker(order.assetName)
-            if (order.price >= assetPrice.todayClose) {
+            if (order.price >= CalculatorUtility.precisionRound(assetPrice.todayClose,2)) {
                 order.price = assetPrice.todayClose
                 portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, asset.type)
                 portfolio.cashAmount -= order.price * order.quantity   
@@ -103,7 +104,7 @@ export class TransactionService {
     
                 const assetPrice = await this.assetPriceService.getLatest(order.assetName);
                 
-                if (order.price <= assetPrice.todayClose) { 
+                if (order.price <= CalculatorUtility.precisionRound(assetPrice.todayClose,2)) { 
                     order.price = assetPrice.todayClose; 
                     portfolio.cashAmount += order.price * order.quantity; 
                     assetHolding.quantity -= order.quantity;
@@ -119,7 +120,7 @@ export class TransactionService {
             } else if (order.orderType === 'BUY') {
                 const assetPrice = await this.assetPriceService.getLatest(order.assetName);
                 const asset = await this.assetService.getByTicker(order.assetName);
-                if (order.price >= assetPrice.todayClose) {
+                if (order.price >= CalculatorUtility.precisionRound(assetPrice.todayClose,2)) {
                     order.price = assetPrice.todayClose;
                     portfolio.assetHoldings = this.addAsset(order, portfolio.assetHoldings, asset.type);
                     portfolio.cashAmount -= order.price * order.quantity;
