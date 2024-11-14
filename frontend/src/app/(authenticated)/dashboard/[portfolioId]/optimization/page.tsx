@@ -38,6 +38,14 @@ export default function Optimization() {
     const [error, setError] = useState<string | null>(null);
 
     const optimisePortfolio = () => {
+        if (indivPortfolioData && indivPortfolioData?.portfolioHoldings.length < 3) {
+            toast({
+                variant: "destructive",
+                title: "Unable to run optimiser.",
+                description: `There was a problem with your request, please buy more stocks/bonds in order to run the optimiser!`,
+            });
+            return;
+        }
         getOptimiser(portfolioId);
     }
 
@@ -45,13 +53,15 @@ export default function Optimization() {
         console.log("Optimise portfolio request sent");
         setSendOrdersLoading(true);
         // Submit to backend to update orders db with newOrders
-        const formattedOrders: CreateOrderItem[] = orders.map((order) => ({
-            orderType: order.orderType.toUpperCase(),
-            assetName: order.assetName,
-            quantity: Number(order.quantity),
-            price: Number(order.price.toFixed(2)),
-            portfolioId: portfolioId,
-        }));
+        const formattedOrders: CreateOrderItem[] = orders
+            .filter((order) => order.quantity !== 0) // Filter out orders with quantity 0
+            .map((order) => ({
+                orderType: order.orderType.toUpperCase(),
+                assetName: order.assetName,
+                quantity: Number(order.quantity),
+                price: Number(order.price.toFixed(2)),
+                portfolioId: portfolioId,
+            }));
 
         try {
             const result = await createOrdersTransaction(portfolioId, formattedOrders);
