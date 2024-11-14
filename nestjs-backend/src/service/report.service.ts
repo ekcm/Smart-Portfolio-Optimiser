@@ -35,8 +35,8 @@ export class ReportService{
         assetHoldingArray.forEach(assetHolding => {
             totalValue += assetHolding.quantity * assetPriceMap.get(assetHolding.ticker).todayClose    
         });
-        const sortedSecurities = securitiesArray.sort(([, a], [, b]) => b - a);
-        const top3Securities = sortedSecurities.slice(0, Math.max(3, sortedSecurities.length))
+        const sortedSecurities = assetHoldingArray.sort((a,  b) => b.quantity * assetPriceMap.get(b.ticker).todayClose - a.quantity * assetPriceMap.get(a.ticker).todayClose);
+        const top3Securities = sortedSecurities.slice(0, Math.min(3, sortedSecurities.length))
         industryArray.forEach(obj => {
             for (const key in obj) {
                 const value = obj[key];
@@ -67,10 +67,13 @@ export class ReportService{
             }
             assetsAllocation.set(assetHolding.ticker, tempAssetHoldingReport)
         })
-
+        var total = 1
         top3Securities.forEach(security => {
-            topHoldings.set(security[0], security[1])
+            topHoldings.set(security.ticker, assetsAllocation.get(security.ticker).positionRatio)
+            total -= assetsAllocation.get(security.ticker).positionRatio 
         })
+
+        topHoldings.set("others", total)
 
         const portfolioSummary = {
             assetsAllocation: Object.fromEntries(assetsAllocation),
