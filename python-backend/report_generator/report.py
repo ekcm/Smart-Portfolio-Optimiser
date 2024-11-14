@@ -18,6 +18,7 @@ import os
 from pymongo import MongoClient
 from datetime import datetime, timezone
 from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv(dotenv_path="../.env")
 uri = os.getenv("MONGO_URI")
@@ -56,6 +57,26 @@ def get_latest_market_commentary():
         return None
     except Exception as e:
         return {"error": str(e)}
+    
+def generate_positions_summary(assets_allocation_data):
+    client = OpenAI()
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": 
+            '''
+            You are a financial analyst. 
+            You are given a list of assets and their allocation in a portfolio.
+            You are to highlight any significant changes in the portfolio.
+            Use less than 100 words.
+            ''' 
+            },
+            {"role": "user", "content": f"Assets Allocation: {assets_allocation_data}"}
+        ],
+        temperature=0,
+    )
+    return response.choices[0].message.content
 
 @app.get("/trade_executions")
 def generate_trade_executions(id: str, startDate: str, endDate: str):
@@ -240,6 +261,8 @@ def generate_report(id: str):
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F8F9F9')]),
         ('PADDING', (0, 0), (-1, -1), 8),
     ]))
+    positions_summary = generate_positions_summary(assets_allocation_data)
+    positions_summary_paragraph = Paragraph(positions_summary, body_style)
 
     # Top Holdings
     top_holdings_by_weight_heading = Paragraph("Top Holdings by Weight", h2_heading_style)
@@ -291,6 +314,7 @@ def generate_report(id: str):
         Spacer(1, 20),
         portfolio_summary_heading,
         assets_allocation_table,
+        positions_summary_paragraph,
         Spacer(1, 30),
         top_holdings_by_weight_heading,
         top_holdings_drawing,
