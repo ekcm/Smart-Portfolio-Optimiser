@@ -11,8 +11,10 @@ export class RuleValidatorUtility {
     }
 
 
-    public static checkRiskComposition(percentage: number, stocks: number, minCash: number, maxCash: number) : boolean {
-        const threshold = ((100 - (minCash + maxCash)/2)/100) * percentage
+    public static checkRiskComposition(stockComposition: number, stocks: number, minCash: number, maxCash: number) : boolean {
+        const averageCash : number = (Number(minCash) + Number(maxCash)) / 2
+        const threshold = ((100 - averageCash)/100) * stockComposition
+
         return stocks <= threshold + 5 //including leeway of 5%
     }
     

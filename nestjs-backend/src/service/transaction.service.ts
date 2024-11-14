@@ -84,7 +84,7 @@ export class TransactionService {
         const portfolio = await this.portfolioService.getById(portfolioId)
         var totalCost = 0
         for (let i = 0; i < orders.length; i ++) {
-            totalCost += orders[i].price * orders[i].quantity
+            (orders[i].orderType === 'BUY') ? totalCost += orders[i].price * orders[i].quantity : totalCost -= orders[i].price * orders[i].quantity
         }
         if (totalCost > portfolio.cashAmount) {
             throw new NotAcceptableException("Portfolio has insufficient cash to place order")
