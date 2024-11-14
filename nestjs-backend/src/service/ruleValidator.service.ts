@@ -48,7 +48,7 @@ export class RuleValidatorService {
             })
         }
 
-        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, totalValue, portfolioSecurities["STOCK"]) === false) {
+        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, portfolioSecurities[0]["STOCK"]||0, rules.minCashRule.percentage, rules.maxCashRule.percentage) === false) {
             breachedRules.push({
                 ruleType: RuleType.RISK,
                 breachMessage: `Stocks are above ${rules.riskRule.stockComposition}% of the portfolio value`,
@@ -71,7 +71,7 @@ export class RuleValidatorService {
             return true;
         }
 
-        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, totalValue, portfolioBreakdown.securities["STOCK"]) === false) {
+        if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, portfolioBreakdown.securities[0]["STOCK"]||0, rules.minCashRule.percentage, rules.maxCashRule.percentage) === false) {
             return true;
         }
 
