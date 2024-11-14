@@ -6,6 +6,7 @@ import { RuleLogService } from "./ruleLog.service";
 import { PortfolioService } from "./portfolio.service";
 import { PortfolioDto } from "src/dto/portfolio.dto";
 import { RuleLog } from "src/model/ruleLog.model";
+import { max } from "class-validator";
 
 @Injectable()
 export class RuleHandlerService {
@@ -21,7 +22,7 @@ export class RuleHandlerService {
     async presetRules(riskAppetite: RiskAppetite, minCash: number, maxCash: number): Promise<PortfolioRules> {
 
         const percentage = this.riskMap.get(riskAppetite)[1];
-        const securitiesValue = 95
+        const securitiesValue = 100 - (Number(maxCash)+Number(minCash))/2;
         const threshold = ( percentage / securitiesValue ) * 100;
 
         const riskRuleDto: RiskRuleDto = {
@@ -125,9 +126,10 @@ async updateRules(portfolioId: string, updateRuleDto: UpdateRuleDto): Promise<Ru
 
         case "RISK":
             const riskAppetite = rule as RiskAppetite;
-
+            const minCash = Number(portfolio.rules.minCashRule.percentage);
+            const maxCash = Number(portfolio.rules.maxCashRule.percentage);
             const percentageRisk = this.riskMap.get(riskAppetite)[1];
-            const securitiesValue = 95
+            const securitiesValue = 100 - (minCash/maxCash)/2;
             const threshold = ( percentageRisk / securitiesValue ) * 100;
 
             const riskRule = {

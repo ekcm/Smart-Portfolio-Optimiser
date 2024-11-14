@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, min } from 'rxjs';
 import { AssetHolding } from 'src/model/assetholding.model';
 import { AssetPrice } from 'src/model/assetprice.model';
 import { OrderType } from 'src/model/order.model';
@@ -11,6 +11,7 @@ import { AssetPriceService } from './assetprice.service';
 import { PortfolioService } from './portfolio.service';
 import { RuleHandlerService } from './ruleHandler.service';
 import { AssetService } from './asset.service';
+import { log } from 'console';
 
 @Injectable()
 export class PortfolioCreationService{
@@ -32,7 +33,8 @@ export class PortfolioCreationService{
             rules: await this.ruleHandlerService.presetRules(RiskAppetite[riskAppetite], minCash, maxCash)
         })
         await this.ruleHandlerService.initialLog(createdPortfolio.exclusions, createdPortfolio.rules, createdPortfolio._id.toString(), managerId)
-        const percentageCash = ((minCash + maxCash) / 2 )/ 100
+        const averageCash = (Number(minCash)+ Number(maxCash)) / 2
+        const percentageCash = averageCash / 100
         const availableCash = createdPortfolio.cashAmount * (1 - percentageCash)
         const allowedStocks = await this.assetService.getAllStockExcept(exclusions)
         const stockTickers = allowedStocks.map(asset => asset.ticker)
@@ -126,7 +128,7 @@ export class PortfolioCreationService{
         portfolio.assetHoldings.forEach(holding => {
            availableFunds += holding.quantity * assetPriceMap.get(holding.ticker).todayClose 
         })
-        availableFunds *= (100 - ( minCash + maxCash ) / 2) / 100
+        availableFunds *= (100 - ( Number(minCash) + Number(maxCash) ) / 2) / 100
         try {
             const response = await lastValueFrom(
                 this.httpService.get(this.OPTIMIZER_URL + "/include", {

@@ -1,13 +1,15 @@
 import { Injectable } from "@nestjs/common";
+import { AlertDto } from "src/dto/alert.dto";
 import { RuleType } from "src/dto/rule.dto";
+import { AssetHolding } from "src/model/assetholding.model";
 import { BreachedRule, CalculatedPortfolio, PortfolioBreakdown, PortfolioRules, RuleReport, Securities } from "src/types";
 import { RuleValidatorUtility } from "src/utilities/ruleValidatorUtility";
 import { AlertService } from "./alert.service";
-import { AssetHolding } from "src/model/assetholding.model";
-import { AlertDto } from "src/dto/alert.dto";
 
 @Injectable()
 export class RuleValidatorService {
+
+
 
     constructor(private alertService: AlertService) { }
 
@@ -35,10 +37,17 @@ export class RuleValidatorService {
 
 
         if (RuleValidatorUtility.checkRiskComposition(rules.riskRule.stockComposition, portfolioSecurities[0]["STOCK"] || 0, rules.minCashRule.percentage, rules.maxCashRule.percentage) === false) {
-
+            let stockPercentage: number;
+            if (rules.riskRule.stockComposition > 70) {
+                stockPercentage = 80
+            } else if (rules.riskRule.stockComposition > 40) {
+                stockPercentage = 50
+            } else {
+                stockPercentage = 15
+            }
             breachedRules.push({
                 ruleType: RuleType.RISK,
-                breachMessage: `Stocks are above ${rules.riskRule.stockComposition}% of the portfolio value`,
+                breachMessage: `Stocks are above ${stockPercentage}% of the portfolio value`,
             })
             status.risk = true
         }
