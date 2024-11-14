@@ -74,7 +74,7 @@ interface PortfolioData {
     portfolioName: string;
     portfolioAnalysis: PortfolioAnalysis;
     triggeredAlerts: AlertDto[];
-    breachedRules: BreachedRule[];
+    breachedRules: RuleReport;
     portfolioBreakdown: PortfolioBreakdown;
     portfolioHoldings: PortfolioHoldings[];
     orderExecutionProgress: OrderExecutionProgress[];
@@ -192,8 +192,14 @@ interface UpdateRuleDto {
 interface BreachedRule {
     ruleType: RuleType;
     breachMessage: string;
-    recommendation: string;
+    //recommendation: string;
     news?: AlertDto[];
+}
+
+interface RuleReport {
+    breachedRules: BreachedRule[];
+    recommendation: string;
+    news?: { buy?: AlertDto[], sell?: AlertDto[] };
 }
 
 interface PortfolioReport {
@@ -219,5 +225,5 @@ export type {
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
     PortfolioBreakdown, Securities, PortfolioData, PortfolioHoldings, CalculatedPortfolio, intermediateAssetHolding, PortfolioValue, ValidateIntermediatePortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary
+    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary, RuleReport
 };

@@ -20,14 +20,14 @@ export default function PortfolioAnalysisCard({ data } : PortfolioAnalysisCardPr
     return (
         <Card className="flex flex-col w-full p-4 gap-2">
             <h2 className="text-xl font-medium">Portfolio Valuation</h2>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-3 gap-4">
                 <div className="flex flex-col">
                     <span className="text-md text-gray-500">Total Assets:</span>
                     <span className="text-lg font-medium">${data.totalAssets.toFixed(2)}</span>
                     <span className="text-sm text-gray-500 mt-2">Securities Value:</span>
                     <span className="text-sm font-medium">${data.securitiesValue.toFixed(2)}</span>
                     <span className="text-sm text-gray-500">Available Cash:</span>
-                    <span className="text-sm font-medium">${data.cashAmount.toFixed(2)}</span>
+                    <span className="text-sm font-medium">${data.cashAmount.toFixed(2)} ({((data.cashAmount/data.totalAssets)*100).toFixed(2)}%)</span>
                 </div>
                 <div className="flex flex-col gap-1">
                     <span className="text-md text-gray-500">Daily P&L:</span>
@@ -39,10 +39,10 @@ export default function PortfolioAnalysisCard({ data } : PortfolioAnalysisCardPr
                     <span className="text-md font-medium">{computePL(data.totalPL)}</span>
                     <CustomBadge amount={data.totalPLPercentage}/>
                 </div>
-                <div className="flex flex-col gap-1">
+                {/* <div className="flex flex-col gap-1">
                     <span className="text-md text-gray-500">Annualized RoR:</span>
                     <span className="text-md font-medium">{data.annualizedRoR.toFixed(2)}%</span>
-                </div>
+                </div> */}
             </div>
         </Card>
     )
