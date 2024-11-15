@@ -1,5 +1,5 @@
 'use client';
-import { Link } from "next-view-transitions";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator } from "../ui/breadcrumb";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
@@ -20,6 +20,7 @@ interface Breadcrumb {
 }
 
 export default function DashBoardNavBar() {
+    const router = useTransitionRouter();
     // main state of dashboard to display different set of buttons
     const DashBoardNavBarState = useDashBoardNavBarStore((state) => state.mainState);
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
@@ -48,6 +49,10 @@ export default function DashBoardNavBar() {
         editcash: "Edit Cash",
         rulelog: "Rule Logs",
     }
+
+    const handleNavigate = (path: string) => {
+        router.push(path); // Navigate to the given path
+    };
 
     const getPortfolioName = () => {
         if (typeof window !== "undefined") {
@@ -192,46 +197,66 @@ export default function DashBoardNavBar() {
             case "Portfolio":
                 return (
                     <>
-                        <Link href={`/dashboard/${id}/optimization`}>
-                            <Button className="mr-4 bg-blue-400">Portfolio Optimization</Button>
-                        </Link>
-                        <Link href={`/dashboard/${id}/neworder`}>
-                            <Button className="mr-4 bg-red-500">Create New Order</Button>
-                        </Link>
-                        <Link href={`/dashboard/${id}/editportfolio`}>
-                            <Button className="mr-4 bg-yellow-500">Edit Portfolio Rules</Button>
-                        </Link>
-                        <Link href={`/dashboard/${id}/editcash`}>
-                            <Button className="mr-4 bg-green-700">Edit Cash</Button>
-                        </Link>
-                        <Link href={`/dashboard/${id}/rulelog`}>
-                            <Button className="mr-4 bg-orange-400">Rule Logs</Button>
-                        </Link>
-                        {reportLoading ? 
-                            <Button disabled className="w-52">
-                                <span className="flex items-center space-x-2">
-                                    <span>Generating Report</span>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                </span>
-                            </Button>
-                        :
+                        <div className="hidden lg:flex space-x-4"> {/* Large screens show buttons inline */}
+                            <Link href={`/dashboard/${id}/optimization`}>
+                                <Button className="bg-blue-400">Portfolio Optimization</Button>
+                            </Link>
+                            <Link href={`/dashboard/${id}/neworder`}>
+                                <Button className="bg-red-500">Create New Order</Button>
+                            </Link>
+                            <Link href={`/dashboard/${id}/editportfolio`}>
+                                <Button className="bg-yellow-500">Edit Portfolio Rules</Button>
+                            </Link>
+                            <Link href={`/dashboard/${id}/editcash`}>
+                                <Button className="bg-green-700">Edit Cash</Button>
+                            </Link>
+                            <Link href={`/dashboard/${id}/rulelog`}>
+                                <Button className="bg-orange-400">Rule Logs</Button>
+                            </Link>
+                            {reportLoading ? 
+                                <Button disabled className="w-52">
+                                    <span className="flex items-center space-x-2">
+                                        <span>Generating Report</span>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    </span>
+                                </Button>
+                            : 
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="bg-gray-700 text-white w-52">
+                                            Generate Portfolio Reports
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
+                                        <DateRangePicker date={date} setDate={setDate} onGenerateReport={handleGenerateOrdersExecutionReport} />
+                                        <DropdownMenuItem 
+                                            onClick={handleGenerateMonthlyReport} 
+                                            className="bg-green-700 text-white flex items-center justify-center w-52"
+                                        >
+                                            Monthly Report
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            }
+                        </div>
+                        
+                        {/* Dropdown for small screens */}
+                        <div className="lg:hidden">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="bg-gray-700 text-white w-52">
-                                        Generate Portfolio Reports
+                                        Actions
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
-                                    <DateRangePicker date={date} setDate={setDate} onGenerateReport={handleGenerateOrdersExecutionReport} />
-                                    <DropdownMenuItem 
-                                        onClick={handleGenerateMonthlyReport} 
-                                        className="bg-green-700 text-white flex items-center justify-center w-52"
-                                    >
-                                        Monthly Report
-                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleNavigate("/dashboard/optimization")}>Portfolio Optimization</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleNavigate("/dashboard/neworder")}>Create New Order</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleNavigate("/dashboard/editportfolio")}>Edit Portfolio Rules</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleNavigate("/dashboard/editcash")}>Edit Cash</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleNavigate("/dashboard/rulelog")}>Rule Logs</DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                        }
+                        </div>
                     </>
                 );
             case "Rulelogger":

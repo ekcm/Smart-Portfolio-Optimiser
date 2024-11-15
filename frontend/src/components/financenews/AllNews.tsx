@@ -23,7 +23,7 @@ export default function AllNews() {
         getFinanceNews();
     }, []);
 
-    // TODO: Edit filters for new types
+
     useEffect(() => {
         const filtered = financenews.filter((news) => {
             // Check for newsName filter
