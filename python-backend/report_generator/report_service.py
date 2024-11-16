@@ -37,6 +37,10 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+@app.get("/")
+def read_root():
+    return {"Status": "Report Generator Service is running!"}
+
 def get_latest_market_commentary():
     try:
         client = MongoClient(uri)

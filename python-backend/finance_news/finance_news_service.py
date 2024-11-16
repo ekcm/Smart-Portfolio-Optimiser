@@ -70,6 +70,10 @@ client = OpenAI()
 class Stock(BaseModel):
     ticker: str
 
+@app.get("/")
+def read_root():
+    return {"Status": "Finance News Service is running!"}
+
 async def researcher_response(query, ticker):
     researcher = GPTResearcher(query=query, report_type="research_report")
     research_result = await researcher.conduct_research()
@@ -141,10 +145,6 @@ def insert_into_mongo(json_obj):
     
     return {"data": "Alert created successfully!"}
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 @app.post("/")
 async def retrieve_finance_news(Stock: Stock):
     ticker = Stock.ticker
@@ -187,4 +187,4 @@ def delete_finance_news():
 
 
 if __name__ == "__main__":
-    uvicorn.run("finance_news_service:app", host='127.0.0.1', port=5000, reload=True)
+    uvicorn.run("finance_news_service:app", host='127.0.0.1', port=5004, reload=True)

@@ -31,6 +31,10 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+@app.get("/")
+def read_root():
+    return {"Status": "Market Commentary Service is running!"}
+
 @app.post("/")
 async def researcher_response():
     client = OpenAI()

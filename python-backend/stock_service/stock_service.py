@@ -76,6 +76,10 @@ class StockItem(BaseModel):
 class StockDate(BaseModel):
     date: Optional[datetime] = None
 
+@app.get("/")
+def read_root():
+    return {"Status": "Stock Service is running!"}
+
 def get_trading_days(today):
     yesterday = today - timedelta(days=1)
     previousday = today - timedelta(days=2)
