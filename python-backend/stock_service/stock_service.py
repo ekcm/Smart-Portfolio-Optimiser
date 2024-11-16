@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from typing import Optional
 import random
 
-load_dotenv(dotenv_path=".env")
+load_dotenv(dotenv_path="../.env")
 uri = os.getenv("MONGO_URI")
 
 app = FastAPI()
