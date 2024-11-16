@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from typing import Optional
 import random
 
-load_dotenv(dotenv_path=".env")
+load_dotenv(dotenv_path="../.env")
 uri = os.getenv("MONGO_URI")
 
 app = FastAPI()
@@ -75,6 +75,10 @@ class StockItem(BaseModel):
 
 class StockDate(BaseModel):
     date: Optional[datetime] = None
+
+@app.get("/")
+def read_root():
+    return {"Status": "Stock Service is running!"}
 
 def get_trading_days(today):
     yesterday = today - timedelta(days=1)
