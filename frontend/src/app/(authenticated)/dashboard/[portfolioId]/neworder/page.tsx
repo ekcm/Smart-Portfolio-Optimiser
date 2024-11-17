@@ -62,7 +62,7 @@ export default function NewOrder() {
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
-            <h1 className="text-3xl font-bold">Create New Order</h1>
+            <h1 className="text-2xl font-bold">Create New Order</h1>
             {ordersParam ? 
                 <NewOrderForm data={indivPortfolioData} prevOrders={orders} />
             :

@@ -226,7 +226,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                             {isLoading ? 
                                 <Skeleton className="w-[100px] h-[25px] rounded-full" />
                                 : 
-                                <span className="text-red-500 italic font-normal">Current Max: {maxCash}</span>
+                                <span className="text-red-500 italic font-normal text-sm">Current Max: {maxCash}</span>
                             }
                         </div>
                         <Input
@@ -329,7 +329,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                         Updating Portfolio Rules...
                     </Button>
                 :
-                    <Button type="submit" className="bg-red-500" disabled={selectedRule === ""}>Confirm Changes</Button>
+                    <Button type="submit" className="bg-red-500 hover:bg-red-800" disabled={selectedRule === ""}>Confirm Changes</Button>
                 }
             </div>
         </form>

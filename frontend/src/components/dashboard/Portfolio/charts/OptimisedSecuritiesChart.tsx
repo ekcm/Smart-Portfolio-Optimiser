@@ -68,7 +68,7 @@ export default function OptimisedSecuritiesChart({ data, optimisedFlag }: Securi
                     </PieChart>
                 </ChartContainer>
             ) : (
-                <div className="flex flex-grow h-full items-center justify-center bg-gray-200">
+                <div className="flex flex-grow h-full items-center justify-center">
                     <span>No changes made.</span>
                 </div>
             )               

@@ -335,7 +335,7 @@ export default function DashBoardNavBar() {
         return (
           <>
             <Link href={`/dashboard/${id}/editportfolio`}>
-              <Button className="mr-4 bg-red-500">Edit Portfolio Rules</Button>
+              <Button className="mr-4" variant={"ghost"}>Edit Portfolio Rules</Button>
             </Link>
           </>
         );

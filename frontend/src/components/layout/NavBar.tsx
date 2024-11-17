@@ -36,7 +36,7 @@ export default function NavBar() {
                   href={`/${formattedItem}`}
                   className={`text-md relative ${
                     isLinkActive(`/${formattedItem}`)
-                      ? "text-blue-500"
+                      ? "text-blue-900 font-semibold"
                       : "text-black"
                   }`}
                 >
@@ -66,7 +66,7 @@ export default function NavBar() {
                       href={`/${formattedItem}`}
                       className={`text-md relative ${
                         isLinkActive(`/${formattedItem}`)
-                          ? "text-blue-500"
+                          ? "text-blue-900 font-semibold"
                           : "text-black"
                       }`}
                     >

@@ -39,7 +39,7 @@ export default function EditCashForm({ isLoading, cashBalance, onAddCash } : Add
     return (
         <div>
             <div className="flex w-1/2 justify-between">
-                <h1 className="text-3xl font-semibold">{transactionType === "ADD" ? "Add" : "Withdraw" } Cash</h1>
+                <h1 className="text-2xl font-semibold">{transactionType === "ADD" ? "Add" : "Withdraw" } Cash</h1>
                 <div>
                     <h1 className="text-xl font-medium">Cash Balance: </h1>
                     {isLoading ? 
@@ -99,7 +99,7 @@ export default function EditCashForm({ isLoading, cashBalance, onAddCash } : Add
                     {/* <Button type="submit" className="bg-red-500">{transactionType === "ADD" ? "Add" : "Withdraw" } Cash</Button> */}
                     <Button 
                         type="submit" 
-                        className="bg-red-500" 
+                        className="bg-red-500 hover:bg-red-800" 
                         disabled={isLoading} // Disable button if loading
                     >
                         {isLoading ? "Processing..." : `${transactionType === "ADD" ? "Add" : "Withdraw"} Cash`}
