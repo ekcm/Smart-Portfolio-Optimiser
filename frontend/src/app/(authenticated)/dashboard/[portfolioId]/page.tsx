@@ -75,6 +75,11 @@ export default function Portfolio() {
         }
     };
 
+    const triggerBatch = () => {
+        socket.emit("triggerBatch");
+        console.log("Batch process triggered on the backend");
+    };
+
     if (loading) return <Loader />;
     if (error) return <Error error={error} />;
     if (!indivPortfolioData) return <NoPortfolio />;
@@ -86,6 +91,12 @@ export default function Portfolio() {
                 <h1 className="text-2xl font-medium">Client: {indivPortfolioData.clientName}</h1>
             </div>
             <MainPortfolio data={indivPortfolioData} />
+            <button
+                className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+                onClick={triggerBatch}
+            >
+                Trigger Batch Process
+            </button>
         </main>
     );
 }

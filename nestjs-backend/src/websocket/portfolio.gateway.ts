@@ -67,7 +67,18 @@ export class PortfolioGateway
     }
   }
   
+  @SubscribeMessage('triggerBatch')
+  async handleTriggerBatch(@ConnectedSocket() client: Socket) {
+    console.log(`Client ${client.id} requested batch process`);
 
+    try {
+      await this.assetPriceTestService.processNextBatch();
+      console.log('Batch process triggered manually by client');
+    } catch (error) {
+      console.error('Error during manual batch processing:', error);
+    }
+  }
+  
   broadcastPortfolioUpdate(portfolioId: string) {
     this.server.to(portfolioId).emit('portfolioUpdate'); 
     console.log(`Notified portfolio ${portfolioId} clients of an update`);
