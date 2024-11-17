@@ -280,7 +280,7 @@ export default function AddTransactionForm({
             <div className="flex gap-2 mt-4">
                 {/* <Button className="bg-red-700" onClick={handleSubmit}>Add Transaction to Checkout</Button> */}
                 <Button
-                    className="bg-red-700"
+                    className="bg-red-600 hover:bg-red-800"
                     onClick={handleSubmit}
                     disabled={isLoading || showWarning} // Disable button when loading
                 >

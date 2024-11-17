@@ -13,7 +13,6 @@ export default function OptimisedOrdersCard({ data, optimisedFlag }: OptimisedOr
 
     return (
         <Card className="flex flex-col w-full p-4 gap-2 h-80 overflow-y-auto">
-            <h2 className="text-xl font-medium">Proposed Portfolio Holdings</h2>
             {optimisedFlag ? (
                 <Table>
                     <TableHeader>
