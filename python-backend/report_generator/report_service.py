@@ -22,7 +22,9 @@ from openai import OpenAI
 load_dotenv(dotenv_path="../.env")
 uri = os.getenv("MONGO_URI")
 
-app = FastAPI()
+app = FastAPI(
+    docs="/"
+)
 
 # Allow all origins
 origins = [
@@ -130,7 +132,8 @@ def generate_trade_executions(id: str, startDate: str, endDate: str):
                 datetime.strptime(trade.get('orderDate', ''), '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%d/%m/%y') if trade.get('orderDate') else '',
                 trade.get('orderType', ''),
                 trade.get('assetName', ''),
-                trade.get('quantity', ''),
+                # trade.get('quantity', ''),
+                f"{round(trade.get('quantity', 0), 2):,.2f}",
                 f"${round(trade.get('price', 0), 2):,.2f}",
                 trade.get('orderStatus', '')
             ])
@@ -231,7 +234,7 @@ def generate_report(id: str):
             asset['ticker'], 
             f"${round(asset['cost'],2):,.2f}", 
             f"${round(asset['last'],2):,.2f}", 
-            asset['quantity'], 
+            f"{round(asset['quantity'], 2):,.2f}",
             asset['assetType'], 
             f"{round(asset['positionRatio']*100,2)}%"
         ])
@@ -249,7 +252,7 @@ def generate_report(id: str):
             f"{round(others_ratio*100,2)}%"
         ])
 
-    assets_allocation_table = Table(assets_allocation_summary_data, colWidths=[40, 80, 100, 80, 100])
+    assets_allocation_table = Table(assets_allocation_summary_data, colWidths=[30, 80, 70, 70, 70, 80, 70])
     assets_allocation_table.hAlign = 'CENTER'
     assets_allocation_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.red),
@@ -271,7 +274,7 @@ def generate_report(id: str):
     top_holdings_by_weight_heading = Paragraph("Top Holdings by Weight", h2_heading_style)
     top_holdings_data = portfolio_summary_data['topHoldings']
 
-    top_holdings_drawing = Drawing(500, 250)
+    top_holdings_drawing = Drawing(400, 200)
     top_holdings_by_weight_pie_chart = Pie()
     top_holdings_by_weight_pie_chart.data = list(top_holdings_data.values())
     top_holdings_by_weight_pie_chart.labels = [f"{k} ({v*100:.2f}%)" for k, v in top_holdings_data.items()]
@@ -291,7 +294,7 @@ def generate_report(id: str):
     sector_allocation_heading = Paragraph("Sector Allocation", h2_heading_style)
     sector_allocation_data = portfolio_summary_data['sectorAllocation']
 
-    sector_allocation_drawing = Drawing(500, 250)
+    sector_allocation_drawing = Drawing(400, 200)
     sector_allocation_pie_chart = Pie()
     sector_allocation_pie_chart.data = list(sector_allocation_data.values())
     sector_allocation_pie_chart.labels = [f"{k} ({v:.1f}%)" for k, v in sector_allocation_data.items()]
@@ -314,17 +317,17 @@ def generate_report(id: str):
 
     elements = [
         portfolio_report_heading,
-        Spacer(1, 20),
+        Spacer(1, 10),
         portfolio_summary_heading,
         assets_allocation_table,
         positions_summary_paragraph,
-        Spacer(1, 30),
+        Spacer(1, 10),
         top_holdings_by_weight_heading,
         top_holdings_drawing,
-        Spacer(1, 20),
+        Spacer(1, 10),
         sector_allocation_heading,
         sector_allocation_drawing,
-        Spacer(1, 20),
+        Spacer(1, 10),
         market_commentary_heading,
         market_commentary_paragraph
     ]
