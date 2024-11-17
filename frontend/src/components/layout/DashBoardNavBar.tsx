@@ -227,25 +227,25 @@ export default function DashBoardNavBar() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href={`/dashboard/${id}/optimization`}>
                       Portfolio Optimization
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href={`/dashboard/${id}/neworder`}>
                       Create New Order
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href={`/dashboard/${id}/editportfolio`}>
                       Edit Portfolio Rules
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href={`/dashboard/${id}/editcash`}>Edit Cash</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href={`/dashboard/${id}/rulelog`}>Rule Logs</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -268,7 +268,7 @@ export default function DashBoardNavBar() {
                       <ChevronDown className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="space-y-2 flex flex-col items-center justify-center">
+                  <DropdownMenuContent className="space-y-2 flex flex-col">
                     <DateRangePicker
                       date={date}
                       setDate={setDate}
@@ -276,7 +276,7 @@ export default function DashBoardNavBar() {
                     />
                     <DropdownMenuItem
                       onClick={handleGenerateMonthlyReport}
-                      className="bg-green-700 text-white flex items-center justify-center w-52"
+                      className="cursor-pointer"
                     >
                       Monthly Report
                     </DropdownMenuItem>

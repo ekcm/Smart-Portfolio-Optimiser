@@ -26,7 +26,7 @@ export default function DashBoard() {
       className="flex flex-col justify-between pt-6 px-24 gap-6"
     >
       <div className="flex justify-between">
-        <h1 className="text-3xl font-semibold">Portfolios under your management</h1>
+        <h1 className="text-xl font-semibold">Portfolios under your management</h1>
         <Button variant="ghost" onClick={handleReset}>Reset Filters</Button>
       </div>
       <Filter />

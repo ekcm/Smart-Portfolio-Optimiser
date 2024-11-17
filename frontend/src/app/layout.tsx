@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "UBS Portfolio Optimizer",
+  title: "PCT Portfolio Optimizer",
   description: "Optimize your portfolios with UBS",
 };
 
