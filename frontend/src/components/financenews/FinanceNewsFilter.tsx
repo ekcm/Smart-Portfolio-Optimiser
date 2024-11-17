@@ -49,7 +49,7 @@ export default function FinanceNewsFilter() {
         <div className="flex items-center justify-center">
             <div className="flex w-full space-x-4">
                 <Label className="flex flex-1 flex-grow-0 basis-3/5 items-center space-x-2 whitespace-nowrap text-md gap-1">
-                    Finance Name:
+                    Ticker Name:
                     <Input
                         type="text"
                         value={newsName}

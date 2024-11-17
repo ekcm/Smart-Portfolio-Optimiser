@@ -95,7 +95,7 @@ interface PortfolioData {
   portfolioName: string;
   clientName: string;
   portfolioAnalysis: PortfolioAnalysis;
-  breachedRules: BreachedRule[];
+  breachedRules: RuleReport;
   triggeredAlerts: Alert[];
   portfolioBreakdown: PortfolioBreakdown;
   portfolioHoldings: PortfolioHoldings[];
@@ -133,6 +133,9 @@ interface Asset {
   industry: string;
 }
 
+interface intermediateAssetHoldings extends apiAssetHolding {
+  orderType: string;
+}
 
 // API CALL TYPES
 // Define the interface for the asset holdings
@@ -244,8 +247,6 @@ export enum RuleType {
 interface BreachedRule {
     ruleType: RuleType;
     breachMessage: string;
-    recommendation: string;
-    news?: Alert[];
 }
 
 interface UpdateRule {
@@ -253,6 +254,13 @@ interface UpdateRule {
     rule: any;
     changeMessage: string;
 }
+
+interface RuleReport {
+  breachedRules: BreachedRule[];
+  recommendation: string;
+  news?: {buy?: Alert[], sell?: Alert[]};
+}
+
 
 interface RuleLog {
   description: string;
@@ -290,6 +298,8 @@ export type {
     UpdateRule,
     BreachedRule,
     RuleLog,
+    RuleReport,
+    intermediateAssetHoldings,
     // API CALL TYPES
     apiAssetHolding,
     CreatePortfolioForm,

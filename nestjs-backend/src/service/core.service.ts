@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Portfolio } from "src/model/portfolio.model";
-import { DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData } from 'src/types';
+import { BreachedRule, DashboardCard, FinanceNewsCard, GeneratedInsight, GeneratedSummary, intermediateAssetHolding, NestedInsight, NestedSummary, NewsArticle, OrderExecutionProgress, PortfolioData, RuleReport } from 'src/types';
 import { AlertService } from "./alert.service";
 import { AssetService } from "./asset.service";
 import { FinanceNewsService } from "./financeNews.service";
@@ -49,12 +49,12 @@ export class CoreService {
         const portfolioBreakdown = await this.portfolioBreakdownService.loadPortfolio(portfolio)
         const portfolioCalculations = await this.portfolioCalculatorService.calculatePortfolioValue(portfolio)
         const portfolioHoldings = await this.portfolioHoldingsService.getPortfolioHoldings(portfolio, portfolioCalculations)
-        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId);
+        const orderExecutions: OrderExecutionProgress[] = await this.orderExecutionsService.getOrderExecutions(portfolioId)
         const alerts = await this.alertService.getAlerts(portfolio.assetHoldings.map(holding => holding.ticker))
 
         const totalValue = portfolioCalculations.totalValue
         const cashValue =  portfolioBreakdown.securities[0]["CASH"] || portfolioBreakdown.securities[1]["CASH"] || portfolioBreakdown.securities[2]["CASH"] || 0 
-        const breachedRules = await this.ruleValidatorService.checkPortfolio(portfolio.rules, portfolio.cashAmount, portfolioCalculations, portfolioBreakdown, portfolio.exclusions, portfolio.assetHoldings)
+        const ruleReport = await this.ruleValidatorService.checkPortfolio(portfolio.rules, portfolio.cashAmount, portfolioCalculations.totalValue, portfolioBreakdown.securities, portfolio.exclusions, portfolio.assetHoldings)
 
         return {
             portfolioId: portfolioId,
@@ -71,11 +71,19 @@ export class CoreService {
                 annualizedRoR: 100
             },
             triggeredAlerts: alerts,
-            breachedRules: breachedRules,
+            breachedRules: ruleReport,
             portfolioBreakdown: portfolioBreakdown,
             portfolioHoldings: portfolioHoldings,
             orderExecutionProgress: orderExecutions
         }
+    }
+
+    async validateIntermediatePortfolioRules(portfolioId: string, intermediateAssetHoldings: intermediateAssetHolding[], intermediateCashAmount: number): Promise<RuleReport> {
+        const portfolio = await this.portfolioService.getById(portfolioId)
+        const portfolioSecurities = await this.portfolioBreakdownService.loadIntermediateSecurities(portfolio, intermediateAssetHoldings, intermediateCashAmount)
+        const portfolioValue = await this.portfolioCalculatorService.CalculateIntermediatePortfolioValue(portfolio.assetHoldings, intermediateAssetHoldings, intermediateCashAmount)
+        return await this.ruleValidatorService.checkPortfolio(portfolio.rules, intermediateCashAmount, portfolioValue, portfolioSecurities, portfolio.exclusions, portfolio.assetHoldings)
+        
     }
 
     async loadFinanceNewsCards(): Promise<FinanceNewsCard[]> {

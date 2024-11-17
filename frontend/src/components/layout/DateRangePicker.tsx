@@ -32,9 +32,9 @@ export default function DateRangePicker({
         <PopoverTrigger asChild>
           <Button
             id="date"
-            variant={"outline"}
+            variant={"ghost"}
             className={cn(
-              "w-52 justify-center font-normal bg-gray-700 text-white",
+              "w-52 font-normal justify-normal py-2 px-2",
               !date && "text-muted-foreground"
             )}
           >

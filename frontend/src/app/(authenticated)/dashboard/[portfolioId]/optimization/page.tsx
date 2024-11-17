@@ -38,6 +38,14 @@ export default function Optimization() {
     const [error, setError] = useState<string | null>(null);
 
     const optimisePortfolio = () => {
+        if (indivPortfolioData && indivPortfolioData?.portfolioHoldings.length < 3) {
+            toast({
+                variant: "destructive",
+                title: "Unable to run optimiser.",
+                description: `There was a problem with your request, please buy more stocks/bonds in order to run the optimiser!`,
+            });
+            return;
+        }
         getOptimiser(portfolioId);
     }
 
@@ -45,13 +53,15 @@ export default function Optimization() {
         console.log("Optimise portfolio request sent");
         setSendOrdersLoading(true);
         // Submit to backend to update orders db with newOrders
-        const formattedOrders: CreateOrderItem[] = orders.map((order) => ({
-            orderType: order.orderType.toUpperCase(),
-            assetName: order.assetName,
-            quantity: Number(order.quantity),
-            price: Number(order.price.toFixed(2)),
-            portfolioId: portfolioId,
-        }));
+        const formattedOrders: CreateOrderItem[] = orders
+            .filter((order) => order.quantity !== 0) // Filter out orders with quantity 0
+            .map((order) => ({
+                orderType: order.orderType.toUpperCase(),
+                assetName: order.assetName,
+                quantity: Number(order.quantity),
+                price: Number(order.price.toFixed(2)),
+                portfolioId: portfolioId,
+            }));
 
         try {
             const result = await createOrdersTransaction(portfolioId, formattedOrders);
@@ -174,7 +184,7 @@ export default function Optimization() {
 
     return (
         <main className="flex flex-col justify-between pt-6 px-24 gap-6">
-            <h1 className="text-3xl font-bold">Portfolio Optimiser</h1>
+            <h1 className="text-2xl font-bold">Portfolio Optimiser</h1>
             <BigChartCard data={indivPortfolioData} error={error} optimisedFlag={optimizedState} onOptimisePortfolio={optimisePortfolio} loadingState={optimiserLoading} />
             <OptimiserChangeList data={indivPortfolioData} optimisedData={optimizedData?.proposedHoldings} optimisedFlag={optimizedState} />
             <OptimiserOrdersCheckoutCard data={orders} onDelete={handleDelete}/>

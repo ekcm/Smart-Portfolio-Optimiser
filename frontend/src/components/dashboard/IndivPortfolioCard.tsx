@@ -24,7 +24,7 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
             onClick={setPortfolioName}
         >
             <Card 
-                className="relative flex flex-row items-center justify-between w-full p-8 transform transition-transform duration-300 hover:scale-105 cursor-pointer"
+                className="relative flex flex-row items-center justify-between w-full p-6 transform transition-transform duration-300 hover:scale-105 cursor-pointer"
             >
                 {data.alertsPresent && (
                     <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-red-600" />
@@ -32,39 +32,39 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
                 <div className="flex flex-col">
                     <div className="flex items-start">
                         <div>
-                            <h2 className="text-3xl font-semibold">{data.portfolioName}</h2>
+                            <h2 className="text-xl font-semibold">{data.portfolioName}</h2>
                         </div>
                     </div>
                     <div className="flex gap-2 items-center">
-                        <h3 className="text-xl whitespace-nowrap">Client:</h3>
-                        <p className="text-xl font-bold">
+                        <h3 className="text-md whitespace-nowrap">Client:</h3>
+                        <p className="text-md font-bold">
                             {data.clientName}
                         </p>
                     </div>
                     <div className="flex gap-2 items-center">
-                        <h3 className="text-xl whitespace-nowrap">Portfolio Value:</h3>
-                        <p className="text-xl font-bold">
+                        <h3 className="text-md whitespace-nowrap">Portfolio Value:</h3>
+                        <p className="text-md font-bold">
                             ${data.totalValue.toFixed(2)}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <h3 className="text-xl whitespace-nowrap">Risk Appetite Classification High: </h3>
-                        <p className="text-xl font-bold">
+                        <h3 className="text-md whitespace-nowrap">Risk Appetite Classification High: </h3>
+                        <p className="text-md font-bold">
                             {formattedRiskAppetite}
                         </p>
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2 justify-end">
-                        <h3 className="text-lg font-semibold">Daily P&L: </h3>
+                        <h3 className="text-md font-semibold">Daily P&L: </h3>
                         <CustomBadge amount={data.dailyPLPercentage}/>
                     </div>
                     <div className="flex items-center gap-2 justify-end">
-                        <h3 className="text-lg font-semibold">Total P&L: </h3>
+                        <h3 className="text-md font-semibold">Total P&L: </h3>
                         <CustomBadge amount={data.totalPLPercentage}/>
                     </div>
                     <div className="flex items-center gap-2 justify-end">
-                        <h3 className="text-lg font-semibold">RoR: </h3>
+                        <h3 className="text-md font-semibold">RoR: </h3>
                         <CustomBadge amount={data.rateOfReturn}/>
                     </div>
                 </div>

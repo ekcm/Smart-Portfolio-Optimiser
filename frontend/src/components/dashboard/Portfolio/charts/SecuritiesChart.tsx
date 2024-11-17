@@ -47,7 +47,7 @@ export default function SecuritiesChart({ data }: SecuritiesChartProps) {
     return (
         <ChartContainer
             config={chartConfig}
-            className="mx-auto w-full max-h-[400px] aspect-square pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+            className="mx-auto w-full max-h-[450px] aspect-square pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
             <PieChart>
                 <ChartTooltip content={<CustomTooltip />} />

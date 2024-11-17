@@ -48,6 +48,10 @@ interface PortfolioBreakdown {
     securities: { [key: string]: number | undefined }[];
 };
 
+interface Securities {
+    [key: string]: number | undefined;
+}
+
 interface PortfolioHoldings {
     name: string;
     ticker: string;
@@ -70,7 +74,7 @@ interface PortfolioData {
     portfolioName: string;
     portfolioAnalysis: PortfolioAnalysis;
     triggeredAlerts: AlertDto[];
-    breachedRules: BreachedRule[];
+    breachedRules: RuleReport;
     portfolioBreakdown: PortfolioBreakdown;
     portfolioHoldings: PortfolioHoldings[];
     orderExecutionProgress: OrderExecutionProgress[];
@@ -94,6 +98,18 @@ interface CalculatedPortfolio {
     dailyPLPercentage: number,
     totalPLPercentage: number,
     totalValue: number
+}
+
+interface PortfolioValue {
+    portfolioValue: number;
+}
+
+interface intermediateAssetHolding extends AssetHolding {
+    orderType: string;
+}
+interface ValidateIntermediatePortfolio {
+    intermediateAssetHoldings: intermediateAssetHolding[];
+    intermediateCashAmount: number;
 }
 
 interface ProposedPortfolio {
@@ -176,8 +192,14 @@ interface UpdateRuleDto {
 interface BreachedRule {
     ruleType: RuleType;
     breachMessage: string;
-    recommendation: string;
+    //recommendation: string;
     news?: AlertDto[];
+}
+
+interface RuleReport {
+    breachedRules: BreachedRule[];
+    recommendation: string;
+    news?: { buy?: AlertDto[], sell?: AlertDto[] };
 }
 
 interface PortfolioReport {
@@ -191,17 +213,22 @@ interface PortfolioDetails{
 }
 
 interface PortfolioSummary {
-    assetsAllocation: Record<string, AssetHolding>;
+    assetsAllocation: Record<string, AssetHoldingReport>;
     topHoldings: Record<string, number>;
     overview: string;
     sectorAllocation: Record<string, number>;
     commentary: string;
 }
 
+interface AssetHoldingReport extends AssetHolding{
+    last: number,
+    positionRatio: number
+}
+
 export type {
     DashboardCard, FinanceNewsItem,
     ClassicOrder, OrderExecutionProgress, PortfolioAnalysis,
-    PortfolioBreakdown, PortfolioData, PortfolioHoldings, CalculatedPortfolio,
+    PortfolioBreakdown, Securities, PortfolioData, PortfolioHoldings, CalculatedPortfolio, intermediateAssetHolding, PortfolioValue, ValidateIntermediatePortfolio,
     ProposedPortfolio, GeneratedInsight, GeneratedSummary, NestedSummary, FinanceNewsCard, NewsArticle, NestedInsight,
-    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary
+    OptimisedPortfolio, PortfolioRules, UpdateRuleDto, BreachedRule, PortfolioReport, PortfolioDetails, PortfolioSummary, RuleReport, AssetHoldingReport
 };

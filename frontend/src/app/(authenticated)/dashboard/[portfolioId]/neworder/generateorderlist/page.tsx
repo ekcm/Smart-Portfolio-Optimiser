@@ -61,7 +61,7 @@ export default function GenerateOrderList() {
                 data={indivPortfolioData} 
                 newOrders={orders} 
                 triggeredAlerts={indivPortfolioData.triggeredAlerts} 
-                breachedRules={indivPortfolioData.breachedRules}
+                ruleReport={indivPortfolioData.breachedRules}
             />
         </main>
     )

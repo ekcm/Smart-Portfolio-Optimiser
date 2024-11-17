@@ -1,8 +1,8 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { RuleLogDto } from "src/dto/ruleLog.dto";
 import { CoreService } from "src/service/core.service";
-import { DashboardCard, FinanceNewsCard, NewsArticle, PortfolioData } from "src/types"
+import { BreachedRule, DashboardCard, FinanceNewsCard, NewsArticle, PortfolioData, RuleReport, ValidateIntermediatePortfolio } from "src/types"
 
 @ApiTags("Core Service")
 @Controller("core")
@@ -37,6 +37,16 @@ export class CoreController {
     @ApiOperation({ summary: "Get all Rule Logs by portfolioId" })
     async loadRuleLogs(@Param('portfolioId') portfolioId: string): Promise<RuleLogDto[]> {
         return await this.coreService.loadRuleLogs(portfolioId);
+    }
+
+    @Post("portfolio/validate/:portfolioId")
+    @ApiOperation({ summary: "Validate intermediate portfolio rules" })
+    async validateIntermediatePortfolio(
+        @Param('portfolioId') portfolioId: string,
+        @Body() validateDto: ValidateIntermediatePortfolio
+    ): Promise<RuleReport> {
+        const { intermediateAssetHoldings, intermediateCashAmount } = validateDto;
+        return await this.coreService.validateIntermediatePortfolioRules(portfolioId, intermediateAssetHoldings, intermediateCashAmount);
     }
 
 }

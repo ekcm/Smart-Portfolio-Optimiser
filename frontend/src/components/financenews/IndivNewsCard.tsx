@@ -24,7 +24,7 @@ export default function IndivNewsCard({data} : IndivNewsCardProps) {
             >
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center">
-                        <h2 className="text-2xl font-semibold">{data.ticker}</h2>
+                        <h2 className="text-xl font-semibold">{data.ticker}</h2>
                     </div>
                     <div>
                         <h3 className="text-md text-gray-400 whitespace-nowrap">{formattedDate.toDateString()}</h3>

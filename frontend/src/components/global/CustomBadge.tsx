@@ -12,7 +12,7 @@ export default function CustomBadge({ amount }: CustomBadgeProps) {
         formattedAmount = "-"
     }
     const badgeClasses =
-        "variant='outline' w-24 h-8 flex items-center justify-center px-2 py-1 text-md text-white";
+        "variant='outline' w-20 h-6 flex items-center justify-center text-sm text-white";
 
     if (amount > 0) {
         return (
