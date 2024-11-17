@@ -341,4 +341,4 @@ def generate_report(id: str):
     return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
 
 if __name__ == "__main__":
-    uvicorn.run("report:app", host='127.0.0.1', port=5002, reload=True)
+    uvicorn.run("report_service:app", host='127.0.0.1', port=5002, reload=True)
