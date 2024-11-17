@@ -51,7 +51,7 @@ export class AssetPriceTestService implements OnModuleInit {
         return;  // Pause if not acknowledged
       }
 
-      this.isAcknowledged = false;  // Reset acknowledgment
+      this.isAcknowledged = false;  
 
       const currentHourKeyString = this.currentHourKey.format('YYYY-MM-DDTHH:00:00');
       const allAssetPrices = this.jsonData[this.currentHour.format('YYYY-MM-DDTHH:00:00')] || [];
