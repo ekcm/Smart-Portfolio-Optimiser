@@ -1,22 +1,23 @@
-
 # Use the official Node.js 14 image as the base image
-FROM python:3.9-slim
+FROM node:22.3.0-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files to the working directory
-COPY requirements.txt /app
+COPY package*.json ./
 
 # Install the dependencies
-RUN pip install --upgrade pip setuptools wheel \
-    && pip install --only-binary :all: -r requirements.txt 
+RUN npm install
+
+# Copy the source code to the working directory
+COPY . .
 
 # Build the application
-COPY app.py /app
+RUN npm run build
 
 # Expose the port that the application will listen on
-EXPOSE 6969
+EXPOSE 3000
 
 # Start the application
-CMD ["python", "./app.py"]
+CMD ["npm", "run", "dev"]
