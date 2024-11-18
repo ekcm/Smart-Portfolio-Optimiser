@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  nestjs-backend:
+  frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -28,7 +26,7 @@ services:
       context: ./python-backend/finance_news
       dockerfile: Dockerfile
     env_file:
-      - ./python-backend/finance_news/.env
+      - ./python-backend/.env
     ports:
       - "5004:5004" # Adjust the ports as necessary
     networks:
@@ -39,7 +37,7 @@ services:
       context: ./python-backend/market_commentary
       dockerfile: Dockerfile
     env_file:
-      - ./python-backend/market_commentary/.env
+      - ./python-backend/.env
     ports:
       - "5003:5003" # Adjust the ports as necessary
     networks:
@@ -61,7 +59,7 @@ services:
       context: ./python-backend/report_generator
       dockerfile: Dockerfile
     env_file:
-      - ./python-backend/report_generator/.env
+      - ./python-backend/.env
     ports:
       - "5002:5002" # Adjust the ports as necessary
     networks:
@@ -72,7 +70,7 @@ services:
       context: ./python-backend/stock_service
       dockerfile: Dockerfile
     env_file:
-      - ./python-backend/stock_service/.env
+      - ./python-backend/.env
     networks:
       - app_network
 
