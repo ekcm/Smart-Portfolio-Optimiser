@@ -3,10 +3,21 @@ version: '3.8'
 services:
   nestjs-backend:
     build:
-      context: ../nestjs-backend
+      context: ./frontend
       dockerfile: Dockerfile
     env_file:
-      - ../nestjs-backend/.env
+      - ./frontend/.env
+    ports:
+      - "3000:3000" # Adjust the ports as necessary
+    networks:
+      - app_network
+
+  nestjs-backend:
+    build:
+      context: ./nestjs-backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./nestjs-backend/.env
     ports:
       - "8000:8000" # Adjust the ports as necessary
     networks:
@@ -14,10 +25,10 @@ services:
 
   finance-news:
     build:
-      context: ../python-backend/finance_news
+      context: ./python-backend/finance_news
       dockerfile: Dockerfile
     env_file:
-      - ../python-backend/finance_news/.env
+      - ./python-backend/finance_news/.env
     ports:
       - "5004:5004" # Adjust the ports as necessary
     networks:
@@ -25,10 +36,10 @@ services:
 
   market-commentary:
     build:
-      context: ../python-backend/market_commentary
+      context: ./python-backend/market_commentary
       dockerfile: Dockerfile
     env_file:
-      - ../python-backend/market_commentary/.env
+      - ./python-backend/market_commentary/.env
     ports:
       - "5003:5003" # Adjust the ports as necessary
     networks:
@@ -36,10 +47,10 @@ services:
 
   optimiser-service:
     build:
-      context: ../python-backend/optimiser_service
+      context: ./python-backend/optimiser_service
       dockerfile: Dockerfile
     env_file:
-      - ../python-backend/optimiser_service/.env
+      - ./python-backend/optimiser_service/.env
     ports:
       - "6969:6969" # Adjust the ports as necessary
     networks:
@@ -47,10 +58,10 @@ services:
 
   report-generator:
     build:
-      context: ../python-backend/report_generator
+      context: ./python-backend/report_generator
       dockerfile: Dockerfile
     env_file:
-      - ../python-backend/report_generator/.env
+      - ./python-backend/report_generator/.env
     ports:
       - "5002:5002" # Adjust the ports as necessary
     networks:
@@ -58,10 +69,10 @@ services:
 
   stock-service:
     build:
-      context: ../python-backend/stock_service
+      context: ./python-backend/stock_service
       dockerfile: Dockerfile
     env_file:
-      - ../python-backend/stock_service/.env
+      - ./python-backend/stock_service/.env
     networks:
       - app_network
 
