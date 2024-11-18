@@ -136,8 +136,6 @@ export default function CreatePortfolioForm({ createPortfolioState, setCreatePor
       setCreateLoading(false);
       setCreatePortfolioState(true);
     }
-
-    // console.log("Form data submitted:", formData);
   };
 
   return (

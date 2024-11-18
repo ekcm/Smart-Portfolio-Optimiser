@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useTransitionRouter } from "next-view-transitions";
 import { getOptimisedPortfolio, viewPortfolio } from "@/api/portfolio";
 import { usePathname } from "next/navigation";
-import { ClassicOrder, CreateOrderItem, OptimisedPortfolio, OptimiserOrders, OrderExecutionProgress, PortfolioData } from "@/lib/types";
+import { ClassicOrder, CreateOrderItem, OptimisedPortfolio, PortfolioData } from "@/lib/types";
 import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
 import Loader from "@/components/loader/Loader";
 import { createOrdersTransaction } from "@/api/transaction";
@@ -18,8 +18,6 @@ import OptimiserOrdersCheckoutCard from "@/components/dashboard/Portfolio/optimi
 
 export default function Optimization() {
     const router = useTransitionRouter();
-
-    // * Get portfolio id to call api
     const pathname = usePathname();
     const portfolioId = pathname.split("/")[2];
     

@@ -20,7 +20,6 @@ export default function OptimisedOrdersCard({ data, optimisedFlag }: OptimisedOr
                             <TableHead>Symbol | Name</TableHead>
                             <TableHead>Position | Mkt</TableHead>
                             <TableHead>Last | Cost</TableHead>
-                            {/* <TableHead>Positions Ratio</TableHead> */}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -35,7 +34,7 @@ export default function OptimisedOrdersCard({ data, optimisedFlag }: OptimisedOr
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex flex-col">
-                                            <span className={getCellClass(item.difference)}>{item.position}</span>
+                                            <span className={getCellClass(item.difference)}>{item.position.toFixed(2)}</span>
                                             <span className="text-xs text-gray-500">{item.market.toFixed(2)}</span>
                                         </div>
                                     </TableCell>
@@ -45,7 +44,6 @@ export default function OptimisedOrdersCard({ data, optimisedFlag }: OptimisedOr
                                             <span className="text-xs text-gray-500">{item.cost.toFixed(2)}</span>
                                         </div>
                                     </TableCell>
-                                    {/* <TableCell className={getCellClass(item.difference)}>{item.positionsRatio.toFixed(2)}%</TableCell> */}
                                 </TableRow>
                             ))
                         ) : (
