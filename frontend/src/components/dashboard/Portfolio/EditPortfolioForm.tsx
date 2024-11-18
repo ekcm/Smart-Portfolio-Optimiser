@@ -129,13 +129,15 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         } else if (selectedRule === RuleType.EXCLUSIONS) {
             ruleValue = exclusions.join(",");
         }
+
+        const selectedRuleLabel = ruleTypes.find(rule => rule.value === selectedRule)?.label || selectedRule;
         setErrors({});
         setIsUpdateLoading(true);
         setEditPortfolioState(true);
         try {
             const result = await updatePortfolioRule(portfolioId, ruleValue, selectedRule as RuleType, reason);
             toast({
-                title: `Portfolio Rule ${selectedRule} has been updated`,
+                title: `Portfolio Rule ${selectedRuleLabel.toLowerCase()} has been updated`,
                 description: `Portfolio rule has been updated successfully, you can update other rules or move back to the dashboard!`,
             });
         } catch (error) {
@@ -150,6 +152,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
             setIsUpdateLoading(false);
             setEditPortfolioState(false);
             getPortfolioRules(portfolioId);
+            setReason("");
         }
     };
 
