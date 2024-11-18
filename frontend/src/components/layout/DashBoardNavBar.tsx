@@ -218,7 +218,7 @@ export default function DashBoardNavBar() {
       case "Portfolio":
         return (
           <>
-            <div className="hidden lg:flex space-x-4">
+            <div className="flex space-x-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="bg-transparent hover:bg-gray-200 text-black flex items-center space-x-2 shadow-none border-none">
@@ -227,26 +227,39 @@ export default function DashBoardNavBar() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={`/dashboard/${id}/optimization`}>
-                      Portfolio Optimization
-                    </Link>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() =>
+                      handleNavigate(`/dashboard/${id}/optimization`)
+                    }
+                  >
+                    Portfolio Optimization
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={`/dashboard/${id}/neworder`}>
-                      Create New Order
-                    </Link>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => handleNavigate(`/dashboard/${id}/neworder`)}
+                  >
+                    Create New Order
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={`/dashboard/${id}/editportfolio`}>
-                      Edit Portfolio Rules
-                    </Link>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() =>
+                      handleNavigate(`/dashboard/${id}/editportfolio`)
+                    }
+                  >
+                    Edit Portfolio Rules
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={`/dashboard/${id}/editcash`}>Edit Cash</Link>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => handleNavigate(`/dashboard/${id}/editcash`)}
+                  >
+                    Edit Cash
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={`/dashboard/${id}/rulelog`}>Rule Logs</Link>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => handleNavigate(`/dashboard/${id}/rulelog`)}
+                  >
+                    Rule Logs
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -283,51 +296,6 @@ export default function DashBoardNavBar() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
-            </div>
-
-            <div className="lg:hidden">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="bg-transparent hover:bg-gray-200 text-black flex items-center space-x-2"
-                  >
-                    <span>Actions</span>
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      handleNavigate(`/dashboard/${id}/optimization`)
-                    }
-                  >
-                    Portfolio Optimization
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleNavigate(`/dashboard/${id}/neworder`)}
-                  >
-                    Create New Order
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      handleNavigate(`/dashboard/${id}/editportfolio`)
-                    }
-                  >
-                    Edit Portfolio Rules
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleNavigate(`/dashboard/${id}/editcash`)}
-                  >
-                    Edit Cash
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleNavigate(`/dashboard/${id}/rulelog`)}
-                  >
-                    Rule Logs
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </>
         );
