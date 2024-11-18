@@ -90,4 +90,4 @@ async def researcher_response():
 
 
 if __name__ == "__main__":
-    uvicorn.run("market_commentary:app", host='127.0.0.1', port=5003, reload=True)
+    uvicorn.run("market_commentary:app", host='0.0.0.0', port=5003, reload=True)
