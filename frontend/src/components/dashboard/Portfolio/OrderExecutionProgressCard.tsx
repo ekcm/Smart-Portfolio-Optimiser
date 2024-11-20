@@ -56,7 +56,7 @@ export default function OrderExecutionProgressCard({ data }: OrderExecutionProgr
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex">
-                                        <span className="font-medium">{item.position} Share{item.position > 1 ? 's' : ''}</span>
+                                        <span className="font-medium">{item.position.toFixed(2)} Share{item.position > 1 ? 's' : ''}</span>
                                         <span>&nbsp;@ {item.price.toFixed(2)}</span>
                                     </div>
                                 </TableCell>

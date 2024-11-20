@@ -30,6 +30,10 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
     const router = useTransitionRouter();
     const { toast } = useToast();
 
+    // old rules
+    const [oldMinCash, setOldMinCash] = useState<number>(0);
+    const [oldMaxCash, setOldMaxCash] = useState<number>(0);
+
     // form states
     const [selectedRule, setSelectedRule] = useState<string>("");
     const [editPortfolioState, setEditPortfolioState] = useState<boolean>(false);
@@ -58,6 +62,8 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
     const getPortfolioRules = async (portfolioId : string) => {
         try {
             const portfolioData = await viewBasicPortfolio(portfolioId);
+            setOldMinCash(portfolioData.rules.minCashRule.percentage);
+            setOldMaxCash(portfolioData.rules.maxCashRule.percentage);
             setMinCash(portfolioData.rules.minCashRule.percentage);
             setMaxCash(portfolioData.rules.maxCashRule.percentage);
             setRiskAppetite(portfolioData.riskAppetite);
@@ -123,13 +129,15 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
         } else if (selectedRule === RuleType.EXCLUSIONS) {
             ruleValue = exclusions.join(",");
         }
+
+        const selectedRuleLabel = ruleTypes.find(rule => rule.value === selectedRule)?.label || selectedRule;
         setErrors({});
         setIsUpdateLoading(true);
         setEditPortfolioState(true);
         try {
             const result = await updatePortfolioRule(portfolioId, ruleValue, selectedRule as RuleType, reason);
             toast({
-                title: `Portfolio Rule ${selectedRule} has been updated`,
+                title: `Portfolio Rule ${selectedRuleLabel.toLowerCase()} has been updated`,
                 description: `Portfolio rule has been updated successfully, you can update other rules or move back to the dashboard!`,
             });
         } catch (error) {
@@ -143,6 +151,8 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
             console.log("Rules updated:", portfolioId);
             setIsUpdateLoading(false);
             setEditPortfolioState(false);
+            getPortfolioRules(portfolioId);
+            setReason("");
         }
     };
 
@@ -201,7 +211,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                             {isLoading ? 
                                 <Skeleton className="w-[100px] h-[25px] rounded-full" />
                             : 
-                                <span className="text-red-500 italic font-normal">Current Min: {minCash}</span>
+                                <span className="text-red-500 italic font-normal">Current Min: {oldMinCash}</span>
                             }
                         </div>
                         <Input
@@ -226,7 +236,7 @@ export default function EditPortfolioForm({ portfolioId} : EditPortfolioFormProp
                             {isLoading ? 
                                 <Skeleton className="w-[100px] h-[25px] rounded-full" />
                                 : 
-                                <span className="text-red-500 italic font-normal text-sm">Current Max: {maxCash}</span>
+                                <span className="text-red-500 italic font-normal text-sm">Current Max: {oldMaxCash}</span>
                             }
                         </div>
                         <Input
