@@ -97,7 +97,7 @@ export default function Portfolio() {
     <main className="flex justify-between pt-6 px-24 gap-6">
       <div className="w-1/3">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold" onClick={triggerBatch}>
             {indivPortfolioData.portfolioName}
           </h1>
           <h2 className="text-lg font-medium text-gray-600">
@@ -111,12 +111,6 @@ export default function Portfolio() {
       <div className="w-2/3">
         <MainPortfolio data={indivPortfolioData} />
       </div>
-      <button
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                onClick={triggerBatch}
-            >
-                Trigger Batch Process
-      </button>
     </main>
   );
 }
