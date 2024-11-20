@@ -9,7 +9,7 @@ export class AssetPriceChangeService implements OnModuleInit, OnModuleDestroy {
   private changeStream: any;
   private insertionBuffer: AssetPrice[] = []; 
   private batchTimeout: NodeJS.Timeout | null = null;
-  private readonly batchInterval = 10000; 
+  private readonly batchInterval = 5000; 
 
   constructor(
     @InjectModel('AssetPrice') private readonly assetPriceModel: Model<AssetPrice>,
