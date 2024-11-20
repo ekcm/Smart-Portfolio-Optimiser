@@ -20,7 +20,7 @@ export class AssetPriceTestService implements OnModuleInit {
 
   async onModuleInit() {
     try {
-      const filePath = path.join(__dirname, '../../../python-backend/stock_service/stock_data_up.json');
+      const filePath = path.join(__dirname, '../../stock_data_up.json');
       const data = fs.readFileSync(filePath, 'utf-8');
       this.jsonData = JSON.parse(data);
 
@@ -87,6 +87,6 @@ export class AssetPriceTestService implements OnModuleInit {
     setTimeout(async () => {
       this.isAcknowledged = true;
       await this.processNextBatch();  
-    }, 5000);
+    }, 3000);
   }
 }
