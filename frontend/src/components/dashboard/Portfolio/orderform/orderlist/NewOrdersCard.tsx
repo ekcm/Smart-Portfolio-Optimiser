@@ -32,7 +32,7 @@ export default function NewOrdersCard({ data } : NewOrdersCardProps) {
                             </TableCell>
                             <TableCell>
                                 <div className="flex flex-col">
-                                    <span className={getCellClass(item.difference)}>{item.position}</span>
+                                    <span className={getCellClass(item.difference)}>{item.position.toFixed(2)}</span>
                                     <span className="text-xs text-gray-500">{item.market.toFixed(2)}</span>
                                 </div>
                             </TableCell>
