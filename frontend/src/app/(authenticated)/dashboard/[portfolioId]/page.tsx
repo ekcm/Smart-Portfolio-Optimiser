@@ -12,6 +12,7 @@ import { PortfolioData } from "@/lib/types";
 import Loader from "@/components/loader/Loader";
 import NoPortfolio from "@/components/dashboard/Portfolio/NoPortfolio";
 import Error from "@/components/error/Error";
+import { io, Socket } from "socket.io-client";
 
 export default function Portfolio() {
   const setDashBoardNavBarState = useDashBoardNavBarStore(
@@ -25,15 +26,47 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [socket] = useState<Socket>(() => io("http://localhost:8000"));
+  
   useEffect(() => {
     setDashBoardNavBarState("Portfolio");
   });
 
   useEffect(() => {
     if (portfolioId) {
-      getIndividualPortfolio(portfolioId);
+        getIndividualPortfolio(portfolioId);
+
+        socket.connect();
+
+        socket.on("connect", () => {
+            console.log("Connected to WebSocket server");
+        });
+        
+        socket.emit("subscribeToPortfolioUpdates", portfolioId);
+
+        socket.on("portfolioUpdate", async () => {
+            console.log("Portfolio update received, refreshing data...");
+            await getIndividualPortfolio(portfolioId); 
+
+            socket.emit("acknowledgeBatch");
+            console.log("Acknowledgment sent for portfolio update");
+        });
+
+        socket.on("connect_error", () => {
+            setError("WebSocket connection failed");
+        });
+        
+        socket.on("disconnect", (reason) => {
+            console.log("Disconnected:", reason);
+        });
+
+        return () => {
+            socket.off("portfolioUpdate");
+            socket.emit("unsubscribeFromPortfolioUpdates", portfolioId);
+            socket.disconnect(); 
+        };
     }
-  }, [portfolioId]);
+    }, [portfolioId, socket]);
 
   const getIndividualPortfolio = async (portfolioId: string) => {
     try {
@@ -47,6 +80,11 @@ export default function Portfolio() {
     }
   };
 
+  const triggerBatch = () => {
+    socket.emit("triggerBatch");
+    console.log("Batch process triggered on the backend");
+    };
+
   // loading state
   if (loading) {
     return <Loader />;
@@ -59,7 +97,7 @@ export default function Portfolio() {
     <main className="flex justify-between pt-6 px-24 gap-6">
       <div className="w-1/3">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold" onClick={triggerBatch}>
             {indivPortfolioData.portfolioName}
           </h1>
           <h2 className="text-lg font-medium text-gray-600">

@@ -14,6 +14,13 @@ import { FinanceNewsModule } from './module/financeNews.module';
 import { AlertModule } from './module/alert.module';
 import { RuleLogModule } from './module/ruleLog.module'; 
 import { RuleValidatorModule } from './module/ruleValidator.module';
+import { AssetPriceTestModule } from './module/assetpricetest.module';
+import { AssetPriceTestService } from './service/assetpricetest.service';
+import { OrderFulfilmentModule } from './module/orderFulfilment.module';
+import { SqsPollingService } from './service/sqsPolling.service';
+import { SqsService } from './service/sqs.service';
+import { PortfolioGateway } from './websocket/portfolio.gateway';
+import { AssetPriceChangeService } from './service/assetpricechange.service';
 // import { RuleModule } from './module/rule.module';
 import { RuleHandlerModule } from './module/ruleHandler.module';
 import { ReportModule } from './module/report.module';
@@ -26,7 +33,6 @@ import { ReportModule } from './module/report.module';
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: process.env.MONGO_URI,
-        // directConnection: true,
         retryWrites: false,
       }),
     }),
@@ -44,7 +50,12 @@ import { ReportModule } from './module/report.module';
     RuleHandlerModule,
     RuleLogModule, 
     RuleValidatorModule,
+    AssetPriceTestModule,
+    OrderFulfilmentModule,
     ReportModule,
   ],
+  providers: [SqsService, SqsPollingService, AssetPriceTestService, PortfolioGateway, AssetPriceChangeService,],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly assetPriceTestService: AssetPriceTestService) {}
+}

@@ -5,6 +5,12 @@ pyvenv.cfg
 .ipynb_checkpoints
 /python-backend/reports
 .DS_Store
+/python-backend/finance_news/__pycache__
+/python-backend/stock_service/__pycache__
+optimiser_service/venv
+/optimiser_service/__pycache__
+**/node_modules
+node_modules
 
 venv
 .pyc
