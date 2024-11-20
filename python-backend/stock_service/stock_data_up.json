@@ -1681,10 +1681,122 @@
             "date": "2024-11-01T06:00:00"
         },
         {
+            "ticker": "^TNX",
+            "company": "CBOE Interest Rate 10 Year",
+            "sector": "Government Bonds",
+            "todayClose": 4.283999919891357,
+            "yesterdayClose": 4.265999794006348,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "^TNX",
+            "company": "CBOE Interest Rate 10 Year",
+            "sector": "Government Bonds",
+            "todayClose": 4.223490127048916,
+            "yesterdayClose": 4.283999919891357,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "^TNX",
+            "company": "CBOE Interest Rate 10 Year",
+            "sector": "Government Bonds",
+            "todayClose": 4.2922561976428275,
+            "yesterdayClose": 4.223490127048916,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "^TNX",
+            "company": "CBOE Interest Rate 10 Year",
+            "sector": "Government Bonds",
+            "todayClose": 4.347655055754487,
+            "yesterdayClose": 4.2922561976428275,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "^TNX",
+            "company": "CBOE Interest Rate 10 Year",
+            "sector": "Government Bonds",
+            "todayClose": 4.144791435439298,
+            "yesterdayClose": 4.347655055754487,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "^TNX",
+            "company": "CBOE Interest Rate 10 Year",
+            "sector": "Government Bonds",
+            "todayClose": 4.306301985285386,
+            "yesterdayClose": 4.144791435439298,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "^TNX",
+            "company": "CBOE Interest Rate 10 Year",
+            "sector": "Government Bonds",
+            "todayClose": 4.283999919891357,
+            "yesterdayClose": 4.306301985285386,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "^IRX",
+            "company": "13 Week Treasury Bill",
+            "sector": "Government Bonds",
+            "todayClose": 4.432000160217285,
+            "yesterdayClose": 4.4629998207092285,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "^IRX",
+            "company": "13 Week Treasury Bill",
+            "sector": "Government Bonds",
+            "todayClose": 4.556487917093159,
+            "yesterdayClose": 4.432000160217285,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "^IRX",
+            "company": "13 Week Treasury Bill",
+            "sector": "Government Bonds",
+            "todayClose": 4.777505768597638,
+            "yesterdayClose": 4.556487917093159,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "^IRX",
+            "company": "13 Week Treasury Bill",
+            "sector": "Government Bonds",
+            "todayClose": 4.624926504156997,
+            "yesterdayClose": 4.777505768597638,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "^IRX",
+            "company": "13 Week Treasury Bill",
+            "sector": "Government Bonds",
+            "todayClose": 4.4824963079123625,
+            "yesterdayClose": 4.624926504156997,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "^IRX",
+            "company": "13 Week Treasury Bill",
+            "sector": "Government Bonds",
+            "todayClose": 4.306998594331871,
+            "yesterdayClose": 4.4824963079123625,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "^IRX",
+            "company": "13 Week Treasury Bill",
+            "sector": "Government Bonds",
+            "todayClose": 4.432000160217285,
+            "yesterdayClose": 4.306998594331871,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
             "ticker": "^FVX",
             "company": "Treasury Yield 5 Years",
             "sector": "Government Bonds",
-            "todayClose": 10,
+            "todayClose": 4.15500020980835,
             "yesterdayClose": 4.126999855041504,
             "date": "2024-11-01T00:00:00"
         },
@@ -1692,9 +1804,105 @@
             "ticker": "^FVX",
             "company": "Treasury Yield 5 Years",
             "sector": "Government Bonds",
-            "todayClose": 4.3,
-            "yesterdayClose": 5.0,
+            "todayClose": 4.176569501993634,
+            "yesterdayClose": 4.15500020980835,
             "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "^FVX",
+            "company": "Treasury Yield 5 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.324178810176682,
+            "yesterdayClose": 4.176569501993634,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "^FVX",
+            "company": "Treasury Yield 5 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.43016590005453,
+            "yesterdayClose": 4.324178810176682,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "^FVX",
+            "company": "Treasury Yield 5 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.244699936648541,
+            "yesterdayClose": 4.43016590005453,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "^FVX",
+            "company": "Treasury Yield 5 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.107933156402475,
+            "yesterdayClose": 4.244699936648541,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "^FVX",
+            "company": "Treasury Yield 5 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.15500020980835,
+            "yesterdayClose": 4.107933156402475,
+            "date": "2024-11-01T06:00:00"
+        },
+        {
+            "ticker": "^TYX",
+            "company": "Treasury Yield 30 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.4730000495910645,
+            "yesterdayClose": 4.480000019073486,
+            "date": "2024-11-01T00:00:00"
+        },
+        {
+            "ticker": "^TYX",
+            "company": "Treasury Yield 30 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.603509461452114,
+            "yesterdayClose": 4.4730000495910645,
+            "date": "2024-11-01T01:00:00"
+        },
+        {
+            "ticker": "^TYX",
+            "company": "Treasury Yield 30 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.715149706248888,
+            "yesterdayClose": 4.603509461452114,
+            "date": "2024-11-01T02:00:00"
+        },
+        {
+            "ticker": "^TYX",
+            "company": "Treasury Yield 30 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.823225918168409,
+            "yesterdayClose": 4.715149706248888,
+            "date": "2024-11-01T03:00:00"
+        },
+        {
+            "ticker": "^TYX",
+            "company": "Treasury Yield 30 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.996645556169946,
+            "yesterdayClose": 4.823225918168409,
+            "date": "2024-11-01T04:00:00"
+        },
+        {
+            "ticker": "^TYX",
+            "company": "Treasury Yield 30 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.857813794780172,
+            "yesterdayClose": 4.996645556169946,
+            "date": "2024-11-01T05:00:00"
+        },
+        {
+            "ticker": "^TYX",
+            "company": "Treasury Yield 30 Years",
+            "sector": "Government Bonds",
+            "todayClose": 4.4730000495910645,
+            "yesterdayClose": 4.857813794780172,
+            "date": "2024-11-01T06:00:00"
         }
     ],
     "2024-11-02T00:00:00": [
