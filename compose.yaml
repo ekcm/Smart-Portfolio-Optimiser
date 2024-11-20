@@ -1,0 +1,79 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "3000:3000" # Adjust the ports as necessary
+    networks:
+      - app_network
+
+  nestjs-backend:
+    build:
+      context: ./nestjs-backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./nestjs-backend/.env
+    ports:
+      - "8000:8000" # Adjust the ports as necessary
+    networks:
+      - app_network
+
+  finance-news:
+    build:
+      context: ./python-backend/finance_news
+      dockerfile: Dockerfile
+    env_file:
+      - ./python-backend/.env
+    ports:
+      - "5004:5004" # Adjust the ports as necessary
+    networks:
+      - app_network
+
+  market-commentary:
+    build:
+      context: ./python-backend/market_commentary
+      dockerfile: Dockerfile
+    env_file:
+      - ./python-backend/.env
+    ports:
+      - "5003:5003" # Adjust the ports as necessary
+    networks:
+      - app_network
+
+  optimiser-service:
+    build:
+      context: ./python-backend/optimiser_service
+      dockerfile: Dockerfile
+    env_file:
+      - ./python-backend/optimiser_service/.env
+    ports:
+      - "6969:6969" # Adjust the ports as necessary
+    networks:
+      - app_network
+
+  report-generator:
+    build:
+      context: ./python-backend/report_generator
+      dockerfile: Dockerfile
+    env_file:
+      - ./python-backend/.env
+    ports:
+      - "5002:5002" # Adjust the ports as necessary
+    networks:
+      - app_network
+
+  stock-service:
+    build:
+      context: ./python-backend/stock_service
+      dockerfile: Dockerfile
+    env_file:
+      - ./python-backend/.env
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

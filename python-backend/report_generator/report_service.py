@@ -345,3 +345,4 @@ def generate_report(id: str):
 
 if __name__ == "__main__":
     uvicorn.run("report_service:app", host='127.0.0.1', port=5002, reload=True)
+

@@ -44,7 +44,7 @@ export default function ProposalOrdersCheckoutCard({ data, ordersLoading, onConf
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex">
-                                        <span className="font-medium">{item.quantity} Share{item.quantity > 1 ? 's' : ''}</span>
+                                        <span className="font-medium">{Number(item.quantity.toFixed(2))} Share{item.quantity > 1 ? 's' : ''}</span>
                                         <span>&nbsp;@ {Number(item.price).toFixed(2)}</span>
                                     </div>
                                 </TableCell>

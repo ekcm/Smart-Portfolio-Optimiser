@@ -45,7 +45,7 @@ export default function PortfolioHoldingsCard({ data } : PortfolioHoldingsCardPr
                             <TableCell>{item.geography}</TableCell>
                             <TableCell>
                                 <div className="flex flex-col">
-                                    <span>{item.position}</span>
+                                    <span>{item.position.toFixed(2)}</span>
                                     <span className="text-xs text-gray-500">{item.market.toFixed(2)}</span>
                                 </div>
                             </TableCell>
