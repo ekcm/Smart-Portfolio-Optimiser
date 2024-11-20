@@ -85,9 +85,14 @@ def generate_positions_summary(assets_allocation_data):
 
 @app.get("/trade_executions")
 def generate_trade_executions(id: str, startDate: str, endDate: str):
-    url = f"http://localhost:8000/report/order/date?id={id}&startDate={startDate}&endDate={endDate}"
+    url = f"http://localhost:8000/report/order/date"
     try:
-        response = requests.get(url)
+        params = {
+            'id': id,
+            'startDate': startDate,
+            'endDate' : endDate
+        }
+        response = requests.get(url, params = params)
         response.raise_for_status()
         data = response.json()
         
@@ -344,5 +349,5 @@ def generate_report(id: str):
     return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
 
 if __name__ == "__main__":
-    uvicorn.run("report_service:app", host='127.0.0.1', port=5002, reload=True)
+    uvicorn.run("report_service:app", host='0.0.0.0', port=5002, reload=True)
 
