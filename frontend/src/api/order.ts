@@ -18,16 +18,15 @@ export const createMultipleOrders = async (orders: CreateOrderItem[]) => {
     try {
         // Use Promise.all to send all requests concurrently
         const results = await Promise.all(
-        orders.map(async (order) => {
-            try {
-            const response = await axios.post(baseOrderUrl, order);
-            return response.data;
-            } catch (error) {
-            console.error("Error creating order: ", error);
-            // You can handle individual order errors here or rethrow if you want to stop all requests
-            throw error;
-            }
-        })
+            orders.map(async (order) => {
+                try {
+                    const response = await axios.post(baseOrderUrl, order);
+                    return response.data;
+                } catch (error) {
+                    console.error("Error creating order: ", error);
+                throw error;
+                }
+            })
         );
 
         return results;

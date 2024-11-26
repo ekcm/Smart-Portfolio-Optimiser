@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SecuritiesChart from "../../charts/SecuritiesChart";
 import TriggeredAlert from "../../TriggeredAlert";
-import { createMultipleOrders } from "@/api/order";
 import { useTransitionRouter } from "next-view-transitions";
 import { createOrdersTransaction } from "@/api/transaction";
 import { useState } from "react";
@@ -74,7 +73,6 @@ export default function OrderList({ data, newOrders, triggeredAlerts, ruleReport
         return finalOrders;
     }
 
-    // TODO: Add loader here
     const handleSubmit = async () => {
         setLoading(true);
         // Submit to backend to update orders db with newOrders

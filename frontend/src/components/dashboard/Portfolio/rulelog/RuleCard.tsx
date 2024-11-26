@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { AlertCircle, Calendar, CreditCard, FileText, Hash, User } from "lucide-react"
-import { RuleLog, RuleType } from "@/lib/types"
+import { AlertCircle, Calendar, FileText, User } from "lucide-react"
+import { RuleLog } from "@/lib/types"
 import { ruleTypes } from "@/utils/constants";
 
 interface RuleCardProps {

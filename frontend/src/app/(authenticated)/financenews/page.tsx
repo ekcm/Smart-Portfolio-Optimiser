@@ -1,11 +1,11 @@
 "use client";
 
 import AllNews from "@/components/financenews/AllNews";
-import { useDashBoardNavBarStore } from "../../../store/DashBoardNavBarState";
+import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import { useEffect } from "react";
 import FinanceNewsFilter from "@/components/financenews/FinanceNewsFilter";
 import { Button } from "@/components/ui/button";
-import { useFinanceNewsFilterStore } from "../../../store/FinanceNewsFilterState";
+import { useFinanceNewsFilterStore } from "@/store/FinanceNewsFilterState";
 
 export default function FinanceNews() {
   const setDashBoardNavBarState = useDashBoardNavBarStore((state) => state.setMainState);

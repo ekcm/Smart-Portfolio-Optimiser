@@ -28,7 +28,6 @@ export const viewIndivNews = async(financeNewsId: string) : Promise<NewsArticle>
     }
 }
 
-// TODO: Add promise
 export const viewIndivLatestNews = async(ticker: string) : Promise<any> => {
     try {
         const response = await axios.get(baseAlertUrl, {
