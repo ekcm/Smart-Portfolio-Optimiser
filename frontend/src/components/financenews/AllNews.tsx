@@ -6,7 +6,6 @@ import { viewAllNews } from "@/api/financenews";
 import Loader from "../loader/Loader";
 import Error from "../error/Error";
 
-// TODO: Need to add pagination when retrieving news from backend
 export default function AllNews() {
     const newsName = useFinanceNewsFilterStore((state) => state.newsName);
     const newsRating = useFinanceNewsFilterStore((state) => state.newsRating);

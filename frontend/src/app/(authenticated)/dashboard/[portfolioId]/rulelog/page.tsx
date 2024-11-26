@@ -1,12 +1,12 @@
 "use client";
 
-import RuleCard from "@/components/dashboard/Portfolio/rulelog/RuleCard";
 import { useEffect, useState } from "react";
-import { getRuleLogs } from "@/api/portfolio";
 import { usePathname } from "next/navigation";
-import Loader from "@/components/loader/Loader";
-import { RuleLog } from "@/lib/types";
+import { getRuleLogs } from "@/api/portfolio";
 import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
+import Loader from "@/components/loader/Loader";
+import RuleCard from "@/components/dashboard/Portfolio/rulelog/RuleCard";
+import { RuleLog } from "@/lib/types";
 
 export default function Rulelog() {
     const pathname = usePathname();

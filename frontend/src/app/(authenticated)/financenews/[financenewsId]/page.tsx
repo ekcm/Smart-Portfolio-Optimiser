@@ -3,7 +3,6 @@
 import { viewIndivNews } from "@/api/financenews";
 import Error from "@/components/error/Error";
 import Loader from "@/components/loader/Loader";
-import { FinanceNewsData } from "@/lib/mockData";
 import { NewsArticle } from "@/lib/types";
 import { useDashBoardNavBarStore } from "@/store/DashBoardNavBarState";
 import { usePathname } from "next/navigation";
@@ -52,7 +51,6 @@ export default function FinanceNews() {
     }
 
     if (error) return <Error error={error} />;
-    // TODO: Add missing finance news data component of some sort
     if (!news) return <>No Data</>;
 
     const renderInsights = (insights: any[]) => {

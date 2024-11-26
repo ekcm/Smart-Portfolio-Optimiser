@@ -22,7 +22,6 @@ export default function NewOrder() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // ! Data will be called from backend, ideally from cache since already called previously
     let orders: AssetsItem[] = [];
     if (ordersParam) {
         orders = JSON.parse(ordersParam);

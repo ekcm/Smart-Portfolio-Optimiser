@@ -11,7 +11,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
@@ -21,7 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { delay } from "@/utils/utils";
 import { Loader2, ChevronDown } from "lucide-react";
 import DateRangePicker from "./DateRangePicker";
-import { addDays, format, startOfMonth, endOfMonth } from "date-fns";
+import { startOfMonth, endOfMonth } from "date-fns";
 import { DateRange } from "react-day-picker";
 import {
   getMonthlyPortfolioReport,

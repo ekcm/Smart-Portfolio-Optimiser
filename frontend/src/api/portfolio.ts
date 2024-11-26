@@ -164,27 +164,25 @@ export const getMonthlyPortfolioReport = async(portfolioId: string, portfolioNam
     }
 }
 
-// TODO: Add current month as params
 export const getOrdersHistoryReport = async(portfolioId: string,  portfolioName: string | null, startDate: Date | undefined, endDate: Date | undefined) => {
     try {
         const start = getMonthYearString(startDate);
         const end = getMonthYearString(endDate);
         const api = `${REPORT_SERVER_URL}/trade_executions?id=${portfolioId}&startDate=${start}&endDate=${end}`;
         const response = await axios.get(api, {
-            responseType: 'blob' // Set response type to blob to handle the file
+            responseType: 'blob'
         });
         
         const date = getFormattedReportDate();
 
         const filename = `${portfolioName}_orders_history_${date}`;
-        // Create a blob from the response data and download
+
         const blob = new Blob([response.data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', filename);
         
-        // Append to the DOM, trigger the download, and clean up
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
