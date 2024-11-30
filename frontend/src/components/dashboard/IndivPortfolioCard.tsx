@@ -54,7 +54,7 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
                         </p>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 justify-end">
                         <h3 className="text-md font-semibold">Daily P&L: </h3>
                         <CustomBadge amount={data.dailyPLPercentage}/>
@@ -63,10 +63,10 @@ export default function IndivPortfolioCard({data} : IndivPortfolioCardProps) {
                         <h3 className="text-md font-semibold">Total P&L: </h3>
                         <CustomBadge amount={data.totalPLPercentage}/>
                     </div>
-                    <div className="flex items-center gap-2 justify-end">
+                    {/* <div className="flex items-center gap-2 justify-end">
                         <h3 className="text-md font-semibold">RoR: </h3>
                         <CustomBadge amount={data.rateOfReturn}/>
-                    </div>
+                    </div> */}
                 </div>
             </Card>
         </Link>

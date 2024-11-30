@@ -85,7 +85,7 @@ def generate_positions_summary(assets_allocation_data):
 
 @app.get("/trade_executions")
 def generate_trade_executions(id: str, startDate: str, endDate: str):
-    url = f"http://localhost:8000/report/order/date"
+    url = f"http://nestjs-backend:8000/report/order/date"
     try:
         params = {
             'id': id,
@@ -180,7 +180,7 @@ def generate_trade_executions(id: str, startDate: str, endDate: str):
 
 @app.get("/report")
 def generate_report(id: str):
-    url = f"http://localhost:8000/report/{id}"
+    url = f"http://nestjs-backend:8000/report/{id}"
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -350,4 +350,3 @@ def generate_report(id: str):
 
 if __name__ == "__main__":
     uvicorn.run("report_service:app", host='0.0.0.0', port=5002, reload=True)
-

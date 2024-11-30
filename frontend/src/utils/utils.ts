@@ -7,7 +7,7 @@ export const getTodayFormattedDate = (): string => {
   const day = String(today.getDate()).padStart(2, '0');
   // TODO: Switch back to bottom after pulling latest assetPrice
   // return `${year}-${month}-${day}`;
-  return `${year}-10-31`;
+  return `${year}-10-30`;
 };
 
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
