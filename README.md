@@ -92,11 +92,11 @@
 
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-Before you can run the application, you must have the following installed
+Before you can run the application, you must have the following installed:
 
 -   Node
 -   NPM
@@ -105,7 +105,7 @@ Before you can run the application, you must have the following installed
 ### Caveats and Notes
 
 1. This project uses MongoDB, and will not run unless the proper Environment Variables have been loaded.
-2. This Project consists of both a Frontend and Backend. The Frontend runs on http://localhost:3000 while the Backend runs on http://localhost:8080.
+2. This Project consists of both a Frontend and Backend. The Frontend runs on http://localhost:3000 while the Backend runs on http://localhost:8000.
 
 ### Installation
 
