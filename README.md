@@ -68,16 +68,15 @@
 
 -   [Next.js](https://nextjs.org/)
 -   [Nest.js](https://nestjs.com/)
+-   [FastAPI](https://fastapi.tiangolo.com/)
 -   [MongoDB Atlas](https://www.mongodb.com)
 
 ### Key Libraries Used
 
-1.
-2.
-3.
-4.
-5.
-6.
+1. [PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt)
+2. [LangGraph](https://github.com/langchain-ai/langgraph)
+3. [Tavily](https://tavily.com/)
+4. [OpenAI](https://platform.openai.com/docs/overview)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -85,7 +84,7 @@
 
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
@@ -93,6 +92,7 @@ Before you can run the application, you must have the following installed
 
 -   Node
 -   NPM
+-   Python3
 
 ### Caveats and Notes
 
@@ -119,7 +119,7 @@ Before you can run the application, you must have the following installed
     npm run dev
     ```
 
-#### Running the Back End
+#### Running the monolithic Back End
 
 1. Change Directory to the backend (/nestjs-backend)
 2. Duplicate a copy of `.env-example` in the same directory and rename it to `.env`.
@@ -130,6 +130,26 @@ Before you can run the application, you must have the following installed
 ```sh
 npm run start
 ```
+
+5. Documentation: To get an overview of all available APIs, head to:
+
+```sh
+http://localhost:8080/api
+```
+
+### Running the microservices
+
+#### Optimiser Service
+
+1.
+2.
+3.
+
+#### Report Generation Service
+
+1.
+2.
+3.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
