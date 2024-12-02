@@ -147,7 +147,7 @@ npm run start
 5. Documentation: To get an overview of all available APIs, head to:
 
 ```sh
-http://localhost:8080/api
+http://localhost:8000/api
 ```
 
 ### Running the Microservices
