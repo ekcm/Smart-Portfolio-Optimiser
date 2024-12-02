@@ -71,7 +71,14 @@
 -   [FastAPI](https://fastapi.tiangolo.com/)
 -   [MongoDB Atlas](https://www.mongodb.com)
 
-### Key Libraries Used
+### Key Libraries Used (Frontend)
+
+1. [Shadcn/ui](https://ui.shadcn.com/)
+2. [Recharts](https://recharts.org/en-US/)
+3. [Zustand](https://github.com/pmndrs/zustand)
+4. [Socket.IO](https://socket.io/)
+
+### Key Libraries Used (Backend)
 
 1. [PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt)
 2. [LangGraph](https://github.com/langchain-ai/langgraph)
