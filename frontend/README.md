@@ -33,7 +33,6 @@
         <li><a href="#caveats-and-notes">Caveats and Notes</a></li>
         <li><a href="#installation">Installation</a></li>
         <li><a href="#running-the-front-end">Running the Frontend</a></li>
-        <li><a href="#running-the-back-end">Running the Backend</a></li>
       </ul>
     </li>
     <li><a href="#license">License</a></li>
@@ -95,9 +94,13 @@ Before you can run the application, you must have the following installed
     npm install
     ```
 3. Duplicate a copy of `.env-example` in the same directory, and rename it to `.env.local`.
-4. Run the Frontend
+4. Run the Frontend:
     ```sh
     npm run dev
+    ```
+5. The frontend can be accessed at:
+    ```sh
+    http://localhost:3000/
     ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>

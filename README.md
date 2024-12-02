@@ -36,7 +36,8 @@
         <li><a href="#caveats-and-notes">Caveats and Notes</a></li>
         <li><a href="#installation">Installation</a></li>
         <li><a href="#running-the-front-end">Running the Frontend</a></li>
-        <li><a href="#running-the-back-end">Running the Backend</a></li>
+        <li><a href="#running-the-monolithic-back-end">Running the Backend</a></li>
+        <li><a href="#running-the-microservices">Running the Microservices</a></li>
       </ul>
     </li>
     <li><a href="#license">License</a></li>
@@ -125,8 +126,13 @@ Before you can run the application, you must have the following installed
     ```sh
     npm run dev
     ```
+5. The frontend can be accessed at:
 
-#### Running the monolithic Back End
+```sh
+http://localhost:3000/
+```
+
+#### Running the Monolithic Back End
 
 1. Change Directory to the backend (/nestjs-backend)
 2. Duplicate a copy of `.env-example` in the same directory and rename it to `.env`.
@@ -144,7 +150,7 @@ npm run start
 http://localhost:8080/api
 ```
 
-### Running the microservices
+### Running the Microservices
 
 #### Optimiser Service
 
