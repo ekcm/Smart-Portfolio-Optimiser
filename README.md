@@ -50,11 +50,6 @@
 ## About The Project
 
 ![App Overview][portfolio-dashboard]
-![Create Portfolio][create-portfolio]
-![Create Order][create-order]
-![Transaction][transaction]
-![Finance News Dashboard][finance-news-dashboard]
-![Individual Finance News][individual-news]
 
 ### Project Features
 
@@ -105,14 +100,22 @@ Before you can run the application, you must have the following installed:
 ### Caveats and Notes
 
 1. This project uses MongoDB, and will not run unless the proper Environment Variables have been loaded.
-2. This Project consists of both a Frontend and Backend. The Frontend runs on http://localhost:3000 while the Backend runs on http://localhost:8000.
+2. This Project consists of both a frontend and backend, as well at some microservices. The Frontend runs on http://localhost:3000 while the Backend runs on http://localhost:8000.
 
 ### Installation
 
 1. Clone the repo
+
     ```sh
     git clone https://github.com/ekcm/fyp.git
     ```
+
+2. Running the entire application with Docker
+    ```
+    docker-compose up
+    ```
+
+This will start the entire application, including the frontend, backend, and microservices.
 
 #### Running the Front End
 
@@ -127,10 +130,9 @@ Before you can run the application, you must have the following installed:
     npm run dev
     ```
 5. The frontend can be accessed at:
-
-```sh
-http://localhost:3000/
-```
+    ```sh
+    http://localhost:3000/
+    ```
 
 #### Running the Monolithic Back End
 
@@ -140,31 +142,94 @@ http://localhost:3000/
     1. MongoDB Details can be from when creating an Atlas Account.
 4. Run the following to compile and run the application.
 
-```sh
-npm run start
-```
+    ```sh
+    npm run start
+    ```
 
 5. Documentation: To get an overview of all available APIs, head to:
+    ```sh
+    http://localhost:8000/api
+    ```
+
+### Running the Python Microservices
+
+If you are not using docker-compose, you can run the python services individually.
+
+#### Finance News Service:
 
 ```sh
-http://localhost:8000/api
+cd python-backend/finance_news
+docker build -t finance-news-service .
+docker run -p 5004:5004 --env-file ../.env finance-news-service
 ```
 
-### Running the Microservices
+#### Market Commentary Service:
+
+```sh
+cd python-backend/market_commentary
+docker build -t market-commentary-service .
+docker run -p 5003:5003 --env-file ../.env market-commentary-service
+```
+
+<!-- TODO: Japh -->
 
 #### Optimiser Service
 
-1.
-2.
-3.
+```
+cd optimiser-service
+```
 
-#### Report Generation Service
+#### Report Generator Service:
 
-1.
-2.
-3.
+```sh
+cd python-backend/report_generator
+docker build -t report-generator-service .
+docker run -p 5002:5002 --env-file ../.env report-generator-service
+```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+#### Stock Service:
+
+```sh
+cd python-backend/stock_service
+docker build -t stock-service .
+docker run -p 5001:5001 --env-file ../.env stock-service
+```
+
+### Steps to start the python workflow:
+
+1. Edit the .env file with the required environment variables according to the .env-example
+2. Run the stock data service to populate the database with stock data
+3. Start the other python services
+4. The frontend will connect to the python services and call them accordingly
+
+### To read the docs for the python services
+
+1. Run the services
+2. Open the docs in a browser using the following links
+
+-   Stock service: http://localhost:5001/docs
+-   Report Generator service: http://localhost:5002/docs
+-   Market Commentary service: http://localhost:5003/docs
+-   Finance News service: http://localhost:5004/docs
+
+<p align="right">(<a href="#top">back to top</a>)</p>\
+
+## Screenshots
+
+### Dashboard
+
+![App Overview][portfolio-dashboard]
+
+### Portfolio
+
+![Create Portfolio][create-portfolio]
+![Create Order][create-order]
+![Transaction][transaction]
+
+### Finance news
+
+![Finance News Dashboard][finance-news-dashboard]
+![Individual Finance News][individual-news]
 
 <!-- LICENSE -->
 
