@@ -23,7 +23,9 @@ docker run -p 5003:5003 --env-file ../.env market-commentary-service
 ### Optimiser Service
 
 ```
-cd optimiser-service
+cd optimiser_service
+docker build -t optimiser-service .
+docker run -p 6969:6969 --env-file ../.env optimiser-service
 ```
 
 ### Report Generator Service:
