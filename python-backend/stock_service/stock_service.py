@@ -17,7 +17,9 @@ import random
 load_dotenv(dotenv_path="../.env")
 uri = os.getenv("MONGO_URI")
 
-app = FastAPI()
+app = FastAPI(
+    docs="/"
+)
 
 # Allow all origins
 origins = [
