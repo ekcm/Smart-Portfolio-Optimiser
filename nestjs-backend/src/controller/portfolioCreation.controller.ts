@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
-import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { PortfolioCreationService } from '../service/portfolioCreation.service';
 import { ProposedPortfolio } from "src/types";
 
@@ -24,6 +24,12 @@ export class PortfolioCreationController {
 
     @Get(":portfolioId")
     @ApiOperation({ summary: "Optimise the current holdings of a portfolio" })
+    @ApiParam({
+        name: "portfolioId",
+        description: "portfolio Id of portfolio",
+        required: true,
+        example: "66d9ae695e15ad24b5e2053a",
+    })
     async optimisePortfolio(@Param('portfolioId') portfolioId: string): Promise<ProposedPortfolio> {
         return await this.portfolioCreationService.optimisePortfolio(portfolioId)
     }
