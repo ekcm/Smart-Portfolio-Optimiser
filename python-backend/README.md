@@ -58,5 +58,6 @@ docker run -p 5001:5001 --env-file ../.env stock-service
 
 -   Stock service: http://localhost:5001/docs
 -   Report Generator service: http://localhost:5002/docs
+-   Optimiser Service http://localhost:6969/apidocs
 -   Market Commentary service: http://localhost:5003/docs
 -   Finance News service: http://localhost:5004/docs

@@ -188,9 +188,9 @@ docker run -p 5003:5003 --env-file ../.env market-commentary-service
 #### Optimiser Service
 
 ```sh
-cd optimiser-service
-docker build -t report-generator-service .
-docker run -p 5002:5002 --env-file ../.env report-generator-service
+cd optimiser_service
+docker build -t optimiser-service .
+docker run -p 6969:6969 --env-file ../.env optimiser-service
 ```
 
 #### Report Generator Service:
@@ -223,6 +223,7 @@ docker run -p 5001:5001 --env-file ../.env stock-service
 
 -   Stock service: http://localhost:5001/docs
 -   Report Generator service: http://localhost:5002/docs
+-   Optimiser Service http://localhost:6969/apidocs
 -   Market Commentary service: http://localhost:5003/docs
 -   Finance News service: http://localhost:5004/docs
 
