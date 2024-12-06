@@ -110,8 +110,20 @@ Before you can run the application, you must have the following installed:
     git clone https://github.com/ekcm/fyp.git
     ```
 
-2. Running the entire application with Docker
-    ```
+2. Configure environment variables
+
+    - There are several environment files required for the application to run
+    - Duplicate copies of `.env-example` in the respective directives and rename it to `.env`
+        ```sh
+          cd frontend
+          cd nestjs-backend
+          cd python-backend
+          cd python-backend/optimiser_service
+        ```
+    - Fill in the required information
+
+3. Running the entire application with Docker
+    ```sh
     docker-compose up
     ```
 
@@ -124,7 +136,7 @@ This will start the entire application, including the frontend, backend, and mic
     ```sh
     npm install
     ```
-3. Duplicate a copy of `.env-example` in the same directory, and rename it to `.env.local`.
+3. Duplicate a copy of `.env-example` in the same directory, and rename it to `.env`.
 4. Run the Frontend
     ```sh
     npm run dev
@@ -176,9 +188,9 @@ docker run -p 5003:5003 --env-file ../.env market-commentary-service
 #### Optimiser Service
 
 ```sh
-cd optimiser-service
-docker build -t report-generator-service .
-docker run -p 5002:5002 --env-file ../.env report-generator-service
+cd optimiser_service
+docker build -t optimiser-service .
+docker run -p 6969:6969 --env-file ../.env optimiser-service
 ```
 
 #### Report Generator Service:
@@ -211,6 +223,7 @@ docker run -p 5001:5001 --env-file ../.env stock-service
 
 -   Stock service: http://localhost:5001/docs
 -   Report Generator service: http://localhost:5002/docs
+-   Optimiser Service http://localhost:6969/apidocs
 -   Market Commentary service: http://localhost:5003/docs
 -   Finance News service: http://localhost:5004/docs
 

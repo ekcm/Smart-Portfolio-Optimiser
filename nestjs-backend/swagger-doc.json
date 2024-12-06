@@ -1,0 +1,2500 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/order": {
+      "post": {
+        "operationId": "OrderController_create",
+        "summary": "Create an Order",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "The order data to create a new order",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The order has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order Service"
+        ]
+      },
+      "get": {
+        "operationId": "OrderController_getAll",
+        "summary": "Get all Orders",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order Service"
+        ]
+      }
+    },
+    "/order/{portfolioId}": {
+      "get": {
+        "operationId": "OrderController_findById",
+        "summary": "Get all Orders belonging to Portfolio with particular ID",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the portfolio for which orders are being fetched",
+            "example": "66ef29f6d094c73406fa5ea2",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of orders belonging to the specified portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order Service"
+        ]
+      }
+    },
+    "/order/{id}": {
+      "put": {
+        "operationId": "OrderController_update",
+        "summary": "Update Order with ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the order to update",
+            "example": "66ef29f6d094c73406fa5ea2",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The order data to update the existing order",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The order has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order Service"
+        ]
+      },
+      "delete": {
+        "operationId": "OrderController_delete",
+        "summary": "Delete Order with ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the order to delete",
+            "example": "66ef29f6d094c73406fa5ea2",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The order has been successfully deleted"
+          }
+        },
+        "tags": [
+          "Order Service"
+        ]
+      }
+    },
+    "/portfolio": {
+      "get": {
+        "operationId": "PortfolioController_getAll",
+        "summary": "Get all Portfolios",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all portfolios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Service"
+        ]
+      },
+      "post": {
+        "operationId": "PortfolioController_create",
+        "summary": "Create a Portfolio",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "The portfolio data to create a new portfolio",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortfolioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The portfolio has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortfolioDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Service"
+        ]
+      }
+    },
+    "/portfolio/{id}": {
+      "get": {
+        "operationId": "PortfolioController_getByPortfolioId",
+        "summary": "Get one Portfolio by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the portfolio to fetch",
+            "example": "portfolio123",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The portfolio with the specified ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortfolioDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Service"
+        ]
+      }
+    },
+    "/portfolio/manager/{manager}": {
+      "get": {
+        "operationId": "PortfolioController_getByManager",
+        "summary": "Get all Portfolios under the management of a specific manager",
+        "parameters": [
+          {
+            "name": "manager",
+            "required": true,
+            "in": "path",
+            "description": "Manager ID for which to fetch the portfolios",
+            "example": "manager123",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of portfolios managed by the specified manager",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Service"
+        ]
+      }
+    },
+    "/portfolio/{id}/cash": {
+      "put": {
+        "operationId": "PortfolioController_updateCash",
+        "summary": "Update cash",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the portfolio for which cash is being updated",
+            "example": "portfolio123",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Cash amount to be added or withdrawn",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Example add cash",
+                  "value": {
+                    "cash amount": 10000,
+                    "type": "ADD"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The portfolio with updated cash amount",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortfolioDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Service"
+        ]
+      }
+    },
+    "/asset": {
+      "get": {
+        "operationId": "AssetController_getAll",
+        "summary": "Get all Assets",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all assets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "_id": "string",
+                        "ticker": "string",
+                        "name": "string",
+                        "type": "STOCK",
+                        "geography": "string",
+                        "industry": "string"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Asset Service"
+        ]
+      },
+      "post": {
+        "operationId": "AssetController_create",
+        "summary": "Create an Asset",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Details of the asset to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Example Asset",
+                  "value": {
+                    "ticker": "GOOGL",
+                    "name": "Alphabet Inc.",
+                    "sector": "Technology",
+                    "cost": 2800.5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Asset created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "_id": "string",
+                    "ticker": "string",
+                    "name": "string",
+                    "type": "STOCK",
+                    "geography": "string",
+                    "industry": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Asset Service"
+        ]
+      }
+    },
+    "/asset/{ticker}": {
+      "get": {
+        "operationId": "AssetController_getByTicker",
+        "summary": "Get one Asset by ticker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "description": "The ticker symbol of the asset",
+            "example": "AAPL",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset details by ticker",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "_id": "3",
+                    "ticker": "string",
+                    "name": "string",
+                    "type": "STOCK",
+                    "geography": "string",
+                    "industry": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Asset Service"
+        ]
+      },
+      "put": {
+        "operationId": "AssetController_update",
+        "summary": "Update an Asset by ticker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "description": "The ticker symbol of the asset to update",
+            "example": "MSFT",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Updated asset details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Updated Asset Example",
+                  "value": {
+                    "ticker": "MSFT",
+                    "name": "Microsoft Corporation",
+                    "type": "STOCK",
+                    "geography": "USA",
+                    "industry": "Technology"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asset updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "_id": "string",
+                    "ticker": "string",
+                    "name": "string",
+                    "type": "STOCK",
+                    "geography": "string",
+                    "industry": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Asset Service"
+        ]
+      },
+      "delete": {
+        "operationId": "AssetController_delete",
+        "summary": "Delete an Asset by ticker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "description": "The ticker symbol of the asset to delete",
+            "example": "JPM",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "204": {
+            "description": "Asset deleted successfully"
+          }
+        },
+        "tags": [
+          "Asset Service"
+        ]
+      }
+    },
+    "/assetprice": {
+      "get": {
+        "operationId": "AssetPriceController_getAll",
+        "summary": "Get all AssetPrices",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all asset prices",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
+                        "date": "2024-12-01T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      },
+      "post": {
+        "operationId": "AssetPriceController_create",
+        "summary": "Create an AssetPrice",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Create an asset price",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetPrice"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Create assetprice example",
+                  "value": {
+                    "ticker": "MSFT",
+                    "name": "Microsoft Corporation",
+                    "sector": "Information Technology",
+                    "todayClose": 231.86000061035156,
+                    "yesterdayClose": 228.8699951171875,
+                    "date": "2024-12-01T00:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asset price successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "_id": "string",
+                    "ticker": "string",
+                    "company": "string",
+                    "sector": "string",
+                    "todayClose": 0,
+                    "yesterdayClose": 0,
+                    "date": "2024-12-01T00:00:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetPrice"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      }
+    },
+    "/assetprice/{ticker}": {
+      "get": {
+        "operationId": "AssetPriceController_getByTicker",
+        "summary": "Get an array of all AssetPrices with ticker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "description": "The ticker symbol of the asset",
+            "example": "AAPL",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset prices for a specific ticker",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
+                        "date": "2024-12-01T00:00:00.000Z"
+                      },
+                      {
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
+                        "date": "2024-12-02T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      }
+    },
+    "/assetprice/{ticker}/{date}": {
+      "get": {
+        "operationId": "AssetPriceController_getByTickerAndDate",
+        "summary": "Get an AssetPrice with ticker and date",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "description": "The ticker symbol of the asset",
+            "example": "AAPL",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "required": true,
+            "in": "path",
+            "description": "The price of asset at a specific date",
+            "example": "2024-12-01T00:00:00.000Z",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset price for a specific ticker and date",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "_id": "string",
+                    "ticker": "string",
+                    "company": "string",
+                    "sector": "string",
+                    "todayClose": 0,
+                    "yesterdayClose": 0,
+                    "date": "2024-12-01T00:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      },
+      "put": {
+        "operationId": "AssetPriceController_update",
+        "summary": "Update an AssetPrice by ticker and date",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetPriceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetPrice"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      },
+      "delete": {
+        "operationId": "AssetPriceController_delete",
+        "summary": "Delete an AssetPrice by ticker and date",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      }
+    },
+    "/assetprice/all/excluding/tickers": {
+      "get": {
+        "operationId": "AssetPriceController_getAllExcept",
+        "summary": "Get all AssetPrice excluding specified",
+        "parameters": [
+          {
+            "name": "exclusions",
+            "required": false,
+            "in": "query",
+            "description": "Tickers of excluded assets in the query",
+            "example": "[\"AAPL\", \"MSFT\"]",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of asset prices excluding specified tickers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
+                        "date": "2024-12-01T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      }
+    },
+    "/assetprice/all/from/tickers": {
+      "get": {
+        "operationId": "AssetPriceController_getFrom",
+        "summary": "Get all AssetPrice inclusive only of specified",
+        "parameters": [
+          {
+            "name": "inclusions",
+            "required": false,
+            "in": "query",
+            "description": "Tickers of included assets in the query",
+            "example": "[\"AAPL\", \"MSFT\"]",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of asset prices for specified tickers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
+                        "date": "2024-12-01T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AssetPrice Service"
+        ]
+      }
+    },
+    "/core/{manager}": {
+      "get": {
+        "operationId": "CoreController_loadHomepage",
+        "summary": "Get all Portfolios by Manager",
+        "parameters": [
+          {
+            "name": "manager",
+            "required": true,
+            "in": "path",
+            "description": "Manager ID",
+            "example": "66d9815bacb3da812c4e4c5b",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all portfolios under specific manager id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "portfolioId": "string",
+                        "clientName": "string",
+                        "portfolioName": "string",
+                        "riskAppetite": "MEDIUM",
+                        "totalValue": 0,
+                        "totalPL": 0,
+                        "dailyPL": 0,
+                        "totalPLPercentage": 0,
+                        "dailyPLPercentage": 0,
+                        "rateOfReturn": 0,
+                        "alertsPresent": true
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Core Service"
+        ]
+      }
+    },
+    "/core/portfolio/{portfolioId}": {
+      "get": {
+        "operationId": "CoreController_loadPortfolio",
+        "summary": "Load Portfolio data of a specified portfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "description": "portfolio Id of portfolio",
+            "example": "66d9ae695e15ad24b5e2053a",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Portfolio details by portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "portfolioId": "string",
+                    "clientName": "string",
+                    "portfolioName": "string",
+                    "portfolioAnalysis": {
+                      "totalAssets": 0,
+                      "cashAmount": 0,
+                      "securitiesValue": 0,
+                      "dailyPL": 0,
+                      "dailyPLPercentage": 0,
+                      "totalPL": 0,
+                      "totalPLPercentage": 0,
+                      "annualizedRoR": 0
+                    },
+                    "triggeredAlerts": [],
+                    "breachedRules": {
+                      "breachedRules": [],
+                      "recommendation": "",
+                      "news": {
+                        "buy": []
+                      }
+                    },
+                    "portfolioBreakdown": {
+                      "securities": [],
+                      "industry": [],
+                      "geography": []
+                    },
+                    "portfolioHoldings": [],
+                    "orderExecutionProgress": []
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Core Service"
+        ]
+      }
+    },
+    "/core/news/all": {
+      "get": {
+        "operationId": "CoreController_loadFinanceNews",
+        "summary": "Get all Finance News",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All finance news",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": [
+                    {
+                      "id": "66ef29f6d094c73406fa5ea2",
+                      "company": "Apple",
+                      "ticker": "AAPL",
+                      "date": "2024-09-22T04:17:58.562Z",
+                      "sentimentRating": 4,
+                      "introduction": "As of September..."
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Core Service"
+        ]
+      }
+    },
+    "/core/news/{id}": {
+      "get": {
+        "operationId": "CoreController_loadFinanceNewsById",
+        "summary": "News by id for individaul article page",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Individual finance news by ticker id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "string",
+                    "company": "string",
+                    "ticker": "string",
+                    "date": "2024-09-22T04:17:58.562Z",
+                    "sentimentRating": 0,
+                    "introduction": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Core Service"
+        ]
+      }
+    },
+    "/core/ruleLogs/{portfolioId}": {
+      "get": {
+        "operationId": "CoreController_loadRuleLogs",
+        "summary": "Get all Rule Logs by portfolioId",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "description": "portfolio Id of portfolio",
+            "example": "66d9ae695e15ad24b5e2053a",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RuleLogDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Core Service"
+        ]
+      }
+    },
+    "/core/portfolio/validate/{portfolioId}": {
+      "post": {
+        "operationId": "CoreController_validateIntermediatePortfolio",
+        "summary": "Validate intermediate portfolio rules",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Validate intermediate portfolio rules by providing asset holdings and cash amount",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateIntermediatePortfolioClass"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Core Service"
+        ]
+      }
+    },
+    "/alert": {
+      "get": {
+        "operationId": "AlertController_getAlerts",
+        "summary": "Get alerts by Tickers and add Company Name",
+        "parameters": [
+          {
+            "name": "tickers",
+            "required": false,
+            "in": "query",
+            "description": "Array of ticker symbols to fetch alerts for",
+            "example": [
+              "AAPL",
+              "DOW",
+              "AMGN"
+            ],
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlertDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Alert Service"
+        ]
+      }
+    },
+    "/financeNews": {
+      "get": {
+        "operationId": "FinanceNewsController_getAll",
+        "summary": "Get all Finance News",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns a list of all finance news",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "_id": "66ef29f6d094c73406fa5ea2",
+                        "ticker": "AAPL",
+                        "date": "2024-09-22T04:17:58.562Z",
+                        "sentimentRating": 4,
+                        "summary": [],
+                        "references": []
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Finance News Service"
+        ]
+      }
+    },
+    "/financeNews/{ticker}": {
+      "get": {
+        "operationId": "FinanceNewsController_getByTicker",
+        "summary": "Get one Finance News by ticker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns specific finance news by ticker",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "_id": "string",
+                    "ticker": "string",
+                    "date": "2024-09-22T04:17:58.562Z",
+                    "sentimentRating": 0,
+                    "summary": [],
+                    "references": []
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Finance News Service"
+        ]
+      }
+    },
+    "/financeNews/tickers/latest": {
+      "get": {
+        "operationId": "FinanceNewsController_getLatestByTicker",
+        "summary": "Get the latest news for all specified tickers",
+        "parameters": [
+          {
+            "name": "tickers",
+            "required": true,
+            "in": "query",
+            "description": "Array of ticker symbols to fetch finance news for",
+            "example": [
+              "AAPL",
+              "DOW",
+              "AMGN"
+            ],
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns latest finance news of specific tickers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "example": [
+                      {
+                        "_id": "string",
+                        "ticker": "string",
+                        "date": "2024-09-22T04:17:58.562Z",
+                        "sentimentRating": 0,
+                        "summary": [],
+                        "references": []
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Finance News Service"
+        ]
+      }
+    },
+    "/ruleLog": {
+      "get": {
+        "operationId": "RuleLogController_getAll",
+        "summary": "Get all Rules",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all rule logs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RuleLog"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Rule Log Service"
+        ]
+      },
+      "post": {
+        "operationId": "RuleLogController_create",
+        "summary": "Create a Rule",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Data to create a new Rule Log",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleLogDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created the rule log",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleLogDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Rule Log Service"
+        ]
+      }
+    },
+    "/ruleLog/{id}": {
+      "get": {
+        "operationId": "RuleLogController_getById",
+        "summary": "Get one Rule Log by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the Rule Log",
+            "example": "60b8d7d0f4f1a53b19f7c4f9",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the rule log",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleLogDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Rule log not found"
+          }
+        },
+        "tags": [
+          "Rule Log Service"
+        ]
+      },
+      "put": {
+        "operationId": "RuleLogController_update",
+        "summary": "Update a Rule by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the Rule Log to be updated",
+            "example": "60b8d7d0f4f1a53b19f7c4f9",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Data to update the Rule Log",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleLogDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the rule log",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleLogDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Rule log not found"
+          }
+        },
+        "tags": [
+          "Rule Log Service"
+        ]
+      },
+      "delete": {
+        "operationId": "RuleLogController_delete",
+        "summary": "Delete a Rule by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the Rule Log to be deleted",
+            "example": "60b8d7d0f4f1a53b19f7c4f9",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the rule log"
+          },
+          "404": {
+            "description": "Rule log not found"
+          }
+        },
+        "tags": [
+          "Rule Log Service"
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "operationId": "UserController_getAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Service"
+        ]
+      },
+      "post": {
+        "operationId": "UserController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Service"
+        ]
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "operationId": "UserController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Service"
+        ]
+      },
+      "put": {
+        "operationId": "UserController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Service"
+        ]
+      },
+      "delete": {
+        "operationId": "UserController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User Service"
+        ]
+      }
+    },
+    "/transaction/order": {
+      "post": {
+        "operationId": "TransactionController_placeOrder",
+        "summary": "Place an order",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Order to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDto"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Example order",
+                  "value": {
+                    "orderType": "BUY",
+                    "assetName": "AAPL",
+                    "quantity": 1,
+                    "price": 300,
+                    "portfolioId": "66d9ae695e15ad24b5e2053a"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Transaction Service"
+        ]
+      }
+    },
+    "/transaction/orders": {
+      "post": {
+        "operationId": "TransactionController_placeOrders",
+        "summary": "Place multiple orders",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Array of orders to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OrderDto"
+                }
+              },
+              "examples": {
+                "default": {
+                  "summary": "Example array",
+                  "value": [
+                    {
+                      "orderType": "BUY",
+                      "assetName": "AAPL",
+                      "quantity": 1,
+                      "price": 300,
+                      "portfolioId": "66d9ae695e15ad24b5e2053a"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Transaction Service"
+        ]
+      }
+    },
+    "/generate/proposal": {
+      "post": {
+        "operationId": "PortfolioCreationController_generateOrders",
+        "summary": "Generate orders for an optimized portfolio",
+        "parameters": [
+          {
+            "name": "clientName",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "portfolioName",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "riskAppetite",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cash",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "managerId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "exclusions",
+            "required": false,
+            "in": "query",
+            "description": "Array of the tickers of excluded assets",
+            "example": [
+              "AAPL"
+            ],
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "minCash",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxCash",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Generation Service"
+        ]
+      }
+    },
+    "/generate/{portfolioId}": {
+      "get": {
+        "operationId": "PortfolioCreationController_optimisePortfolio",
+        "summary": "Optimise the current holdings of a portfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "description": "portfolio Id of portfolio",
+            "example": "66d9ae695e15ad24b5e2053a",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Generation Service"
+        ]
+      }
+    },
+    "/rules/preset": {
+      "post": {
+        "operationId": "RuleHandlerController_createPresetRules",
+        "summary": "Create preset portfolio rules",
+        "description": "Creates a set of portfolio rules based on risk appetite and cash limits",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PresetRulesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Rules created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortfolioRulesResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Rules"
+        ]
+      }
+    },
+    "/rules/update/{portfolioId}": {
+      "put": {
+        "operationId": "RuleHandlerController_updateRules",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleLog"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Portfolio Rules"
+        ]
+      }
+    },
+    "/report/{id}": {
+      "get": {
+        "operationId": "ReportController_getById",
+        "summary": "Get breakdown of portfolio by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Portfolio Id of portfolio",
+            "example": "66d9ae695e15ad24b5e2053a",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Report Service"
+        ]
+      }
+    },
+    "/report/order/date": {
+      "get": {
+        "operationId": "ReportController_getOrderExecution",
+        "summary": "Get order execution by portfolio ID and date range",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "description": "Portfolio Id of portfolio",
+            "example": "66d9ae695e15ad24b5e2053a",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "description": "The start date of the date range for the report (format: yyyy-mm-dd)",
+            "example": "2024-01-01",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "description": "The end date of the date range for the report (format: yyyy-mm-dd)",
+            "example": "2024-12-31",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Report Service"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Portfolio Optimizer Application API",
+    "description": "core application in nestjs",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "Portfolio Service",
+      "description": ""
+    },
+    {
+      "name": "Order Service",
+      "description": ""
+    },
+    {
+      "name": "Asset Service",
+      "description": ""
+    },
+    {
+      "name": "AssetPrice Service",
+      "description": ""
+    },
+    {
+      "name": "Core Service",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "OrderDto": {
+        "type": "object",
+        "properties": {
+          "orderType": {
+            "enum": [
+              "BUY",
+              "SELL"
+            ],
+            "type": "string"
+          },
+          "orderDate": {
+            "format": "date-time",
+            "type": "string",
+            "default": "2024-12-06T06:47:08.347Z"
+          },
+          "assetName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "portfolioId": {
+            "type": "string"
+          },
+          "orderStatus": {
+            "default": "PENDING",
+            "enum": [
+              "FILLED",
+              "PENDING"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "orderType",
+          "orderDate",
+          "assetName",
+          "quantity",
+          "price",
+          "portfolioId",
+          "orderStatus"
+        ]
+      },
+      "AssetHoldingDto": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "number"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "assetType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ticker",
+          "cost",
+          "quantity",
+          "assetType"
+        ]
+      },
+      "PortfolioDto": {
+        "type": "object",
+        "properties": {
+          "client": {
+            "type": "string"
+          },
+          "portfolioName": {
+            "type": "string"
+          },
+          "riskAppetite": {
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH"
+            ],
+            "type": "string"
+          },
+          "cashAmount": {
+            "type": "number"
+          },
+          "assetHoldings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetHoldingDto"
+            }
+          },
+          "manager": {
+            "type": "string"
+          },
+          "exclusions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rules": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "client",
+          "portfolioName",
+          "riskAppetite",
+          "cashAmount",
+          "assetHoldings",
+          "manager",
+          "exclusions",
+          "rules"
+        ]
+      },
+      "AssetDto": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "STOCK",
+              "BOND"
+            ],
+            "type": "string"
+          },
+          "geography": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ticker",
+          "name",
+          "type",
+          "geography",
+          "industry"
+        ]
+      },
+      "AssetPrice": {
+        "type": "object",
+        "properties": {}
+      },
+      "AssetPriceDto": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string"
+          },
+          "todayClose": {
+            "type": "number"
+          },
+          "yesterdayClose": {
+            "type": "number"
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ticker",
+          "company",
+          "sector",
+          "todayClose",
+          "yesterdayClose",
+          "date"
+        ]
+      },
+      "RuleLogDto": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "managerId": {
+            "type": "string"
+          },
+          "portfolioId": {
+            "type": "string",
+            "nullable": true
+          },
+          "ruleType": {
+            "enum": [
+              "MIN_CASH",
+              "MAX_CASH",
+              "RISK",
+              "EXCLUSIONS"
+            ],
+            "type": "string"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "changeMessage": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "description",
+          "managerId",
+          "portfolioId",
+          "ruleType",
+          "timestamp",
+          "changeMessage"
+        ]
+      },
+      "ValidateIntermediatePortfolioClass": {
+        "type": "object",
+        "properties": {
+          "intermediateAssetHoldings": {
+            "description": "Intermediate asset holdings to be validated",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "intermediateCashAmount": {
+            "type": "number",
+            "description": "Intermediate cash amount to be validated"
+          }
+        },
+        "required": [
+          "intermediateAssetHoldings",
+          "intermediateCashAmount"
+        ]
+      },
+      "AlertDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ticker": {
+            "type": "string"
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "sentimentRating": {
+            "type": "number"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "assetName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ticker",
+          "date",
+          "sentimentRating",
+          "introduction",
+          "assetName"
+        ]
+      },
+      "RuleLog": {
+        "type": "object",
+        "properties": {}
+      },
+      "User": {
+        "type": "object",
+        "properties": {}
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "Order": {
+        "type": "object",
+        "properties": {}
+      },
+      "PresetRulesDto": {
+        "type": "object",
+        "properties": {
+          "riskAppetite": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH"
+            ],
+            "example": "MEDIUM",
+            "description": "Risk appetite level for the portfolio"
+          },
+          "minCash": {
+            "type": "number",
+            "example": 5,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Minimum cash percentage allowed in portfolio"
+          },
+          "maxCash": {
+            "type": "number",
+            "example": 20,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Maximum cash percentage allowed in portfolio"
+          }
+        },
+        "required": [
+          "riskAppetite",
+          "minCash",
+          "maxCash"
+        ]
+      },
+      "CashRuleDto": {
+        "type": "object",
+        "properties": {
+          "percentage": {
+            "type": "number"
+          },
+          "__type": {
+            "type": "string",
+            "enum": [
+              "MIN_CASH",
+              "MAX_CASH",
+              "RISK",
+              "EXCLUSIONS"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "percentage",
+          "__type",
+          "name",
+          "description"
+        ]
+      },
+      "RiskRuleDto": {
+        "type": "object",
+        "properties": {
+          "stockComposition": {
+            "type": "number"
+          },
+          "__type": {
+            "type": "string",
+            "enum": [
+              "MIN_CASH",
+              "MAX_CASH",
+              "RISK",
+              "EXCLUSIONS"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "stockComposition",
+          "__type",
+          "name",
+          "description"
+        ]
+      },
+      "PortfolioRulesResponse": {
+        "type": "object",
+        "properties": {
+          "minCashRule": {
+            "$ref": "#/components/schemas/CashRuleDto"
+          },
+          "maxCashRule": {
+            "$ref": "#/components/schemas/CashRuleDto"
+          },
+          "riskRule": {
+            "$ref": "#/components/schemas/RiskRuleDto"
+          }
+        },
+        "required": [
+          "minCashRule",
+          "maxCashRule",
+          "riskRule"
+        ]
+      }
+    }
+  }
+}

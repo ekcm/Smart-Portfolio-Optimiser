@@ -7,8 +7,10 @@ from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 from flask import Flask, jsonify, request
 from collections import OrderedDict
+from flasgger import Swagger
 
 app = Flask(__name__)
+swagger = Swagger(app)
 load_dotenv()
 API_PATH = os.getenv('API_PATH')
 ASSETPRICE_URL = API_PATH + '/assetprice/all/excluding/tickers'
@@ -16,6 +18,25 @@ ASSETPRICE_INCLUSIVE_URL = API_PATH + '/assetprice/all/from/tickers'
 
 @app.route('/optimiser', methods=['GET'])
 def optimise():
+    """
+    Optimise portfolio excluding specific tickers.
+    ---
+    parameters:
+      - name: exclusions[]
+        in: query
+        type: array
+        items:
+          type: string
+        required: false
+        description: List of tickers to exclude from the optimisation.
+    responses:
+      200:
+        description: Optimised weights for the portfolio.
+        schema:
+          type: object
+          additionalProperties:
+            type: number
+    """
     exclusions = request.args.getlist('exclusions[]')
 
     params = {'exclusions': exclusions}
@@ -44,6 +65,25 @@ def optimise():
 
 @app.route('/optimiser/include')
 def optimise_portfolio():
+    """
+    Optimise portfolio including specific tickers.
+    ---
+    parameters:
+      - name: inclusions[]
+        in: query
+        type: array
+        items:
+          type: string
+        required: true
+        description: List of tickers to include in the optimisation.
+    responses:
+      200:
+        description: Optimised weights for the portfolio.
+        schema:
+          type: object
+          additionalProperties:
+            type: number
+    """
     inclusions = request.args.getlist('inclusions[]')
 
     asset_price_response = requests.get(ASSETPRICE_INCLUSIVE_URL, params = {'inclusions': inclusions})
