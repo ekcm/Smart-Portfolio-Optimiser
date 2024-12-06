@@ -40,31 +40,18 @@ export class CoreController {
 		items: {
 			example: [
                 {
-                    "portfolioId": "66d9ae695e15ad24b5e2053a",
-                    "clientName": "Tom",
-                    "portfolioName": "Portfolio1",
+                    "portfolioId": "string",
+                    "clientName": "string",
+                    "portfolioName": "string",
                     "riskAppetite": "MEDIUM",
-                    "totalValue": 15366.77,
-                    "totalPL": 1921.6,
-                    "dailyPL": -11.63,
-                    "totalPLPercentage": 14.36,
-                    "dailyPLPercentage": -0.08,
-                    "rateOfReturn": 100,
+                    "totalValue": 0,
+                    "totalPL": 0,
+                    "dailyPL": 0,
+                    "totalPLPercentage": 0,
+                    "dailyPLPercentage": 0,
+                    "rateOfReturn": 0,
                     "alertsPresent": true
                 },
-                {
-                    "portfolioId": "673edcfaa141dc2133e204e6",
-                    "clientName": "IS484",
-                    "portfolioName": "Final Presentation",
-                    "riskAppetite": "MEDIUM",
-                    "totalValue": 119342.5,
-                    "totalPL": -657.5,
-                    "dailyPL": -102.19,
-                    "totalPLPercentage": -0.69,
-                    "dailyPLPercentage": -0.11,
-                    "rateOfReturn": 100,
-                    "alertsPresent": true
-                }
                 ],
 			},
 		},
@@ -86,29 +73,20 @@ export class CoreController {
 		description: "Portfolio details by portfolio",
 		schema: {
 		example: {
-            "portfolioId": "673edcfaa141dc2133e204e6",
-            "clientName": "IS484",
-            "portfolioName": "Final Presentation",
+            "portfolioId": "string",
+            "clientName": "string",
+            "portfolioName": "string",
             "portfolioAnalysis": {
-                "totalAssets": 119342.5,
-                "cashAmount": 24500.000000000022,
-                "securitiesValue": 94841.48474999999,
-                "dailyPL": -102.19,
-                "dailyPLPercentage": -0.11,
-                "totalPL": -657.5,
-                "totalPLPercentage": -0.69,
-                "annualizedRoR": 100
+                "totalAssets": 0,
+                "cashAmount": 0,
+                "securitiesValue": 0,
+                "dailyPL": 0,
+                "dailyPLPercentage": 0,
+                "totalPL": 0,
+                "totalPLPercentage": 0,
+                "annualizedRoR": 0
             },
-            "triggeredAlerts": [
-                {
-                "id": "673dc25e23fe016af3c6fba5",
-                "ticker": "CAT",
-                "date": "2024-11-20T19:05:02.920Z",
-                "sentimentRating": 4,
-                "introduction": "Caterpillar...",
-                "assetName": "Caterpillar"
-                },
-            ],
+            "triggeredAlerts": [],
             "breachedRules": {
                 "breachedRules": [],
                 "recommendation": "",
@@ -117,45 +95,11 @@ export class CoreController {
                 }
             },
             "portfolioBreakdown": {
-                "securities": [
-                    {
-                        "STOCK": 39.68
-                    },
-                    {
-                        "BOND": 39.79
-                    },
-                    {
-                        "CASH": 20.53
-                    }
-                ],
-                "industry": [
-                    {
-                        "Construction and mining": 3.58
-                    },
-                ],
-                "geography": [
-                    {
-                        "USA": 100
-                    }
-                ]
+                "securities": [],
+                "industry": [],
+                "geography": []
             },
-            "portfolioHoldings": [
-                {
-                    "name": "Caterpillar",
-                    "ticker": "CAT",
-                    "type": "STOCK",
-                    "geography": "USA",
-                    "position": 9.021920934257132,
-                    "market": 3394.046765598404,
-                    "last": 376.20001220703125,
-                    "cost": 387.510009765625,
-                    "totalPL": -102.037903740274,
-                    "totalPLPercentage": -2.92,
-                    "dailyPL": -27.426441404574277,
-                    "dailyPLPercentage": -0.8,
-                    "positionsRatio": 3.58
-                },
-            ],
+            "portfolioHoldings": [],
             "orderExecutionProgress": []
             },
 		},
@@ -193,12 +137,12 @@ export class CoreController {
 		description: "Individual finance news by ticker id",
 		schema: {
 		example: {
-                "id": "66ef29f6d094c73406fa5ea2",
-                "company": "Apple",
-                "ticker": "AAPL",
+                "id": "string",
+                "company": "string",
+                "ticker": "string",
                 "date": "2024-09-22T04:17:58.562Z",
-                "sentimentRating": 4,
-                "introduction": "As of September..."
+                "sentimentRating": 0,
+                "introduction": "string"
             },
 		},
 	})
@@ -222,7 +166,7 @@ export class CoreController {
     @ApiOperation({ summary: "Validate intermediate portfolio rules" })
     @ApiBody({
         description: 'Validate intermediate portfolio rules by providing asset holdings and cash amount',
-        type: ValidateIntermediatePortfolioClass,  // Specify the DTO class to document the request body
+        type: ValidateIntermediatePortfolioClass,
     })
     async validateIntermediatePortfolio(
         @Param('portfolioId') portfolioId: string,

@@ -354,28 +354,12 @@
                   "items": {
                     "example": [
                       {
-                        "_id": "1",
-                        "ticker": "AMGN",
-                        "name": "Amgen",
+                        "_id": "string",
+                        "ticker": "string",
+                        "name": "string",
                         "type": "STOCK",
-                        "geography": "USA",
-                        "industry": "Biopharmaceutical"
-                      },
-                      {
-                        "_id": "2",
-                        "ticker": "DOW",
-                        "name": "Dow",
-                        "type": "STOCK",
-                        "geography": "USA",
-                        "industry": "Chemical"
-                      },
-                      {
-                        "_id": "3",
-                        "ticker": "AAPL",
-                        "name": "Apple",
-                        "type": "STOCK",
-                        "geography": "USA",
-                        "industry": "Technology"
+                        "geography": "string",
+                        "industry": "string"
                       }
                     ]
                   }
@@ -421,12 +405,12 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "_id": "1",
-                    "ticker": "AAPL",
-                    "name": "Apple",
+                    "_id": "string",
+                    "ticker": "string",
+                    "name": "string",
                     "type": "STOCK",
-                    "geography": "USA",
-                    "industry": "Technology"
+                    "geography": "string",
+                    "industry": "string"
                   }
                 }
               }
@@ -462,11 +446,11 @@
                 "schema": {
                   "example": {
                     "_id": "3",
-                    "ticker": "AAPL",
-                    "name": "Apple",
+                    "ticker": "string",
+                    "name": "string",
                     "type": "STOCK",
-                    "geography": "USA",
-                    "industry": "Technology"
+                    "geography": "string",
+                    "industry": "string"
                   }
                 }
               }
@@ -522,12 +506,12 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "_id": "1",
-                    "ticker": "AAPL",
-                    "name": "Apple",
+                    "_id": "string",
+                    "ticker": "string",
+                    "name": "string",
                     "type": "STOCK",
-                    "geography": "USA",
-                    "industry": "Technology"
+                    "geography": "string",
+                    "industry": "string"
                   }
                 }
               }
@@ -581,21 +565,12 @@
                   "items": {
                     "example": [
                       {
-                        "_id": "60f6c72e0a9a2344a8d56fdb",
-                        "ticker": "AMGN",
-                        "company": "Amgen",
-                        "sector": "Biopharmaceutical",
-                        "todayClose": 245.67,
-                        "yesterdayClose": 244.98,
-                        "date": "2024-12-01T00:00:00.000Z"
-                      },
-                      {
-                        "_id": "60f6c72e0a9a2344a8d56fdb",
-                        "ticker": "DOW",
-                        "company": "Dow Chemical",
-                        "sector": "Chemical",
-                        "todayClose": 56.45,
-                        "yesterdayClose": 55.78,
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
                         "date": "2024-12-01T00:00:00.000Z"
                       }
                     ]
@@ -644,12 +619,12 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "_id": "60f6c72e0a9a2344a8d56fdb",
-                    "ticker": "MSFT",
-                    "company": "Microsoft Corporation",
-                    "sector": "Information Technology",
-                    "todayClose": 231.86000061035156,
-                    "yesterdayClose": 228.8699951171875,
+                    "_id": "string",
+                    "ticker": "string",
+                    "company": "string",
+                    "sector": "string",
+                    "todayClose": 0,
+                    "yesterdayClose": 0,
                     "date": "2024-12-01T00:00:00.000Z"
                   }
                 }
@@ -698,22 +673,22 @@
                   "items": {
                     "example": [
                       {
-                        "_id": "60f6c72e0a9a2344a8d56fdb",
-                        "ticker": "AMGN",
-                        "company": "Amgen",
-                        "sector": "Biopharmaceutical",
-                        "todayClose": 245.67,
-                        "yesterdayClose": 244.98,
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
                         "date": "2024-12-01T00:00:00.000Z"
                       },
                       {
-                        "_id": "638029d0a9a2344a8d56fdb",
-                        "ticker": "AAPL",
-                        "company": "Apple",
-                        "sector": "Technology",
-                        "todayClose": 130.25,
-                        "yesterdayClose": 125.98,
-                        "date": "2024-12-01T00:00:00.000Z"
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
+                        "date": "2024-12-02T00:00:00.000Z"
                       }
                     ]
                   }
@@ -760,12 +735,12 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "_id": "60f6c72e0a9a2344a8d56fdb",
-                    "ticker": "AMGN",
-                    "company": "Amgen",
-                    "sector": "Biopharmaceutical",
-                    "todayClose": 245.67,
-                    "yesterdayClose": 244.98,
+                    "_id": "string",
+                    "ticker": "string",
+                    "company": "string",
+                    "sector": "string",
+                    "todayClose": 0,
+                    "yesterdayClose": 0,
                     "date": "2024-12-01T00:00:00.000Z"
                   }
                 }
@@ -884,21 +859,12 @@
                   "items": {
                     "example": [
                       {
-                        "_id": "60f6c72e0a9a2344a8d56fdb",
-                        "ticker": "AMGN",
-                        "company": "Amgen",
-                        "sector": "Biopharmaceutical",
-                        "todayClose": 245.67,
-                        "yesterdayClose": 244.98,
-                        "date": "2024-12-01T00:00:00.000Z"
-                      },
-                      {
-                        "_id": "60f6c72e0a9a2344a8d56fdb",
-                        "ticker": "DOW",
-                        "company": "Dow Chemical",
-                        "sector": "Chemical",
-                        "todayClose": 56.45,
-                        "yesterdayClose": 55.78,
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
                         "date": "2024-12-01T00:00:00.000Z"
                       }
                     ]
@@ -942,21 +908,12 @@
                   "items": {
                     "example": [
                       {
-                        "_id": "60f6c72e0a9a2344a8d56fdb",
-                        "ticker": "AMGN",
-                        "company": "Amgen",
-                        "sector": "Biopharmaceutical",
-                        "todayClose": 245.67,
-                        "yesterdayClose": 244.98,
-                        "date": "2024-12-01T00:00:00.000Z"
-                      },
-                      {
-                        "_id": "60f6c72e0a9a2344a8d56fdb",
-                        "ticker": "DOW",
-                        "company": "Dow Chemical",
-                        "sector": "Chemical",
-                        "todayClose": 56.45,
-                        "yesterdayClose": 55.78,
+                        "_id": "string",
+                        "ticker": "string",
+                        "company": "string",
+                        "sector": "string",
+                        "todayClose": 0,
+                        "yesterdayClose": 0,
                         "date": "2024-12-01T00:00:00.000Z"
                       }
                     ]
@@ -997,29 +954,16 @@
                   "items": {
                     "example": [
                       {
-                        "portfolioId": "66d9ae695e15ad24b5e2053a",
-                        "clientName": "Tom",
-                        "portfolioName": "Portfolio1",
+                        "portfolioId": "string",
+                        "clientName": "string",
+                        "portfolioName": "string",
                         "riskAppetite": "MEDIUM",
-                        "totalValue": 15366.77,
-                        "totalPL": 1921.6,
-                        "dailyPL": -11.63,
-                        "totalPLPercentage": 14.36,
-                        "dailyPLPercentage": -0.08,
-                        "rateOfReturn": 100,
-                        "alertsPresent": true
-                      },
-                      {
-                        "portfolioId": "673edcfaa141dc2133e204e6",
-                        "clientName": "IS484",
-                        "portfolioName": "Final Presentation",
-                        "riskAppetite": "MEDIUM",
-                        "totalValue": 119342.5,
-                        "totalPL": -657.5,
-                        "dailyPL": -102.19,
-                        "totalPLPercentage": -0.69,
-                        "dailyPLPercentage": -0.11,
-                        "rateOfReturn": 100,
+                        "totalValue": 0,
+                        "totalPL": 0,
+                        "dailyPL": 0,
+                        "totalPLPercentage": 0,
+                        "dailyPLPercentage": 0,
+                        "rateOfReturn": 0,
                         "alertsPresent": true
                       }
                     ]
@@ -1057,29 +1001,20 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "portfolioId": "673edcfaa141dc2133e204e6",
-                    "clientName": "IS484",
-                    "portfolioName": "Final Presentation",
+                    "portfolioId": "string",
+                    "clientName": "string",
+                    "portfolioName": "string",
                     "portfolioAnalysis": {
-                      "totalAssets": 119342.5,
-                      "cashAmount": 24500.000000000022,
-                      "securitiesValue": 94841.48474999999,
-                      "dailyPL": -102.19,
-                      "dailyPLPercentage": -0.11,
-                      "totalPL": -657.5,
-                      "totalPLPercentage": -0.69,
-                      "annualizedRoR": 100
+                      "totalAssets": 0,
+                      "cashAmount": 0,
+                      "securitiesValue": 0,
+                      "dailyPL": 0,
+                      "dailyPLPercentage": 0,
+                      "totalPL": 0,
+                      "totalPLPercentage": 0,
+                      "annualizedRoR": 0
                     },
-                    "triggeredAlerts": [
-                      {
-                        "id": "673dc25e23fe016af3c6fba5",
-                        "ticker": "CAT",
-                        "date": "2024-11-20T19:05:02.920Z",
-                        "sentimentRating": 4,
-                        "introduction": "Caterpillar...",
-                        "assetName": "Caterpillar"
-                      }
-                    ],
+                    "triggeredAlerts": [],
                     "breachedRules": {
                       "breachedRules": [],
                       "recommendation": "",
@@ -1088,45 +1023,11 @@
                       }
                     },
                     "portfolioBreakdown": {
-                      "securities": [
-                        {
-                          "STOCK": 39.68
-                        },
-                        {
-                          "BOND": 39.79
-                        },
-                        {
-                          "CASH": 20.53
-                        }
-                      ],
-                      "industry": [
-                        {
-                          "Construction and mining": 3.58
-                        }
-                      ],
-                      "geography": [
-                        {
-                          "USA": 100
-                        }
-                      ]
+                      "securities": [],
+                      "industry": [],
+                      "geography": []
                     },
-                    "portfolioHoldings": [
-                      {
-                        "name": "Caterpillar",
-                        "ticker": "CAT",
-                        "type": "STOCK",
-                        "geography": "USA",
-                        "position": 9.021920934257132,
-                        "market": 3394.046765598404,
-                        "last": 376.20001220703125,
-                        "cost": 387.510009765625,
-                        "totalPL": -102.037903740274,
-                        "totalPLPercentage": -2.92,
-                        "dailyPL": -27.426441404574277,
-                        "dailyPLPercentage": -0.8,
-                        "positionsRatio": 3.58
-                      }
-                    ],
+                    "portfolioHoldings": [],
                     "orderExecutionProgress": []
                   }
                 }
@@ -1191,12 +1092,12 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "id": "66ef29f6d094c73406fa5ea2",
-                    "company": "Apple",
-                    "ticker": "AAPL",
+                    "id": "string",
+                    "company": "string",
+                    "ticker": "string",
                     "date": "2024-09-22T04:17:58.562Z",
-                    "sentimentRating": 4,
-                    "introduction": "As of September..."
+                    "sentimentRating": 0,
+                    "introduction": "string"
                   }
                 }
               }
@@ -1384,10 +1285,10 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "_id": "66ef29f6d094c73406fa5ea2",
-                    "ticker": "AAPL",
+                    "_id": "string",
+                    "ticker": "string",
                     "date": "2024-09-22T04:17:58.562Z",
-                    "sentimentRating": 4,
+                    "sentimentRating": 0,
                     "summary": [],
                     "references": []
                   }
@@ -1434,10 +1335,10 @@
                   "items": {
                     "example": [
                       {
-                        "_id": "66ef29f6d094c73406fa5ea2",
-                        "ticker": "AAPL",
+                        "_id": "string",
+                        "ticker": "string",
                         "date": "2024-09-22T04:17:58.562Z",
-                        "sentimentRating": 4,
+                        "sentimentRating": 0,
                         "summary": [],
                         "references": []
                       }
@@ -2192,7 +2093,7 @@
           "orderDate": {
             "format": "date-time",
             "type": "string",
-            "default": "2024-12-05T16:20:20.580Z"
+            "default": "2024-12-06T06:47:08.347Z"
           },
           "assetName": {
             "type": "string"

@@ -40,10 +40,10 @@ export class FinanceNewsController {
 		description: "Returns specific finance news by ticker",
 		schema: {
 			example: {
-				"_id": "66ef29f6d094c73406fa5ea2",
-				"ticker": "AAPL",
+				"_id": "string",
+				"ticker": "string",
 				"date": "2024-09-22T04:17:58.562Z",
-				"sentimentRating": 4,
+				"sentimentRating": 0,
 				"summary": [],
 				"references": []
 			},
@@ -71,10 +71,10 @@ export class FinanceNewsController {
 			items: {
 				example: [
 					{
-						"_id": "66ef29f6d094c73406fa5ea2",
-						"ticker": "AAPL",
+						"_id": "string",
+						"ticker": "string",
 						"date": "2024-09-22T04:17:58.562Z",
-						"sentimentRating": 4,
+						"sentimentRating": 0,
 						"summary": [],
 						"references": []
 					},

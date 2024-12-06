@@ -19,28 +19,12 @@ export class AssetController {
 		items: {
 			example: [
 					{
-						_id: "1",
-						ticker: "AMGN",
-						name: "Amgen",
+						_id: "string",
+						ticker: "string",
+						name: "string",
 						type: "STOCK",
-						geography: "USA",
-						industry: "Biopharmaceutical",
-					},
-					{
-						_id: "2",
-						ticker: "DOW",
-						name: "Dow",
-						type: "STOCK",
-						geography: "USA",
-						industry: "Chemical",
-					},
-					{
-						_id: "3",
-						ticker: "AAPL",
-						name: "Apple",
-						type: "STOCK",
-						geography: "USA",
-						industry: "Technology",
+						geography: "string",
+						industry: "string",
 					},
 				],
 			},
@@ -63,11 +47,11 @@ export class AssetController {
 		schema: {
 		example: {
 			_id: "3",
-			ticker: "AAPL",
-			name: "Apple",
+			ticker: "string",
+			name: "string",
 			type: "STOCK",
-			geography: "USA",
-			industry: "Technology",
+			geography: "string",
+			industry: "string",
 		},
 		},
 	})
@@ -97,12 +81,12 @@ export class AssetController {
 		description: "Asset created successfully",
 		schema: {
 		example: {
-			_id: "1",
-			ticker: "AAPL",
-			name: "Apple",
+			_id: "string",
+			ticker: "string",
+			name: "string",
 			type: "STOCK",
-			geography: "USA",
-			industry: "Technology",
+			geography: "string",
+			industry: "string",
 		},
 		},
 	})
@@ -138,12 +122,12 @@ export class AssetController {
 		description: "Asset updated successfully",
 		schema: {
 		example: {
-			_id: "1",
-			ticker: "AAPL",
-			name: "Apple",
+			_id: "string",
+			ticker: "string",
+			name: "string",
 			type: "STOCK",
-			geography: "USA",
-			industry: "Technology",
+			geography: "string",
+			industry: "string",
 		},
 		},
 	})

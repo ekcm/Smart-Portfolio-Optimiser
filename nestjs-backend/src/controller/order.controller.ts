@@ -17,7 +17,7 @@ export class OrderController {
     @ApiResponse({
         status: 201,
         description: 'The order has been successfully created',
-        type: OrderDto,  // Document the expected response schema
+        type: OrderDto,
     })
     create(@Body() orderDto: OrderDto) {
         return this.orderService.create(orderDto);
