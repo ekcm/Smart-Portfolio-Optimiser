@@ -8,6 +8,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  // Handle dynamic routes in static export
+  experimental: {
+    appDocumentPreloading: false,
+  },
 };
 
 export default nextConfig;
