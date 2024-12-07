@@ -4,3 +4,4 @@ scikit-learn
 flask
 python-dotenv
 pymongo
+pandas
