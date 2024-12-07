@@ -7,11 +7,9 @@ from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 from flask import Flask, jsonify, request
 from collections import OrderedDict
-from flasgger import Swagger
 from pymongo import MongoClient
 
 app = Flask(__name__)
-swagger = Swagger(app)
 load_dotenv()
 DB_URI = os.getenv('DB_URI')
 DB_NAME = os.getenv('DB_NAME')
