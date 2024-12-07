@@ -3,4 +3,4 @@ PyPortfolioOpt
 scikit-learn
 flask
 python-dotenv
-flasgger
+pymongo

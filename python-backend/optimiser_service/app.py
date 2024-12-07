@@ -7,14 +7,15 @@ from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 from flask import Flask, jsonify, request
 from collections import OrderedDict
-from flasgger import Swagger
+from pymongo import MongoClient
 
 app = Flask(__name__)
-swagger = Swagger(app)
 load_dotenv()
-API_PATH = os.getenv('API_PATH')
-ASSETPRICE_URL = API_PATH + '/assetprice/all/excluding/tickers'
-ASSETPRICE_INCLUSIVE_URL = API_PATH + '/assetprice/all/from/tickers'
+DB_URI = os.getenv('DB_URI')
+DB_NAME = os.getenv('DB_NAME')
+client = MongoClient(DB_URI)
+db = client[DB_NAME]
+collection = db['AssetPrice']
 
 @app.route('/optimiser', methods=['GET'])
 def optimise():
@@ -37,16 +38,12 @@ def optimise():
           additionalProperties:
             type: number
     """
+    
     exclusions = request.args.getlist('exclusions[]')
+    query = {'ticker': {"$nin": exclusions}}
+    results = list(collection.find(query, {"ticker": 1, "date": 1, "todayClose": 1, "_id": 0}))
 
-    params = {'exclusions': exclusions}
-
-    response = requests.get(ASSETPRICE_URL, params = params)
-    data = response.json()
-
-    df = pd.DataFrame(data)
-
-    pivot_df = df.pivot(index='date', columns = 'ticker', values='todayClose')
+    pivot_df = pd.DataFrame(results)
 
     pivot_df.index = pd.to_datetime(pivot_df.index)
     pivot_df = pivot_df.sort_index()
@@ -84,29 +81,31 @@ def optimise_portfolio():
           additionalProperties:
             type: number
     """
-    inclusions = request.args.getlist('inclusions[]')
+    try:
+      inclusions = request.args.getlist('inclusions[]')
+      query = {'ticker': {"$in": inclusions}}
+      results = list(collection.find(query, {"ticker": 1, "date": 1, "todayClose": 1, "_id": 0}))
 
-    asset_price_response = requests.get(ASSETPRICE_INCLUSIVE_URL, params = {'inclusions': inclusions})
-    data = asset_price_response.json()
+      pivot_df = pd.DataFrame(results)
 
-    df = pd.DataFrame(data)
+      pivot_df.index = pd.to_datetime(pivot_df.index)
+      pivot_df = pivot_df.sort_index()
 
-    pivot_df = df.pivot(index='date', columns = 'ticker', values='todayClose')
+      mu = mean_historical_return(pivot_df)
+      S = CovarianceShrinkage(pivot_df).ledoit_wolf()
 
-    pivot_df.index = pd.to_datetime(pivot_df.index)
-    pivot_df = pivot_df.sort_index()
+      ef = EfficientFrontier(mu, S)
+      weights = ef.max_sharpe(risk_free_rate=0)
 
-    mu = mean_historical_return(pivot_df)
-    S = CovarianceShrinkage(pivot_df).ledoit_wolf()
+      cleaned_weights = ef.clean_weights()
 
-    ef = EfficientFrontier(mu, S)
-    weights = ef.max_sharpe(risk_free_rate=0)
+      response = OrderedDict((k, v) for k, v in cleaned_weights.items() if v != 0)
 
-    cleaned_weights = ef.clean_weights()
+      return jsonify(response), 200
+    
+    except Exception as e:
+      return jsonify({"error": str(e)}), 500
 
-    response = OrderedDict((k, v) for k, v in cleaned_weights.items() if v != 0)
-
-    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=6969)

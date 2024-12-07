@@ -1,0 +1,50 @@
+[
+    {
+        "endpoint": "/optimiser",
+        "method": "GET",
+        "params": {
+            "exclusions[]": {
+                "in": "query",
+                "type": "array",
+                "items": "string",
+                "description": "array of ticker names to be excluded from the portfolio"
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Optimised weights of portfolio",
+                "schema": {
+                    "type": "object",
+                    "example": {
+                        "AAPL": 0.5,
+                        "GOOG": 0.5
+                    }
+                }
+            }
+        }
+    },
+    {
+        "endpoint": "/optimiser/include",
+        "method": "GET",
+        "params": {
+            "inclusions[]": {
+                "in": "query",
+                "type": "array",
+                "items": "string",
+                "description": "array of ticker names tobe included in the portfolio"
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Optimised weights of portfolio",
+                "schema": {
+                    "type": "object",
+                    "example": {
+                        "AAPL": 0.5,
+                        "GOOG": 0.5
+                    }
+                }
+            }
+        }
+    }
+]
