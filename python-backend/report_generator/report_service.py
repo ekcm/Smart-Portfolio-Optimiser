@@ -39,16 +39,16 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+client = MongoClient(uri)
+database = client.get_database("FYP-Test-DB")
+
 @app.get("/")
 def read_root():
     return {"Status": "Report Generator Service is running!"}
 
 def get_latest_market_commentary():
     try:
-        client = MongoClient(uri)
-        database = client.get_database("FYP-Test-DB")
         collection = database.get_collection("MarketCommentary")
-
         # Get the latest document by date
         latest_commentary = collection.find_one(
             {},
@@ -85,17 +85,26 @@ def generate_positions_summary(assets_allocation_data):
 
 @app.get("/trade_executions")
 def generate_trade_executions(id: str, startDate: str, endDate: str):
-    url = f"http://nestjs-backend:8000/report/order/date"
     try:
-        params = {
-            'id': id,
-            'startDate': startDate,
-            'endDate' : endDate
+        collection = database.get_collection('Order')
+
+        try:
+            start_date = datetime.strptime(startDate, '%Y-%m-%d')
+            end_date = datetime.strptime(endDate, '%Y-%m-%d')
+        except ValueError:
+            return {"error": "startDate and endDate must be in YYYY-MM-DD format"}, 400
+
+        # Query the database
+        query = {
+            "id": id,
+            "date": {
+                "$gte": start_date,
+                "$lte": end_date
+            }
         }
-        response = requests.get(url, params = params)
-        response.raise_for_status()
-        data = response.json()
-        
+
+        data = list(collection.find(query))
+
         # Create PDF
         pdf_buffer = io.BytesIO()
         pdf = SimpleDocTemplate(pdf_buffer, pagesize=A4, rightMargin=50, leftMargin=50, topMargin=50, bottomMargin=50)
