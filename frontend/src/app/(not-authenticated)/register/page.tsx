@@ -8,7 +8,7 @@ import { Button } from "../../../components/ui/button";
 
 import Image from "next/image";
 
-import ubsLogo from "../../../../public/logo.png";
+import logo from "../../../../public/logo.png";
 import { Link } from "next-view-transitions";
 
 export default function Register() {
@@ -17,7 +17,7 @@ export default function Register() {
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center items-center">
-            <Image src={ubsLogo} alt="logo" priority className="h-32 w-48" />
+            <Image src={logo} alt="logo" priority className="h-32 w-48" />
             <CardTitle className="text-2xl">
               Create an account
             </CardTitle>

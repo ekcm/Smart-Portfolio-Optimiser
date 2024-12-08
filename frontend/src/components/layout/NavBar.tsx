@@ -2,7 +2,7 @@ import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import ubsLogo from "../../../public/logo.png";
+import logo from "../../../public/logo.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +25,7 @@ export default function NavBar() {
   return (
     <nav className="flex items-center justify-between h-20 px-24 bg-white">
       <div className="flex items-center">
-        <Image src={ubsLogo} alt="logo" priority className="h-12 w-20" />
+        <Image src={logo} alt="logo" priority className="h-12 w-20" />
         <div className="hidden md:flex">
           {menuItems.map((menuItem, index) => {
             const formattedItem = formatMenuItem(menuItem);
