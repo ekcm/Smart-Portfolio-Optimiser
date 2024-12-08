@@ -43,10 +43,14 @@ def optimise():
     query = {'ticker': {"$nin": exclusions}}
     results = list(collection.find(query, {"ticker": 1, "date": 1, "todayClose": 1, "_id": 0}))
 
-    pivot_df = pd.DataFrame(results)
-
+    df = pd.DataFrame(results)
+    df['todayClose'] = pd.to_numeric(df['todayClose'], errors='coerce')
+    pivot_df = df.pivot(index='date', columns='ticker', values='todayClose')
+    
     pivot_df.index = pd.to_datetime(pivot_df.index)
     pivot_df = pivot_df.sort_index()
+
+    pivot_df = pivot_df.dropna(axis=1, how='all')
 
     mu = mean_historical_return(pivot_df)
     S = CovarianceShrinkage(pivot_df).ledoit_wolf()
@@ -86,10 +90,14 @@ def optimise_portfolio():
       query = {'ticker': {"$in": inclusions}}
       results = list(collection.find(query, {"ticker": 1, "date": 1, "todayClose": 1, "_id": 0}))
 
-      pivot_df = pd.DataFrame(results)
-
+      df = pd.DataFrame(results)
+      df['todayClose'] = pd.to_numeric(df['todayClose'], errors='coerce')
+      pivot_df = df.pivot(index='date', columns='ticker', values='todayClose')
+      
       pivot_df.index = pd.to_datetime(pivot_df.index)
       pivot_df = pivot_df.sort_index()
+
+      pivot_df = pivot_df.dropna(axis=1, how='all')
 
       mu = mean_historical_return(pivot_df)
       S = CovarianceShrinkage(pivot_df).ledoit_wolf()
@@ -101,8 +109,7 @@ def optimise_portfolio():
 
       response = OrderedDict((k, v) for k, v in cleaned_weights.items() if v != 0)
 
-      return jsonify(response), 200
-    
+      return jsonify(response)
     except Exception as e:
       return jsonify({"error": str(e)}), 500
 

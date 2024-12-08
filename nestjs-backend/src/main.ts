@@ -7,7 +7,7 @@ import { writeFileSync } from 'fs';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const origin : string[] = [process.env.PROD_URL, process.env.REPORT_CONTAINER, process.env.REPORT_URL];
+  const origin : string[] = [process.env.PROD_URL, process.env.REPORT_CONTAINER, process.env.REPORT_URL, process.env.OPTIMIZER_URL];
   
   app.enableCors({
     origin: origin, 
