@@ -46,7 +46,7 @@ interface PortfolioBreakdown {
     industry: { [key: string]: number | undefined }[];
     geography: { [key: string]: number | undefined }[];
     securities: { [key: string]: number | undefined }[];
-};
+}; 
 
 interface Securities {
     [key: string]: number | undefined;
